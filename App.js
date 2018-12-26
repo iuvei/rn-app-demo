@@ -1,7 +1,7 @@
 import React from 'react'
 import {
-  Platform, StatusBar,
-  StyleSheet, View
+  Platform, StatusBar, Button,
+  StyleSheet, View, Text
 } from 'react-native'
 import {AppLoading, Asset, Font, Icon} from 'expo'
 import AppNavigator from './navigation/AppNavigator'
@@ -10,7 +10,8 @@ import {axiosHttp} from './services/HttpService'
 // 如果非登陆状态，则跳到首页去
 export default class App extends React.Component {
   state = {
-    isLoadingComplete: false
+    isLoadingComplete: false,
+    isLogin: false
   }
 
   render() {
@@ -30,12 +31,36 @@ export default class App extends React.Component {
           />
         </View>
       )
-    } else {
+    } else if (this.state.isLogin) {
       return (
         // 这里是你的数据路由
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
           <AppNavigator/>
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.container}>
+          {
+            [1, 2, 3, 4, 5, 6].map(idx =>
+              <Text>{{idx}}</Text>
+            )
+          }
+          <Button
+            onPress={() => {
+              this._toLogin().then(res => {
+                console.log(res)
+                if (res.code === 0) {
+                  setTimeout(() => {
+                    this.setState({
+                      isLogin: true
+                    })
+                  }, 3000)
+                }
+              })
+            }}
+            title='TO LOGIN'/>
         </View>
       )
     }
@@ -73,6 +98,9 @@ export default class App extends React.Component {
       }),
       this.getUserStatus().then(res => {
         console.log('getUserStatus finished', res)
+        this.setState({
+          isLogin: res.code === 0
+        })
       })
     ])
   }
@@ -107,9 +135,10 @@ export default class App extends React.Component {
   _handleFinishLoading = () => {
     console.log('loading finished')
     this.setState({isLoadingComplete: true})
-    setTimeout(() => {
-      // Expo.SplashScreen.hide()
-    }, 1500)
+    // 启动页 隐藏
+    // setTimeout(() => {
+    // Expo.SplashScreen.hide()
+    // }, 1500)
   }
 }
 
