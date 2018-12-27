@@ -1,4 +1,5 @@
 import {fetch} from '../services/HttpService'
+
 const {platformKey, prependUrl} = require('./../api.config')
 
 // 登录和注册验证码
@@ -6,7 +7,6 @@ export const captcha = `${prependUrl}/user/captcha?platformKey=${platformKey}`
 
 // 是否登录
 export const getLoginUser = () => {
-  console.log('进来了啊')
   return fetch({
     type: 'get',
     api: '/user/getLoginUser'
@@ -14,7 +14,7 @@ export const getLoginUser = () => {
 }
 
 // 登录
-export const signIn = ({params}) => {
+export const signIn = (params) => {
   return fetch({
     api: '/user/j_acegi_security_check',
     params

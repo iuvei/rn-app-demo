@@ -33,21 +33,21 @@ class Main extends React.Component {
         )
       }
     } else {
-      if (this.props.isLogin) {
-        // 登陆情况
-        return (
-          <View style={styles.container}>
-            {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
-            <AppNavigator/>
-          </View>
-        )
-      } else {
-        return (
-          <View style={styles.container}>
-            <LoginScreen/>
-          </View>
-        )
-      }
+      // if (this.props.isLogin) {
+      // 登陆情况
+      return (
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
+          <AppNavigator/>
+        </View>
+      )
+      // } else {
+      //   return (
+      //     <View style={styles.container}>
+      //       <LoginScreen/>
+      //     </View>
+      //   )
+      // }
     }
   }
 

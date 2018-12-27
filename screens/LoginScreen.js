@@ -5,10 +5,14 @@ import {
   TextInput, Platform
 } from 'react-native'
 import {connect} from 'react-redux'
-import {fetch} from '../services/HttpService'
 import {setLoginStatus} from '../actions/common'
+import {signIn} from '../api/basic'
 
 class LoginComponent extends Component {
+  static navigationOptions = {
+    header: null
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -18,24 +22,26 @@ class LoginComponent extends Component {
         ua: ''
       }
     }
+    if (this.props.isLogin) this.props.navigation.navigate('Main')
   }
 
   componentDidMount() {
     // 配置平台
-    console.log(Platform)
+    // console.log(Platform)
     this.setState({
-      formData: Object.assign({}, this.state.formData, {ua: Platform.OS})
+      formData: Object.assign({},
+        this.state.formData,
+        {ua: Platform.OS})
     })
   }
 
   _toLogin() {
     let {formData} = this.state
-    fetch({
-      api: '/user/j_acegi_security_check',
-      params: formData
-    }).then(res => {
-      this.props.setLoginStatus(res.code === 0)
-      console.log(res)
+    signIn(formData).then(res => {
+      if (res.code === 0) {
+        this.props.setLoginStatus(res.code === 0)
+        this.props.navigation.navigate('Main')
+      }
     })
   }
 
@@ -114,17 +120,20 @@ const styles = StyleSheet.create({
     marginTop: 30
   }
 })
+
 const mapStateToProps = (state) => {
   let {isLogin} = state.common
   return ({
     isLogin
   })
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     setLoginStatus: status => dispatch(setLoginStatus(status))
   }
 }
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

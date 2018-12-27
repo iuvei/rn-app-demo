@@ -1,20 +1,18 @@
 import React from 'react'
-import {
-  Platform, View, Button,
-  AsyncStorage, Text,
-  StyleSheet
-} from 'react-native'
+import {Platform, StyleSheet} from 'react-native'
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 
 import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
-import LinksScreen from '../screens/LinksScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import GameScreen from '../screens/GameScreen'
+import RechargeScreen from '../screens/RechargeScreen'
+import FoundScreen from '../screens/FoundScreen'
+import PersonalScreen from '../screens/PersonalScreen'
 
+// 首页
 const HomeStack = createStackNavigator({
   Home: HomeScreen
 })
-
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({focused}) => (
@@ -29,80 +27,66 @@ HomeStack.navigationOptions = {
   )
 }
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen
+// 彩厅
+const GamesStack = createStackNavigator({
+  Links: GameScreen
 })
-
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+GamesStack.navigationOptions = {
+  tabBarLabel: '彩厅',
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'logo-game-controller-b' : 'md-link'}
     />
   )
 }
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
+// 充值
+const RechargeStack = createStackNavigator({
+  Recharge: RechargeScreen
 })
-
-class SignInScreen extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      clickTime: ''
-    }
-  }
-
-  static navigationOptions = {
-    title: 'Please sign in'
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>{this.state.clickTime.toString()}</Text>
-        <Button title="Sign in!" onPress={this._signInAsync}/>
-      </View>
-    )
-  }
-
-  _signInAsync = async () => {
-    let {clickTime} = this.state
-    this.setState({
-      clickTime: Number(clickTime) + 1
-    })
-    await AsyncStorage.setItem('userToken', 'abc')
-    this.props.navigation.navigate('App')
-  }
-}
-
-const AuthStack = createStackNavigator({
-  Settings: SignInScreen
-})
-
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+RechargeStack.navigationOptions = {
+  tabBarLabel: '充值',
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-refresh-circle' : 'md-options'}
+    />
+  )
+}
+
+// 发现
+const FoundStack = createStackNavigator({
+  Found: FoundScreen
+})
+FoundStack.navigationOptions = {
+  tabBarLabel: 'Found',
+  tabBarIcon: ({focused}) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
+    />
+  )
+}
+
+// 个人
+const PersonalStack = createStackNavigator({
+  Personal: PersonalScreen
+})
+PersonalStack.navigationOptions = {
+  tabBarLabel: 'Personal',
+  tabBarIcon: ({focused}) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-person' : 'md-link'}
     />
   )
 }
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
-  AuthStack
-})
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
+  GamesStack,
+  FoundStack,
+  RechargeStack,
+  PersonalStack
 })
