@@ -1,10 +1,7 @@
 import axios from 'axios'
-
-// 平台key
-export const platformKey = '3LK0V/qWsjnMe935IUgNzw=='
-// 请求地址前缀
-export const prependUrl = 'http://tianxiang.qmuitest.com/qm'
-
+// import {NoticeTips} from 'util/pop-tool'
+const {prependUrl, platformKey} = require('./../api.config')
+console.log('prependUrl', prependUrl)
 // axios 配置
 axios.defaults.timeout = 8000
 axios.defaults.retry = 2
@@ -20,12 +17,43 @@ axios.interceptors.request.use((config) => {
   }
   return config
 }, (error) => {
-  console.warn('错误的传参', error)
-  // return Promise.reject(error)
+  console.warn('错误的传参')
+  return Promise.reject(error)
 })
 
 // 返回 状态判断
 axios.interceptors.response.use((response) => {
+  // 对响应数据做些事
+  // -200004, "请求参数有误！！！"
+  // -200001, "平台信息不能为空！"
+  // -200002, "平台信息不存在！"
+  // -200014, "Cookie中不存在认证信息！！！"
+  // -200013, "用户已登录!"
+  // -200012, "用户没有登录，请先登录！"
+  // -200011, "用户登录超时，需重新登录！"
+  // -200010, "用户认证失败，需重新登录！"
+  // -20000   "用户已经失效，请重新登录"
+
+  // switch (response.data.code) {
+  //   case -20000:
+  //   case -200010:
+  //   case -200011:
+  //   case -200012:
+  //   case -200014:
+  //     // NoticeTips({
+  //     //   content: response.data.message
+  //     // })
+  //     if (window.location.href.indexOf('login') === -1 &&
+  //       window.location.href.indexOf('linespeed') === -1 &&
+  //       window.location.href.indexOf('regist') &&
+  //       window.location.href.indexOf('loading')) {
+  //       window.location.href = window.location.protocol + '//' + window.location.host + '/' + 'login'
+  //     }
+  //     break
+  // }
+  if (response.status === 200 && response.data.code !== 0) {
+    console.log('接口 = ' + response.config.url + ', code = ' + response.data.code, ', message = ' + response.data.message)
+  }
   return response
 }, (err) => {
   // NoticeTips({
@@ -58,31 +86,45 @@ axios.interceptors.response.use((response) => {
   })
 })
 
-// 组件中请求
 /**
  * 请求
- * @param type        请求类型 默认get
  * @param api         请求地址
- * @param formdata      请求参数
+ * @param params      请求参数
+ * @param type        请求类型 默认post
  * @param selfProxy   是否自己请求（不使用代理）
  * @returns {Promise<any>}
  */
-export const axiosHttp = ({type, api, formData, selfProxy}) => {
-  formData = Object.assign({}, formData, {
-    platformKey
+export const fetch = ({api, params, type, selfProxy, hasKey}) => {
+  return new Promise((resolve, reject) => {
+    type = type ? type.toLowerCase() : 'post'
+    if (!hasKey) {
+      params = Object.assign({}, params, {
+        platformKey
+      })
+    }
+    api = selfProxy ? api : prependUrl + api
+    console.log(api, params, type, selfProxy, hasKey)
+    if (type !== 'post') {
+      params.timeStamp = new Date().getTime()
+      axios[type](api, !selfProxy ? {params} : '').then(response => {
+        if (response) {
+          resolve(response.data)
+        }
+      }, err => {
+        resolve(err)
+      }).catch((error) => {
+        reject(error)
+      })
+    } else {
+      axios.post(api, params).then(response => {
+        if (response) {
+          resolve(response.data)
+        }
+      }, err => {
+        resolve(err)
+      }).catch((error) => {
+        reject(error)
+      })
+    }
   })
-  api = selfProxy ? api : prependUrl + api
-  type = type ? type.toLowerCase() : type
-  if (type === 'post') {
-    return axios.post(api, formData)
-      .then((res) => {
-        return Promise.resolve(res ? res.data : {})
-      })
-  } else {
-    formData.timeStamp = new Date().getTime()
-    return axios[type || 'get'](api, !selfProxy ? {params: formData} : '')
-      .then((res) => {
-        return Promise.resolve(res ? res.data : {})
-      })
-  }
 }

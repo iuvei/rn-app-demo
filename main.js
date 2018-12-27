@@ -6,9 +6,10 @@ import {
 } from 'react-native'
 import {AppLoading, Asset, Font, Icon} from 'expo'
 import LoginScreen from './screens/LoginScreen'
-import {axiosHttp} from './services/HttpService'
+import {fetch} from './services/HttpService'
 import {connect} from 'react-redux'
 import {setLoginStatus} from './actions/common'
+import {getLoginUser} from './api/basic'
 
 // 如果非登陆状态，则跳到首页去
 class Main extends React.Component {
@@ -50,18 +51,12 @@ class Main extends React.Component {
     }
   }
 
-  // 获取用户状态
-  _getUserStatus = () => {
-    return axiosHttp({
-      api: '/user/getLoginUser'
-    })
-  }
-
   _getImageSetCookie = () => {
     let time = new Date().getTime()
-    return axiosHttp({
-      selfProxy: true,
-      api: `http://tianxiang.qmuitest.com/qm/user/captcha?platformKey=3LK0V/qWsjnMe935IUgNzw==&time=${time}`
+    return fetch({
+      type: 'get',
+      api: `/user/captcha`,
+      params: {time}
     })
   }
 
@@ -80,8 +75,10 @@ class Main extends React.Component {
       }),
       this._testReturnPromise(),
       // 这里回先执行二维码然后再去那数据
-      await this._getImageSetCookie(),
-      this._getUserStatus().then(res => {
+      await this._getImageSetCookie().then(() =>
+        console.log('getImageSetCookie finished')
+      ),
+      getLoginUser().then(res => {
         console.log('getUserStatus finished', res)
         this.props.setLoginStatus(res.code === 0)
       })

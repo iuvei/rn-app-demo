@@ -5,9 +5,8 @@ import {
   TextInput, Platform
 } from 'react-native'
 import {connect} from 'react-redux'
-import {axiosHttp} from '../services/HttpService'
+import {fetch} from '../services/HttpService'
 import {setLoginStatus} from '../actions/common'
-import {changeBtnText} from '../actions/example'
 
 class LoginComponent extends Component {
   constructor(props) {
@@ -31,10 +30,9 @@ class LoginComponent extends Component {
 
   _toLogin() {
     let {formData} = this.state
-    axiosHttp({
+    fetch({
       api: '/user/j_acegi_security_check',
-      type: 'post',
-      formData
+      params: formData
     }).then(res => {
       this.props.setLoginStatus(res.code === 0)
       console.log(res)
