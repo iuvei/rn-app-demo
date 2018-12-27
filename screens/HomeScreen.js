@@ -14,6 +14,7 @@ import {connect} from 'react-redux'
 
 import {MonoText} from '../components/StyledText'
 import {
+  changeBtnText,
   changeBtnTextAsync,
   PromiseChangeBtnText
 } from '../actions/example'
@@ -46,19 +47,17 @@ class HomeScreen extends React.Component {
               style={styles.welcomeImage}
             />
           </View>
-          <Button
-            onPress={() => {
-              console.log('you click me')
-            }}
-            title={this.props.btnText || '我是老按钮'}
-          />
-          <Button
-            onPress={() => this.props.changeText('重置成功')}
-            title="reset btn txt"/>
 
+          <Text>我是按钮的内容：{this.props.btnText || '无'}</Text>
+          <Button
+            onPress={() => this.props.changeText('新名字')}
+            title="changeText Name"/>
+          <Button
+            onPress={() => this.props.changeTextAsync()}
+            title="changeTextAsync Name"/>
           <Button
             onPress={() => this.props.PromiseChangeText()}
-            title="Promise Change Text"
+            title="PromiseChangeBtnText"
           />
 
           <View style={styles.getStartedContainer}>
@@ -229,10 +228,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     changeText: (text) => {
-      dispatch(changeBtnTextAsync(text))
+      dispatch(changeBtnText(text))
     },
-    PromiseChangeText: () =>
+    changeTextAsync: () => {
+      dispatch(changeBtnTextAsync())
+    },
+    PromiseChangeText: () => {
       dispatch(PromiseChangeBtnText())
+    }
   }
 }
 
