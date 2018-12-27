@@ -1,14 +1,23 @@
 import {handleActions} from 'redux-actions'
 
 const initialState = {
-  commonText: ''
+  isLogin: false,
+  count: 1,
+  loginInfo: {}
 }
 
+// 常规处理
 const common = handleActions({
-  SET_COMMON_TEXT: (state, {payload}) => {
+  SET_LOGIN_STATUS: (state, {payload}) => {
     return {
       ...state,
-      commonText: payload
+      isLogin: payload
+    }
+  },
+  SET_LOGIN_INFO: (state, {payload}) => {
+    return {
+      ...state,
+      loginInfo: payload
     }
   }
 }, initialState)

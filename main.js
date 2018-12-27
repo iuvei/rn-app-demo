@@ -5,61 +5,63 @@ import {
   StyleSheet, View
 } from 'react-native'
 import {AppLoading, Asset, Font, Icon} from 'expo'
-
-import LoginComponent from './components/Login'
+import LoginScreen from './screens/LoginScreen'
 import {axiosHttp} from './services/HttpService'
+import {connect} from 'react-redux'
+import {setLoginStatus} from './actions/common'
 
 // 如果非登陆状态，则跳到首页去
-export default class Main extends React.Component {
+class Main extends React.Component {
   state = {
-    isLoadingComplete: false,
-    isLogin: false
+    isLoadingComplete: false
   }
 
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return (
-        // 这里可以开始一些初始化处理
-        <View style={styles.container}>
-          {/*<Image source={{*/}
-          {/*uri: 'http://tianxiang.qmuitest.com/qm/user/captcha?time=1545199449416&platformKey=3LK0V%2FqWsjnMe935IUgNzw%3D%3D&timeStamp=1545199449416'*/}
-          {/*}} style={{width: 10, height: 400}}/>*/}
-          <AppLoading
-            startAsync={this._loadResourcesAsync}
-            onError={this._handleLoadingError}
-            onFinish={this._handleFinishLoading}
-            autoHideSplash={false}
-          />
-        </View>
-      )
-    } else if (this.state.isLogin) {
-      // 登陆情况
-      return (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
-          <AppNavigator/>
-        </View>
-      )
+
+    if (!this.state.isLoadingComplete) {
+      if (!this.props.skipLoadingScreen) {
+        return (
+          <View style={styles.container}>
+            <AppLoading
+              startAsync={this._loadResourcesAsync}
+              onError={this._handleLoadingError}
+              onFinish={this._handleFinishLoading}
+              autoHideSplash={false}
+            />
+          </View>
+        )
+      }
     } else {
-      return (
-        <View style={styles.container}>
-          <LoginComponent/>
-        </View>
-      )
+      if (this.props.isLogin) {
+        // 登陆情况
+        return (
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
+            <AppNavigator/>
+          </View>
+        )
+      } else {
+        return (
+          <View style={styles.container}>
+            <LoginScreen/>
+          </View>
+        )
+      }
     }
   }
 
   // 获取用户状态
-  getUserStatus = () => {
+  _getUserStatus = () => {
     return axiosHttp({
       api: '/user/getLoginUser'
     })
   }
 
-  getImageSetCookie() {
+  _getImageSetCookie = () => {
+    let time = new Date().getTime()
     return axiosHttp({
       selfProxy: true,
-      api: 'http://tianxiang.qmuitest.com/qm/user/captcha?platformKey=3LK0V/qWsjnMe935IUgNzw==&time='
+      api: `http://tianxiang.qmuitest.com/qm/user/captcha?platformKey=3LK0V/qWsjnMe935IUgNzw==&time=${time}`
     })
   }
 
@@ -70,22 +72,18 @@ export default class Main extends React.Component {
         require('./assets/images/robot-prod.png')
       ]),
       Font.loadAsync({
-        // This is the font that we are using for our tab bar
+        //   // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
-        // We include SpaceMono because we use it in HomeScreen.js. Feel free
-        // to remove this if you are not using it in your app
+        //   // We include SpaceMono because we use it in HomeScreen.js. Feel free
+        //   // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')
       }),
       this._testReturnPromise(),
       // 这里回先执行二维码然后再去那数据
-      await this.getImageSetCookie().then(res => {
-        console.log('getImageSetCookie finished')
-      }),
-      this.getUserStatus().then(res => {
+      await this._getImageSetCookie(),
+      this._getUserStatus().then(res => {
         console.log('getUserStatus finished', res)
-        this.setState({
-          isLogin: res.code === 0
-        })
+        this.props.setLoginStatus(res.code === 0)
       })
     ])
   }
@@ -94,35 +92,16 @@ export default class Main extends React.Component {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve('simulation to loading')
-      }, 5000)
+      }, 0)
     })
   }
 
-  _toLogin() {
-    return axiosHttp({
-      api: '/user/j_acegi_security_check',
-      type: 'post',
-      formdata: {
-        j_username: 'johnny',
-        j_password: 'zhong123',
-        ua: 'ios'
-      }
-    })
-  }
-
-  _handleLoadingError = error => {
-    console.log('error status')
-    console.warn(error)
-  }
+  _handleLoadingError = error => console.log('error status', error)
 
   _handleFinishLoading = () => {
     console.log('loading finished')
     this.setState({isLoadingComplete: true})
-    // 当 autoHideSplash={false}时
-    // 手动配置启动页 隐藏
-    // setTimeout(() => {
     Expo.SplashScreen.hide()
-    // }, 1500)
   }
 }
 
@@ -135,3 +114,25 @@ const styles = StyleSheet.create({
     marginTop: 30
   }
 })
+
+const mapStateToProps = (state) => {
+  let {isLogin, loginInfo, count} = state.common
+  return ({
+    isLogin,
+    loginInfo,
+    count
+  })
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoginStatus: (text) => {
+      dispatch(setLoginStatus(text))
+    }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Main)

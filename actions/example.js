@@ -1,10 +1,11 @@
 import {createAction} from 'redux-actions'
-// export const changeBtnText = (text) => {
-//   return {
-//     type: 'SET_BTN_NAME',
-//     payload: text
-//   }
-// }
+
+export const easyChangeBtnText = (text) => {
+  return {
+    type: 'SET_BTN_NAME',
+    payload: text
+  }
+}
 
 // 不实用任何方法处理
 export const addCount = (text) => {

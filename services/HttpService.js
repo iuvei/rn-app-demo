@@ -67,20 +67,20 @@ axios.interceptors.response.use((response) => {
  * @param selfProxy   是否自己请求（不使用代理）
  * @returns {Promise<any>}
  */
-export const axiosHttp = ({type, api, formdata, selfProxy}) => {
-  formdata = Object.assign({}, formdata, {
+export const axiosHttp = ({type, api, formData, selfProxy}) => {
+  formData = Object.assign({}, formData, {
     platformKey
   })
   api = selfProxy ? api : prependUrl + api
   type = type ? type.toLowerCase() : type
   if (type === 'post') {
-    return axios.post(api, formdata)
+    return axios.post(api, formData)
       .then((res) => {
         return Promise.resolve(res ? res.data : {})
       })
   } else {
-    formdata.timeStamp = new Date().getTime()
-    return axios[type || 'get'](api, !selfProxy ? {params: formdata} : '')
+    formData.timeStamp = new Date().getTime()
+    return axios[type || 'get'](api, !selfProxy ? {params: formData} : '')
       .then((res) => {
         return Promise.resolve(res ? res.data : {})
       })
