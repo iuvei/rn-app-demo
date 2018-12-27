@@ -3,11 +3,11 @@ import {Platform, StyleSheet} from 'react-native'
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 
 import TabBarIcon from '../components/TabBarIcon'
-import HomeScreen from '../screens/HomeScreen'
-import GameScreen from '../screens/GameScreen'
-import RechargeScreen from '../screens/RechargeScreen'
-import FoundScreen from '../screens/FoundScreen'
-import PersonalScreen from '../screens/PersonalScreen'
+import HomeScreen from '../screens/Home/HomeScreen'
+import GameScreen from '../screens/Games/GamesScreen'
+import RechargeScreen from '../screens/Recharge/RechargeScreen'
+import FoundScreen from '../screens/Found/FoundScreen'
+import PersonalScreen from '../screens/Personal/PersonalScreen'
 
 // 首页
 const HomeStack = createStackNavigator({
@@ -83,10 +83,12 @@ PersonalStack.navigationOptions = {
   )
 }
 
-export default createBottomTabNavigator({
-  HomeStack,
-  GamesStack,
-  FoundStack,
-  RechargeStack,
-  PersonalStack
-})
+export default createBottomTabNavigator(
+  {
+    HomeStack,
+    GamesStack,
+    FoundStack,
+    RechargeStack,
+    PersonalStack
+  }
+)

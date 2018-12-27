@@ -10,6 +10,7 @@ export default class FoundScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text>我是发现页面</Text>
+
       </View>
     )
   }

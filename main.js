@@ -5,7 +5,6 @@ import {
   StyleSheet, View
 } from 'react-native'
 import {AppLoading, Asset, Font, Icon} from 'expo'
-import LoginScreen from './screens/LoginScreen'
 import {fetch} from './services/HttpService'
 import {connect} from 'react-redux'
 import {setLoginStatus} from './actions/common'
