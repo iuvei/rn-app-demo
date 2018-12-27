@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   Image,
+  Button,
   Platform,
   ScrollView,
   StyleSheet,
@@ -9,12 +10,23 @@ import {
   View
 } from 'react-native'
 import {WebBrowser} from 'expo'
+import {connect} from 'react-redux'
 
 import {MonoText} from '../components/StyledText'
+import {changeBtnText} from '../actions/example'
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
+
   static navigationOptions = {
     header: null
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.title !== this.props.title) {
+      this.setState({
+        title: nextProps.title
+      })
+    }
   }
 
   render() {
@@ -31,7 +43,15 @@ export default class HomeScreen extends React.Component {
               style={styles.welcomeImage}
             />
           </View>
-
+          <Button
+            onPress={() => {
+              console.log('you click me')
+            }}
+            title={this.props.btnText || '我是老按钮'}
+          />
+          <Button
+            onPress={() => this.props.changeText('重置成功')}
+            title="reset btn txt"/>
           <View style={styles.getStartedContainer}>
             {this._maybeRenderDevelopmentModeWarning()}
 
@@ -46,12 +66,6 @@ export default class HomeScreen extends React.Component {
             </Text>
           </View>
 
-          {
-            [1, 2, 3, 4, 5, 6].map(index =>
-              <Text key={index}>{index}</Text>
-            )
-          }
-
           <View style={styles.helpContainer}>
             <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
               <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
@@ -61,7 +75,6 @@ export default class HomeScreen extends React.Component {
 
         <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
           <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
             <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
           </View>
@@ -192,3 +205,20 @@ const styles = StyleSheet.create({
     color: '#2e78b7'
   }
 })
+
+const mapStateToProps = (state) => {
+  let {count, btnText} = state.example
+  return ({
+    count,
+    btnText
+  })
+}
+
+const mapDispatchToProps = {
+  changeText: changeBtnText
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeScreen)

@@ -62,7 +62,7 @@ class SignInScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.state.clickTime}</Text>
+        <Text>{this.state.clickTime.toString()}</Text>
         <Button title="Sign in!" onPress={this._signInAsync}/>
       </View>
     )

@@ -1,14 +1,20 @@
 import React from 'react'
 import {
   Platform, StatusBar, Button,
-  StyleSheet, View, Text
+  StyleSheet, View
 } from 'react-native'
 import {AppLoading, Asset, Font, Icon} from 'expo'
 import AppNavigator from './navigation/AppNavigator'
+import {createStore} from 'redux'
+import {Provider} from 'react-redux'
+import reducer from './reducers'
 import {axiosHttp} from './services/HttpService'
+import {changeBtnText} from './actions/example'
+
+const store = createStore(reducer)
 
 // 如果非登陆状态，则跳到首页去
-export default class App extends React.Component {
+class App extends React.Component {
   state = {
     isLoadingComplete: false,
     isLogin: false
@@ -42,12 +48,8 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          {
-            [1, 2, 3, 4, 5, 6].map(idx =>
-              <Text>{{idx}}</Text>
-            )
-          }
           <Button
+            style={styles.btn}
             onPress={() => {
               this._toLogin().then(res => {
                 console.log(res)
@@ -146,5 +148,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff'
+  },
+  btn: {
+    marginTop: 30
   }
 })
+
+// 开始监听，每次state更新，那么就会打印出当前状态
+const unsubscribe = store.subscribe(() => {
+  console.info(store.getState())
+})
+
+let count = 2
+// 发送消息
+setTimeout(() => {
+  count++
+  store.dispatch(changeBtnText(`点击了${count}次按钮`))
+  console.log('dispatch btn times')
+}, 3000)
+
+export default class Index extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <App/>
+      </Provider>
+    )
+  }
+
+}
