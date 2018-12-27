@@ -13,7 +13,10 @@ import {WebBrowser} from 'expo'
 import {connect} from 'react-redux'
 
 import {MonoText} from '../components/StyledText'
-import {changeBtnText} from '../actions/example'
+import {
+  changeBtnTextAsync,
+  PromiseChangeBtnText
+} from '../actions/example'
 
 class HomeScreen extends React.Component {
 
@@ -52,6 +55,12 @@ class HomeScreen extends React.Component {
           <Button
             onPress={() => this.props.changeText('重置成功')}
             title="reset btn txt"/>
+
+          <Button
+            onPress={() => this.props.PromiseChangeText()}
+            title="Promise Change Text"
+          />
+
           <View style={styles.getStartedContainer}>
             {this._maybeRenderDevelopmentModeWarning()}
 
@@ -214,8 +223,17 @@ const mapStateToProps = (state) => {
   })
 }
 
-const mapDispatchToProps = {
-  changeText: changeBtnText
+// const mapDispatchToProps = {
+//   changeText: changeBtnText
+// }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeText: (text) => {
+      dispatch(changeBtnTextAsync(text))
+    },
+    PromiseChangeText: () =>
+      dispatch(PromiseChangeBtnText())
+  }
 }
 
 export default connect(

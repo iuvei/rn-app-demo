@@ -5,13 +5,18 @@ import {
 } from 'react-native'
 import {AppLoading, Asset, Font, Icon} from 'expo'
 import AppNavigator from './navigation/AppNavigator'
-import {createStore} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
 import {Provider} from 'react-redux'
+import promiseMiddleware from 'redux-promise'
 import reducer from './reducers'
+import thunk from 'redux-thunk'
 import {axiosHttp} from './services/HttpService'
 import {changeBtnText} from './actions/example'
 
-const store = createStore(reducer)
+const store = createStore(
+  reducer,
+  applyMiddleware(thunk, promiseMiddleware)
+)
 
 // 如果非登陆状态，则跳到首页去
 class App extends React.Component {
