@@ -5,8 +5,8 @@ import {
   TextInput, Platform
 } from 'react-native'
 import {connect} from 'react-redux'
-import {setLoginStatus} from '../actions/common'
-import {signIn} from '../api/basic'
+import {setLoginStatus} from '../../actions/common'
+import {signIn} from '../../api/basic'
 
 class LoginComponent extends Component {
   static navigationOptions = {
@@ -51,8 +51,8 @@ class LoginComponent extends Component {
         <Image
           source={
             __DEV__
-              ? require('../assets/images/robot-dev.png')
-              : require('../assets/images/robot-prod.png')
+              ? require('../../assets/images/robot-dev.png')
+              : require('../../assets/images/robot-prod.png')
           }
           style={styles.welcomeImage}
         />

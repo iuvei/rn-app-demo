@@ -1,6 +1,6 @@
 import React from 'react'
 import {createStackNavigator} from 'react-navigation'
-import LoginScreen from '../screens/LoginScreen'
+import LoginScreen from '../screens/Login/LoginScreen'
 // import {View, Text, Button, StyleSheet} from 'react-native'
 // import {AsyncStorage} from 'react-native'
 
