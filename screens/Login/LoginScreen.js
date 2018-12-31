@@ -2,11 +2,14 @@ import React, {Component} from 'react'
 import {
   View, Image, Button,
   StyleSheet, Text,
-  TextInput, Platform
+  TextInput, Platform,
+  ImageBackground
 } from 'react-native'
 import {connect} from 'react-redux'
 import {setLoginStatus} from '../../actions/common'
 import {signIn} from '../../api/basic'
+// import { Ionicons } from '@expo/vector-icons'
+import { Grid, Icon, InputItem, Switch, List, Flex } from '@ant-design/react-native';
 
 class LoginComponent extends Component {
   static navigationOptions = {
@@ -17,10 +20,11 @@ class LoginComponent extends Component {
     super(props)
     this.state = {
       formData: {
-        j_username: 'johnny',
-        j_password: 'zhong123',
+        j_username: 'wede01',
+        j_password: 'abc12345',
         ua: ''
-      }
+      },
+      rememberPwd: false
     }
     if (this.props.isLogin) this.props.navigation.navigate('Main')
   }
@@ -45,59 +49,79 @@ class LoginComponent extends Component {
     })
   }
 
+  onSwitchChange = (v) => {
+    this.setState({
+      rememberPwd: v
+    })
+  }
+
   render() {
+    let { j_username, j_password } = this.state.formData
+
     return (
-      <View style={styles.container}>
-        <Image
-          source={
-            __DEV__
-              ? require('../../assets/images/robot-dev.png')
-              : require('../../assets/images/robot-prod.png')
-          }
-          style={styles.welcomeImage}
-        />
-        <Text>{null}</Text>
-        <Text>登陆平台{this.state.formData.ua}</Text>
-        <Text style={styles.title12}>12,{this.state.formData.j_username}终于等到你！</Text>
-        <Text style={styles.title13}>13,{this.state.formData.j_password}终于等到你！</Text>
-        <Text style={styles.title}>终于等到你！</Text>
-        {/*<Text style={styles.title14}>14,终于等到你！</Text>*/}
-        {/*<Text style={styles.title15}>15,终于等到你！</Text>*/}
-        {/*<Text style={styles.title16}>16,终于等到你！</Text>*/}
-        {/*<Text style={styles.title17}>17,终于等到你！</Text>*/}
-        {/*<Text style={styles.title18}>18,终于等到你！</Text>*/}
-        <Text style={styles.title19}>19,终于等到你！</Text>
-        <Text style={styles.title20}>20,终于等到你！</Text>
-        <Text style={styles.title21}>21,终于等到你！</Text>
-        <Text style={styles.title22}>22,终于等到你！</Text>
-        <Text>{null}</Text>
-        <Text>{null}</Text>
-        <TextInput
-          style={{height: 40, width: 150}}
-          placeholder="请输入 User!"
-          onChangeText={(j_username) => this.setState({
-            formData: Object.assign({}, this.state.formData, {j_username})
-          })}
-        />
-        <TextInput
-          style={{height: 40, width: 150}}
-          placeholder="请输入 Pass!"
-          onChangeText={(j_password) => this.setState({
-            formData: Object.assign({}, this.state.formData, {j_password})
-          })}
-        />
-        <Button
-          style={styles.btn}
-          onPress={() => this._toLogin()}
-          title=' 登 陆 '/>
-      </View>
+      <ImageBackground source={require('../../assets/images/login_bg.jpg')} style={{width: '100%', height: '100%', alignItems: 'center'}}>
+        <View style={{paddingTop: 88}}>
+          <Image source={require('../../assets/images/login_logo.png')} style={{width: 135, height: 105, margin: 'auto'}}/>
+        </View>
+        <View style={styles.container}>
+          <InputItem
+            style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0, marginBottom: 18}}
+            placeholder="请输入用户名"
+            value={j_username}
+            clear
+            labelNumber={2}
+            onChangeText={(j_username) => this.setState({
+              formData: Object.assign({}, this.state.formData, {j_username})
+            })}
+          >
+            <Icon name="account-book" size="32" color="#1789e6" />
+          </InputItem>
+          <InputItem
+            style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0}}
+            placeholder="请输入登录密码"
+            value={j_password}
+            labelNumber={2}
+            extra={<Icon name="account-book" size="32" color="#1789e6" />}
+            secureTextEntry
+            onChangeText={(j_password) => this.setState({
+              formData: Object.assign({}, this.state.formData, {j_password})
+            })}
+          >
+            <Icon name="account-book" size="32" color="#1789e6" />
+          </InputItem>
+          <Flex style={{height: 38}}>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              <Text style={{textAlign: 'right'}}>忘记密码</Text>
+            </Flex.Item>
+            <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
+              <Switch
+                  checked={this.state.rememberPwd}
+                  onChange={this.onSwitchChange}
+                />
+            </View>
+          </Flex>
+          <View style={{width: 280}}>
+            <Button
+              style={styles.btn}
+              onPress={() => this._toLogin()}
+              title=' 登 陆 '/>
+          </View>
+        </View>
+      </ImageBackground>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: 310,
+    height: 290,
+    backgroundColor: '#0a84db',
+    margin: 'auto',
+    marginTop: 39,
+    borderRadius: 7,
+    paddingTop: 38,
   },
   welcomeImage: {
     width: 100,
@@ -105,19 +129,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: 30
   },
-  title12: {fontSize: 12},
-  title13: {fontSize: 13},
-  title14: {fontSize: 14},
-  title15: {fontSize: 15},
-  title16: {fontSize: 16},
-  title17: {fontSize: 17},
-  title18: {fontSize: 18},
-  title19: {fontSize: 19},
-  title20: {fontSize: 20},
-  title21: {fontSize: 21},
-  title22: {fontSize: 22},
   btn: {
-    marginTop: 30
+    width: 280,
   }
 })
 
