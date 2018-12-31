@@ -65,7 +65,7 @@ class LoginComponent extends Component {
         </View>
         <View style={styles.container}>
           <InputItem
-            style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0, marginBottom: 18}}
+            style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0, marginBottom: 18, marginLeft: 0}}
             placeholder="请输入用户名"
             value={j_username}
             clear
@@ -77,7 +77,7 @@ class LoginComponent extends Component {
             <Icon name="account-book" size="32" color="#1789e6" />
           </InputItem>
           <InputItem
-            style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0}}
+            style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0, marginLeft: 0}}
             placeholder="请输入登录密码"
             value={j_password}
             labelNumber={2}
@@ -91,7 +91,7 @@ class LoginComponent extends Component {
           </InputItem>
           <Flex style={{height: 38}}>
             <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-              <Text style={{textAlign: 'right'}}>忘记密码</Text>
+              <Text style={{textAlign: 'right', color: '#ffffff'}}>忘记密码</Text>
             </Flex.Item>
             <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
               <Switch
@@ -106,6 +106,14 @@ class LoginComponent extends Component {
               onPress={() => this._toLogin()}
               title=' 登 陆 '/>
           </View>
+          <Flex style={{width: 280, marginTop: 25}}>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              <Text style={{color: '#ffffff'}}>移动端下载</Text>
+            </Flex.Item>
+            <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+              <Text style={{textAlign: 'right', color: '#ffffff'}}>线路检测</Text>
+            </Flex.Item>
+          </Flex>
         </View>
       </ImageBackground>
     )
@@ -131,6 +139,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     width: 280,
+    height: 45
   }
 })
 
