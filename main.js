@@ -67,6 +67,10 @@ class Main extends React.Component {
         require('./assets/images/robot-dev.png'),
         require('./assets/images/robot-prod.png')
       ]),
+      await Font.loadAsync({
+        Roboto: require('native-base/Fonts/Roboto.ttf'),
+        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
+      }),
       Font.loadAsync({
         //   // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,

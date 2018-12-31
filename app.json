@@ -14,16 +14,38 @@
     "splash": {
       "image": "./assets/images/screen.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFFFFF"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ziyunprivate.goleteam",
+      "buildNumber": "1.0.0",
+      "splash": {
+        "image": "./assets/images/screen.png",
+        "backgroundColor": "#FFFFFF",
+        "resizeMode": "cover"
+      }
+    },
+    "android": {
+      "package": "",
+      "versionCode": 3,
+      "splash": {
+        "image": "./assets/images/screen.png",
+        "backgroundColor": "#FFFFFF",
+        "resizeMode": "cover",
+        "ldpi": "./assets/images/screen.png",
+        "mdpi": "./assets/images/screen.png",
+        "hdpi": "./assets/images/screen.png",
+        "xhdpi": "./assets/images/screen.png",
+        "xxhdpi": "./assets/images/screen.png",
+        "xxxhdpi": "./assets/images/screen.png"
+      }
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    }
+    ]
   }
 }

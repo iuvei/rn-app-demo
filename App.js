@@ -24,7 +24,7 @@ setTimeout(() => {
 }, 1000)
 
 // 停止监听state的更新
-// unsubscribe()
+unsubscribe()
 
 export default class App extends React.Component {
   state = {
