@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#016fca',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 70,
+    height: 55,
     paddingTop: 25,
   },
   headerLeftImg: {
