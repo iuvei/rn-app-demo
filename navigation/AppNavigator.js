@@ -15,6 +15,6 @@ export default createSwitchNavigator(
     Bet: BetNavigator,
     Scroll: ScrollNavigator,
   }, {
-    initialRouteName: 'Scroll'
+    initialRouteName: 'Login'
   }
 )
