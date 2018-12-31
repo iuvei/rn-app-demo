@@ -6,13 +6,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View
+  View,
+  RefreshControl
 } from 'react-native'
-import {WebBrowser} from 'expo'
+import { Carousel, NoticeBar, WhiteSpace, Flex } from '@ant-design/react-native';
 import {connect} from 'react-redux'
-
-import {MonoText} from '../../components/StyledText'
+import Header from './../../components/Header'
 import {
   changeBtnText,
   changeBtnTextAsync,
@@ -20,9 +19,33 @@ import {
 } from '../../actions/example'
 
 class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      refreshing: false,
+    }
+  }
 
-  static navigationOptions = {
-    header: null
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    const { params } = navigation.state;
+    return {
+      header: <Header
+        hideLeft={true}
+        rightContent={
+          <Text style={{fontSize: 16, color: "#fff"}}>
+            <Text onPress={() => params.changeTextFun('分享')}>分享  </Text>
+            <Text onPress={() => params.changeTextFun('扫码')}>扫码</Text>
+          </Text>
+        }/>
+    }
+  }
+
+  changeTextFun = (val) => {
+    alert(val+ '正在开发中')
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ changeTextFun: this.changeTextFun })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,120 +56,244 @@ class HomeScreen extends React.Component {
     }
   }
 
+  onHorizontalSelectedIndexChange(index) {
+    // /* tslint:disable: no-console */
+    // console.log('horizontal change to', index);
+  }
+
+  setLot() {
+    alert('正在开发中')
+  }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    setTimeout(() => {
+      this.setState({refreshing: false});
+    }, 1000);
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../../assets/images/robot-dev.png')
-                  : require('../../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
+
+        <Carousel
+          style={styles.wrapper}
+          autoplay
+          infinite
+          afterChange={this.onHorizontalSelectedIndexChange}
+        >
+          <View
+            style={styles.containerHorizontal}
+          >
+            <Image source={require('./../../assets/images/home/banner_01.png')} resizeMode={'contain'} style={styles.carouselImg} />
           </View>
-
-          <Text>我是按钮的内容：{this.props.btnText || '无'}</Text>
-          <Button
-            onPress={() => this.props.changeText('新名字')}
-            title="changeText Name"/>
-          <Button
-            onPress={() => this.props.changeTextAsync()}
-            title="changeTextAsync Name"/>
-          <Button
-            onPress={() => this.props.PromiseChangeText()}
-            title="PromiseChangeBtnText"
-          />
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get started by opening</Text>
-
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
+          <View
+            style={styles.containerHorizontal}
+          >
+            <Image source={require('./../../assets/images/home/banner_01.png')} resizeMode={'contain'} style={styles.carouselImg} />
           </View>
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
+        </Carousel>
 
-            <Text style={styles.getStartedText}>Get started by opening</Text>
+        <View>
+          <WhiteSpace size="sm" />
+          <NoticeBar
+            onPress={() => alert('click')}
+            marqueeProps={{ loop: true, style: { fontSize: 12, color: '#000' } }}
+          >
+            一、本公司时时彩彩种每期最高奖金限额400000.00元，超出按400000.00元计算，超出的奖金无效并清0；其余高
+          </NoticeBar>
+          <WhiteSpace size="sm" />
+        </View>
 
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
+        <Carousel
+          style={styles.wrapper}
+          autoplay
+          infinite
+          afterChange={this.onHorizontalSelectedIndexChange}
+        >
+          <View style={styles.hotItem}>
+            <Flex>
+              <View>
+                <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.hotItemImg} />
+              </View>
+              <View style={styles.hotItemCenter}>
+                <Text style={styles.hotItemTitle}>重庆时时彩</Text>
+                <Text style={styles.hotItemText}>20181211006期</Text>
+              </View>
+              <View style={styles.hotItemRight}>
+                <Flex wrap="wrap">
+                  <View><Text style={styles.hotItemBall}>1</Text></View>
+                  <View><Text style={styles.hotItemBall}>2</Text></View>
+                  <View><Text style={styles.hotItemBall}>5</Text></View>
+                  <View><Text style={styles.hotItemBall}>7</Text></View>
+                  <View><Text style={styles.hotItemBall}>9</Text></View>
+                  <View><Text style={styles.hotItemBall}>1</Text></View>
+                  <View><Text style={styles.hotItemBall}>2</Text></View>
+                  <View><Text style={styles.hotItemBall}>5</Text></View>
+                  <View><Text style={styles.hotItemBall}>7</Text></View>
+                  <View><Text style={styles.hotItemBall}>9</Text></View>
+                </Flex>
+              </View>
+            </Flex>
           </View>
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get started by opening</Text>
-
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
+          <View style={styles.hotItem}>
+            <Flex>
+              <View>
+                <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.hotItemImg} />
+              </View>
+              <View style={styles.hotItemCenter}>
+                <Text style={styles.hotItemTitle}>重庆时时彩</Text>
+                <Text style={styles.hotItemText}>20181211006期</Text>
+              </View>
+              <View style={styles.hotItemRight}>
+                <Flex wrap="wrap">
+                  <View><Text style={styles.hotItemBall}>1</Text></View>
+                  <View><Text style={styles.hotItemBall}>2</Text></View>
+                  <View><Text style={styles.hotItemBall}>5</Text></View>
+                  <View><Text style={styles.hotItemBall}>7</Text></View>
+                  <View><Text style={styles.hotItemBall}>9</Text></View>
+                </Flex>
+              </View>
+            </Flex>
           </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity>
+          <View style={styles.hotItem}>
+            <Flex>
+              <View>
+                <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.hotItemImg} />
+              </View>
+              <View style={styles.hotItemCenter}>
+                <Text style={styles.hotItemTitle}>重庆时时彩</Text>
+                <Text style={styles.hotItemText}>20181211006期</Text>
+              </View>
+              <View style={styles.hotItemRight}>
+                <Flex wrap="wrap">
+                  <View><Text style={styles.hotItemBall}>1</Text></View>
+                  <View><Text style={styles.hotItemBall}>2</Text></View>
+                  <View><Text style={styles.hotItemBall}>5</Text></View>
+                  <View><Text style={styles.hotItemBall}>7</Text></View>
+                  <View><Text style={styles.hotItemBall}>9</Text></View>
+                </Flex>
+              </View>
+            </Flex>
           </View>
-        </ScrollView>
+        </Carousel>
+
+        <WhiteSpace size="md" />
+
+        <View style={styles.favoriteHead}>
+          <Flex justify="between" style={{fontSize: 13}}>
+            <View><Text style={styles.favoriteHeadText}>我的喜爱</Text></View>
+            <View><Text style={styles.favoriteHeadText} onPress={() => this.setLot()}>自定义</Text></View>
+          </Flex>
+        </View>
+
+        <View style={{height: 130}}>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }>
+            <Flex wrap="wrap">
+              <View style={styles.favoriteItem}>
+                <Flex>
+                  <View>
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                  </View>
+                  <View style={styles.favoriteItemCenter}>
+                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
+                    <Text style={styles.favoriteItemText}>100万派送中</Text>
+                  </View>
+                </Flex>
+              </View>
+              <View style={styles.favoriteItem}>
+                <Flex>
+                  <View>
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                  </View>
+                  <View style={styles.favoriteItemCenter}>
+                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
+                    <Text style={styles.favoriteItemText}>100万派送中</Text>
+                  </View>
+                </Flex>
+              </View>
+              <View style={styles.favoriteItem}>
+                <Flex>
+                  <View>
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                  </View>
+                  <View style={styles.favoriteItemCenter}>
+                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
+                    <Text style={styles.favoriteItemText}>100万派送中</Text>
+                  </View>
+                </Flex>
+              </View>
+              <View style={styles.favoriteItem}>
+                <Flex>
+                  <View>
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                  </View>
+                  <View style={styles.favoriteItemCenter}>
+                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
+                    <Text style={styles.favoriteItemText}>100万派送中</Text>
+                  </View>
+                </Flex>
+              </View>
+              <View style={styles.favoriteItem}>
+                <Flex>
+                  <View>
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                  </View>
+                  <View style={styles.favoriteItemCenter}>
+                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
+                    <Text style={styles.favoriteItemText}>100万派送中</Text>
+                  </View>
+                </Flex>
+              </View>
+              <View style={styles.favoriteItem}>
+                <Flex>
+                  <View>
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                  </View>
+                  <View style={styles.favoriteItemCenter}>
+                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
+                    <Text style={styles.favoriteItemText}>100万派送中</Text>
+                  </View>
+                </Flex>
+              </View>
+              <View style={styles.favoriteItem}>
+                <Flex>
+                  <View>
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                  </View>
+                  <View style={styles.favoriteItemCenter}>
+                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
+                    <Text style={styles.favoriteItemText}>100万派送中</Text>
+                  </View>
+                </Flex>
+              </View>
+            </Flex>
+          </ScrollView>
+        </View>
 
         <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-          </View>
+          <Flex>
+            <View style={styles.gameItem}>
+              <Image source={require('./../../assets/images/home/ag.png')} resizeMode={'contain'} style={{width: 60}} />
+            </View>
+            <View style={styles.gameItem}>
+              <Image source={require('./../../assets/images/home/og.png')} resizeMode={'contain'} style={{width: 60}} />
+            </View>
+            <View style={styles.gameItem}>
+              <Image source={require('./../../assets/images/home/eb.png')} resizeMode={'contain'} style={{width: 60}} />
+            </View>
+            <View style={styles.gameItem}>
+              <Image source={require('./../../assets/images/home/ob.png')} resizeMode={'contain'} style={{width: 60}} />
+            </View>
+          </Flex>
         </View>
       </View>
-    )
-  }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      )
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      )
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      )
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode')
-  }
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
     )
   }
 }
@@ -154,56 +301,102 @@ class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f0f0f0',
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  wrapper: {
+    backgroundColor: '#fff',
+  },
+  containerHorizontal: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 150,
+    marginTop: 3
+  },
+  hotItem: {
+    height: 83,
+    borderWidth: 1,
+    borderColor: '#eaeaea',
+    paddingLeft: 20,
+    paddingTop: 10,
+    borderRadius: 2,
+  },
+  hotItemImg: {
+    width: 60,
+    height: 60,
+    borderRadius: 25,
     backgroundColor: '#fff'
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center'
+  hotItemCenter: {
+    marginLeft: 10
   },
-  contentContainer: {
-    paddingTop: 30
+  hotItemTitle: {
+    fontSize: 14
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20
+  hotItemText: {
+    fontSize: 12,
+    color: '#787878'
   },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10
+  hotItemRight: {
+    maxWidth: 170,
+    marginLeft: 10
   },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50
+  hotItemBall: {
+    width: 26,
+    height: 26,
+    lineHeight: 26,
+    textAlign: 'center',
+    borderRadius: 13,
+    color: 'white',
+    marginRight: 3,
+    backgroundColor: '#097bd9'
   },
-  homeScreenFilename: {
-    marginVertical: 7
+  carouselImg: {
+    width: '100%'
   },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)'
+  favoriteHead: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: '#e6e6e6'
   },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4
+  favoriteHeadText: {
+    height: 40,
+    lineHeight:40
   },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center'
+  favoriteItem: {
+    width: '50%',
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+    borderLeftWidth: 1,
+    borderLeftColor: '#f0f0f0',
+    paddingBottom: 7,
+    paddingTop: 7
+  },
+  favoriteItemImg: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    marginLeft: 15,
+    backgroundColor: '#fff'
+  },
+  favoriteItemCenter: {
+    marginLeft: 15
+  },
+  favoriteItemTitle: {
+    fontSize: 14
+  },
+  favoriteItemText: {
+    fontSize: 12,
+    color: '#787878'
   },
   tabBarInfoContainer: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
+    left: 10,
+    right: 10,
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -219,24 +412,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fbfbfb',
     paddingVertical: 20
   },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center'
-  },
-  navigationFilename: {
-    marginTop: 5
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center'
-  },
-  helpLink: {
-    paddingVertical: 15
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7'
+  gameItem: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '25%',
+    height: 20
   }
 })
 
