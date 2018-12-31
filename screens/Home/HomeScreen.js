@@ -319,14 +319,14 @@ const styles = StyleSheet.create({
     height: 83,
     borderWidth: 1,
     borderColor: '#eaeaea',
-    paddingLeft: 20,
-    paddingTop: 10,
+    paddingLeft: 10,
+    paddingTop: 5,
     borderRadius: 2,
   },
   hotItemImg: {
-    width: 60,
-    height: 60,
-    borderRadius: 25,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     backgroundColor: '#fff'
   },
   hotItemCenter: {
@@ -372,18 +372,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f0f0f0',
     borderLeftWidth: 1,
     borderLeftColor: '#f0f0f0',
-    paddingBottom: 7,
-    paddingTop: 7
   },
   favoriteItemImg: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    marginLeft: 15,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    marginLeft: 10,
     backgroundColor: '#fff'
   },
   favoriteItemCenter: {
-    marginLeft: 15
+
   },
   favoriteItemTitle: {
     fontSize: 14
