@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   Image,
-  Button,
   Platform,
   ScrollView,
   StyleSheet,
@@ -178,7 +177,7 @@ class HomeScreen extends React.Component {
           </View>
         </Carousel>
 
-        <WhiteSpace size="md" />
+        <WhiteSpace size="sm" />
 
         <View style={styles.favoriteHead}>
           <Flex justify="between" style={{fontSize: 13}}>
@@ -187,7 +186,7 @@ class HomeScreen extends React.Component {
           </Flex>
         </View>
 
-        <View style={{height: 130}}>
+        <View style={{height: 180}}>
           <ScrollView
             refreshControl={
               <RefreshControl
@@ -199,7 +198,7 @@ class HomeScreen extends React.Component {
               <View style={styles.favoriteItem}>
                 <Flex>
                   <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
                   </View>
                   <View style={styles.favoriteItemCenter}>
                     <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
@@ -210,7 +209,7 @@ class HomeScreen extends React.Component {
               <View style={styles.favoriteItem}>
                 <Flex>
                   <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
                   </View>
                   <View style={styles.favoriteItemCenter}>
                     <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
@@ -221,7 +220,7 @@ class HomeScreen extends React.Component {
               <View style={styles.favoriteItem}>
                 <Flex>
                   <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
                   </View>
                   <View style={styles.favoriteItemCenter}>
                     <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
@@ -232,7 +231,7 @@ class HomeScreen extends React.Component {
               <View style={styles.favoriteItem}>
                 <Flex>
                   <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
                   </View>
                   <View style={styles.favoriteItemCenter}>
                     <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
@@ -243,7 +242,7 @@ class HomeScreen extends React.Component {
               <View style={styles.favoriteItem}>
                 <Flex>
                   <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
                   </View>
                   <View style={styles.favoriteItemCenter}>
                     <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
@@ -254,7 +253,7 @@ class HomeScreen extends React.Component {
               <View style={styles.favoriteItem}>
                 <Flex>
                   <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
                   </View>
                   <View style={styles.favoriteItemCenter}>
                     <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
@@ -265,7 +264,7 @@ class HomeScreen extends React.Component {
               <View style={styles.favoriteItem}>
                 <Flex>
                   <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.favoriteItemImg} />
+                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
                   </View>
                   <View style={styles.favoriteItemCenter}>
                     <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
@@ -280,16 +279,16 @@ class HomeScreen extends React.Component {
         <View style={styles.tabBarInfoContainer}>
           <Flex>
             <View style={styles.gameItem}>
-              <Image source={require('./../../assets/images/home/ag.png')} resizeMode={'contain'} style={{width: 60}} />
+              <Image source={require('./../../assets/images/home/ag.png')} resizeMode={'contain'} style={{width: 50}} />
             </View>
             <View style={styles.gameItem}>
-              <Image source={require('./../../assets/images/home/og.png')} resizeMode={'contain'} style={{width: 60}} />
+              <Image source={require('./../../assets/images/home/og.png')} resizeMode={'contain'} style={{width: 50}} />
             </View>
             <View style={styles.gameItem}>
-              <Image source={require('./../../assets/images/home/eb.png')} resizeMode={'contain'} style={{width: 60}} />
+              <Image source={require('./../../assets/images/home/eb.png')} resizeMode={'contain'} style={{width: 50}} />
             </View>
             <View style={styles.gameItem}>
-              <Image source={require('./../../assets/images/home/ob.png')} resizeMode={'contain'} style={{width: 60}} />
+              <Image source={require('./../../assets/images/home/ob.png')} resizeMode={'contain'} style={{width: 50}} />
             </View>
           </Flex>
         </View>
@@ -316,11 +315,10 @@ const styles = StyleSheet.create({
     marginTop: 3
   },
   hotItem: {
-    height: 83,
+    height: 75,
     borderWidth: 1,
     borderColor: '#eaeaea',
     paddingLeft: 10,
-    paddingTop: 5,
     borderRadius: 2,
   },
   hotItemImg: {
@@ -337,7 +335,8 @@ const styles = StyleSheet.create({
   },
   hotItemText: {
     fontSize: 12,
-    color: '#787878'
+    color: '#787878',
+    paddingBottom: 5
   },
   hotItemRight: {
     maxWidth: 170,
@@ -351,6 +350,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     color: 'white',
     marginRight: 3,
+    marginBottom: 3,
     backgroundColor: '#097bd9'
   },
   carouselImg: {
@@ -362,8 +362,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#e6e6e6'
   },
   favoriteHeadText: {
-    height: 40,
-    lineHeight:40
+    height: 30,
+    lineHeight:30
   },
   favoriteItem: {
     width: '50%',
@@ -374,9 +374,9 @@ const styles = StyleSheet.create({
     borderLeftColor: '#f0f0f0',
   },
   favoriteItemImg: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     marginLeft: 10,
     backgroundColor: '#fff'
   },
@@ -407,15 +407,14 @@ const styles = StyleSheet.create({
       }
     }),
     alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20
+    backgroundColor: '#fbfbfb'
   },
   gameItem: {
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     width: '25%',
-    height: 20
+    height: 50
   }
 })
 
