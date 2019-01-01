@@ -10,7 +10,7 @@ import FlatListItem from './itemContainer/flatListItem'
 import FlatListGrid from './itemContainer/flatListGrid'
 
 const {width, height} = Dimensions.get('window')
-export default class ExampleScroll extends Component {
+export default class Example extends Component {
   constructor(props) {
     super(props)
     this.state = {

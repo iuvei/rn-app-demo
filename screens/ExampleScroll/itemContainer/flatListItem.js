@@ -11,8 +11,8 @@ export default class Example extends PureComponent {
   }
 
   render() {
-    const rowID = this.props.index
-    const rowData = this.props.item
+    const rowID = this.props.item.orderId || this.props.index
+    const rowData = this.props.item.ruleName || this.props.item
     return (
       <ListItem thumbnail>
         <Left>

@@ -26,21 +26,6 @@
         "resizeMode": "cover"
       }
     },
-    "android": {
-      "package": "",
-      "versionCode": 3,
-      "splash": {
-        "image": "./assets/images/screen.png",
-        "backgroundColor": "#FFFFFF",
-        "resizeMode": "cover",
-        "ldpi": "./assets/images/screen.png",
-        "mdpi": "./assets/images/screen.png",
-        "hdpi": "./assets/images/screen.png",
-        "xhdpi": "./assets/images/screen.png",
-        "xxhdpi": "./assets/images/screen.png",
-        "xxxhdpi": "./assets/images/screen.png"
-      }
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
