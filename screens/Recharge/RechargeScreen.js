@@ -29,16 +29,10 @@ class RechargeScreen extends React.Component {
       virtualAccounts: [],
       activeTabIndex: 0,
       minRechargeMoney: 50,
-      amount: 0,
-      orderAmount: 0,
-      rechargeFee: 0
-    };
-    this.onOpenChange = isOpen => {
-      /* tslint:disable: no-console */
-      console.log('是否打开了 Drawer', isOpen.toString());
-    };
-    this.onAccordionChange = activeSections => {
-      this.setState({ activeSections });
+      amount: '0',
+      orderAmount: '0',
+      rechargeFee: '0',
+      isLoading: false
     };
     getRechargeChannels().then(res => {
       if (res.code === 0) {
@@ -92,6 +86,76 @@ class RechargeScreen extends React.Component {
     })
   }
 
+  onOpenChange = isOpen => {
+    /* tslint:disable: no-console */
+    console.log('是否打开了 Drawer', isOpen.toString());
+  };
+
+  onAccordionChange = activeSections => {
+    this.setState({ activeSections });
+  };
+  
+    /**
+     * 提交充值
+     */
+    submitFunc = () => {
+      let {amount, orderAmount, rechargeFee, minRechargeMoney, isLoading} = this.state
+      let {activeAccount} = this.props
+      // if (!this.checkBindPay()) return
+      let pattern = /^(([1-9]\d*)(\.\d{1,2})?)$|(0\.0?([1-9]\d?))$/
+      let msg = '请输入正确的充值金额，最多两位小数!'
+      if (this.activeAccount.isFloat) {
+        pattern = /^(([1-9]\d*)(\.\d[1-9]))$|(0\.\d[1-9])$/
+        msg = '请输入正确的充值金额，必须是两位小数，且末尾不能是0!'
+      }
+      if (!pattern.test(this.formData.amount)) {
+        Toast.fail(msg)
+      } else {
+        if (this.formData.amount < this.minRechargeMoney) {
+          Toast.fail(`最小充值 ${this.minRechargeMoney} 元`)
+          return
+        }
+        console.log(this.formData)
+        this.isLoading = true
+        this.formData = Object.assign(this.formData, {
+          bankCode: this.activeAccount.bankCode || '',
+          accountId: this.activeAccount.accountNumber || '',
+          payChannelAlias: this.activeAccount.payChannelAlias,
+          coinCode: this.activeAccount.coinCode || '',
+          payChannelCode: this.activeAccount.payChannelCode
+        })
+        let {bankCode, channelType, isQuick, orderAmount, payChannelAlias, payChannelCode, rechargeFee, returnUrl, customerIp, amount, coinCode} = this.formData
+        commitRecharge({bankCode, channelType, isQuick, orderAmount, payChannelAlias, payChannelCode, rechargeFee, returnUrl, customerIp, amount, coinCode}).then((res) => {
+          if (res.code === ERR_OK) {
+            this.isLoading = false
+            let tmprecinfo = Object.assign({}, res.data, {amount: this.formData.amount})
+            this.$store.commit('SET_REC_INFO', tmprecinfo)
+            this.formData.amount = ''
+            if (res.data.submitType === 'url') {
+              this.goThird(tmprecinfo.url + '?' + tmprecinfo.params)
+              return
+            }
+            if (res.data.submitType === 'html') {
+              router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
+              return
+            }
+            this.splitParams(res.data.params || '')
+            this.qrCodeSrc = '/qm/capital/capitalBase/queryQrCode?platformKey=' + platformKey + '&payChannelCode=' + this.activeAccount.payChannelCode + '&bankCode=' + this.activeAccount.bankCode + '&time=' + new Date().getTime()
+            this.$store.commit('SET_RECHARGE_QRCODE', this.qrCodeSrc)
+            router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
+          } else {
+            if (res.message.indexOf('}') !== -1) {
+              Toast.fail(JSON.parse(res.message).Message || '充值服务异常')
+            } else {
+              Toast.fail(res.message || '充值服务异常')
+            }
+            this.formData.amount = ''
+            this.isLoading = false
+          }
+        })
+      }
+    }
+
   onChange = value => {
     this.setState({ value });
   };
@@ -122,6 +186,11 @@ class RechargeScreen extends React.Component {
                 key={item.payChannelAlias + index}
                 onChange={event => {
                   if (event.target.checked) {
+                    this.setState({
+                      amount: '0',
+                      orderAmount: '0',
+                      rechargeFee: '0'
+                    });
                     this.props.setActiveAccount(item);
                   }
                 }}>
@@ -158,7 +227,7 @@ class RechargeScreen extends React.Component {
   }
 
   render() {
-    let {channelRealObj, activeTabIndex, virtualAccounts, minRechargeMoney, orderAmount, amount, rechargeFee} = this.state
+    let {channelRealObj, activeTabIndex, virtualAccounts, minRechargeMoney, orderAmount, amount, rechargeFee, isLoading} = this.state
     let {activeAccount} = this.props
     const sidebar = (
       <ScrollView style={[styles.container]}>
@@ -191,6 +260,11 @@ class RechargeScreen extends React.Component {
                 key={item.payChannelAlias + index}
                 onChange={event => {
                   if (event.target.checked) {
+                    this.setState({
+                      amount: '0',
+                      orderAmount: '0',
+                      rechargeFee: '0'
+                    });
                     this.props.setActiveAccount(item);
                   }
                 }}>
@@ -240,9 +314,20 @@ class RechargeScreen extends React.Component {
             error
             value={amount}
             onChange={value => {
-              this.setState({
-                amount: value,
-              });
+              if (activeAccount.feeRate > 0) {
+                let fee = Number(value) * activeAccount.feeRate / 100
+                this.setState({
+                  amount: String(value),
+                  orderAmount: String(Number(Number(value) - fee).toFixed(2)),
+                  rechargeFee: String(Number(fee).toFixed(2))
+                });
+              } else {
+                this.setState({
+                  amount: String(value),
+                  orderAmount: String(value),
+                  rechargeFee: '0'
+                });
+              }
             }}
             placeholder="请输入充值金额"
           >
@@ -266,7 +351,7 @@ class RechargeScreen extends React.Component {
           </List.Item>
         </List>
         <View style={{paddingLeft: 15, paddingTop: 30, paddingRight: 15}}>
-          <Button type="primary" loading>下一步</Button>
+          <Button type="primary" loading={isLoading}>下一步</Button>
         </View>
       </View>
     )
