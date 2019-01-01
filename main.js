@@ -69,14 +69,15 @@ class Main extends React.Component {
       ]),
       await Font.loadAsync({
         Roboto: require('native-base/Fonts/Roboto.ttf'),
-        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
+        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+        MyIconFont: require('./assets/fonts/iconfont.ttf')
       }),
       Font.loadAsync({
         //   // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
         //   // We include SpaceMono because we use it in HomeScreen.js. Feel free
         //   // to remove this if you are not using it in your app
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')
+        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
       this._testReturnPromise(),
       // 这里回先执行二维码然后再去那数据
