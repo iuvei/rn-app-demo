@@ -26,7 +26,7 @@ export default class GamesScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <Tabs tabs={tabs}>
+        <Tabs tabs={tabs} tabBarUnderlineStyle={{backgroundColor: 'orange'}} tabBarBackgroundColor={'#0066ba'} tabBarActiveTextColor={'orange'} tabBarInactiveTextColor={'#eff5fb'}>
           <LotteryHall></LotteryHall>
           <RealPeople></RealPeople>
           <Slot></Slot>
@@ -40,7 +40,6 @@ export default class GamesScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
     backgroundColor: '#fff'
   }
 })
