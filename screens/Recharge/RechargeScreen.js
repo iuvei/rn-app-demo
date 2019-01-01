@@ -1,12 +1,17 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import {ScrollView, StyleSheet, View, Text} from 'react-native'
-import { Accordion, Drawer, Provider, DatePicker, List, Picker, Button, WhiteSpace, Tabs } from '@ant-design/react-native';
+import { Accordion, Drawer, Provider, DatePicker, List, Picker, Button, WhiteSpace, Tabs, Radio } from '@ant-design/react-native';
 import {getRechargeChannels} from '../../api/member'
 import {isObject} from 'lodash'
 const data = require('./data.json')
 import {MyIconFont} from '../../components/MyIconFont'
+import {RechargeChannelIconMap} from '../../constants/glyphMapHex'
+import {setActiveAccount} from '../../actions/common'
 
-export default class RechargeScreen extends React.Component {
+const RadioItem = Radio.RadioItem;
+
+class RechargeScreen extends React.Component {
   static navigationOptions = {
     title: 'Recharge',
     header: null
@@ -19,6 +24,7 @@ export default class RechargeScreen extends React.Component {
       activeSections: [0],
       recharge: {},
       channelRealObj: {},
+      activeAccount: {}
     };
     this.onOpenChange = isOpen => {
       /* tslint:disable: no-console */
@@ -28,9 +34,9 @@ export default class RechargeScreen extends React.Component {
       this.setState({ activeSections });
     };
     getRechargeChannels().then(res => {
-      console.log('recharge res', res)
       if (res.code === 0) {
         let recharge = res.data.recharge
+        console.log('recharge', recharge)
         // 人民币渠道集合
         let channelRealObj = {}
         Object.keys(recharge).forEach((keyTitle) => {
@@ -40,6 +46,12 @@ export default class RechargeScreen extends React.Component {
                 let channelReal = ''
                 for (channelReal in recharge[keyTitle][infomap]) {
                   if (recharge[keyTitle][infomap].hasOwnProperty(channelReal)) {
+                    for (let i = 0; i < recharge[keyTitle][infomap][channelReal].length; i++) {
+                      if (Object.keys(this.props.activeAccount).length === 0 && i === 0) {
+                        this.props.setActiveAccount(recharge[keyTitle][infomap][channelReal][i]);
+                      }
+                      recharge[keyTitle][infomap][channelReal][i]['local_id'] =  channelReal + '_' + i + '_' + new Date().getTime()
+                    }
                     channelRealObj[channelReal] = recharge[keyTitle][infomap][channelReal]
                   }
                 }
@@ -47,6 +59,7 @@ export default class RechargeScreen extends React.Component {
             })
           }
         })
+        console.log('channelRealObj', channelRealObj)
         this.setState({
           channelRealObj: Object.assign({}, channelRealObj),
           recharge: Object.assign({}, recharge)
@@ -60,12 +73,12 @@ export default class RechargeScreen extends React.Component {
   };
 
   _renderSectionTitle = section => {
-    return <Text>111</Text>
+    return <Text></Text>
   }
 
   _renderHeader = section => {
     return (
-      <View>
+      <View style={{height: 24, paddingLeft: 20}}>
         <Text>{section.title}</Text>
       </View>
     );
@@ -78,23 +91,28 @@ export default class RechargeScreen extends React.Component {
         <List>
           {
             section.content.map((item, index) => {
-              return <List.Item
+              return <RadioItem
                 multipleLine
-                thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png"
-                key={item.payChannelAlias + index}>
+                name="rechargeChannels"
+                checked={this.props.activeAccount.local_id === item.local_id}
+                key={item.payChannelAlias + index}
+                onChange={event => {
+                  if (event.target.checked) {
+                    this.props.setActiveAccount(item);
+                  }
+                }}>
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    height: 50
+                    height: 30,
+                    paddingLeft: 50
                   }}
                 >
-                  <Text>Categories - {index}</Text>
-                  <Text>{item.bankCode}</Text>
-                  <MyIconFont name="zhongxinyinhang" size={50} color="green"/>
+                  <MyIconFont name={'icon_'+RechargeChannelIconMap[item.bankCode]} size={30}/>
                 </View>
-              </List.Item>
+              </RadioItem>
             })
           }
         </List>
@@ -104,6 +122,7 @@ export default class RechargeScreen extends React.Component {
 
   render() {
     let {channelRealObj} = this.state
+    let {activeAccount} = this.props
     const sidebar = (
       <ScrollView style={[styles.container]}>
         {
@@ -129,9 +148,10 @@ export default class RechargeScreen extends React.Component {
     ];
     const style = {
       paddingVertical: 40,
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       alignItems: 'center',
       backgroundColor: '#ddd',
+      flexDirection: 'row',
       flex: 1
     };
     return (
@@ -147,10 +167,11 @@ export default class RechargeScreen extends React.Component {
           <View style={{ flex: 1 }}>
             <Tabs tabs={tabs}>
               <View style={style}>
-                <Button onPress={() => this.drawer && this.drawer.openDrawer()}>
-                  Open drawer
-                </Button>
-                <WhiteSpace />
+                <List style={{width: '100%'}}>
+                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
+                    {activeAccount.bankCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[activeAccount.bankCode]} size={30}/> : null}
+                  </List.Item>
+                </List>
               </View>
             </Tabs>
           </View>
@@ -173,6 +194,21 @@ export default class RechargeScreen extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state, props) => {
+  let {activeAccount} = state.member
+  return {activeAccount}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setActiveAccount: (data) => {
+      dispatch(setActiveAccount(data))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RechargeScreen);
 
 const styles = StyleSheet.create({
   container: {

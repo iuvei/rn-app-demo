@@ -4,3 +4,10 @@ export const setLoginStatus = (status) => {
     payload: status
   }
 }
+
+export const setActiveAccount = (data) => {
+  return {
+    type: 'SET_ACTIVE_ACCOUNT',
+    payload: data
+  }
+}

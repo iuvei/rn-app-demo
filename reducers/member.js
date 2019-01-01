@@ -1,7 +1,8 @@
 import {handleActions} from 'redux-actions'
 
 const initialState = {
-  memberText: ''
+  memberText: '',
+  activeAccount: {}
 }
 
 const member = handleActions({
@@ -9,6 +10,12 @@ const member = handleActions({
     return {
       ...state,
       memberText: payload
+    }
+  },
+  SET_ACTIVE_ACCOUNT: (state, {payload}) => {
+    return {
+      ...state,
+      activeAccount: payload
     }
   }
 }, initialState)
