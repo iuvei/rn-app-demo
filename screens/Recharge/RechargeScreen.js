@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import {ScrollView, StyleSheet, View, Text} from 'react-native'
-import { Accordion, Drawer, Provider, DatePicker, List, Picker, Button, WhiteSpace, Tabs, Radio } from '@ant-design/react-native';
+import { Accordion, Drawer, Provider, DatePicker, List, Picker, Button, WhiteSpace, Tabs, Radio, InputItem } from '@ant-design/react-native';
 import {getRechargeChannels} from '../../api/member'
 import {isObject} from 'lodash'
 const data = require('./data.json')
@@ -28,7 +28,10 @@ class RechargeScreen extends React.Component {
       // activeAccount: {}
       virtualAccounts: [],
       activeTabIndex: 0,
-      minRechargeMoney: 50
+      minRechargeMoney: 50,
+      amount: 0,
+      orderAmount: 0,
+      rechargeFee: 0
     };
     this.onOpenChange = isOpen => {
       /* tslint:disable: no-console */
@@ -155,7 +158,7 @@ class RechargeScreen extends React.Component {
   }
 
   render() {
-    let {channelRealObj, activeTabIndex, virtualAccounts, minRechargeMoney} = this.state
+    let {channelRealObj, activeTabIndex, virtualAccounts, minRechargeMoney, orderAmount, amount, rechargeFee} = this.state
     let {activeAccount} = this.props
     const sidebar = (
       <ScrollView style={[styles.container]}>
@@ -221,13 +224,53 @@ class RechargeScreen extends React.Component {
       flex: 1
     };
     const infoDesc = (
-      <View style={{paddingLeft: 12, paddingRight: 12}}>
+      <View style={{padding: 12, backgroundColor: '#f0f0f0'}}>
         <Text style={{color: '#a4a4a4', lineHeight: 25}}>充值金额：单笔最低充值金额为 <Text style={{color: '#f15a23'}}>{minRechargeMoney}</Text> 元{activeAccount.signleLimit > 0 ? <Text>, 最高 <Text style={{color: '#f15a23'}}>{activeAccount.signleLimit}</Text> 元</Text> : null}</Text>
         {activeAccount.feeRate > 0 ? <Text style={{color: '#a4a4a4', lineHeight: 25}}>充值手续费费率 <Text style={{color: '#f15a23'}}>{ activeAccount.feeRate || 0 }%</Text></Text> : null}
         {activeAccount.dayLimit > 0 ? <Text style={{color: '#a4a4a4', lineHeight: 25}}>充值金额：单日最高 <Text style={{color: '#f15a23'}}>{ activeAccount.dayLimit }</Text> 元</Text> : null}
         <Text style={{color: '#a4a4a4', lineHeight: 25}}>充值限时：请在 <Text style={{color: '#f15a23'}}>30</Text> 分钟内完成充值</Text>
       </View>
     )
+
+    // 金额输入框
+    const inputArea = (
+      <View>
+        <List>
+          <InputItem
+            error
+            value={amount}
+            onChange={value => {
+              this.setState({
+                amount: value,
+              });
+            }}
+            placeholder="请输入充值金额"
+          >
+            充值金额
+          </InputItem>
+        </List>
+        <View style={{height: 22, backgroundColor: '#f0f0f0'}}></View>
+        <List>
+          <List.Item
+            extra={orderAmount}
+          >
+            实际到账
+          </List.Item>
+        </List>
+        <View style={{height: 22, backgroundColor: '#f0f0f0'}}></View>
+        <List>
+          <List.Item
+            extra={rechargeFee}
+          >
+            手续费
+          </List.Item>
+        </List>
+        <View style={{paddingLeft: 15, paddingTop: 30, paddingRight: 15}}>
+          <Button type="primary" loading>下一步</Button>
+        </View>
+      </View>
+    )
+
     return (
       <View style={styles.container}>
         <Header hideLeft={true}/>
@@ -248,6 +291,7 @@ class RechargeScreen extends React.Component {
                   </List.Item>
                 </List>
                 {infoDesc}
+                {inputArea}
               </View>
               <View>
                 <List style={{width: '100%'}}>
