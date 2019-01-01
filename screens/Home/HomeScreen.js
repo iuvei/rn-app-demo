@@ -61,7 +61,7 @@ class HomeScreen extends React.Component {
   }
 
   setLot() {
-    alert('正在开发中')
+    this.props.navigation.navigate('CustomizeGames')
   }
 
   _onRefresh = () => {

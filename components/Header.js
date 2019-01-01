@@ -24,6 +24,7 @@ export default class Header extends PureComponent {
      * @param bg optional 头部背景色
      * @param color optional 文字颜色
      * @param rightContent optional 右侧内容
+     * @param navigation 必传
      */
     const { hideLeft, title, bg, color, rightContent } = this.props
     return(
@@ -91,6 +92,6 @@ const styles = StyleSheet.create({
   rightContainer: {
     position: 'absolute',
     right: 10,
-    bottom: 10,
+    bottom: 5,
   }
 })

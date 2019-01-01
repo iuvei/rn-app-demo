@@ -83,7 +83,7 @@ PersonalStack.navigationOptions = {
   )
 }
 
-export default createBottomTabNavigator(
+const MainTabNavigator = createBottomTabNavigator(
   {
     HomeStack,
     GamesStack,
@@ -92,3 +92,10 @@ export default createBottomTabNavigator(
     PersonalStack
   }
 )
+
+MainTabNavigator.navigationOptions = {
+  // Hide the header from AppNavigator stack
+  header: null,
+};
+
+export default MainTabNavigator
