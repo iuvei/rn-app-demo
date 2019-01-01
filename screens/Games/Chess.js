@@ -11,27 +11,11 @@ export default class Chess extends React.Component {
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
       >
-
+        <View style={{alignItems: 'center'}}>
+          <Image resizeMode= 'contain' source={require('../../assets/images/chess/jf.png')} style={{width: 400, height: 190}}></Image>
+          <Image resizeMode= 'contain' source={require('../../assets/images/chess/ky.png')} style={{width: 400, height: 190}}></Image>
+        </View>
       </ScrollView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  card: {
-    height: 120,
-    width: '100%',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
-  title: {
-    fontSize: 20,
-    color: 'white'
-  },
-  desc: {
-    fontSize: 14,
-    color: 'white'
-  }
-})

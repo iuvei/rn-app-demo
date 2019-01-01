@@ -29,9 +29,8 @@ export default class GamesScreen extends React.Component {
         <Tabs tabs={tabs}>
           <LotteryHall></LotteryHall>
           <RealPeople></RealPeople>
-          <View style={style}>
-            <Text>Content of Third Tab</Text>
-          </View>
+          <Slot></Slot>
+          <Chess></Chess>
         </Tabs>
       </View>
     )
