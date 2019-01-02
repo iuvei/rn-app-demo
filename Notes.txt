@@ -11,6 +11,8 @@ ios_distribution.cer
 com.ziyunprivate.goleteam
 
 
+报表组件：
+1.刷新重新载入
 
 
 
