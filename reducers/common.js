@@ -1,7 +1,6 @@
 import { handleActions } from 'redux-actions'
-import { AsyncStorage } from 'react-native'
 
-var lotteries = [
+const lotteries = [
   {
     categoryName: '时时彩',
     index: 1,
@@ -25,51 +24,6 @@ var lotteries = [
   {categoryName: '快乐十分', index: 7, realCategory: 'kl10', originLot: [], gpLot: []},
   {categoryName: '低频彩', index: 8, realCategory: 'dpc', originLot: [], gpLot: []}
 ]
-const usaltmp = [
-  {
-    isOuter: 0,
-    lotterCode: 'cqssc',
-    lotterName: '重庆时时彩',
-    realCategory: 'ssc',
-    status: 0
-  }, {
-    isOuter: 0,
-    lotterCode: 'gftxffc',
-    lotterName: '腾讯分分彩',
-    realCategory: 'ssc',
-    status: 0
-  }, {
-    isOuter: 0,
-    lotterCode: 'sdsyxw',
-    lotterName: '山东11选5',
-    realCategory: 'syx5',
-    status: 0
-  }, {
-    isOuter: 0,
-    lotterCode: 'bjpks',
-    lotterName: '北京PK拾',
-    realCategory: 'pk10',
-    status: 0
-  }, {
-    isOuter: 0,
-    lotterCode: 'bjklb',
-    lotterName: '北京快乐8',
-    realCategory: 'kl8',
-    status: 0
-  }, {
-    isOuter: 0,
-    lotterCode: 'xdlks',
-    lotterName: '新德里快3',
-    realCategory: 'k3',
-    status: 0
-  }, {
-    isOuter: 0,
-    lotterCode: 'jzdklb',
-    lotterName: '济州岛快乐8',
-    realCategory: 'kl8',
-    status: 0
-  }
-]
 const sortArray = arr => {
   if (arr.length === 0) {
     return arr
@@ -79,61 +33,51 @@ const sortArray = arr => {
   })
   return rest
 }
-const setSysLot = async data => {
-  let l = []
-  let wpl = []
-  let usal = []
-  let jarr = []
-  let usa = await AsyncStorage.getItem('usualLotLocal') || []
-  for (var g = 0; g < jarr.length; g++) {
-    jarr[g].status = 1
-  }
-
-  data.filter(d => {
-    if (d.isOuter) {
-      d.lotterList.filter(i => {
-        d.usableList = d.usableList || []
-        if (i.status !== 2) {
-          d.usableList.push(i)
-        }
-      })
-      if (d.usableList.length) {
-        wpl.push(d)
-      }
-    } else {
-      d.lotterList.forEach(i => {
-        d.usableList = d.usableList || []
-        if (i.status !== 2) {
-          d.usableList.push(i)
-          for (let h = 0; h < usaltmp.length; h++) {
-            if (i.lotterCode === usaltmp[h].lotterCode && i.status === 0) {
-              usal.push(i)
-            }
-          }
-          for (var j = 0; j < jarr.length; j++) {
-            if (i.lotterCode === jarr[j].lotterCode) {
-              jarr[j].status = i.status
-            }
-          }
-        }
-      })
-      usa = usal.concat(jarr)
-      if (d.usableList.length) {
-        l.push(d)
-      }
-    }
-  })
-  return {l, wpl, usa}
-}
 
 const initialState = {
   isLogin: false,
   count: 1,
-  sysLottery: {},
-  syswpLottery: {},
   sysSortLottery: [],
   syswpSortLottery: [],
-  usualLottery: [],
+  usualLottery: [
+    {
+      isOuter: 0,
+      lotterCode: 'cqssc',
+      lotterName: '重庆时时彩',
+      realCategory: 'ssc',
+      status: 0
+    }, {
+      isOuter: 0,
+      lotterCode: 'sdsyxw',
+      lotterName: '山东11选5',
+      realCategory: 'syx5',
+      status: 0
+    }, {
+      isOuter: 0,
+      lotterCode: 'bjpks',
+      lotterName: '北京PK拾',
+      realCategory: 'pk10',
+      status: 0
+    }, {
+      isOuter: 0,
+      lotterCode: 'bjklb',
+      lotterName: '北京快乐8',
+      realCategory: 'kl8',
+      status: 0
+    }, {
+      isOuter: 0,
+      lotterCode: 'xdlks',
+      lotterName: '新德里快3',
+      realCategory: 'k3',
+      status: 0
+    }, {
+      isOuter: 0,
+      lotterCode: 'jzdklb',
+      lotterName: '济州岛快乐8',
+      realCategory: 'kl8',
+      status: 0
+    }
+  ],
   loginInfo: {}
 }
 
@@ -154,7 +98,6 @@ const common = handleActions({
   SET_CUSTOMIZE_LOTTERY: (state, {payload}) => {
     var ll = JSON.parse(JSON.stringify(lotteries))
     var wpll = JSON.parse(JSON.stringify(lotteries))
-    var data = JSON.parse(JSON.stringify(payload))
     payload.filter(d => {
       if (d.isOuter) {
         d.lotterList.filter(i => {
@@ -204,14 +147,22 @@ const common = handleActions({
         })
       }
     })
-    let {l, wpl, usa} = setSysLot(data)
     return {
       ...state,
-      sysLottery: l,
-      syswpLottery: wpl,
-      usualLottery: usa,
       sysSortLottery: sortArray(ll),
       syswpSortLottery: sortArray(wpll)
+    }
+  },
+  SET_ACTIVE_USUAL_LOT: (state, {payload}) => {
+    return {
+      ...state,
+      usualLottery: payload,
+    }
+  },
+  SET_USER_REBATE: (state, {payload}) => {
+    return {
+      ...state,
+      rebateInfo: payload
     }
   }
 }, initialState)

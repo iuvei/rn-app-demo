@@ -1,7 +1,6 @@
 import axios from 'axios'
 // import {NoticeTips} from 'util/pop-tool'
 const {prependUrl, platformKey} = require('./../api.config')
-console.log('prependUrl', prependUrl)
 // axios 配置
 axios.defaults.timeout = 8000
 axios.defaults.retry = 2

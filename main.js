@@ -7,8 +7,8 @@ import {
 import {AppLoading, Asset, Font, Icon} from 'expo'
 import {fetch} from './services/HttpService'
 import {connect} from 'react-redux'
-import {setLoginStatus} from './actions/common'
-import {getLoginUser} from './api/basic'
+import {setLoginStatus, setUserRebate, setLoginInfo} from './actions/common'
+import {getLoginUser, getUserRebateInfo} from './api/basic'
 
 // 如果非登陆状态，则跳到首页去
 class Main extends React.Component {
@@ -86,12 +86,22 @@ class Main extends React.Component {
       ),
       getLoginUser().then(res => {
         console.log('getUserStatus finished', res)
-        this.props.setLoginStatus(res.code === 0)
-        if (res.code !== 0) {
+        if (res.code === 0) {
+          this.props.setLoginStatus(res.code === 0)
+          this.props.setLoginInfo(res.data.acc.user)
           // this.props.navigation.navigate('Login')
         }
       })
     ])
+  }
+
+  // 可以延迟加载的资源
+  _loadResourcesAsyncLater = async () => {
+    let {loginInfo} = this.props
+    let rebateInfo = await getUserRebateInfo({userId: loginInfo.userId})
+    if (rebateInfo.code === 0) {
+      this.props.setUserRebate(rebateInfo.data)
+    }
   }
 
   _testReturnPromise = async () => {
@@ -107,6 +117,7 @@ class Main extends React.Component {
   _handleFinishLoading = () => {
     console.log('loading finished')
     this.setState({isLoadingComplete: true})
+    this._loadResourcesAsyncLater()
     Expo.SplashScreen.hide()
   }
 }
@@ -134,6 +145,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setLoginStatus: (text) => {
       dispatch(setLoginStatus(text))
+    },
+    setLoginInfo: (text) => {
+      dispatch(setLoginInfo(text))
+    },
+    setUserRebate: (data) => {
+      dispatch(setUserRebate(data))
     }
   }
 }
