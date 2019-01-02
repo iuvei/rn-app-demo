@@ -6,10 +6,14 @@ import LoginNavigator from './LoginNavigator'
 import BetNavigator from './BetNavigator'
 import ScrollNavigator from './ScrollNavigator'
 import AddCustomizeGamesScreen from './../screens/AddCustomizeGames/AddCustomizeGames'
+import RechargeSuccess from '../screens/Recharge/RechargeSuccess'
 
 const MainTabs = createStackNavigator({
   Main: MainTabNavigator,
   CustomizeGames: AddCustomizeGamesScreen,
+  RechargeSuccess: createStackNavigator({RechargeSuccess: RechargeSuccess})
+}, {
+  headerMode: 'none'
 })
 
 export default createSwitchNavigator(
