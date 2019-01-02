@@ -206,3 +206,12 @@ export const getAppdownload = () => {
     type: 'get'
   })
 }
+
+// 获取用户返点返水信息
+export const getUserRebateInfo = (data) => {
+  return fetch({
+    api: '/user/getUserRebackInfo',
+    type: 'get',
+    params: data
+  })
+}

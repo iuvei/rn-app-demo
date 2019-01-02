@@ -1,21 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import {ScrollView, StyleSheet, View, Text} from 'react-native'
+import {ScrollView, StyleSheet, View, Text, ToastAndroid, Platform} from 'react-native'
+import {Container, Toast} from 'native-base'
 import { Accordion, Drawer, Provider, DatePicker, List, Picker, Button, WhiteSpace, Tabs, Radio, InputItem } from '@ant-design/react-native';
-import {getRechargeChannels} from '../../api/member'
+import {getRechargeChannels, commitRecharge} from '../../api/member'
 import {isObject} from 'lodash'
-const data = require('./data.json')
 import {MyIconFont} from '../../components/MyIconFont'
 import {RechargeChannelIconMap} from '../../constants/glyphMapHex'
 import {setActiveAccount} from '../../actions/common'
 import Header from '../../components/Header'
+import {platformKey, prependUrl} from '../../api.config'
 
 const RadioItem = Radio.RadioItem;
 
 class RechargeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Recharge',
-    header: null
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      header: <Header
+        navigation={navigation}
+        hideLeft={true}/>
+    }
   }
 
   constructor(props) {
@@ -29,10 +33,13 @@ class RechargeScreen extends React.Component {
       virtualAccounts: [],
       activeTabIndex: 0,
       minRechargeMoney: 50,
-      amount: '0',
+      amount: '',
       orderAmount: '0',
       rechargeFee: '0',
-      isLoading: false
+      isLoading: false,
+      returnUrl: 'https://www.baidu.com',
+      channelType: Platform.OS,
+      isQuick: 'N'
     };
     getRechargeChannels().then(res => {
       if (res.code === 0) {
@@ -86,75 +93,98 @@ class RechargeScreen extends React.Component {
     })
   }
 
+  componentWillUnmount() {
+  }
+
   onOpenChange = isOpen => {
     /* tslint:disable: no-console */
-    console.log('是否打开了 Drawer', isOpen.toString());
+    // console.log('是否打开了 Drawer', isOpen.toString());
   };
 
   onAccordionChange = activeSections => {
     this.setState({ activeSections });
   };
   
-    /**
-     * 提交充值
-     */
-    submitFunc = () => {
-      let {amount, orderAmount, rechargeFee, minRechargeMoney, isLoading} = this.state
-      let {activeAccount} = this.props
-      // if (!this.checkBindPay()) return
-      let pattern = /^(([1-9]\d*)(\.\d{1,2})?)$|(0\.0?([1-9]\d?))$/
-      let msg = '请输入正确的充值金额，最多两位小数!'
-      if (this.activeAccount.isFloat) {
-        pattern = /^(([1-9]\d*)(\.\d[1-9]))$|(0\.\d[1-9])$/
-        msg = '请输入正确的充值金额，必须是两位小数，且末尾不能是0!'
-      }
-      if (!pattern.test(this.formData.amount)) {
-        Toast.fail(msg)
-      } else {
-        if (this.formData.amount < this.minRechargeMoney) {
-          Toast.fail(`最小充值 ${this.minRechargeMoney} 元`)
-          return
-        }
-        console.log(this.formData)
-        this.isLoading = true
-        this.formData = Object.assign(this.formData, {
-          bankCode: this.activeAccount.bankCode || '',
-          accountId: this.activeAccount.accountNumber || '',
-          payChannelAlias: this.activeAccount.payChannelAlias,
-          coinCode: this.activeAccount.coinCode || '',
-          payChannelCode: this.activeAccount.payChannelCode
-        })
-        let {bankCode, channelType, isQuick, orderAmount, payChannelAlias, payChannelCode, rechargeFee, returnUrl, customerIp, amount, coinCode} = this.formData
-        commitRecharge({bankCode, channelType, isQuick, orderAmount, payChannelAlias, payChannelCode, rechargeFee, returnUrl, customerIp, amount, coinCode}).then((res) => {
-          if (res.code === ERR_OK) {
-            this.isLoading = false
-            let tmprecinfo = Object.assign({}, res.data, {amount: this.formData.amount})
-            this.$store.commit('SET_REC_INFO', tmprecinfo)
-            this.formData.amount = ''
-            if (res.data.submitType === 'url') {
-              this.goThird(tmprecinfo.url + '?' + tmprecinfo.params)
-              return
-            }
-            if (res.data.submitType === 'html') {
-              router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
-              return
-            }
-            this.splitParams(res.data.params || '')
-            this.qrCodeSrc = '/qm/capital/capitalBase/queryQrCode?platformKey=' + platformKey + '&payChannelCode=' + this.activeAccount.payChannelCode + '&bankCode=' + this.activeAccount.bankCode + '&time=' + new Date().getTime()
-            this.$store.commit('SET_RECHARGE_QRCODE', this.qrCodeSrc)
-            router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
-          } else {
-            if (res.message.indexOf('}') !== -1) {
-              Toast.fail(JSON.parse(res.message).Message || '充值服务异常')
-            } else {
-              Toast.fail(res.message || '充值服务异常')
-            }
-            this.formData.amount = ''
-            this.isLoading = false
-          }
-        })
-      }
+  /**
+   * 提交充值
+   */
+  submitFunc = () => {
+    let {amount, orderAmount, rechargeFee, minRechargeMoney, isLoading, returnUrl, channelType, isQuick} = this.state
+    let {activeAccount} = this.props
+    // if (!this.checkBindPay()) return
+    let pattern = /^(([1-9]\d*)(\.\d{1,2})?)$|(0\.0?([1-9]\d?))$/
+    let msg = '请输入正确的充值金额，最多两位小数!'
+    if (activeAccount.isFloat) {
+      pattern = /^(([1-9]\d*)(\.\d[1-9]))$|(0\.\d[1-9])$/
+      msg = '请输入正确的充值金额，必须是两位小数，且末尾不能是0!'
     }
+    if (!pattern.test(amount)) {
+      // Toast.fail(msg)
+      // Toast.success('Load success !!!', 1);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(msg, ToastAndroid.SHORT);
+      }
+      // Toast.show({
+      //   text: "Wrong password!",
+      //   type: "warning"
+      // })
+    } else {
+      if (amount < minRechargeMoney) {
+        // Toast.fail(`最小充值 ${minRechargeMoney} 元`)
+        if (Platform.OS === 'android') {
+          ToastAndroid.show(`最小充值 ${minRechargeMoney} 元`, ToastAndroid.SHORT);
+        }
+        return
+      }
+      this.setState({
+        isLoading: true
+      })
+      let {bankCode, payChannelAlias, payChannelCode, coinCode} = activeAccount
+      commitRecharge({bankCode, channelType, isQuick, orderAmount, payChannelAlias, payChannelCode, rechargeFee, returnUrl, amount, coinCode}).then((res) => {
+        console.log('recharge res', res)
+        if (res.code === 0) {
+          this.setState({
+            isLoading: false
+          })
+          let tmprecinfo = Object.assign({}, res.data, {amount: amount})
+          // this.$store.commit('SET_REC_INFO', tmprecinfo)
+          this.setState({
+            amount: ''
+          })
+          // if (res.data.submitType === 'url') {
+          //   this.goThird(tmprecinfo.url + '?' + tmprecinfo.params)
+          //   return
+          // }
+          if (res.data.submitType === 'html') {
+            // router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
+            this.props.navigation.navigate('RechargeSuccess', {recinfo: tmprecinfo, bankCode: activeAccount.bankCode})
+            return
+          }
+          // this.splitParams(res.data.params || '')
+          let qrCodeSrc = prependUrl + '/capital/capitalBase/queryQrCode?platformKey=' + platformKey + '&payChannelCode=' + activeAccount.payChannelCode + '&bankCode=' + activeAccount.bankCode + '&time=' + new Date().getTime()
+          // this.$store.commit('SET_RECHARGE_QRCODE', this.qrCodeSrc)
+          // router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
+          this.props.navigation.navigate('RechargeSuccess', {recinfo: tmprecinfo, qrCodeSrc: qrCodeSrc, bankCode: activeAccount.bankCode})
+        } else {
+          if (res.message.indexOf('}') !== -1) {
+            if (Platform.OS === 'android') {
+              ToastAndroid.show(JSON.parse(res.message).Message || '充值服务异常', ToastAndroid.SHORT);
+            }
+            // Toast.fail(JSON.parse(res.message).Message || '充值服务异常')
+          } else {
+            // Toast.fail(res.message || '充值服务异常')
+            if (Platform.OS === 'android') {
+              ToastAndroid.show(res.message || '充值服务异常', ToastAndroid.SHORT);
+            }
+          }
+          this.setState({
+            amount: '',
+            isLoading: false
+          })
+        }
+      })
+    }
+  }
 
   onChange = value => {
     this.setState({ value });
@@ -173,7 +203,6 @@ class RechargeScreen extends React.Component {
   };
 
   _renderContent = section => {
-    console.log('section', section)
     return (
       <View>
         <List>
@@ -214,7 +243,6 @@ class RechargeScreen extends React.Component {
   };
 
   channelTabsChange = (tab, index) => {
-    console.log(tab, index, this.state.virtualAccounts)
     this.setState({
       activeTabIndex: index,
       minRechargeMoney: index === 0 ? 50 : 100
@@ -351,14 +379,13 @@ class RechargeScreen extends React.Component {
           </List.Item>
         </List>
         <View style={{paddingLeft: 15, paddingTop: 30, paddingRight: 15}}>
-          <Button type="primary" loading={isLoading}>下一步</Button>
+          <Button type="primary" loading={isLoading} onPress={this.submitFunc}>下一步</Button>
         </View>
       </View>
     )
 
     return (
       <View style={styles.container}>
-        <Header hideLeft={true}/>
         <Drawer
           sidebar={activeTabIndex === 0 ? sidebar : sidebarVirtual}
           position="right"
@@ -385,6 +412,7 @@ class RechargeScreen extends React.Component {
                   </List.Item>
                 </List>
                 {infoDesc}
+                {inputArea}
               </View>
             </Tabs>
           </View>
@@ -412,7 +440,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(RechargeScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#f0f0f0'
   },
   icon: {
 		color: '#000000',

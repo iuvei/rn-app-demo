@@ -366,14 +366,6 @@ export const bindContract = data => {
   })
 }
 
-// 获取用户返点返水信息
-export const getUserRebateInfo = (data) => {
-  return fetch({
-    api: '/user/getUserRebackInfo',
-    type: 'get',
-    params: data
-  })
-}
 // 普通开户
 export const addDown = ({type, formData}) => {
   return fetch({

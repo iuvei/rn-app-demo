@@ -1,11 +1,126 @@
 import React from 'react'
-import {Image, ScrollView, View, Text, StyleSheet, ImageBackground} from 'react-native'
+import {Image, ScrollView, View, Text, StyleSheet, ImageBackground, TouchableHighlight} from 'react-native'
 import {Button, Flex} from '@ant-design/react-native'
 import {Tab, Tabs, Header} from 'native-base'
+import BetHistory from "./MyselfReport/BetHistory"
 
 export default class PersonalScreen extends React.Component {
   static navigationOptions = {
     title: '个人'
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      agent: [
+        {
+          name: '代理首页',
+          path: 'AgentIndex',
+          src: require('../../assets/images/personal/tbl1.png')
+        },
+        {
+          name: '开户中心',
+          path: 'OpenCenter',
+          src: require('../../assets/images/personal/tbl2.png')
+        },
+        {
+          name: '团队报表',
+          path: 'TeamReport',
+          src: require('../../assets/images/personal/tbl3.png')
+        },
+        {
+          name: '会员管理',
+          path: 'MemberManage',
+          src: require('../../assets/images/personal/tbl4.png')
+        },
+        {
+          name: '账变记录',
+          path: 'TeamAccountHistory',
+          src: require('../../assets/images/personal/tbl5.png')
+        },
+        {
+          name: '彩种报表',
+          path: 'TeamLotteryReport',
+          src: require('../../assets/images/personal/tbl6.png')
+        },
+        {
+          name: '游戏记录',
+          path: 'TeamBetHistory',
+          src: require('../../assets/images/personal/tbl7.png')
+        },
+        {
+          name: '追号记录',
+          path: 'TeamChaseHistory',
+          src: require('../../assets/images/personal/tbl1.png')
+        },
+        {
+          name: '存取款记录',
+          path: 'TeamWithdrawHistory',
+          src: require('../../assets/images/personal/tbl2.png')
+        },
+        {
+          name: '百家乐报表',
+          path: 'TeamBaccaratReport',
+          src: require('../../assets/images/personal/tbl3.png')
+        }
+      ],
+      order: [
+        {
+          name: '游戏记录',
+          path: 'BetHistory',
+          src: require('../../assets/images/personal/tbl1.png')
+        },
+        {
+          name: '追号记录',
+          path: 'ChaseHistory',
+          src: require('../../assets/images/personal/tbl2.png')
+        },
+        {
+          name: '个人彩票报表',
+          path: 'LotteryReport',
+          src: require('../../assets/images/personal/tbl3.png')
+        },
+        {
+          name: '存取款记录',
+          path: 'WithdrawHistory',
+          src: require('../../assets/images/personal/tbl4.png')
+        },
+        {
+          name: '个人账变记录',
+          path: 'AccountChangeHistory',
+          src: require('../../assets/images/personal/tbl5.png')
+        },
+        {
+          name: '返点记录',
+          path: 'RebateHistory',
+          src: require('../../assets/images/personal/tbl6.png')
+        },
+        {
+          name: '百家乐报表',
+          path: 'BaccaratReport',
+          src: require('../../assets/images/personal/tbl7.png')
+        },
+        {
+          name: '转账报表',
+          path: 'TransferHistory',
+          src: require('../../assets/images/personal/tbl1.png')
+        },
+        {
+          name: '百家乐转账',
+          path: 'BaccaratTransfer',
+          src: require('../../assets/images/personal/tbl2.png')
+        },
+        {
+          name: '活动记录',
+          path: 'ActivityHistory',
+          src: require('../../assets/images/personal/tbl3.png')
+        }
+      ]
+    }
+  }
+
+  changeRoute = (path) => {
+    this.props.navigation.navigate(path)
   }
 
   render () {
@@ -31,90 +146,7 @@ export default class PersonalScreen extends React.Component {
         src: require('../../assets/images/personal/icon5.png')
       }
     ]
-    let agent = [
-      {
-        name: '代理首页',
-        src: require('../../assets/images/personal/tbl1.png')
-      },
-      {
-        name: '开户中心',
-        src: require('../../assets/images/personal/tbl2.png')
-      },
-      {
-        name: '团队报表',
-        src: require('../../assets/images/personal/tbl3.png')
-      },
-      {
-        name: '会员管理',
-        src: require('../../assets/images/personal/tbl4.png')
-      },
-      {
-        name: '账变记录',
-        src: require('../../assets/images/personal/tbl5.png')
-      },
-      {
-        name: '彩种报表',
-        src: require('../../assets/images/personal/tbl6.png')
-      },
-      {
-        name: '游戏记录',
-        src: require('../../assets/images/personal/tbl7.png')
-      },
-      {
-        name: '追号记录',
-        src: require('../../assets/images/personal/tbl1.png')
-      },
-      {
-        name: '存取款记录',
-        src: require('../../assets/images/personal/tbl2.png')
-      },
-      {
-        name: '百家乐报表',
-        src: require('../../assets/images/personal/tbl3.png')
-      }
-    ]
-    let order = [
-      {
-        name: '游戏记录',
-        src: require('../../assets/images/personal/tbl1.png')
-      },
-      {
-        name: '追号记录',
-        src: require('../../assets/images/personal/tbl2.png')
-      },
-      {
-        name: '个人彩票报表',
-        src: require('../../assets/images/personal/tbl3.png')
-      },
-      {
-        name: '存取款记录',
-        src: require('../../assets/images/personal/tbl4.png')
-      },
-      {
-        name: '个人账变记录',
-        src: require('../../assets/images/personal/tbl5.png')
-      },
-      {
-        name: '返点记录',
-        src: require('../../assets/images/personal/tbl6.png')
-      },
-      {
-        name: '百家乐报表',
-        src: require('../../assets/images/personal/tbl7.png')
-      },
-      {
-        name: '转账报表',
-        src: require('../../assets/images/personal/tbl1.png')
-      },
-      {
-        name: '百家乐转账报表',
-        src: require('../../assets/images/personal/tbl2.png')
-      },
-      {
-        name: '活动记录',
-        src: require('../../assets/images/personal/tbl3.png')
-      }
-    ]
+    let {agent, order} = this.state
     return (
       <View style={styles.container}>
         <ImageBackground resizeMode='cover' source={require('../../assets/images/personal/bg0.png')}
@@ -128,7 +160,8 @@ export default class PersonalScreen extends React.Component {
                 <Text>余额： 9999.99元</Text>
               </View>
               <View style={{alignItems: 'flex-end'}}>
-                <Button style={{height: 32, backgroundColor: '#0f81de', borderRadius: 15}}>
+                <Button style={{height: 32, backgroundColor: '#0f81de', borderRadius: 15}}
+                        onPress={() => this.changeRoute()}>
                   <Text style={{color: 'white', fontSize: 14}}>彩票返点:14.6</Text>
                 </Button>
                 <Text>更多返点></Text>
@@ -168,28 +201,38 @@ export default class PersonalScreen extends React.Component {
         <View style={{height: 360}}>
           <Tabs tabStyle={{color: '#0070cc'}} activeTabStyle={{backgroundColor: '#eff5fb'}}>
             <Tab heading={'订单报表'}>
-              <ScrollView style={styles.agent} contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+              <ScrollView style={styles.agent}
+                          contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
                 {
                   order.map((item, index) => {
                     return (
-                      <View key={index} style={{alignItems: 'center',width: 90, marginBottom: 10}}>
-                        <Image source={item.src} style={{width: 50, height: 50}}></Image>
-                        <Text>{item.name}</Text>
-                      </View>
+                      <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
+                        <View style={{
+                          alignItems: 'center',
+                          width: 90,
+                          marginBottom: 10,
+                        }}>
+                          <Image source={item.src} style={{width: 50, height: 50}}></Image>
+                          <Text>{item.name}</Text>
+                        </View>
+                      </TouchableHighlight>
                     )
                   })
                 }
               </ScrollView>
             </Tab>
             <Tab heading={'代理管理'}>
-              <ScrollView style={styles.agent} contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+              <ScrollView style={styles.agent}
+                          contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
                 {
                   agent.map((item, index) => {
                     return (
-                      <View key={index} style={{alignItems: 'center', width: 90, marginBottom: 10}}>
-                        <Image source={item.src} style={{width: 50, height: 50}}></Image>
-                        <Text>{item.name}</Text>
-                      </View>
+                      <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
+                        <View key={index} style={{alignItems: 'center', width: 90, marginBottom: 10}}>
+                          <Image source={item.src} style={{width: 50, height: 50}}></Image>
+                          <Text>{item.name}</Text>
+                        </View>
+                      </TouchableHighlight>
                     )
                   })
                 }
@@ -207,7 +250,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   agent: {
-    height: 200,
+    height: 180,
     padding: 10
   }
 })

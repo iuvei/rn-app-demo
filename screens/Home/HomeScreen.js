@@ -12,15 +12,48 @@ import { Carousel, NoticeBar, WhiteSpace, Flex } from '@ant-design/react-native'
 import {connect} from 'react-redux'
 import Header from './../../components/Header'
 import {
-  SetCustomizeLottery
-} from '../../actions/common'
+  setCustomizeLottery,
+  setActiveUsualLot
+} from './../../actions/common'
+import { getHotLotter } from './../../api/lottery'
 
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       refreshing: false,
+      hotLoList: [],
     }
+    this.getIconName = value => {
+        switch (value) {
+          case 'ssc':
+            return require('./../../assets/images/home/ssc_icon.png')
+            break
+          case 'syx5':
+            return require('./../../assets/images/home/syxw_icon.png')
+            break
+          case 'kl8':
+            return require('./../../assets/images/home/klc_icon.png')
+            break
+          case 'pk10':
+            return require('./../../assets/images/home/pks_icon.png')
+            break
+          case 'k3':
+            return require('./../../assets/images/home/ks_icon.png')
+            break
+          case 'kl10':
+            return require('./../../assets/images/home/kls_icon.png')
+            break
+          case 'xyc':
+            return require('./../../assets/images/home/xyc_icon.png')
+            break
+          case 'dpc':
+            return require('./../../assets/images/home/dpc_icon.png')
+            break
+          default:
+            return require('./../../assets/images/home/ssc_icon.png')
+        }
+      };
   }
 
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -43,15 +76,21 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.props.SetCustomizeLottery()
+    this.props.setActiveUsualLot({custom: 0, data: []})
+    this._initHotLottery()
     this.props.navigation.setParams({ changeTextFun: this.changeTextFun })
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.title !== this.props.title) {
+
+  }
+
+  _initHotLottery() {
+    getHotLotter().then((res) => {
       this.setState({
-        title: nextProps.title
+        hotLoList: res.data
       })
-    }
+    })
   }
 
   onHorizontalSelectedIndexChange(index) {
@@ -71,6 +110,8 @@ class HomeScreen extends React.Component {
   }
 
   render() {
+    let { usualLottery } = this.props
+    let { hotLoList } = this.state
     return (
       <View style={styles.container}>
 
@@ -109,71 +150,36 @@ class HomeScreen extends React.Component {
           infinite
           afterChange={this.onHorizontalSelectedIndexChange}
         >
-          <View style={styles.hotItem}>
-            <Flex>
-              <View>
-                <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.hotItemImg} />
-              </View>
-              <View style={styles.hotItemCenter}>
-                <Text style={styles.hotItemTitle}>重庆时时彩</Text>
-                <Text style={styles.hotItemText}>20181211006期</Text>
-              </View>
-              <View style={styles.hotItemRight}>
-                <Flex wrap="wrap">
-                  <View><Text style={styles.hotItemBall}>1</Text></View>
-                  <View><Text style={styles.hotItemBall}>2</Text></View>
-                  <View><Text style={styles.hotItemBall}>5</Text></View>
-                  <View><Text style={styles.hotItemBall}>7</Text></View>
-                  <View><Text style={styles.hotItemBall}>9</Text></View>
-                  <View><Text style={styles.hotItemBall}>1</Text></View>
-                  <View><Text style={styles.hotItemBall}>2</Text></View>
-                  <View><Text style={styles.hotItemBall}>5</Text></View>
-                  <View><Text style={styles.hotItemBall}>7</Text></View>
-                  <View><Text style={styles.hotItemBall}>9</Text></View>
-                </Flex>
-              </View>
-            </Flex>
-          </View>
-          <View style={styles.hotItem}>
-            <Flex>
-              <View>
-                <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.hotItemImg} />
-              </View>
-              <View style={styles.hotItemCenter}>
-                <Text style={styles.hotItemTitle}>重庆时时彩</Text>
-                <Text style={styles.hotItemText}>20181211006期</Text>
-              </View>
-              <View style={styles.hotItemRight}>
-                <Flex wrap="wrap">
-                  <View><Text style={styles.hotItemBall}>1</Text></View>
-                  <View><Text style={styles.hotItemBall}>2</Text></View>
-                  <View><Text style={styles.hotItemBall}>5</Text></View>
-                  <View><Text style={styles.hotItemBall}>7</Text></View>
-                  <View><Text style={styles.hotItemBall}>9</Text></View>
-                </Flex>
-              </View>
-            </Flex>
-          </View>
-          <View style={styles.hotItem}>
-            <Flex>
-              <View>
-                <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'contain'} style={styles.hotItemImg} />
-              </View>
-              <View style={styles.hotItemCenter}>
-                <Text style={styles.hotItemTitle}>重庆时时彩</Text>
-                <Text style={styles.hotItemText}>20181211006期</Text>
-              </View>
-              <View style={styles.hotItemRight}>
-                <Flex wrap="wrap">
-                  <View><Text style={styles.hotItemBall}>1</Text></View>
-                  <View><Text style={styles.hotItemBall}>2</Text></View>
-                  <View><Text style={styles.hotItemBall}>5</Text></View>
-                  <View><Text style={styles.hotItemBall}>7</Text></View>
-                  <View><Text style={styles.hotItemBall}>9</Text></View>
-                </Flex>
-              </View>
-            </Flex>
-          </View>
+          {
+            hotLoList.map((item, index) =>{
+              let codeList = item.openCode.split(',')
+              return (
+                <View style={styles.hotItem} key={index}>
+                  <Flex>
+                    <View>
+                      <Image source={this.getIconName(item.categoryCode)} resizeMode={'contain'} style={styles.hotItemImg} />
+                    </View>
+                    <View style={styles.hotItemCenter}>
+                      <Text style={styles.hotItemTitle}>{item.lotterName}</Text>
+                      <Text style={styles.hotItemText}>{item.openIssue}期</Text>
+                    </View>
+                    <View style={styles.hotItemRight}>
+                      <Flex wrap="wrap">
+                        {
+                          codeList.map((v, i) =>
+                            codeList.length < 6 ?
+                              <View key={i}><Text style={styles.hotItemBall}>{v}</Text></View>
+                            : codeList.length < 11 ?
+                              <View key={i}><Text style={styles.hotItemMidBall}>{v}</Text></View>
+                            : <View key={i}><Text style={styles.hotItemSmallBall}>{v}</Text></View>)
+                        }
+                      </Flex>
+                    </View>
+                  </Flex>
+                </View>
+              )}
+            )
+          }
         </Carousel>
 
         <WhiteSpace size="sm" />
@@ -194,83 +200,20 @@ class HomeScreen extends React.Component {
               />
             }>
             <Flex wrap="wrap">
-              <View style={styles.favoriteItem}>
-                <Flex>
-                  <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
-                  </View>
-                  <View style={styles.favoriteItemCenter}>
-                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
-                    <Text style={styles.favoriteItemText}>100万派送中</Text>
-                  </View>
-                </Flex>
-              </View>
-              <View style={styles.favoriteItem}>
-                <Flex>
-                  <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
-                  </View>
-                  <View style={styles.favoriteItemCenter}>
-                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
-                    <Text style={styles.favoriteItemText}>100万派送中</Text>
-                  </View>
-                </Flex>
-              </View>
-              <View style={styles.favoriteItem}>
-                <Flex>
-                  <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
-                  </View>
-                  <View style={styles.favoriteItemCenter}>
-                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
-                    <Text style={styles.favoriteItemText}>100万派送中</Text>
-                  </View>
-                </Flex>
-              </View>
-              <View style={styles.favoriteItem}>
-                <Flex>
-                  <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
-                  </View>
-                  <View style={styles.favoriteItemCenter}>
-                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
-                    <Text style={styles.favoriteItemText}>100万派送中</Text>
-                  </View>
-                </Flex>
-              </View>
-              <View style={styles.favoriteItem}>
-                <Flex>
-                  <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
-                  </View>
-                  <View style={styles.favoriteItemCenter}>
-                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
-                    <Text style={styles.favoriteItemText}>100万派送中</Text>
-                  </View>
-                </Flex>
-              </View>
-              <View style={styles.favoriteItem}>
-                <Flex>
-                  <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
-                  </View>
-                  <View style={styles.favoriteItemCenter}>
-                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
-                    <Text style={styles.favoriteItemText}>100万派送中</Text>
-                  </View>
-                </Flex>
-              </View>
-              <View style={styles.favoriteItem}>
-                <Flex>
-                  <View>
-                    <Image source={require('./../../assets/images/home/ssc_icon.png')} resizeMode={'cover'} style={styles.favoriteItemImg} />
-                  </View>
-                  <View style={styles.favoriteItemCenter}>
-                    <Text style={styles.favoriteItemTitle}>重庆时时彩</Text>
-                    <Text style={styles.favoriteItemText}>100万派送中</Text>
-                  </View>
-                </Flex>
-              </View>
+              {
+                usualLottery.map((item, index) =>
+                  <View style={styles.favoriteItem} key={index}>
+                    <Flex onPress={() => alert(item.lotterCode)}>
+                      <View>
+                        <Image source={this.getIconName(item.realCategory)} resizeMode={'cover'} style={styles.favoriteItemImg} />
+                      </View>
+                      <View style={styles.favoriteItemCenter}>
+                        <Text style={styles.favoriteItemTitle}>{item.lotterName}</Text>
+                        <Text style={styles.favoriteItemText}>100万派送中</Text>
+                      </View>
+                    </Flex>
+                  </View>)
+              }
             </Flex>
           </ScrollView>
         </View>
@@ -352,6 +295,30 @@ const styles = StyleSheet.create({
     marginBottom: 3,
     backgroundColor: '#097bd9'
   },
+  hotItemSmallBall: {
+    width: 14,
+    height: 14,
+    lineHeight: 14,
+    fontSize: 10,
+    textAlign: 'center',
+    borderRadius: 7,
+    color: 'white',
+    marginRight: 3,
+    marginBottom: 3,
+    backgroundColor: '#097bd9'
+  },
+  hotItemMidBall: {
+    width: 18,
+    height: 18,
+    lineHeight: 18,
+    fontSize: 12,
+    textAlign: 'center',
+    borderRadius: 9,
+    color: 'white',
+    marginRight: 3,
+    marginBottom: 3,
+    backgroundColor: '#097bd9'
+  },
   carouselImg: {
     width: '100%'
   },
@@ -418,20 +385,19 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  let {count, btnText} = state.example
+  let { usualLottery } = state.common
   return ({
-    count,
-    btnText
+    usualLottery
   })
 }
 
-// const mapDispatchToProps = {
-//   changeText: changeBtnText
-// }
 const mapDispatchToProps = (dispatch) => {
   return {
-    SetCustomizeLottery: (text) => {
-      dispatch(SetCustomizeLottery(text))
+    SetCustomizeLottery: () => {
+      dispatch(setCustomizeLottery())
+    },
+    setActiveUsualLot: (data) => {
+      dispatch(setActiveUsualLot(data))
     }
   }
 }
