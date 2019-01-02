@@ -4,9 +4,6 @@ import { Text, Image, ScrollView, View, WebView } from 'react-native';
 import { List, WhiteSpace } from '@ant-design/react-native';
 import { Card, Button, Icon, Left, Body, Right, CardItem } from 'native-base'
 
-function htmlFormSubmit() {
-  'document.getElementById("AForm").submit()'
-}
 export default class RechargeSuccess extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
@@ -28,36 +25,14 @@ export default class RechargeSuccess extends React.Component {
     let {accountName, amount, bankCard, orderAmount, postScript, submitType, url, params, qrCode} = recinfo
     let isQrCode = (bankCode === 'WECHAT_QR' || bankCode === 'ALIPAY_QR' || bankCode === 'WXPAY_QR') && qrCodeSrc
 
-    if (submitType === 'html') {
-      setTimeout(function() {
-        if (this._webview) {
-          this._webview.injectJavaScript('document.getElementById("AForm").submit()')
-        }
-      }, 2000)
-      return (
-        // <WebView
-        //   ref={c => this._webview = c}
-        //   originWhitelist={['*']}
-        //   source={{ html: '<body onload="document.getElementById("AForm").submit()"><form id="AForm" target="_blank" action="http://www.w3school.com.cn/i/eg_smile.gif" method="get">'+
-        //   '名：<input type="text" name="firstname" size="20"><br />' +
-        //   '姓：<input type="text" name="lastname" size="20"><br />' +
-        //   '<input type="button" onclick="document.getElementById("AForm").submit()" value="提交"></input></form><script>window.onload=function(){document.getElementById("AForm").submit()}</script></body>' }}
-        //   javaScriptEnabled={true}
-        //   onShouldStartLoadWithRequest={true}
-        // />
-        <WebView
-          source={{uri: 'http://www.w3school.com.cn/tiy/t.asp?f=hdom_form_submit'}}
-          style={{marginTop: 20}}
-        />
-      );
-    }
-
     if (submitType === 'url') {
       return (
-        <WebView
-          source={{uri: url + '?' + params}}
-          style={{marginTop: 20}}
-        />
+        <View style={{flex: 1}}>
+          <WebView
+            source={{uri: url + '?' + params}}
+            style={{marginTop: 20}}
+          />
+        </View>
       )
     }
 

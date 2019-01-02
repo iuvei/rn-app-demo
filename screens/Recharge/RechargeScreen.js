@@ -155,11 +155,6 @@ class RechargeScreen extends React.Component {
           //   this.goThird(tmprecinfo.url + '?' + tmprecinfo.params)
           //   return
           // }
-          if (res.data.submitType === 'html') {
-            // router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
-            this.props.navigation.navigate('RechargeSuccess', {recinfo: tmprecinfo, bankCode: activeAccount.bankCode})
-            return
-          }
           // this.splitParams(res.data.params || '')
           let qrCodeSrc = prependUrl + '/capital/capitalBase/queryQrCode?platformKey=' + platformKey + '&payChannelCode=' + activeAccount.payChannelCode + '&bankCode=' + activeAccount.bankCode + '&time=' + new Date().getTime()
           // this.$store.commit('SET_RECHARGE_QRCODE', this.qrCodeSrc)
