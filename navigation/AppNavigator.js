@@ -17,8 +17,6 @@ const MainTabs = createStackNavigator({
   ...Personal
 }, {
   headerMode: 'none'
-}, {
-
 })
 
 
