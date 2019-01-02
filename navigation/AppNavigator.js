@@ -15,8 +15,6 @@ const MainTabs = createStackNavigator({
   CustomizeGames: AddCustomizeGamesScreen,
   RechargeSuccess: createStackNavigator({RechargeSuccess: RechargeSuccess}),
   ...Personal
-}, {
-  headerMode: 'none'
 })
 
 
