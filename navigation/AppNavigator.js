@@ -5,15 +5,25 @@ import MainTabNavigator from './MainTabNavigator'
 import LoginNavigator from './LoginNavigator'
 import BetNavigator from './BetNavigator'
 import ScrollNavigator from './ScrollNavigator'
+import Personal from './PersonalNavigator'
 import AddCustomizeGamesScreen from './../screens/AddCustomizeGames/AddCustomizeGames'
 import RechargeSuccess from '../screens/Recharge/RechargeSuccess'
+import BetHistory from '../screens/Personal/MyselfReport/BetHistory'
 
 const MainTabs = createStackNavigator({
   Main: MainTabNavigator,
   CustomizeGames: AddCustomizeGamesScreen,
-  RechargeSuccess: createStackNavigator({RechargeSuccess: RechargeSuccess})
+  RechargeSuccess: createStackNavigator({RechargeSuccess: RechargeSuccess}),
+  ...Personal
 }, {
   headerMode: 'none'
+}, {
+
+})
+
+
+const betHistoryNavigator = createStackNavigator({
+  BetHistory: BetHistory
 })
 
 export default createSwitchNavigator(
@@ -24,7 +34,9 @@ export default createSwitchNavigator(
     Login: LoginNavigator,
     Bet: BetNavigator,
     Scroll: ScrollNavigator,
+    BetHistory: betHistoryNavigator
   }, {
+    // initialRouteName: 'BetHistory'
     initialRouteName: 'Login'
   }
 )

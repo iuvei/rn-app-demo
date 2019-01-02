@@ -1,6 +1,6 @@
-import { StyleSheet, Dimensions } from 'react-native'
+import {Dimensions} from 'react-native'
 
-const { width, height } = Dimensions.get('window')
+const {width, height} = Dimensions.get('window')
 
 export default {
   container: {
@@ -9,7 +9,7 @@ export default {
   header: {
     width,
     height: 80,
-    padding: 20,
+    padding: 10,
     justifyContent: 'flex-end',
     alignItems: 'center',
     borderBottomWidth: 0.5,
@@ -26,7 +26,7 @@ export default {
     flex: 0,
     borderTopWidth: 0,
     borderBottomWidth: 0,
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     marginLeft: -1,
     marginRight: -1,
     marginTop: 0,
@@ -38,16 +38,14 @@ export default {
     borderColor: 'gray',
     borderTopWidth: 0,
     borderBottomWidth: 1,
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: {width: 0, height: 0},
     marginLeft: -1,
     marginRight: -1,
     marginTop: 0,
     marginBottom: 0,
     padding: 0
   },
-  rowHeader: {
-
-  },
+  rowHeader: {},
   rowBody: {
     flex: 1,
     flexDirection: 'column',

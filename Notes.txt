@@ -1,0 +1,23 @@
+
+expo打包流程：
+账号: develop@jsbconsultantsllc.com
+密码: osMLkhE84RCkTQZAWQyN
+
+/Users/johnny/Documents/xcode/product_department_
+ios_distribution.cer
+/Users/johnny/Documents/xcode/devpushzycertificate.p12
+/Users/johnny/Documents/xcode/comziyunprivategoleteam.mobileprovision
+
+com.ziyunprivate.goleteam
+
+
+
+
+
+
+
+
+
+
+
+
