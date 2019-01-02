@@ -12,10 +12,8 @@ import { Carousel, NoticeBar, WhiteSpace, Flex } from '@ant-design/react-native'
 import {connect} from 'react-redux'
 import Header from './../../components/Header'
 import {
-  changeBtnText,
-  changeBtnTextAsync,
-  PromiseChangeBtnText
-} from '../../actions/example'
+  SetCustomizeLottery
+} from '../../actions/common'
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -44,6 +42,7 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.props.SetCustomizeLottery()
     this.props.navigation.setParams({ changeTextFun: this.changeTextFun })
   }
 
@@ -61,7 +60,7 @@ class HomeScreen extends React.Component {
   }
 
   setLot() {
-    this.props.navigation.navigate('CustomizeGames')
+    this.props.navigation.push('CustomizeGames')
   }
 
   _onRefresh = () => {
@@ -431,14 +430,8 @@ const mapStateToProps = (state) => {
 // }
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeText: (text) => {
-      dispatch(changeBtnText(text))
-    },
-    changeTextAsync: () => {
-      dispatch(changeBtnTextAsync())
-    },
-    PromiseChangeText: () => {
-      dispatch(PromiseChangeBtnText())
+    SetCustomizeLottery: (text) => {
+      dispatch(SetCustomizeLottery(text))
     }
   }
 }
