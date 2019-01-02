@@ -1,6 +1,12 @@
 import React from 'react';
 import { createIconSet } from '@expo/vector-icons';
-const glyphMap = { zhongxinyinhang: 58882 };
+import {glyphMapHex} from '../constants/glyphMapHex'
+const glyphMap = {};
+
+// 十六进制转十进制
+Object.keys(glyphMapHex).forEach(function(key) {
+  glyphMap[key] = parseInt(glyphMapHex[key], 16)
+})
 const CustomIcon = createIconSet(glyphMap, 'MyIconFont');
 
 export class MyIconFont extends React.Component {

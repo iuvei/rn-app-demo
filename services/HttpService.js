@@ -103,7 +103,6 @@ export const fetch = ({api, params, type, selfProxy, hasKey}) => {
       })
     }
     api = selfProxy ? api : prependUrl + api
-    console.log(api, params, type, selfProxy, hasKey)
     if (type !== 'post') {
       params.timeStamp = new Date().getTime()
       axios[type](api, !selfProxy ? {params} : '').then(response => {

@@ -1,4 +1,5 @@
 import {fetch} from '../services/HttpService'
+
 const {prependUrl, platformKey} = require('./../api.config')
 // 抢红包
 export const grabRedEnvelope = params => {

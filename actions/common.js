@@ -8,6 +8,13 @@ export const setLoginStatus = (status) => {
   }
 }
 
+export const setActiveAccount = (data) => {
+  return {
+    type: 'SET_ACTIVE_ACCOUNT',
+    payload: data
+  }
+}
+
 export const SetCustomizeLottery = createAction(
   'SET_CUSTOMIZE_LOTTERY',
   async () => {

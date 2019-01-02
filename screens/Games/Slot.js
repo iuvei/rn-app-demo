@@ -72,8 +72,8 @@ export default class Slot extends React.Component {
 
 const styles = StyleSheet.create({
   card: {
-    width: 190,
-    height: 190,
+    height: 180,
+    marginRight:6,
     justifyContent: 'flex-end'
   },
   footer: {

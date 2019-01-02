@@ -77,7 +77,7 @@ class Main extends React.Component {
         ...Icon.Ionicons.font,
         //   // We include SpaceMono because we use it in HomeScreen.js. Feel free
         //   // to remove this if you are not using it in your app
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')
       }),
       this._testReturnPromise(),
       // 这里回先执行二维码然后再去那数据
@@ -87,6 +87,9 @@ class Main extends React.Component {
       getLoginUser().then(res => {
         console.log('getUserStatus finished', res)
         this.props.setLoginStatus(res.code === 0)
+        if (res.code !== 0) {
+          // this.props.navigation.navigate('Login')
+        }
       })
     ])
   }
