@@ -48,6 +48,13 @@ export const setLoginStatus = (status) => {
   }
 }
 
+export const setLoginInfo = (data) => {
+  return {
+    type: 'SET_LOGIN_INFO',
+    payload: data
+  }
+}
+
 export const setActiveAccount = (data) => {
   return {
     type: 'SET_ACTIVE_ACCOUNT',
@@ -76,3 +83,10 @@ export const setCustomizeLottery = createAction(
     let res = await getSysLottery()
     return res.code === 0 ? res.data : []
   })
+
+export const setUserRebate = (data) => {
+  return {
+    type: 'SET_USER_REBATE',
+    payload: data
+  }
+}

@@ -158,6 +158,12 @@ const common = handleActions({
       ...state,
       usualLottery: payload,
     }
+  },
+  SET_USER_REBATE: (state, {payload}) => {
+    return {
+      ...state,
+      rebateInfo: payload
+    }
   }
 }, initialState)
 
