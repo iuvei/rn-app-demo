@@ -28,8 +28,6 @@ export default class RechargeSuccess extends React.Component {
     let {accountName, amount, bankCard, orderAmount, postScript, submitType, url, params, qrCode} = recinfo
     let isQrCode = (bankCode === 'WECHAT_QR' || bankCode === 'ALIPAY_QR' || bankCode === 'WXPAY_QR') && qrCodeSrc
 
-    submitType = 'html'
-
     if (submitType === 'html') {
       setTimeout(function() {
         if (this._webview) {
