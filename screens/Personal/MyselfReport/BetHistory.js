@@ -1,9 +1,12 @@
 import React from 'react'
-import {View, Text, StyleSheet} from 'react-native'
-
+import {View, Text, StyleSheet, Alert} from 'react-native'
+import ExampleScroll from '../../ExampleScroll/index'
+// List Item
+import FlatListItem from '../../../screens/ExampleScroll/itemContainer/flatListItem'
 
 const TableRow = 20
-export default class PersonalScreen extends React.Component {
+
+class BetHistory extends React.Component {
   static navigationOptions = {
     title: '游戏记录'
   }
@@ -31,10 +34,50 @@ export default class PersonalScreen extends React.Component {
     }
   }
 
+  // renderItem
+  // item, index, separators
+  renderItem = (item, index) => {
+    return (
+      <FlatListItem
+        item={item}
+        index={index}
+        onPress={(Type, Item) =>
+          this.onPressItem(Type, Item)
+        }/>
+    )
+  }
+
+  renderHeader = () => {
+
+  }
+  // 点击单元表格
+  onPressItem = (type, item) => {
+    let Row = this.BetHistory.getRows().slice()
+    // console.log(Row)
+    // if (Object.keys(Row).length) {
+    Row.filter(rows => {
+      if (rows.orderId === item.orderId) {
+        rows.ruleName = '自定义'
+      }
+    })
+    this.BetHistory.updateRows(Row, 1)
+  }
+
   render() {
+    let {api, params, KeyName} = this.state
     return (
       <View style={styles.container}>
-
+        <ExampleScroll
+          ref={ref => this.BetHistory = ref}
+          api={api}
+          KeyName={`KeyName-${KeyName}`}
+          params={params}
+          renderItem={this.renderItem}
+          beforeUpdateList={({res}, fn) => {
+            let dataList = res.data && res.data.orderInfoList ? res.data.orderInfoList : []
+            fn({dataList})
+          }}
+        />
       </View>
     )
   }
@@ -43,7 +86,14 @@ export default class PersonalScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
+    paddingTop: 0,
     backgroundColor: '#fff'
+  },
+  spa: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#8E8E8E'
   }
 })
+
+export default BetHistory

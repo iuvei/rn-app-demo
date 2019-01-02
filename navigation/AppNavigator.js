@@ -6,10 +6,15 @@ import LoginNavigator from './LoginNavigator'
 import BetNavigator from './BetNavigator'
 import ScrollNavigator from './ScrollNavigator'
 import AddCustomizeGamesScreen from './../screens/AddCustomizeGames/AddCustomizeGames'
+import BetHistory from '../screens/Personal/MyselfReport/BetHistory'
 
 const MainTabs = createStackNavigator({
   Main: MainTabNavigator,
-  CustomizeGames: AddCustomizeGamesScreen,
+  CustomizeGames: AddCustomizeGamesScreen
+})
+
+const betHistoryNavigator = createStackNavigator({
+  BetHistory: BetHistory
 })
 
 export default createSwitchNavigator(
@@ -20,7 +25,9 @@ export default createSwitchNavigator(
     Login: LoginNavigator,
     Bet: BetNavigator,
     Scroll: ScrollNavigator,
+    BetHistory: betHistoryNavigator
   }, {
+    // initialRouteName: 'BetHistory'
     initialRouteName: 'Login'
   }
 )
