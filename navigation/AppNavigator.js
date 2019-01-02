@@ -5,13 +5,18 @@ import MainTabNavigator from './MainTabNavigator'
 import LoginNavigator from './LoginNavigator'
 import BetNavigator from './BetNavigator'
 import ScrollNavigator from './ScrollNavigator'
+import Personal from './PersonalNavigator'
 import AddCustomizeGamesScreen from './../screens/AddCustomizeGames/AddCustomizeGames'
 import BetHistory from '../screens/Personal/MyselfReport/BetHistory'
 
 const MainTabs = createStackNavigator({
   Main: MainTabNavigator,
-  CustomizeGames: AddCustomizeGamesScreen
+  CustomizeGames: AddCustomizeGamesScreen,
+  ...Personal
+}, {
+
 })
+
 
 const betHistoryNavigator = createStackNavigator({
   BetHistory: BetHistory
