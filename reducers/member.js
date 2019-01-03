@@ -12,8 +12,9 @@ const initialState = {
     userBankCards: [],
     bankTime: 6
   },  // 用户银行卡列表
-  bankList: [], // 系统银行列表
   isAllowWithdraw: {sign: false, message: '', local: true}, // 是否可提现
+  userConsume: {}, // 用户消费量验证对象
+  bankList: [], // 系统银行列表
 }
 
 const member = handleActions({
@@ -59,10 +60,16 @@ const member = handleActions({
       userBalanceInfoHB: payload
     }
   },
-  SET_USER_BANKCARDS: (state, {payload}) => {
+  SET_USER_BANKINFO: (state, {payload}) => {
     return {
       ...state,
       userBankInfo: payload
+    }
+  },
+  SET_ISALLOW_WITHDRAW: (state, {payload}) => {
+    return {
+      ...state,
+      isAllowWithdraw: payload
     }
   }
 }, initialState)

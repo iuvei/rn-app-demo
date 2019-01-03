@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import {ScrollView, StyleSheet, View, Text, ToastAndroid, Platform} from 'react-native'
 import {Container, Toast} from 'native-base'
-import { Accordion, Drawer, Provider, DatePicker, List, Picker, Button, WhiteSpace, Tabs, Radio, InputItem } from '@ant-design/react-native';
+import { Accordion, Drawer, List, Button, WhiteSpace, Tabs, Radio, InputItem } from '@ant-design/react-native';
 import {getRechargeChannels, commitRecharge} from '../../api/member'
 import {isObject} from 'lodash'
 import {MyIconFont} from '../../components/MyIconFont'

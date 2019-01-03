@@ -1,23 +1,37 @@
 import { createAction } from "redux-actions"
-import { getUserBalance, getUserBankcards } from '../api/basic'
+import { getUserBalance } from '../api/basic'
 import { AsyncStorage } from 'react-native'
 
-export const AsetUserBankCards = (userId) => {
-  return createAction(
-    'SET_USER_BANKCARDS',
-    () => new Promise((resolve, reject) => {
-      getUserBankcards({userId}).then(res => {
-        if (res.code === 0) {
-          resolve(res.data)
-        } else {
-          resolve({
-            userBankCards: [],
-            bankTime: 6
-          })
-        }
-      })
-    })
-  )
+// export const AsetUserBankCards = (userId) => {
+//   return createAction(
+//     'SET_USER_BANKINFO',
+//     () => new Promise((resolve, reject) => {
+//       return getUserBankcards({userId}).then(res => {
+//         if (res.code === 0) {
+//           return resolve(res.data)
+//         } else {
+//           return resolve({
+//             userBankCards: [],
+//             bankTime: 6
+//           })
+//         }
+//       })
+//     })
+//   )
+// }
+
+export const AsetIsAllowWithdraw = (data) => {
+  return {
+    type: 'SET_ISALLOW_WITHDRAW',
+    payload: data
+  }
+}
+
+export const AsetUserBankCards = (data) => {
+  return {
+    type: 'SET_USER_BANKINFO',
+    payload: data
+  }
 }
 
 export const AgetUserBalance = (data) => {
