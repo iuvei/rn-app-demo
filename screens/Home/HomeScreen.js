@@ -23,7 +23,15 @@ class HomeScreen extends React.Component {
     super(props)
     this.state = {
       refreshing: false,
-      hotLoList: [],
+      hotLoList: [
+        {
+          categoryCode: "ssc",
+          lotterCode: "cqssc",
+          lotterName: "重庆时时彩",
+          openCode: "9,4,1,2,9",
+          openIssue: "20190103070"
+        }
+      ],
     }
     this.getIconName = value => {
         switch (value) {

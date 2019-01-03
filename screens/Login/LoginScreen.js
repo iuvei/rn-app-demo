@@ -101,7 +101,18 @@ class LoginComponent extends Component {
                 <Icon name="account-book" size="32" color="#1789e6" />
               </InputItem>
               <Flex style={{height: 38}}>
-                <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+                <Flex.Item style={{ paddingRight: 4 }}>
+                  <Text style={{textAlign: 'right', color: '#ffffff'}}>记住账号</Text>
+                </Flex.Item>
+                <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
+                  <Switch
+                      value={this.state.rememberPwd}
+                      onValueChange={this.onSwitchChange}
+                      trackColor={{true: '#05bde1'}}
+                      thumbColor={'#ffffff'}
+                    />
+                </View>
+                <Flex.Item style={{ paddingRight: 4 }}>
                   <Text style={{textAlign: 'right', color: '#ffffff'}}>记住密码</Text>
                 </Flex.Item>
                 <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
@@ -127,7 +138,7 @@ class LoginComponent extends Component {
             </View>
           </Flex.Item>
           <View style={{height: 40, width: 280, flexDirection: 'row'}}>
-            <Text style={{color: '#ffffff', flex: 1}}>在线客服</Text>
+            <Text style={{color: '#ffffff', flex: 1}} onPress={() => this.props.navigation.navigate('ThirdView')}>在线客服</Text>
             <Text style={{textAlign: 'right', color: '#ffffff', flex: 1}}>1.11版正式发布</Text>
           </View>
         </Flex>
