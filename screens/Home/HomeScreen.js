@@ -181,10 +181,10 @@ class HomeScreen extends React.Component {
                           {
                             codeList.map((v, i) =>
                               codeList.length < 6 ?
-                                <View key={i}><Text style={styles.hotItemBall}>{v}</Text></View>
+                                <View key={i} style={styles.hotItemBall}><Text style={styles.hotItemLgText}>{v}</Text></View>
                                 : codeList.length < 11 ?
-                                <View key={i}><Text style={styles.hotItemMidBall}>{v}</Text></View>
-                                : <View key={i}><Text style={styles.hotItemSmallBall}>{v}</Text></View>)
+                                <View key={i} style={styles.hotItemMidBall}><Text style={styles.hotItemMidText}>{v}</Text></View>
+                                : <View key={i} style={styles.hotItemSmallBall}><Text style={styles.hotItemSmallText}>{v}</Text></View>)
                           }
                         </Flex>
                       </View>
@@ -302,10 +302,7 @@ const styles = StyleSheet.create({
   hotItemBall: {
     width: 26,
     height: 26,
-    lineHeight: 26,
-    textAlign: 'center',
     borderRadius: 13,
-    color: 'white',
     marginRight: 3,
     marginBottom: 3,
     backgroundColor: '#097bd9'
@@ -313,11 +310,7 @@ const styles = StyleSheet.create({
   hotItemSmallBall: {
     width: 14,
     height: 14,
-    lineHeight: 14,
-    fontSize: 10,
-    textAlign: 'center',
     borderRadius: 7,
-    color: 'white',
     marginRight: 3,
     marginBottom: 3,
     backgroundColor: '#097bd9'
@@ -325,14 +318,28 @@ const styles = StyleSheet.create({
   hotItemMidBall: {
     width: 18,
     height: 18,
-    lineHeight: 18,
-    fontSize: 12,
-    textAlign: 'center',
     borderRadius: 9,
-    color: 'white',
     marginRight: 3,
     marginBottom: 3,
     backgroundColor: '#097bd9'
+  },
+  hotItemLgText: {
+    lineHeight: 26,
+    fontSize: 14,
+    textAlign: 'center',
+    color: 'white',
+  },
+  hotItemMidText: {
+    lineHeight: 18,
+    fontSize: 12,
+    textAlign: 'center',
+    color: 'white',
+  },
+  hotItemSmallText: {
+    lineHeight: 14,
+    fontSize: 10,
+    textAlign: 'center',
+    color: 'white',
   },
   carouselImg: {
     width: '100%'
