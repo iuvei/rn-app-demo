@@ -7,6 +7,8 @@ import BetNavigator from './BetNavigator'
 import ScrollNavigator from './ScrollNavigator'
 import Personal from './PersonalNavigator'
 import AddCustomizeGamesScreen from './../screens/AddCustomizeGames/AddCustomizeGames'
+import BroadcastScreen from './../screens/Home/BroadcastScreen'
+import MailboxScreen from './../screens/Home/MailboxScreen'
 import RechargeSuccess from '../screens/Recharge/RechargeSuccess'
 import Withdrawal from '../screens/Withdrawal/'
 import BetHistory from '../screens/Personal/MyselfReport/BetHistory'
@@ -14,11 +16,12 @@ import BetHistory from '../screens/Personal/MyselfReport/BetHistory'
 const MainTabs = createStackNavigator({
   Main: MainTabNavigator,
   CustomizeGames: AddCustomizeGamesScreen,
+  Broadcast: BroadcastScreen,
+  Mailbox: MailboxScreen,
   RechargeSuccess: createStackNavigator({RechargeSuccess: RechargeSuccess}),
   Withdrawal: createStackNavigator({Withdrawal: Withdrawal}),
   ...Personal
 })
-
 
 const betHistoryNavigator = createStackNavigator({
   BetHistory: BetHistory

@@ -39,46 +39,11 @@ const initialState = {
   count: 1,
   sysSortLottery: [],
   syswpSortLottery: [],
-  usualLottery: [
-    {
-      isOuter: 0,
-      lotterCode: 'cqssc',
-      lotterName: '重庆时时彩',
-      realCategory: 'ssc',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'sdsyxw',
-      lotterName: '山东11选5',
-      realCategory: 'syx5',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'bjpks',
-      lotterName: '北京PK拾',
-      realCategory: 'pk10',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'bjklb',
-      lotterName: '北京快乐8',
-      realCategory: 'kl8',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'xdlks',
-      lotterName: '新德里快3',
-      realCategory: 'k3',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'jzdklb',
-      lotterName: '济州岛快乐8',
-      realCategory: 'kl8',
-      status: 0
-    }
-  ],
-  loginInfo: {}
+  usualLottery: [],
+  systemNews: [],  // 系统公告
+  loginInfo: {},  // 用户信息
+  rebateInfo: {}, // 用户返点返水信息
+  balanceInfo: {} // 用户账户余额信息
 }
 
 // 常规处理
@@ -159,10 +124,22 @@ const common = handleActions({
       usualLottery: payload,
     }
   },
+  GET_SYSTEM_NEWS: (state, {payload}) => {
+    return {
+      ...state,
+      systemNews: payload
+    }
+  },
   SET_USER_REBATE: (state, {payload}) => {
     return {
       ...state,
       rebateInfo: payload
+    }
+  },
+  SET_USER_BALANCE: (state, {payload}) => {
+    return {
+      ...state,
+      balanceInfo: payload
     }
   }
 }, initialState)

@@ -5,10 +5,14 @@ import {
   ImageBackground, Switch
 } from 'react-native'
 import {connect} from 'react-redux'
-import {setLoginStatus} from '../../actions/common'
+import {setLoginStatus, setLoginInfo} from '../../actions/common'
 import {signIn} from '../../api/basic'
 // import { Ionicons } from '@expo/vector-icons'
 import { Button, Icon, InputItem, Flex } from '@ant-design/react-native';
+import {
+  AsetAllBalance,
+  AsetUserBankCards
+} from './../../actions/member'
 
 class LoginComponent extends Component {
   static navigationOptions = {
@@ -43,6 +47,9 @@ class LoginComponent extends Component {
     signIn(formData).then(res => {
       if (res.code === 0) {
         this.props.setLoginStatus(res.code === 0)
+        this.props.setLoginInfo(res.data)
+        this.props.AsetAllBalance(res.data.user.userId)
+        this.props.AsetUserBankCards(res.data.user.userId)
         this.props.navigation.navigate('Main')
       }
     })
@@ -159,7 +166,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setLoginStatus: status => dispatch(setLoginStatus(status))
+    setLoginStatus: status => dispatch(setLoginStatus(status)),
+    setLoginInfo: data => dispatch(setLoginInfo(data)),
+    AsetAllBalance: (data) => {
+      dispatch(AsetAllBalance(data))
+    },
+    AsetUserBankCards: data => dispatch(AsetUserBankCards(data))
   }
 }
 
