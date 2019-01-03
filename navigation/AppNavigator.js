@@ -19,7 +19,6 @@ const MainTabs = createStackNavigator({
   ...Personal
 })
 
-
 const betHistoryNavigator = createStackNavigator({
   BetHistory: BetHistory
 })

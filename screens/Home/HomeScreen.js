@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Text,
   View,
-  RefreshControl
+  RefreshControl,
+  AsyncStorage
 } from 'react-native'
 import { Carousel, NoticeBar, WhiteSpace, Flex } from '@ant-design/react-native';
 import {connect} from 'react-redux'
@@ -82,7 +83,6 @@ class HomeScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
   }
 
   _initHotLottery() {
@@ -385,9 +385,12 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  let { usualLottery } = state.common
+  let { usualLottery, loginInfo } = state.common
+  let { userBalanceInfo } = state.member
   return ({
-    usualLottery
+    usualLottery,
+    loginInfo,
+    userBalanceInfo
   })
 }
 

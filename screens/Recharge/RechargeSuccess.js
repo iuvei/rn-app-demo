@@ -19,7 +19,6 @@ export default class RechargeSuccess extends React.Component {
   }
 
   componentDidMount() {
-    console.log('nav options', this.props.navigation)
   }
 
   render() {
