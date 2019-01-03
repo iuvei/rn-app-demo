@@ -1,11 +1,29 @@
-import React from 'react'
-import {View, Text, StyleSheet, Alert} from 'react-native'
-import ExampleScroll from '../../ExampleScroll'
+import React, {PureComponent} from 'react'
+import {View, Text, StyleSheet} from 'react-native'
+import UIListView from '../../../components/UIListView'
 // List Item
-import FlatListItem from '../../../screens/ExampleScroll/itemContainer/flatListItem'
 import {Button, WingBlank} from '@ant-design/react-native'
 
 const TableRow = 20
+
+class FlatListItem extends PureComponent {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    let {item, index} = this.props
+    let {orderId, ruleName} = item
+    return (
+      <View style={{padding: 10}}>
+        <Text>序号: {index}</Text>
+        <Text>RowID: {orderId}</Text>
+        <Text note>Data: {ruleName}</Text>
+      </View>
+    )
+  }
+
+}
 
 class BetHistory extends React.Component {
   static navigationOptions = {
@@ -15,8 +33,9 @@ class BetHistory extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isShow: false,
       KeyName: 'BetHistory',
-      api: '/order/getOrderStatistics',
+      api: '/frontReport/getOrderStatistics',
       params: {
         userId: '',
         orderId: '',
@@ -50,52 +69,55 @@ class BetHistory extends React.Component {
 
   // 点击单元表格
   onPressItem = (type, item) => {
-    let Row = this.BetHistory.getRows().slice()
+    let Row = this.BetHistory.listView.getRows().slice()
     Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
-    this.BetHistory.updateDataSource(Row)
+    this.BetHistory.listView.updateDataSource(Row)
+  }
+
+  onSearch = async () => {
+    await this.setState({isShow: true}, () => {
+      this.setState({isShow: false})
+    })
   }
 
   render() {
-    let {api, params, KeyName} = this.state
-    console.log('render', params)
+    let {api, params, KeyName, isShow} = this.state
     return (
       <View style={styles.container}>
         <WingBlank>
           <Button
             type="ghost"
-            onPress={() => {
-              this.BetHistory.listView.onRefresh()
-              // this.BetHistory.listView.scrollToIndex()
-            }}
-            style={{marginTop: 4}}>刷新</Button>
+            onPress={() => this.onSearch()}
+            style={{marginTop: 4}}>查询</Button>
         </WingBlank>
-
-        <ExampleScroll
-          ref={ref => this.BetHistory = ref}
-          api={api}
-          KeyName={`KeyName-${KeyName}`}
-          params={params}
-          renderItem={this.renderItem}
-          // 第一个参数 params 第二个子组件的将要请求的第N页
-          beforeHttpGet={async ({params, page}, fn) => {
-            // 解决父级数据数据源同步问题，然后数据给到子组件本身
-            await this.setState({
-              params: Object.assign({}, params, {
-                pageNumber: page
+        {isShow ? null :
+          <UIListView
+            ref={ref => this.BetHistory = ref}
+            api={api}
+            KeyName={`KeyName-${KeyName}`}
+            params={params}
+            renderItem={this.renderItem}
+            // 第一个参数 params 第二个子组件的将要请求的第N页
+            beforeHttpGet={async ({params, page}, fn) => {
+              // 解决父级数据数据源同步问题，然后数据给到子组件本身
+              await this.setState({
+                params: Object.assign({}, params, {
+                  pageNumber: page
+                })
               })
-            })
-            let handlerParams = this.state.params
-            fn(handlerParams, true)
-          }}
-          // 返回数据空或者处理后的数据源
-          beforeUpdateList={({res}, fn) => {
-            let dataList = res.data && res.data.orderInfoList ? res.data.orderInfoList : []
-            let {pageNumber, pageSize, totalCount} = res.data
-            let NullData = Math.ceil(totalCount / pageSize) < pageNumber
-            // 或在这里增加 其他状态码的处理Alter
-            fn(NullData ? [] : {dataList})
-          }}
-        />
+              let handlerParams = this.state.params
+              fn(handlerParams, true)
+            }}
+            // 返回数据空或者处理后的数据源
+            beforeUpdateList={({res}, fn) => {
+              let dataList = res.data && res.data.orderInfoList ? res.data.orderInfoList : []
+              let {pageNumber, pageSize, totalCount} = res.data
+              let NullData = Math.ceil(totalCount / pageSize) < pageNumber
+              // 或在这里增加 其他状态码的处理Alter
+              fn(NullData ? [] : {dataList})
+            }}
+          />
+        }
       </View>
     )
   }

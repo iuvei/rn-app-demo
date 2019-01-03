@@ -10,6 +10,7 @@ const TableRow = 10
 const {width, height} = Dimensions.get('window')
 
 class ExampleScroll extends Component {
+
   static defaultProps = {
     type: 'post'
   }
@@ -26,24 +27,13 @@ class ExampleScroll extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: '123'
+      firstLoader: true
     }
-    this.setParams(this.props.params)
   }
-
-  getRows = () => this.listView.getRows()
-
-  setRows = rows => this.listView.setRows(rows)
-
-  onRefresh = () => this.listView.onRefresh()
-
-  updateRows = () => this.listView.updateRows()
-
-  setParams = params => this.params = params
 
   // 获取数据
   // page = 1, startFetch, abortFetch
-  getTableList = async (pageNumber, startFetch, abortFetch) => {
+  getTableList = async (page = 1, startFetch, abortFetch) => {
     let {params, api, type} = this.props
     try {
       // Generate dummy data
@@ -52,16 +42,22 @@ class ExampleScroll extends Component {
       let isGet = true
       if (typeof this.props.beforeHttpGet === 'function') {
         isGet = false
-        await this.props.beforeHttpGet({params}, s => isGet = s)
+        await this.props.beforeHttpGet(
+          {params, page}, (AfterParams, getStatus) => {
+            // console.log('AfterParams, getStatus', AfterParams, getStatus)
+            params = AfterParams
+            isGet = getStatus
+          }
+        )
+      } else {
+        params = Object.assign({}, params, {
+          pageNumber: page
+        })
       }
-      console.log('get again', isGet)
       if (!isGet) {
         startFetch(rowData, 10)
         return
       }
-      this.setParams(Object.assign({}, this.params, {pageNumber}))
-
-      let {params} = this
       await fetch({api, params, type}).then(res => {
         this.props.beforeUpdateList({api, params, res}, ({dataList}) => {
           rowData = dataList
@@ -70,6 +66,7 @@ class ExampleScroll extends Component {
       startFetch(rowData, 10)
     } catch (err) {
       // manually stop the refresh or pagination if it encounters network error
+      // console.log(err)
       abortFetch()
     }
   }
@@ -102,7 +99,7 @@ class ExampleScroll extends Component {
           // this is important to distinguish different FlatList, default is numColumns
           key={this.props.KeyName}
           onFetch={this.getTableList}
-
+          firstLoader={this.firstLoader}
           // this is required when you are using FlatList
           keyExtractor={(item, index) => `${index} - ${item}`}
 
