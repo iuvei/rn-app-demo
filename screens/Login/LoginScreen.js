@@ -23,8 +23,8 @@ class LoginComponent extends Component {
     super(props)
     this.state = {
       formData: {
-        j_username: 'wede01',
-        j_password: 'abc12345',
+        j_username: 'johnny',
+        j_password: 'zhong123',
         ua: ''
       },
       rememberPwd: false

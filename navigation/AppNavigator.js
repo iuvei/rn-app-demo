@@ -1,43 +1,38 @@
 import React from 'react'
 import {createSwitchNavigator, createStackNavigator} from 'react-navigation'
-
+// Switch 二选1导航
+import LoginScreen from '../screens/Login/LoginScreen'
 import MainTabNavigator from './MainTabNavigator'
-import LoginNavigator from './LoginNavigator'
-import BetNavigator from './BetNavigator'
-import ScrollNavigator from './ScrollNavigator'
-import Personal from './PersonalNavigator'
-import AddCustomizeGamesScreen from './../screens/AddCustomizeGames/AddCustomizeGames'
-import BroadcastScreen from './../screens/Home/BroadcastScreen'
-import MailboxScreen from './../screens/Home/MailboxScreen'
-import RechargeSuccess from '../screens/Recharge/RechargeSuccess'
-import Withdrawal from '../screens/Withdrawal/'
-import BetHistory from '../screens/Personal/MyselfReport/BetHistory'
 
-const MainTabs = createStackNavigator({
+// 非登陆其他所有页面视图
+import HomeNavigator from '../screens/Home'
+import RechargeNavigator from '../screens/Recharge'
+import Personal from './PersonalNavigator'
+
+const MainNavigator = createStackNavigator({
   Main: MainTabNavigator,
-  CustomizeGames: AddCustomizeGamesScreen,
-  Broadcast: BroadcastScreen,
-  Mailbox: MailboxScreen,
-  RechargeSuccess: createStackNavigator({RechargeSuccess: RechargeSuccess}),
-  Withdrawal: createStackNavigator({Withdrawal: Withdrawal}),
+  ...HomeNavigator,
+  ...RechargeNavigator,
   ...Personal
 })
 
-const betHistoryNavigator = createStackNavigator({
-  BetHistory: BetHistory
-})
+MainNavigator.navigationOptions = {
+  header: null
+}
 
-export default createSwitchNavigator(
+const RootNavigation = createSwitchNavigator(
   {
     // You could add another route here for authentication.
     // Read more at https://reactnavigation.org/docs/en/auth-flow.html
-    Main: MainTabs,
-    Login: LoginNavigator,
-    Bet: BetNavigator,
-    Scroll: ScrollNavigator,
-    BetHistory: betHistoryNavigator
+    Login: LoginScreen,
+    Main: MainNavigator
   }, {
-    // initialRouteName: 'BetHistory'
     initialRouteName: 'Login'
   }
 )
+
+RootNavigation.navigationOptions = {
+  header: null
+}
+
+export default RootNavigation

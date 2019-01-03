@@ -1,5 +1,5 @@
 import React from 'react'
-import {Platform, StyleSheet} from 'react-native'
+import {Platform} from 'react-native'
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 
 import TabBarIcon from '../components/TabBarIcon'
@@ -13,6 +13,7 @@ import PersonalScreen from '../screens/Personal/PersonalScreen'
 const HomeStack = createStackNavigator({
   Home: HomeScreen
 })
+
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({focused}) => (
@@ -87,15 +88,15 @@ const MainTabNavigator = createBottomTabNavigator(
   {
     HomeStack,
     GamesStack,
-    FoundStack,
     RechargeStack,
+    FoundStack,
     PersonalStack
   }
 )
 
 MainTabNavigator.navigationOptions = {
   // Hide the header from AppNavigator stack
-  header: null,
-};
+  header: null
+}
 
 export default MainTabNavigator

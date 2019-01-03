@@ -1,24 +1,25 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { ScrollView, StyleSheet, ImageBackground, Text, View, Dimensions } from 'react-native'
-import {  Provider, Picker, Button, List, InputItem } from '@ant-design/react-native'
-import { MyIconFont } from '../../components/MyIconFont'
-import { RechargeChannelIconMap } from '../../constants/glyphMapHex'
+import {connect} from 'react-redux'
+import {ScrollView, StyleSheet, ImageBackground, Text, View, Dimensions} from 'react-native'
+import {Provider, Picker, Button, List, InputItem} from '@ant-design/react-native'
+import {MyIconFont} from '../../components/MyIconFont'
+import {RechargeChannelIconMap} from '../../constants/glyphMapHex'
 import {
   AsetAllBalance,
   AsetUserBankCards,
   AsetIsAllowWithdraw,
   AsetUserConsume
 } from '../../actions/member'
-import { getUserBankcards, isAllowWithdraw, getUserConsume } from '../../api/basic'
+import {getUserBankcards, isAllowWithdraw, getUserConsume} from '../../api/basic'
 
 const height = Dimensions.get('window').height
 
 class Withdrawal extends React.Component {
   static navigationOptions = {
-    header: null
+    // header: null
+    title: '提款'
   }
-  
+
   constructor(props) {
     super(props)
     this.state = {
@@ -69,8 +70,8 @@ class Withdrawal extends React.Component {
    * 拆单和计算手续费
    */
   sonOrderAndFee(amount) {
-    let { canWithdrawBalance } = this.props.userBalanceInfoYE
-    let { minMoney, maxMoney, freeTimes, alredTimes, maxFee, minFee, feeScale } = this.props.userConsume
+    let {canWithdrawBalance} = this.props.userBalanceInfoYE
+    let {minMoney, maxMoney, freeTimes, alredTimes, maxFee, minFee, feeScale} = this.props.userConsume
     this.setState({
       totalFee: 0,
       actualWithdraw: 0,
@@ -133,8 +134,8 @@ class Withdrawal extends React.Component {
   }
 
   render() {
-    let { userBankInfo, isAllowWithdraw, userConsume, userBalanceInfoYE } = this.props
-    let { curBankCardIdx, amount, totalFee, actualWithdraw, pwd, isLoading, sonOrderList } = this.state
+    let {userBankInfo, isAllowWithdraw, userConsume, userBalanceInfoYE} = this.props
+    let {curBankCardIdx, amount, totalFee, actualWithdraw, pwd, isLoading, sonOrderList} = this.state
     let curBankCard = {}
     let pickerdata = userBankInfo.userBankCards.map((item, idx) => {
       if (idx === curBankCardIdx) {
@@ -147,7 +148,8 @@ class Withdrawal extends React.Component {
       <View style={{flex: 1}}>
         <Provider>
           <ScrollView style={{height: height}}>
-            <ImageBackground source={require('../../assets/images/withdraw_bg1.jpg')} style={{width: '100%', height: 120, alignItems: 'center', paddingTop: 26}}>
+            <ImageBackground source={require('../../assets/images/withdraw_bg1.jpg')}
+                             style={{width: '100%', height: 120, alignItems: 'center', paddingTop: 26}}>
               <Text style={{fontSize: 32, color: '#ffffff'}}>{userBalanceInfoYE.canWithdrawBalance}</Text>
               <Text style={{fontSize: 14, color: '#ffffff'}}>可提金额(元)</Text>
             </ImageBackground>
@@ -155,7 +157,7 @@ class Withdrawal extends React.Component {
               <Picker
                 data={pickerdata}
                 cols={1}
-                value={[this.state.curBankCardIdx,]}
+                value={[this.state.curBankCardIdx]}
                 onChange={(val) => {
                   this.setState({
                     curBankCardIdx: val[0]
@@ -165,17 +167,26 @@ class Withdrawal extends React.Component {
                 <List.Item
                   arrow="horizontal"
                   thumb={
-                    curBankCard.bankCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[curBankCard.bankCode]} size={30}/> : null
+                    curBankCard.bankCode ?
+                      <MyIconFont name={'icon_' + RechargeChannelIconMap[curBankCard.bankCode]} size={30}/> : null
                   }
-                  ></List.Item>
+                ></List.Item>
               </Picker>
             </List>
             <View style={{padding: 12}}>
-              <Text style={{color: '#a4a4a4', lineHeight: 24, fontSize: 12}}>提现限制：您今天已提现 <Text style={{color: '#f15a23'}}>{userConsume.alredTimes}</Text> 次；今日已提金额：<Text style={{color: '#f15a23'}}>{userConsume.alredMoney}</Text>
-                    元；单笔最小额提现：<Text style={{color: '#f15a23'}}>{userConsume.minMoney}</Text> 元；单笔最大额提现：<Text style={{color: '#f15a23'}}>{userConsume.maxMoney}</Text> 元。
-                    系统消费比例限制为：<Text style={{color: '#f15a23'}}>{userConsume.feeRatio}%</Text>。您的彩票所需消费量为：<Text style={{color: '#f15a23'}}>{userConsume.consumeQuota}</Text> 元</Text>
-              <Text style={{color: '#a4a4a4', lineHeight: 24, fontSize: 12}}>手续费说明：每日免费提现次数为 <Text style={{color: '#f15a23'}}>{userConsume.freeTimes}</Text> 次，您已经免费提现 <Text style={{color: '#f15a23'}}>{userConsume.alredTimes < userConsume.freeTimes ? userConsume.alredTimes : userConsume.freeTimes}</Text> 次，
-                    超出后将按单笔 <Text style={{color: '#f15a23'}}>{userConsume.feeScale} %</Text> 的比例收取手续费，单笔最小手续费 <Text style={{color: '#f15a23'}}>{userConsume.minFee}</Text> 元，单笔最高手续费 <Text style={{color: '#f15a23'}}>{userConsume.maxFee}</Text> 元</Text>
+              <Text style={{color: '#a4a4a4', lineHeight: 24, fontSize: 12}}>提现限制：您今天已提现 <Text
+                style={{color: '#f15a23'}}>{userConsume.alredTimes}</Text> 次；今日已提金额：<Text
+                style={{color: '#f15a23'}}>{userConsume.alredMoney}</Text>
+                元；单笔最小额提现：<Text style={{color: '#f15a23'}}>{userConsume.minMoney}</Text> 元；单笔最大额提现：<Text
+                  style={{color: '#f15a23'}}>{userConsume.maxMoney}</Text> 元。
+                系统消费比例限制为：<Text style={{color: '#f15a23'}}>{userConsume.feeRatio}%</Text>。您的彩票所需消费量为：<Text
+                  style={{color: '#f15a23'}}>{userConsume.consumeQuota}</Text> 元</Text>
+              <Text style={{color: '#a4a4a4', lineHeight: 24, fontSize: 12}}>手续费说明：每日免费提现次数为 <Text
+                style={{color: '#f15a23'}}>{userConsume.freeTimes}</Text> 次，您已经免费提现 <Text
+                style={{color: '#f15a23'}}>{userConsume.alredTimes < userConsume.freeTimes ? userConsume.alredTimes : userConsume.freeTimes}</Text> 次，
+                超出后将按单笔 <Text style={{color: '#f15a23'}}>{userConsume.feeScale} %</Text> 的比例收取手续费，单笔最小手续费 <Text
+                  style={{color: '#f15a23'}}>{userConsume.minFee}</Text> 元，单笔最高手续费 <Text
+                  style={{color: '#f15a23'}}>{userConsume.maxFee}</Text> 元</Text>
             </View>
             <List>
               <InputItem
@@ -203,7 +214,7 @@ class Withdrawal extends React.Component {
               </List.Item>
               <List.Item
                 extra={<Button type="primary" size="small">查看拆单</Button>}
-                >
+              >
                 您当前提款可能产生拆单
               </List.Item>
               <InputItem
@@ -220,10 +231,13 @@ class Withdrawal extends React.Component {
               </InputItem>
             </List>
             <View style={{paddingLeft: 15, paddingTop: 30, paddingRight: 15}}>
-              <Button type="primary" disabled={sonOrderList.length === 0} loading={isLoading} onPress={this.submitFunc}>下一步</Button>
+              <Button type="primary" disabled={sonOrderList.length === 0} loading={isLoading}
+                      onPress={this.submitFunc}>下一步</Button>
             </View>
             <View style={{height: 200, padding: 12, alignItems: 'center'}}>
-              <Text style={{fontSize: 12, color: '#a4a4a4'}}>提现时间：北京时间 <Text style={{color: '#f15a23'}}>09:00:00</Text> 至 第二天 <Text style={{color: '#f15a23'}}>03:00:00</Text> (24小时制) </Text>
+              <Text style={{fontSize: 12, color: '#a4a4a4'}}>提现时间：北京时间 <Text
+                style={{color: '#f15a23'}}>09:00:00</Text> 至 第二天 <Text
+                style={{color: '#f15a23'}}>03:00:00</Text> (24小时制) </Text>
             </View>
           </ScrollView>
         </Provider>
@@ -233,8 +247,8 @@ class Withdrawal extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  let { loginInfo } = state.common
-  let { userBankInfo, userBalanceInfoYE, isAllowWithdraw, userConsume } = state.member
+  let {loginInfo} = state.common
+  let {userBankInfo, userBalanceInfoYE, isAllowWithdraw, userConsume} = state.member
   return {
     loginInfo,
     userBankInfo,
@@ -253,8 +267,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Withdrawal);
+export default connect(mapStateToProps, mapDispatchToProps)(Withdrawal)
 
-const styles = StyleSheet.create({
-})
+const styles = StyleSheet.create({})
 

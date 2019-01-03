@@ -6,11 +6,11 @@ import {
   RefreshControl, StyleSheet, Image
 } from 'react-native';
 import { Accordion, Flex, Provider, Toast } from '@ant-design/react-native';
-import Header from './../../components/Header';
+import Header from './../../../components/Header';
 import { connect } from "react-redux";
 import {
   setActiveUsualLot
-} from '../../actions/common'
+} from '../../../actions/common'
 import { pull } from 'lodash'
 
 class AddCustomizeGamesScreen extends React.Component {
@@ -39,31 +39,31 @@ class AddCustomizeGamesScreen extends React.Component {
     this.getIconName = value => {
       switch (value) {
         case 'ssc':
-          return require('./../../assets/images/home/ssc_icon.png')
+          return require('./../../../assets/images/home/ssc_icon.png')
         break
         case 'syx5':
-          return require('./../../assets/images/home/syxw_icon.png')
+          return require('./../../../assets/images/home/syxw_icon.png')
           break
         case 'kl8':
-          return require('./../../assets/images/home/klc_icon.png')
+          return require('./../../../assets/images/home/klc_icon.png')
           break
         case 'pk10':
-          return require('./../../assets/images/home/pks_icon.png')
+          return require('./../../../assets/images/home/pks_icon.png')
           break
         case 'k3':
-          return require('./../../assets/images/home/ks_icon.png')
+          return require('./../../../assets/images/home/ks_icon.png')
           break
         case 'kl10':
-          return require('./../../assets/images/home/kls_icon.png')
+          return require('./../../../assets/images/home/kls_icon.png')
           break
         case 'xyc':
-          return require('./../../assets/images/home/xyc_icon.png')
+          return require('./../../../assets/images/home/xyc_icon.png')
           break
         case 'dpc':
-          return require('./../../assets/images/home/dpc_icon.png')
+          return require('./../../../assets/images/home/dpc_icon.png')
           break
         default:
-          return require('./../../assets/images/home/ssc_icon.png')
+          return require('./../../../assets/images/home/ssc_icon.png')
       }
     };
     this.onChange = activeSections => {

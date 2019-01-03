@@ -118,8 +118,7 @@ class Main extends React.Component {
   _handleFinishLoading = () => {
     this.setState({isLoadingComplete: true})
     Expo.SplashScreen.hide()
-    // if (this.props.isLogin)
-    this._loadResourcesAsyncLater()
+    if (this.props.isLogin) this._loadResourcesAsyncLater()
   }
 }
 
