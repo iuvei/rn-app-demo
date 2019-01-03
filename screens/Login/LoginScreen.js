@@ -10,7 +10,8 @@ import {signIn} from '../../api/basic'
 // import { Ionicons } from '@expo/vector-icons'
 import { Button, Icon, InputItem, Flex } from '@ant-design/react-native';
 import {
-  AsetAllBalance
+  AsetAllBalance,
+  AsetUserBankCards
 } from './../../actions/member'
 
 class LoginComponent extends Component {
@@ -48,6 +49,7 @@ class LoginComponent extends Component {
         this.props.setLoginStatus(res.code === 0)
         this.props.setLoginInfo(res.data)
         this.props.AsetAllBalance(res.data.user.userId)
+        this.props.AsetUserBankCards(res.data.user.userId)
         this.props.navigation.navigate('Main')
       }
     })
@@ -168,7 +170,8 @@ const mapDispatchToProps = (dispatch) => {
     setLoginInfo: data => dispatch(setLoginInfo(data)),
     AsetAllBalance: (data) => {
       dispatch(AsetAllBalance(data))
-    }
+    },
+    AsetUserBankCards: data => dispatch(AsetUserBankCards(data))
   }
 }
 

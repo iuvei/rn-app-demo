@@ -85,10 +85,9 @@ class Main extends React.Component {
         console.log('getImageSetCookie finished')
       ),
       getLoginUser().then(res => {
-        console.log('getUserStatus finished', res)
         if (res.code === 0) {
           this.props.setLoginStatus(res.code === 0)
-          this.props.setLoginInfo(res.data.acc.user)
+          this.props.setLoginInfo(res.data)
           // this.props.navigation.navigate('Login')
         }
       })

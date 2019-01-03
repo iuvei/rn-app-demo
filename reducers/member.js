@@ -1,7 +1,6 @@
 import {handleActions} from 'redux-actions'
 
 const initialState = {
-  memberText: '',
   activeAccount: {},
   userBalanceInfo: {}, // 用户账户信息
   userBalanceInfoYE: {}, // 用户账户余额信息
@@ -9,15 +8,15 @@ const initialState = {
   userBalanceInfoFH: {}, // 分红
   userBalanceInfoHD: {}, // 活动
   userBalanceInfoHB: {}, // 红包
+  userBankInfo: {
+    userBankCards: [],
+    bankTime: 6
+  },  // 用户银行卡列表
+  bankList: [], // 系统银行列表
+  isAllowWithdraw: {sign: false, message: '', local: true}, // 是否可提现
 }
 
 const member = handleActions({
-  SET_MEMBER_TEXT: (state, {payload}) => {
-    return {
-      ...state,
-      memberText: payload
-    }
-  },
   SET_ACTIVE_ACCOUNT: (state, {payload}) => {
     return {
       ...state,
@@ -58,6 +57,12 @@ const member = handleActions({
     return {
       ...state,
       userBalanceInfoHB: payload
+    }
+  },
+  SET_USER_BANKCARDS: (state, {payload}) => {
+    return {
+      ...state,
+      userBankInfo: payload
     }
   }
 }, initialState)
