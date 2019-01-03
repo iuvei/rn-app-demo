@@ -5,7 +5,7 @@ import {
   ScrollView,
   RefreshControl, StyleSheet, Image
 } from 'react-native';
-import { Accordion, Flex } from '@ant-design/react-native';
+import { Accordion, Flex, Provider, Toast } from '@ant-design/react-native';
 import Header from './../../components/Header';
 import { connect } from "react-redux";
 import {
@@ -106,8 +106,8 @@ class AddCustomizeGamesScreen extends React.Component {
         return { checkAllGroup, loNumber}
       })
     } else {
-      if (this.state.checkAllGroup.length >= 9) {
-        alert('最多设置9个')
+      if (this.state.checkAllGroup.length >= 10) {
+        Toast.fail('最多设置10个')
         return
       }
       this.setState((prevState) => {
@@ -154,70 +154,73 @@ class AddCustomizeGamesScreen extends React.Component {
     let { sysSortLottery } = this.props
     let { checkAllGroup } = this.state
     return (
-      <View style={styles.customContainer}>
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }>
-          <Accordion
-            onChange={this.onChange}
-            duration={400}
-            activeSections={this.state.activeSections}
-          >
-            {
-              sysSortLottery.map((item, index) =>{
-                return (
-                  <Accordion.Panel key={index} header={this._renderHeader(item)} style={{backgroundColor:'#fff'}}>
-                    <View>
-                      {!!item.originLot.length && <View>
-                        <View style={styles.lotTitle}><Text>官方彩</Text></View>
-                        <Flex wrap="wrap">
-                          {
-                            item.originLot.map((v, i) =>{
-                              return (
-                                <View
-                                  key={i}
-                                  style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtn : styles.defaultBtn}>
-                                  <Text
-                                    numberOfLines={1}
-                                    style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtnText : styles.defaultBtnText}
-                                    onPress={() => this._toSetLot(v)}>{v.lotterName}</Text>
-                                </View>
-                              )
-                            })
-                          }
-                        </Flex>
-                      </View>}
-                      {!!item.gpLot.length && <View>
-                        <View style={styles.lotTitle}><Text>高频彩</Text></View>
-                        <Flex wrap="wrap">
-                          {
-                            item.gpLot.map((v, i) =>{
-                              return (
-                                <View
-                                  key={i}
-                                  style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtn : styles.defaultBtn}>
-                                  <Text
-                                    numberOfLines={1}
-                                    style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtnText : styles.defaultBtnText}
-                                    onPress={() => this._toSetLot(v)}>{v.lotterName}</Text>
-                                </View>
-                              )
-                            })
-                          }
-                        </Flex>
-                      </View>}
-                    </View>
-                  </Accordion.Panel>
-                )
-              })
-            }
-          </Accordion>
-        </ScrollView>
-      </View>
+      <Provider>
+        <View style={styles.customContainer}>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }>
+            <Accordion
+              onChange={this.onChange}
+              duration={400}
+              activeSections={this.state.activeSections}
+            >
+              {
+                sysSortLottery.map((item, index) =>{
+                  return (
+                    <Accordion.Panel key={index} header={this._renderHeader(item)} style={{backgroundColor:'#fff'}}>
+                      <View>
+                        {!!item.originLot.length && <View>
+                          <View style={styles.lotTitle}><Text>官方彩</Text></View>
+                          <Flex wrap="wrap">
+                            {
+                              item.originLot.map((v, i) =>{
+                                return (
+                                  <View
+                                    key={i}
+                                    style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtn : styles.defaultBtn}>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtnText : styles.defaultBtnText}
+                                      onPress={() => this._toSetLot(v)}>{v.lotterName}</Text>
+                                  </View>
+                                )
+                              })
+                            }
+                          </Flex>
+                        </View>}
+                        {!!item.gpLot.length && <View>
+                          <View style={styles.lotTitle}><Text>高频彩</Text></View>
+                          <Flex wrap="wrap">
+                            {
+                              item.gpLot.map((v, i) =>{
+                                return (
+                                  <View
+                                    key={i}
+                                    style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtn : styles.defaultBtn}>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtnText : styles.defaultBtnText}
+                                      onPress={() => this._toSetLot(v)}>{v.lotterName}</Text>
+                                  </View>
+                                )
+                              })
+                            }
+                          </Flex>
+                        </View>}
+                      </View>
+                    </Accordion.Panel>
+                  )
+                })
+              }
+            </Accordion>
+          </ScrollView>
+        </View>
+      </Provider>
+
     )
   }
 }
