@@ -399,10 +399,13 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  let { usualLottery, systemNews } = state.common
+  let { usualLottery, systemNews, loginInfo } = state.common
+  let { userBalanceInfo } = state.member
   return ({
+    systemNews,
     usualLottery,
-    systemNews
+    loginInfo,
+    userBalanceInfo
   })
 }
 

@@ -44,7 +44,6 @@ class RechargeScreen extends React.Component {
     getRechargeChannels().then(res => {
       if (res.code === 0) {
         let recharge = res.data.recharge
-        console.log('recharge', recharge)
         // 人民币渠道集合
         let channelRealObj = {}
         let realAccounts = []
@@ -82,7 +81,6 @@ class RechargeScreen extends React.Component {
             }
           }
         }
-        console.log('channelRealObj', channelRealObj)
         this.setState({
           virtualAccounts: [].concat(virtualAccounts),
           realAccounts: [].concat(realAccounts),
@@ -141,7 +139,6 @@ class RechargeScreen extends React.Component {
       })
       let {bankCode, payChannelAlias, payChannelCode, coinCode} = activeAccount
       commitRecharge({bankCode, channelType, isQuick, orderAmount, payChannelAlias, payChannelCode, rechargeFee, returnUrl, amount, coinCode}).then((res) => {
-        console.log('recharge res', res)
         if (res.code === 0) {
           this.setState({
             isLoading: false
@@ -155,11 +152,6 @@ class RechargeScreen extends React.Component {
           //   this.goThird(tmprecinfo.url + '?' + tmprecinfo.params)
           //   return
           // }
-          if (res.data.submitType === 'html') {
-            // router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
-            this.props.navigation.navigate('RechargeSuccess', {recinfo: tmprecinfo, bankCode: activeAccount.bankCode})
-            return
-          }
           // this.splitParams(res.data.params || '')
           let qrCodeSrc = prependUrl + '/capital/capitalBase/queryQrCode?platformKey=' + platformKey + '&payChannelCode=' + activeAccount.payChannelCode + '&bankCode=' + activeAccount.bankCode + '&time=' + new Date().getTime()
           // this.$store.commit('SET_RECHARGE_QRCODE', this.qrCodeSrc)

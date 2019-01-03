@@ -1,12 +1,11 @@
 import React from 'react'
 import Header from '../../components/Header'
-import { Text, Image, ScrollView, View, WebView } from 'react-native';
+import { Text, Image, ScrollView, View, WebView, Dimensions } from 'react-native';
 import { List, WhiteSpace } from '@ant-design/react-native';
 import { Card, Button, Icon, Left, Body, Right, CardItem } from 'native-base'
 
-function htmlFormSubmit() {
-  'document.getElementById("AForm").submit()'
-}
+const height = Dimensions.get('window').height
+
 export default class RechargeSuccess extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
@@ -20,7 +19,6 @@ export default class RechargeSuccess extends React.Component {
   }
 
   componentDidMount() {
-    console.log('nav options', this.props.navigation)
   }
 
   render() {
@@ -28,43 +26,12 @@ export default class RechargeSuccess extends React.Component {
     let {accountName, amount, bankCard, orderAmount, postScript, submitType, url, params, qrCode} = recinfo
     let isQrCode = (bankCode === 'WECHAT_QR' || bankCode === 'ALIPAY_QR' || bankCode === 'WXPAY_QR') && qrCodeSrc
 
-    if (submitType === 'html') {
-      setTimeout(function() {
-        if (this._webview) {
-          this._webview.injectJavaScript('document.getElementById("AForm").submit()')
-        }
-      }, 2000)
-      return (
-        // <WebView
-        //   ref={c => this._webview = c}
-        //   originWhitelist={['*']}
-        //   source={{ html: '<body onload="document.getElementById("AForm").submit()"><form id="AForm" target="_blank" action="http://www.w3school.com.cn/i/eg_smile.gif" method="get">'+
-        //   '名：<input type="text" name="firstname" size="20"><br />' +
-        //   '姓：<input type="text" name="lastname" size="20"><br />' +
-        //   '<input type="button" onclick="document.getElementById("AForm").submit()" value="提交"></input></form><script>window.onload=function(){document.getElementById("AForm").submit()}</script></body>' }}
-        //   javaScriptEnabled={true}
-        //   onShouldStartLoadWithRequest={true}
-        // />
-        <WebView
-          source={{uri: 'http://www.w3school.com.cn/tiy/t.asp?f=hdom_form_submit'}}
-          style={{marginTop: 20}}
-        />
-      );
-    }
-
-    if (submitType === 'url') {
-      return (
-        <WebView
-          source={{uri: url + '?' + params}}
-          style={{marginTop: 20}}
-        />
-      )
-    }
+    submitType = 'url'
 
     return (
       <ScrollView style={{backgroundColor: '#f0f0f0'}}>
         {
-          !isQrCode && (<View>
+          isQrCode && (<View>
             <Card>
               <CardItem>
                 <Left>
@@ -80,36 +47,44 @@ export default class RechargeSuccess extends React.Component {
             </Card>
           </View>)
         }
-        <List>
-          {
-            submitType === 'person' && (<View>
-              <List.Item extra={accountName} arrow="empty">
-                姓名
-              </List.Item>
-              <List.Item extra={amount+'元'} arrow="empty">
-                充值金额
-              </List.Item>
-              <List.Item extra={<View>
-                  <Text>{bankCard}</Text>
-                  <Button iconLeft dark small>
-                    <Icon name='cog' />
-                    <Text>复制</Text>
-                  </Button>
-                </View>} arrow="empty">
-                账号
-              </List.Item>
-              <List.Item extra={<View style={{width: '90%'}}>
-                  <Text>{postScript}</Text>
-                  <Button iconLeft dark small>
-                    <Icon name='cog' />
-                    <Text>复制</Text>
-                  </Button>
-                </View>} arrow="empty">
-                附言
-              </List.Item>
-            </View>)
-          }
-        </List>
+        {
+          submitType === 'url' &&
+          <View style={{height: height}}>
+            <WebView
+              // source={{uri: url + '?' + params}}
+              source={{uri: 'http://www.baidu.com/'}}
+              startInLoadingState={true}
+            />
+          </View>
+        }
+        {
+          submitType === 'person' && (<List>
+            <List.Item extra={accountName} arrow="empty">
+              姓名
+            </List.Item>
+            <List.Item extra={amount+'元'} arrow="empty">
+              充值金额
+            </List.Item>
+            <List.Item extra={<View>
+                <Text>{bankCard}</Text>
+                <Button iconLeft dark small>
+                  <Icon name='cog' />
+                  <Text>复制</Text>
+                </Button>
+              </View>} arrow="empty">
+              账号
+            </List.Item>
+            <List.Item extra={<View style={{width: '90%'}}>
+                <Text>{postScript}</Text>
+                <Button iconLeft dark small>
+                  <Icon name='cog' />
+                  <Text>复制</Text>
+                </Button>
+              </View>} arrow="empty">
+              附言
+            </List.Item>
+          </List>)
+        }
         <WhiteSpace size="xl" />
         {
           submitType === 'qr' && <View>
