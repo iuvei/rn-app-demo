@@ -120,7 +120,9 @@ export default class PersonalScreen extends React.Component {
   }
 
   changeRoute = (path) => {
-    this.props.navigation.navigate(path)
+    if (path) {
+      this.props.navigation.navigate(path)
+    }
   }
 
   render () {
@@ -131,6 +133,7 @@ export default class PersonalScreen extends React.Component {
       },
       {
         name: '提现',
+        path: 'Withdrawal',
         src: require('../../assets/images/personal/icon2.png')
       },
       {
@@ -188,10 +191,12 @@ export default class PersonalScreen extends React.Component {
               {
                 list.map((item, index) => {
                   return (
-                    <View key={index} style={{height: 45}}>
-                      <Image resizeMode='contain' source={item.src} style={{width: 28, height: 26}}></Image>
-                      <Text style={{color: '#0c7edb'}}>{item.name}</Text>
-                    </View>
+                    <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
+                      <View key={index} style={{height: 45}}>
+                        <Image resizeMode='contain' source={item.src} style={{width: 28, height: 26}}></Image>
+                        <Text style={{color: '#0c7edb'}}>{item.name}</Text>
+                      </View>
+                    </TouchableHighlight>
                   )
                 })
               }

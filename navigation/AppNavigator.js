@@ -8,12 +8,14 @@ import ScrollNavigator from './ScrollNavigator'
 import Personal from './PersonalNavigator'
 import AddCustomizeGamesScreen from './../screens/AddCustomizeGames/AddCustomizeGames'
 import RechargeSuccess from '../screens/Recharge/RechargeSuccess'
+import Withdrawal from '../screens/Withdrawal/'
 import BetHistory from '../screens/Personal/MyselfReport/BetHistory'
 
 const MainTabs = createStackNavigator({
   Main: MainTabNavigator,
   CustomizeGames: AddCustomizeGamesScreen,
   RechargeSuccess: createStackNavigator({RechargeSuccess: RechargeSuccess}),
+  Withdrawal: createStackNavigator({Withdrawal: Withdrawal}),
   ...Personal
 })
 
