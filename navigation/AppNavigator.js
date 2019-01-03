@@ -7,7 +7,7 @@ import MainTabNavigator from './MainTabNavigator'
 // 非登陆其他所有页面视图
 import HomeNavigator from '../screens/Home'
 import RechargeNavigator from '../screens/Recharge'
-import Personal from './PersonalNavigator'
+import Personal from '../screens/Personal'
 
 const MainNavigator = createStackNavigator({
   Main: MainTabNavigator,

@@ -2,7 +2,7 @@ import React from 'react'
 import {Image, ScrollView, View, Text, StyleSheet, ImageBackground, TouchableHighlight} from 'react-native'
 import {Button, Flex, Modal, Toast, Provider, Grid} from '@ant-design/react-native'
 import {Tab, Tabs, Header} from 'native-base'
-import BetHistory from "./MyselfReport/BetHistory"
+import BetHistory from "./Myself/BetHistory"
 import {connect} from 'react-redux'
 import {setLoginStatus} from "../../actions/common"
 
