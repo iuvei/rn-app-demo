@@ -186,11 +186,17 @@ class RechargeScreen extends React.Component {
     return <Text></Text>
   }
 
-  _renderHeader = section => {
+  _renderHeader = (content, index, isActive, sections) => {
     return (
-      <View style={{height: 24, paddingLeft: 20}}>
-        <Text>{section.title}</Text>
-      </View>
+      <List>
+        <List.Item arrow={isActive ? "empty" : "horizontal"} onPress={() => {
+          this.setState({
+            activeSections: [index,]
+          })
+        }}>
+          <Text>{content.title}</Text>
+        </List.Item>
+      </List>
     );
   };
 

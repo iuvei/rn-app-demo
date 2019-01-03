@@ -1,4 +1,4 @@
-// 这个是由iconfont.css里复制过了，经过查找替换得到的
+// 这个是由iconfont.css里复制过来，经过查找替换得到的
 export const glyphMapHex = {
   icon_minshengyinhang_min: "0xe602",
 

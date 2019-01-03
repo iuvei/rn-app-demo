@@ -202,7 +202,7 @@ class Withdrawal extends React.Component {
                 实际到账
               </List.Item>
               <List.Item
-                extra={<Button type="primary">查看拆单</Button>}
+                extra={<Button type="primary" size="small">查看拆单</Button>}
                 >
                 您当前提款可能产生拆单
               </List.Item>
