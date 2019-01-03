@@ -71,7 +71,8 @@ export const setActiveUsualLot = createAction(
       AsyncStorage.setItem('usualLottery', JSON.stringify(data.data))
       return data.data
     } else {
-      let d = JSON.parse(old) || usual
+      let y = JSON.parse(old)
+      let d =  y.length ? y : usual
       let rst = await getSysLottery()
       let newD = []
       rst.data.forEach(list => {
@@ -83,6 +84,7 @@ export const setActiveUsualLot = createAction(
           })
         })
       })
+      console.log(JSON.parse(old))
       AsyncStorage.setItem('usualLottery', JSON.stringify(newD))
       return newD
     }
@@ -108,6 +110,13 @@ export const getSystemNews = createAction(
 export const setUserRebate = (data) => {
   return {
     type: 'SET_USER_REBATE',
+    payload: data
+  }
+}
+
+export const setUserBalance = (data) => {
+  return {
+    type: 'SET_USER_BALANCE',
     payload: data
   }
 }

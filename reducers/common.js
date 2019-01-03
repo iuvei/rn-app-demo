@@ -41,7 +41,9 @@ const initialState = {
   syswpSortLottery: [],
   usualLottery: [],
   systemNews: [],  // 系统公告
-  loginInfo: {}
+  loginInfo: {},  // 用户信息
+  rebateInfo: {}, // 用户返点返水信息
+  balanceInfo: {} // 用户账户余额信息
 }
 
 // 常规处理
@@ -132,6 +134,12 @@ const common = handleActions({
     return {
       ...state,
       rebateInfo: payload
+    }
+  },
+  SET_USER_BALANCE: (state, {payload}) => {
+    return {
+      ...state,
+      balanceInfo: payload
     }
   }
 }, initialState)

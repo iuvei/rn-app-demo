@@ -1,5 +1,6 @@
 import React from 'react'
 import {Provider} from 'react-redux'
+import {Provider as Provider2} from '@ant-design/react-native'
 import promiseMiddleware from 'redux-promise'
 import reducer from './reducers'
 import thunk from 'redux-thunk'
@@ -54,7 +55,9 @@ export default class App extends React.Component {
     }
     return (
       <Provider store={store}>
-        <Main/>
+        <Provider2>
+          <Main/>
+        </Provider2>
       </Provider>
     )
   }

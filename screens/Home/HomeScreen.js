@@ -64,15 +64,16 @@ class HomeScreen extends React.Component {
         hideLeft={true}
         rightContent={
           <Text style={{fontSize: 16, color: "#fff"}}>
-            <Text onPress={() => params.changeTextFun('分享')}>分享  </Text>
-            <Text onPress={() => params.changeTextFun('扫码')}>扫码</Text>
+            <Text onPress={() => params.changeTextFun('Broadcast')}>公告  </Text>
+            <Text onPress={() => params.changeTextFun('Mailbox')}>信箱</Text>
           </Text>
         }/>
     }
   }
 
   changeTextFun = (val) => {
-    Toast.info(val+ '正在开发中')
+    this.props.navigation.push(val)
+    // Toast.info(val+ '正在开发中')
   }
 
   componentDidMount() {
@@ -148,7 +149,7 @@ class HomeScreen extends React.Component {
           <View>
             <WhiteSpace size="sm" />
             <NoticeBar
-              onPress={() => Toast.info.info('你点击了公告！')}
+              onPress={() => this.props.navigation.push('Broadcast')}
               marqueeProps={{ loop: true, style: { fontSize: 12, color: '#000' } }}
             >
               {str}
@@ -399,13 +400,10 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  let { usualLottery, systemNews, loginInfo } = state.common
-  let { userBalanceInfo } = state.member
+  let { usualLottery, systemNews } = state.common
   return ({
     systemNews,
-    usualLottery,
-    loginInfo,
-    userBalanceInfo
+    usualLottery
   })
 }
 
