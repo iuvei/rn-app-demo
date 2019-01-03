@@ -1,15 +1,14 @@
 import React, {Component} from 'react'
 import {
-  View, Image, Button,
-  StyleSheet, Text,
-  TextInput, Platform,
-  ImageBackground
+  View, Image,
+  StyleSheet, Text, Platform,
+  ImageBackground, Switch
 } from 'react-native'
 import {connect} from 'react-redux'
 import {setLoginStatus} from '../../actions/common'
 import {signIn} from '../../api/basic'
 // import { Ionicons } from '@expo/vector-icons'
-import { Grid, Icon, InputItem, Switch, List, Flex } from '@ant-design/react-native';
+import { Button, Icon, InputItem, Flex } from '@ant-design/react-native';
 
 class LoginComponent extends Component {
   static navigationOptions = {
@@ -96,20 +95,19 @@ class LoginComponent extends Component {
               </InputItem>
               <Flex style={{height: 38}}>
                 <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-                  <Text style={{textAlign: 'right', color: '#ffffff'}}>忘记密码</Text>
+                  <Text style={{textAlign: 'right', color: '#ffffff'}}>记住密码</Text>
                 </Flex.Item>
                 <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
                   <Switch
-                      checked={this.state.rememberPwd}
-                      onChange={this.onSwitchChange}
+                      value={this.state.rememberPwd}
+                      onValueChange={this.onSwitchChange}
+                      trackColor={{true: '#05bde1'}}
+                      thumbColor={'#ffffff'}
                     />
                 </View>
               </Flex>
               <View style={{width: 280}}>
-                <Button
-                  style={styles.btn}
-                  onPress={() => this._toLogin()}
-                  title=' 登 陆 '/>
+                <Button style={styles.btn} type="primary" onPress={() => this._toLogin()}>登 录</Button>
               </View>
               <Flex style={{width: 280, marginTop: 25}}>
                 <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
@@ -149,7 +147,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     width: 280,
-    height: 45
   }
 })
 
