@@ -12,6 +12,7 @@ import MailboxScreen from './../screens/Home/MailboxScreen'
 import RechargeSuccess from '../screens/Recharge/RechargeSuccess'
 import Withdrawal from '../screens/Withdrawal/'
 import BetHistory from '../screens/Personal/MyselfReport/BetHistory'
+import ThirdView from '../components/ThirdView'
 
 const MainTabs = createStackNavigator({
   Main: MainTabNavigator,
@@ -35,7 +36,8 @@ export default createSwitchNavigator(
     Login: LoginNavigator,
     Bet: BetNavigator,
     Scroll: ScrollNavigator,
-    BetHistory: betHistoryNavigator
+    BetHistory: betHistoryNavigator,
+    ThirdView: createStackNavigator({Withdrawal: ThirdView}),
   }, {
     // initialRouteName: 'BetHistory'
     initialRouteName: 'Login'
