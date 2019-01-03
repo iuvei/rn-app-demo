@@ -2,7 +2,6 @@ import React from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 import {Tabs} from '@ant-design/react-native'
 import {DatePicker} from 'native-base'
-import ScrollScreen from '../../screens/ExampleScroll'
 
 export default class BetScreen extends React.Component {
   static navigationOptions = {
@@ -40,7 +39,6 @@ export default class BetScreen extends React.Component {
               animated={false}>
           <View style={styles.tabs}>
             <Text>Content of First Tab</Text>
-            {/*<BetArea/>*/}
             <DatePicker
               defaultDate={new Date(2018, 4, 4)}
               minimumDate={new Date(2018, 1, 1)}
@@ -61,7 +59,7 @@ export default class BetScreen extends React.Component {
           </View>
           <View style={styles.tabs}>
             <Text>Content of Second Tab</Text>
-            <ScrollScreen/>
+            {/*<ScrollScreen/>*/}
           </View>
           <View style={styles.tabs}>
             <Text>Content of Third Tab</Text>

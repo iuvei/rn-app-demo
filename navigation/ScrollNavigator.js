@@ -1,7 +1,7 @@
 import React from 'react'
 import {createStackNavigator} from 'react-navigation'
 // import ScrollScreen from '../screens/ExampleScroll/official-index'
-import ScrollScreen from '../screens/ExampleScroll'
+import ScrollScreen from '../components/UIListView'
 
 export default createStackNavigator({
   Scroll: ScrollScreen

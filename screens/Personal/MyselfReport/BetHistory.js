@@ -1,11 +1,29 @@
-import React from 'react'
-import {View, Text, StyleSheet, Alert} from 'react-native'
-import ExampleScroll from '../../ExampleScroll'
+import React, {PureComponent} from 'react'
+import {View, Text, StyleSheet} from 'react-native'
+import UIListView from '../../../components/UIListView'
 // List Item
-import FlatListItem from '../../../screens/ExampleScroll/itemContainer/flatListItem'
 import {Button, WingBlank} from '@ant-design/react-native'
 
 const TableRow = 20
+
+class FlatListItem extends PureComponent {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    let {item, index} = this.props
+    let {orderId, ruleName} = item
+    return (
+      <View style={{padding: 10}}>
+        <Text>序号: {index}</Text>
+        <Text>RowID: {orderId}</Text>
+        <Text note>Data: {ruleName}</Text>
+      </View>
+    )
+  }
+
+}
 
 class BetHistory extends React.Component {
   static navigationOptions = {
@@ -56,6 +74,12 @@ class BetHistory extends React.Component {
     this.BetHistory.listView.updateDataSource(Row)
   }
 
+  onSearch = async () => {
+    await this.setState({isShow: true}, () => {
+      this.setState({isShow: false})
+    })
+  }
+
   render() {
     let {api, params, KeyName, isShow} = this.state
     return (
@@ -63,23 +87,11 @@ class BetHistory extends React.Component {
         <WingBlank>
           <Button
             type="ghost"
-            onPress={() => {
-              // this.setState(
-              //   {isShow: true},
-              //   () => this.setState({isShow: false})
-              // )
-              try {
-                this.BetHistory.listView.scrollToIndex({
-                  viewPosition: 0, index: Math.floor(0)
-                })
-              } catch (err) {
-                console.warn(err)
-              }
-            }}
+            onPress={() => this.onSearch()}
             style={{marginTop: 4}}>查询</Button>
         </WingBlank>
         {isShow ? null :
-          <ExampleScroll
+          <UIListView
             ref={ref => this.BetHistory = ref}
             api={api}
             KeyName={`KeyName-${KeyName}`}
