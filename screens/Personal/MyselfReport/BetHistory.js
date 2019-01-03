@@ -15,8 +15,9 @@ class BetHistory extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isShow: false,
       KeyName: 'BetHistory',
-      api: '/order/getOrderStatistics',
+      api: '/frontReport/getOrderStatistics',
       params: {
         userId: '',
         orderId: '',
@@ -50,52 +51,61 @@ class BetHistory extends React.Component {
 
   // 点击单元表格
   onPressItem = (type, item) => {
-    let Row = this.BetHistory.getRows().slice()
+    let Row = this.BetHistory.listView.getRows().slice()
     Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
-    this.BetHistory.updateDataSource(Row)
+    this.BetHistory.listView.updateDataSource(Row)
   }
 
   render() {
-    let {api, params, KeyName} = this.state
-    console.log('render', params)
+    let {api, params, KeyName, isShow} = this.state
     return (
       <View style={styles.container}>
         <WingBlank>
           <Button
             type="ghost"
             onPress={() => {
-              this.BetHistory.listView.onRefresh()
-              // this.BetHistory.listView.scrollToIndex()
+              // this.setState(
+              //   {isShow: true},
+              //   () => this.setState({isShow: false})
+              // )
+              try {
+                this.BetHistory.listView.scrollToIndex({
+                  viewPosition: 0, index: Math.floor(0)
+                })
+              } catch (err) {
+                console.warn(err)
+              }
             }}
-            style={{marginTop: 4}}>刷新</Button>
+            style={{marginTop: 4}}>查询</Button>
         </WingBlank>
-
-        <ExampleScroll
-          ref={ref => this.BetHistory = ref}
-          api={api}
-          KeyName={`KeyName-${KeyName}`}
-          params={params}
-          renderItem={this.renderItem}
-          // 第一个参数 params 第二个子组件的将要请求的第N页
-          beforeHttpGet={async ({params, page}, fn) => {
-            // 解决父级数据数据源同步问题，然后数据给到子组件本身
-            await this.setState({
-              params: Object.assign({}, params, {
-                pageNumber: page
+        {isShow ? null :
+          <ExampleScroll
+            ref={ref => this.BetHistory = ref}
+            api={api}
+            KeyName={`KeyName-${KeyName}`}
+            params={params}
+            renderItem={this.renderItem}
+            // 第一个参数 params 第二个子组件的将要请求的第N页
+            beforeHttpGet={async ({params, page}, fn) => {
+              // 解决父级数据数据源同步问题，然后数据给到子组件本身
+              await this.setState({
+                params: Object.assign({}, params, {
+                  pageNumber: page
+                })
               })
-            })
-            let handlerParams = this.state.params
-            fn(handlerParams, true)
-          }}
-          // 返回数据空或者处理后的数据源
-          beforeUpdateList={({res}, fn) => {
-            let dataList = res.data && res.data.orderInfoList ? res.data.orderInfoList : []
-            let {pageNumber, pageSize, totalCount} = res.data
-            let NullData = Math.ceil(totalCount / pageSize) < pageNumber
-            // 或在这里增加 其他状态码的处理Alter
-            fn(NullData ? [] : {dataList})
-          }}
-        />
+              let handlerParams = this.state.params
+              fn(handlerParams, true)
+            }}
+            // 返回数据空或者处理后的数据源
+            beforeUpdateList={({res}, fn) => {
+              let dataList = res.data && res.data.orderInfoList ? res.data.orderInfoList : []
+              let {pageNumber, pageSize, totalCount} = res.data
+              let NullData = Math.ceil(totalCount / pageSize) < pageNumber
+              // 或在这里增加 其他状态码的处理Alter
+              fn(NullData ? [] : {dataList})
+            }}
+          />
+        }
       </View>
     )
   }
