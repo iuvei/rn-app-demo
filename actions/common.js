@@ -111,3 +111,10 @@ export const setUserRebate = (data) => {
     payload: data
   }
 }
+
+export const setUserBalance = (data) => {
+  return {
+    type: 'SET_USER_BALANCE',
+    payload: data
+  }
+}

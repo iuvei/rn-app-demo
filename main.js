@@ -7,8 +7,8 @@ import {
 import {AppLoading, Asset, Font, Icon} from 'expo'
 import {fetch} from './services/HttpService'
 import {connect} from 'react-redux'
-import {setLoginStatus, setUserRebate, setLoginInfo} from './actions/common'
-import {getLoginUser, getUserRebateInfo} from './api/basic'
+import {setLoginStatus, setUserRebate, setLoginInfo, setUserBalance} from './actions/common'
+import {getLoginUser, getUserRebateInfo, getUserBalance} from './api/basic'
 
 // 如果非登陆状态，则跳到首页去
 class Main extends React.Component {
@@ -99,8 +99,12 @@ class Main extends React.Component {
   _loadResourcesAsyncLater = async () => {
     let {loginInfo} = this.props
     let rebateInfo = await getUserRebateInfo({userId: loginInfo.userId})
+    let balance = await getUserBalance({userId: loginInfo.userId})
     if (rebateInfo.code === 0) {
       this.props.setUserRebate(rebateInfo.data)
+    }
+    if (balance.code === 0) {
+      this.props.setUserBalance(balance.data.banlance.CNY)
     }
   }
 
@@ -151,6 +155,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setUserRebate: (data) => {
       dispatch(setUserRebate(data))
+    },
+    setUserBalance: (data) => {
+      dispatch(setUserBalance(data))
     }
   }
 }
