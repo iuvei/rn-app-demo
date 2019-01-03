@@ -71,6 +71,12 @@ const member = handleActions({
       ...state,
       isAllowWithdraw: payload
     }
+  },
+  SET_USER_CONSUME: (state, {payload}) => {
+    return {
+      ...state,
+      userConsume: payload
+    }
   }
 }, initialState)
 

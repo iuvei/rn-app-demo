@@ -27,6 +27,13 @@ export const AsetIsAllowWithdraw = (data) => {
   }
 }
 
+export const AsetUserConsume = (data) => {
+  return {
+    type: 'SET_USER_CONSUME',
+    payload: data
+  }
+}
+
 export const AsetUserBankCards = (data) => {
   return {
     type: 'SET_USER_BANKINFO',
