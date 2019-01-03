@@ -1,6 +1,6 @@
 import React from 'react'
 import {Image, ScrollView, View, Text, StyleSheet, ImageBackground, TouchableHighlight} from 'react-native'
-import {Button, Flex, Modal, Toast, Provider} from '@ant-design/react-native'
+import {Button, Flex, Modal, Toast, Provider, Grid} from '@ant-design/react-native'
 import {Tab, Tabs, Header} from 'native-base'
 import BetHistory from "./MyselfReport/BetHistory"
 import {connect} from 'react-redux'
@@ -187,9 +187,9 @@ class PersonalScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ImageBackground resizeMode='cover' source={require('../../assets/images/personal/bg0.png')}
-                         style={{height: 230}}>
+                         style={{height: 200}}>
           <View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around', height: 120, alignItems: 'center'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around', height: 90, alignItems: 'center'}}>
               <Image source={require('../../assets/images/personal/avatar.png')}
                      style={{width: 80, height: 80}}></Image>
               <View>
@@ -265,41 +265,31 @@ class PersonalScreen extends React.Component {
         <View style={{height: 360}}>
           <Tabs tabStyle={{color: '#0070cc'}} activeTabStyle={{backgroundColor: '#eff5fb'}}>
             <Tab heading={'订单报表'}>
-              <ScrollView style={styles.agent}
-                          contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
-                {
-                  order.map((item, index) => {
-                    return (
-                      <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
-                        <View style={{
-                          alignItems: 'center',
-                          width: 90,
-                          marginBottom: 10,
-                        }}>
-                          <Image source={item.src} style={{width: 50, height: 50}}></Image>
-                          <Text>{item.name}</Text>
-                        </View>
-                      </TouchableHighlight>
-                    )
-                  })
-                }
+              <ScrollView style={styles.agent}>
+                <Grid data={order} columnNum={4} hasLine={false} renderItem={(el, index) => {
+                  return (
+                    <TouchableHighlight key={index} onPress={() => this.changeRoute(el.path)}>
+                      <View style={{alignItems: 'center', width: 90}}>
+                        <Image source={el.src} style={{width: 50, height: 50}}></Image>
+                        <Text>{el.name}</Text>
+                      </View>
+                    </TouchableHighlight>
+                  )
+                }} />
               </ScrollView>
             </Tab>
             <Tab heading={'代理管理'}>
-              <ScrollView style={styles.agent}
-                          contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
-                {
-                  agent.map((item, index) => {
-                    return (
-                      <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
-                        <View key={index} style={{alignItems: 'center', width: 90, marginBottom: 10}}>
-                          <Image source={item.src} style={{width: 50, height: 50}}></Image>
-                          <Text>{item.name}</Text>
-                        </View>
-                      </TouchableHighlight>
-                    )
-                  })
-                }
+              <ScrollView style={styles.agent}>
+                <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
+                  return (
+                    <TouchableHighlight key={index} onPress={() => this.changeRoute(el.path)}>
+                      <View style={{alignItems: 'center', width: 90}}>
+                        <Image source={el.src} style={{width: 50, height: 50}}></Image>
+                        <Text>{el.name}</Text>
+                      </View>
+                    </TouchableHighlight>
+                  )
+                }} />
               </ScrollView>
             </Tab>
           </Tabs>
@@ -314,7 +304,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   agent: {
-    height: 180,
+    height: 160,
     padding: 10
   }
 })

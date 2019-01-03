@@ -50,7 +50,7 @@ export default class Header extends PureComponent {
           }
         </View>
         {
-          !hideLeft && <View style={{height: 25, width: 25, justifyContent: 'center', flex: 1} }/>
+          !hideLeft && <View style={{height: 25, width: 25, justifyContent: 'center', flex: 1, zIndex:1} }/>
         }
       </View>
     )
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
   rightContainer: {
     position: 'absolute',
     right: 10,
+    zIndex: 10,
     bottom: 5,
   }
 })
