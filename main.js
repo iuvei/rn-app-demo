@@ -4,20 +4,18 @@ import {
   Platform, StatusBar,
   StyleSheet, View
 } from 'react-native'
-import {AppLoading, Asset, Font, Icon} from 'expo'
+import {AppLoading, Font, Icon} from 'expo'
 import {fetch} from './services/HttpService'
 import {connect} from 'react-redux'
 import {setLoginStatus, setUserRebate, setLoginInfo, setUserBalance} from './actions/common'
 import {getLoginUser, getUserRebateInfo, getUserBalance} from './api/basic'
 
-// 如果非登陆状态，则跳到首页去
 class Main extends React.Component {
   state = {
     isLoadingComplete: false
   }
 
   render() {
-
     if (!this.state.isLoadingComplete) {
       if (!this.props.skipLoadingScreen) {
         return (
@@ -32,23 +30,15 @@ class Main extends React.Component {
         )
       }
     } else {
-      // if (this.props.isLogin) {
       // 登陆情况
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar
             backgroundColor={'blue'}
-            barStyle="dark-content"/>}
+            barStyle="light-content"/>}
           <AppNavigator/>
         </View>
       )
-      // } else {
-      //   return (
-      //     <View style={styles.container}>
-      //       <LoginScreen/>
-      //     </View>
-      //   )
-      // }
     }
   }
 
@@ -63,11 +53,21 @@ class Main extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      Asset.loadAsync([
-        require('./assets/images/robot-dev.png'),
-        require('./assets/images/robot-prod.png')
-      ]),
-      await Font.loadAsync({
+      // Asset.loadAsync([
+      //   require('./assets/images/robot-dev.png'),
+      //   require('./assets/images/robot-prod.png')
+      // ]),
+      Font.loadAsync(
+        'antoutline',
+        // eslint-disable-next-line
+        require('@ant-design/icons-react-native/fonts/antoutline.ttf')
+      ),
+      Font.loadAsync(
+        'antfill',
+        // eslint-disable-next-line
+        require('@ant-design/icons-react-native/fonts/antfill.ttf')
+      ),
+      Font.loadAsync({
         Roboto: require('native-base/Fonts/Roboto.ttf'),
         Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
         MyIconFont: require('./assets/fonts/iconfont.ttf')
@@ -79,16 +79,14 @@ class Main extends React.Component {
         //   // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')
       }),
-      this._testReturnPromise(),
+      // this._testReturnPromise(),
       // 这里回先执行二维码然后再去那数据
-      await this._getImageSetCookie().then(() =>
-        console.log('getImageSetCookie finished')
-      ),
+      await this._getImageSetCookie(),
       getLoginUser().then(res => {
+        console.log(`当前用户登陆状态:${res.code === 0 ? '在线' : '下线'}`)
         if (res.code === 0) {
           this.props.setLoginStatus(res.code === 0)
           this.props.setLoginInfo(res.data)
-          // this.props.navigation.navigate('Login')
         }
       })
     ])
@@ -107,21 +105,21 @@ class Main extends React.Component {
     }
   }
 
-  _testReturnPromise = async () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('simulation to loading')
-      }, 0)
-    })
-  }
+  // _testReturnPromise = () => {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       resolve('simulation to loading')
+  //     }, 0)
+  //   })
+  // }
 
   _handleLoadingError = error => console.log('error status', error)
 
   _handleFinishLoading = () => {
-    console.log('loading finished')
     this.setState({isLoadingComplete: true})
-    this._loadResourcesAsyncLater()
     Expo.SplashScreen.hide()
+    // if (this.props.isLogin)
+    this._loadResourcesAsyncLater()
   }
 }
 
