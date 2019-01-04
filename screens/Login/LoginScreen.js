@@ -18,6 +18,7 @@ class LoginComponent extends Component {
 
   constructor(props) {
     super(props)
+    this.willUnmount = false
     this.state = {
       j_username: '',
       j_password: '',
@@ -31,25 +32,33 @@ class LoginComponent extends Component {
 
   componentDidMount() {
     AsyncStorage.getItem('j_username').then(v => {
+      if (this.willUnmount) return
       this.setState({
         j_username: v
       })
     })
     AsyncStorage.getItem('j_password').then(v => {
+      if (this.willUnmount) return
       this.setState({
         j_password: v
       })
     })
     AsyncStorage.getItem('rememberUser').then(v => {
+      if (this.willUnmount) return
       this.setState({
         rememberUser: Boolean(v)
       })
     })
     AsyncStorage.getItem('rememberPwd').then(v => {
+      if (this.willUnmount) return
       this.setState({
         rememberPwd: Boolean(v)
       })
     })
+  }
+
+  componentWillUnmount() {
+    this.willUnmount = true
   }
 
   _toLogin() {

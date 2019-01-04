@@ -18,7 +18,7 @@ const height = Dimensions.get('window').height
 class Withdrawal extends React.Component {
   static navigationOptions = {
     // header: null
-    title: '提款'
+    title: '提现'
   }
 
   constructor(props) {
