@@ -215,3 +215,12 @@ export const getUserRebateInfo = (data) => {
     params: data
   })
 }
+
+
+// 查询系统总奖金
+export const getPlatformReward = () => {
+  return fetch({
+    api: '/user/reward/getPlatformReward',
+    type: 'get'
+  })
+}
