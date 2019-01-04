@@ -1,45 +1,40 @@
 import { createAction } from "redux-actions"
-import { getUserBalance } from '../api/basic'
+import {
+  getUserBalance,
+  getUserBankcards,
+  isAllowWithdraw,
+  getUserConsume
+} from '../api/basic'
 import { AsyncStorage } from 'react-native'
 
-// export const AsetUserBankCards = (userId) => {
-//   return createAction(
-//     'SET_USER_BANKINFO',
-//     () => new Promise((resolve, reject) => {
-//       return getUserBankcards({userId}).then(res => {
-//         if (res.code === 0) {
-//           return resolve(res.data)
-//         } else {
-//           return resolve({
-//             userBankCards: [],
-//             bankTime: 6
-//           })
-//         }
-//       })
-//     })
-//   )
-// }
+export const AsetUserBankCards = function(userId) {
+  return createAction(
+    'SET_USER_BANKINFO',
+    async () => {
+      let res = await getUserBankcards({userId})
+      return res.code === 0 ? res.data : {
+        userBankCards: [],
+        bankTime: 6
+      }
+    }
+  )
+}()
 
-export const AsetIsAllowWithdraw = (data) => {
-  return {
-    type: 'SET_ISALLOW_WITHDRAW',
-    payload: data
+export const AsetIsAllowWithdraw = createAction(
+  'SET_ISALLOW_WITHDRAW',
+  async () => {
+    let res = await isAllowWithdraw()
+    return res.code === 0 ? {sign: res.data.sign, message: res.message} : {sign: false, message: ''}
   }
-}
+)
 
-export const AsetUserConsume = (data) => {
-  return {
-    type: 'SET_USER_CONSUME',
-    payload: data
+export const AsetUserConsume = createAction(
+  'SET_USER_CONSUME',
+  async () => {
+    let res = await getUserConsume()
+    return res.code === 0 ? Object.assign({}, res.data, {code: 0}) : {code: res.code, message: res.message}
   }
-}
-
-export const AsetUserBankCards = (data) => {
-  return {
-    type: 'SET_USER_BANKINFO',
-    payload: data
-  }
-}
+)
 
 export const AgetUserBalance = (data) => {
   return {
@@ -101,7 +96,6 @@ export const AsetAllBalance = (userId) => {
           dispatch(AgetUserBalance_HB(res.data.banlance[sysCurrencyInfo.currencyCode].hb || {}))
         })
       } else {
-        // commit('SET_CURRENCY_INFO', {})
         dispatch(AgetUserBalance({}))
         dispatch(AgetUserBalance_YUE({}))
         dispatch(AgetUserBalance_FD({}))

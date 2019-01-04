@@ -10,7 +10,6 @@ import {
   AsetIsAllowWithdraw,
   AsetUserConsume
 } from '../../actions/member'
-import {getUserBankcards, isAllowWithdraw, getUserConsume} from '../../api/basic'
 import { commitWithdrawal } from '../../api/member'
 
 const height = Dimensions.get('window').height
@@ -38,37 +37,15 @@ class Withdrawal extends React.Component {
       sonOrderList: [] // 拆单-子订单集合
     }
     props.AsetAllBalance(props.loginInfo.acc.user.userId)
-    getUserBankcards({userId: props.loginInfo.acc.user.userId}).then(res => {
-      if (res.code === 0) {
-        this.props.AsetUserBankCards(res.data)
-      } else {
-        this.props.AsetUserBankCards({
-          userBankCards: [],
-          bankTime: 6
-        })
-      }
-    })
-    isAllowWithdraw().then(res => {
-      if (res.code === 0) {
-        this.props.AsetIsAllowWithdraw({sign: res.data.sign, message: res.message})
-      } else {
-        this.props.AsetIsAllowWithdraw({sign: false, message: ''})
-      }
-    })
-    getUserConsume().then(res => {
-      if (res.code === 0) {
-        this.props.AsetUserConsume(Object.assign({}, res.data, {code: 0}))
-      } else {
-        this.props.AsetUserConsume({code: res.code, message: res.message})
-      }
-    })
+    this.props.AsetUserBankCards(props.loginInfo.acc.user.userId)
+    this.props.AsetIsAllowWithdraw()
+    this.props.AsetUserConsume()
   }
 
   componentDidMount() {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
     let { userBankInfo } = nextProps
     let curBankItem = {}
     let arr = userBankInfo.userBankCards.map((item, idx) => {
