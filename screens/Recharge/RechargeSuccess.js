@@ -1,15 +1,15 @@
 import React from 'react'
 import Header from '../../components/Header'
-import { Text, Image, ScrollView, View, WebView, Dimensions } from 'react-native';
-import { List, WhiteSpace } from '@ant-design/react-native';
-import { Card, Button, Icon, Left, Body, Right, CardItem } from 'native-base'
+import { Text, Image, ScrollView, View, WebView, Dimensions, Clipboard } from 'react-native';
+import { List, WhiteSpace, Toast, Button } from '@ant-design/react-native';
+import { Card, Left, Body, CardItem } from 'native-base'
 
 const height = Dimensions.get('window').height
 
 export default class RechargeSuccess extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      header: null
+      // header: null
     }
   }
 
@@ -25,8 +25,6 @@ export default class RechargeSuccess extends React.Component {
     const {bankCode, qrCodeSrc, recinfo} = this.props.navigation.state.params
     let {accountName, amount, bankCard, orderAmount, postScript, submitType, url, params, qrCode} = recinfo
     let isQrCode = (bankCode === 'WECHAT_QR' || bankCode === 'ALIPAY_QR' || bankCode === 'WXPAY_QR') && qrCodeSrc
-
-    submitType = 'url'
 
     return (
       <ScrollView style={{backgroundColor: '#f0f0f0'}}>
@@ -51,8 +49,8 @@ export default class RechargeSuccess extends React.Component {
           submitType === 'url' &&
           <View style={{height: height}}>
             <WebView
-              // source={{uri: url + '?' + params}}
-              source={{uri: 'http://www.baidu.com/'}}
+              source={{uri: url + '?' + params}}
+              // source={{uri: 'http://www.baidu.com/'}}
               startInLoadingState={true}
             />
           </View>
@@ -67,18 +65,30 @@ export default class RechargeSuccess extends React.Component {
             </List.Item>
             <List.Item extra={<View>
                 <Text>{bankCard}</Text>
-                <Button iconLeft dark small>
-                  <Icon name='cog' />
-                  <Text>复制</Text>
+                <Button
+                  type="primary"
+                  size="small"
+                  style={{width: 60}}
+                  onPress={() => {
+                    Clipboard.setString(bankCard)
+                    Toast.info('复制成功')
+                  }}>
+                  复制
                 </Button>
               </View>} arrow="empty">
               账号
             </List.Item>
             <List.Item extra={<View style={{width: '90%'}}>
                 <Text>{postScript}</Text>
-                <Button iconLeft dark small>
-                  <Icon name='cog' />
-                  <Text>复制</Text>
+                <Button
+                  type="primary"
+                  size="small"
+                  style={{width: 60}}
+                  onPress={() => {
+                    Clipboard.setString(postScript)
+                    Toast.info('复制成功')
+                  }}>
+                  复制
                 </Button>
               </View>} arrow="empty">
               附言

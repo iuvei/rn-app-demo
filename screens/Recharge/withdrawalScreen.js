@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {ScrollView, StyleSheet, ImageBackground, Text, View, Dimensions, TouchableHighlight} from 'react-native'
+import {ScrollView, StyleSheet, ImageBackground, Text, View, Dimensions} from 'react-native'
 import {Provider, Picker, Button, List, InputItem, Modal, Toast } from '@ant-design/react-native'
 import {MyIconFont} from '../../components/MyIconFont'
 import {RechargeChannelIconMap} from '../../constants/glyphMapHex'
@@ -303,10 +303,10 @@ class Withdrawal extends React.Component {
             资金密码
           </InputItem>
         </List>
-        <TouchableHighlight style={{paddingLeft: 15, paddingTop: 30, paddingRight: 15}}>
+        <View style={{paddingLeft: 15, paddingTop: 30, paddingRight: 15}}>
           <Button type="primary" disabled={sonOrderList.length === 0 || !pwd || !curBankItem.bankCard} loading={isLoading}
                   onPress={submitFunc}>提 现</Button>
-        </TouchableHighlight>
+        </View>
         <View style={{height: 200, padding: 12, alignItems: 'center'}}>
           <Text style={{fontSize: 12, color: '#a4a4a4'}}>提现时间：北京时间 <Text
             style={{color: '#f15a23'}}>09:00:00</Text> 至 第二天 <Text

@@ -33,8 +33,8 @@ class RechargeScreen extends React.Component {
       activeTabIndex: 0,
       minRechargeMoney: 50,
       amount: '',
-      orderAmount: '0',
-      rechargeFee: '0',
+      orderAmount: '',
+      rechargeFee: '',
       isLoading: false,
       returnUrl: 'https://www.baidu.com',
       channelType: Platform.OS,
@@ -196,8 +196,8 @@ class RechargeScreen extends React.Component {
                 onChange={event => {
                   if (event.target.checked) {
                     this.setState({
-                      amount: '0',
-                      orderAmount: '0',
+                      amount: '',
+                      orderAmount: '',
                       rechargeFee: '0'
                     });
                     this.props.setActiveAccount(item);
@@ -269,9 +269,9 @@ class RechargeScreen extends React.Component {
                 onChange={event => {
                   if (event.target.checked) {
                     this.setState({
-                      amount: '0',
-                      orderAmount: '0',
-                      rechargeFee: '0'
+                      amount: '',
+                      orderAmount: '',
+                      rechargeFee: ''
                     });
                     this.props.setActiveAccount(item);
                   }
@@ -333,7 +333,7 @@ class RechargeScreen extends React.Component {
                 this.setState({
                   amount: String(value),
                   orderAmount: String(value),
-                  rechargeFee: '0'
+                  rechargeFee: ''
                 });
               }
             }}
