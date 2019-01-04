@@ -5,12 +5,12 @@ import {
   ScrollView,
   RefreshControl, StyleSheet, Image
 } from 'react-native';
-import { Accordion, Flex, Provider, Toast } from '@ant-design/react-native';
-import Header from './../../../components/Header';
+import { Accordion, Flex, Toast } from '@ant-design/react-native';
+import Header from '../../components/Header';
 import { connect } from "react-redux";
 import {
   setActiveUsualLot
-} from '../../../actions/common'
+} from '../../actions/common'
 import { pull } from 'lodash'
 
 class AddCustomizeGamesScreen extends React.Component {
@@ -39,31 +39,31 @@ class AddCustomizeGamesScreen extends React.Component {
     this.getIconName = value => {
       switch (value) {
         case 'ssc':
-          return require('./../../../assets/images/home/ssc_icon.png')
+          return require('../../assets/images/home/ssc_icon.png')
         break
         case 'syx5':
-          return require('./../../../assets/images/home/syxw_icon.png')
+          return require('../../assets/images/home/syxw_icon.png')
           break
         case 'kl8':
-          return require('./../../../assets/images/home/klc_icon.png')
+          return require('../../assets/images/home/klc_icon.png')
           break
         case 'pk10':
-          return require('./../../../assets/images/home/pks_icon.png')
+          return require('../../assets/images/home/pks_icon.png')
           break
         case 'k3':
-          return require('./../../../assets/images/home/ks_icon.png')
+          return require('../../assets/images/home/ks_icon.png')
           break
         case 'kl10':
-          return require('./../../../assets/images/home/kls_icon.png')
+          return require('../../assets/images/home/kls_icon.png')
           break
         case 'xyc':
-          return require('./../../../assets/images/home/xyc_icon.png')
+          return require('../../assets/images/home/xyc_icon.png')
           break
         case 'dpc':
-          return require('./../../../assets/images/home/dpc_icon.png')
+          return require('../../assets/images/home/dpc_icon.png')
           break
         default:
-          return require('./../../../assets/images/home/ssc_icon.png')
+          return require('../../assets/images/home/ssc_icon.png')
       }
     };
     this.onChange = activeSections => {
@@ -154,73 +154,70 @@ class AddCustomizeGamesScreen extends React.Component {
     let { sysSortLottery } = this.props
     let { checkAllGroup } = this.state
     return (
-      <Provider>
-        <View style={styles.customContainer}>
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
-            }>
-            <Accordion
-              onChange={this.onChange}
-              duration={400}
-              activeSections={this.state.activeSections}
-            >
-              {
-                sysSortLottery.map((item, index) =>{
-                  return (
-                    <Accordion.Panel key={index} header={this._renderHeader(item)} style={{backgroundColor:'#fff'}}>
-                      <View>
-                        {!!item.originLot.length && <View>
-                          <View style={styles.lotTitle}><Text>官方彩</Text></View>
-                          <Flex wrap="wrap">
-                            {
-                              item.originLot.map((v, i) =>{
-                                return (
-                                  <View
-                                    key={i}
-                                    style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtn : styles.defaultBtn}>
-                                    <Text
-                                      numberOfLines={1}
-                                      style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtnText : styles.defaultBtnText}
-                                      onPress={() => this._toSetLot(v)}>{v.lotterName}</Text>
-                                  </View>
-                                )
-                              })
-                            }
-                          </Flex>
-                        </View>}
-                        {!!item.gpLot.length && <View>
-                          <View style={styles.lotTitle}><Text>高频彩</Text></View>
-                          <Flex wrap="wrap">
-                            {
-                              item.gpLot.map((v, i) =>{
-                                return (
-                                  <View
-                                    key={i}
-                                    style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtn : styles.defaultBtn}>
-                                    <Text
-                                      numberOfLines={1}
-                                      style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtnText : styles.defaultBtnText}
-                                      onPress={() => this._toSetLot(v)}>{v.lotterName}</Text>
-                                  </View>
-                                )
-                              })
-                            }
-                          </Flex>
-                        </View>}
-                      </View>
-                    </Accordion.Panel>
-                  )
-                })
-              }
-            </Accordion>
-          </ScrollView>
-        </View>
-      </Provider>
-
+      <View style={styles.customContainer}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }>
+          <Accordion
+            onChange={this.onChange}
+            duration={400}
+            activeSections={this.state.activeSections}
+          >
+            {
+              sysSortLottery.map((item, index) =>{
+                return (
+                  <Accordion.Panel key={index} header={this._renderHeader(item)} style={{backgroundColor:'#fff'}}>
+                    <View>
+                      {!!item.originLot.length && <View>
+                        <View style={styles.lotTitle}><Text>官方彩</Text></View>
+                        <Flex wrap="wrap">
+                          {
+                            item.originLot.map((v, i) =>{
+                              return (
+                                <View
+                                  key={i}
+                                  style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtn : styles.defaultBtn}>
+                                  <Text
+                                    numberOfLines={1}
+                                    style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtnText : styles.defaultBtnText}
+                                    onPress={() => this._toSetLot(v)}>{v.lotterName}</Text>
+                                </View>
+                              )
+                            })
+                          }
+                        </Flex>
+                      </View>}
+                      {!!item.gpLot.length && <View>
+                        <View style={styles.lotTitle}><Text>高频彩</Text></View>
+                        <Flex wrap="wrap">
+                          {
+                            item.gpLot.map((v, i) =>{
+                              return (
+                                <View
+                                  key={i}
+                                  style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtn : styles.defaultBtn}>
+                                  <Text
+                                    numberOfLines={1}
+                                    style={checkAllGroup.includes(v.lotterCode) ? styles.activeBtnText : styles.defaultBtnText}
+                                    onPress={() => this._toSetLot(v)}>{v.lotterName}</Text>
+                                </View>
+                              )
+                            })
+                          }
+                        </Flex>
+                      </View>}
+                    </View>
+                  </Accordion.Panel>
+                )
+              })
+            }
+          </Accordion>
+        </ScrollView>
+      </View>
     )
   }
 }
