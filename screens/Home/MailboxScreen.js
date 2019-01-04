@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -9,8 +9,26 @@ import {
 import Header from './../../components/Header'
 import { List, SwipeAction, SegmentedControl, Toast, Flex } from '@ant-design/react-native';
 import {searchInBox, searchOutBox, delMessage, chatDetail, replyMessage} from './../../api/member'
+import UIListView from '../../components/UIListView'
 
+class FlatListItem extends PureComponent {
+  constructor(props) {
+    super(props)
+  }
 
+  render() {
+    let {item, index} = this.props
+    let {orderId, ruleName} = item
+    return (
+      <View style={{padding: 10}}>
+        <Text>序号: {index}</Text>
+        <Text>RowID: {orderId}</Text>
+        <Text note>Data: {ruleName}</Text>
+      </View>
+    )
+  }
+
+}
 class MailboxScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
@@ -24,14 +42,53 @@ class MailboxScreen extends React.Component {
       refreshing: false,
       tabs: ['收件箱', '发件箱', '写信'],
       activeTab: '收件箱',
-      formData: {
+      params: {
         searchType: 'receiveMessage',
         pageNumber: 1,
         pageSize: 20
       },
       chatList: [],
       totalCount: 0,
+      KeyName: 'Mailbox',
+      api: '/user/message/searchMessage',
     }
+  }
+
+  renderItem = (item, index) => {
+    const right = [
+      {
+        text: '删除',
+        onPress: () => console.log('delete'),
+        style: { backgroundColor: 'red', color: 'white' },
+      },
+    ];
+    let { activeTab } = this.state
+    return (
+      <List key={index}>
+        <SwipeAction
+          autoClose
+          style={{ backgroundColor: 'transparent' }}
+          right={right}
+          onOpen={() => console.log('open')}
+          onClose={() => console.log('close')}
+        >
+          <List.Item>
+            <Flex>
+              <View style={styles.leftMsg}>
+                <Text numberOfLines={1}>
+                  {activeTab === '收件箱' ? <Text style={styles.msgOrigin}>{item.senderName}: </Text> : null}
+                  <Text>{item.title}</Text>
+                </Text>
+                {activeTab === '发件箱' ? <Text style={styles.msgOrigin}>{item.receiveName}(收) </Text> : null}
+              </View>
+              <View>
+                <Text style={styles.startTime}>{this._formateTime(item.sendTime)}</Text>
+              </View>
+            </Flex>
+          </List.Item>
+        </SwipeAction>
+      </List>
+    )
   }
 
   _initMessageList = () => {
@@ -74,24 +131,6 @@ class MailboxScreen extends React.Component {
     },() => this._initMessageList())
   }
 
-  _onRefresh = () => {
-    this.setState({refreshing: true});
-    setTimeout(() => {
-      Toast.success('刷新成功！')
-      this.setState({refreshing: false});
-    }, 1000);
-  }
-
-  _contentViewScroll(e){
-    console.log(e)
-    var offsetY = e.nativeEvent.contentOffset.y; //滑动距离
-    var contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
-    var oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
-    if (offsetY + oriageScrollHeight >= contentSizeHeight){
-      Console.log('上传滑动到底部事件')
-    }
-  }
-
   _formateTime = val => {
     let date = new Date(val)
     Y = date.getFullYear() + '-'
@@ -108,14 +147,7 @@ class MailboxScreen extends React.Component {
   }
 
   render() {
-    const right = [
-      {
-        text: '删除',
-        onPress: () => console.log('delete'),
-        style: { backgroundColor: 'red', color: 'white' },
-      },
-    ];
-    let { chatList, activeTab } = this.state
+    let {api, params, KeyName} = this.state
     return (
       <View style={styles.container}>
         <View style={{height: 50}}>
@@ -127,47 +159,32 @@ class MailboxScreen extends React.Component {
             />
           </View>
         </View>
-        <ScrollView
-          onMomentumScrollEnd={(e) => this._contentViewScroll(e)}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }>
-          <View>
-            {
-              chatList.map((item, index) => {
-                return(
-                  <List key={index}>
-                    <SwipeAction
-                      autoClose
-                      style={{ backgroundColor: 'transparent' }}
-                      right={right}
-                      onOpen={() => console.log('open')}
-                      onClose={() => console.log('close')}
-                    >
-                      <List.Item>
-                        <Flex>
-                          <View style={styles.leftMsg}>
-                            <Text numberOfLines={1}>
-                              {activeTab === '收件箱' ? <Text style={styles.msgOrigin}>{item.senderName}: </Text> : null}
-                              <Text>{item.title}</Text>
-                            </Text>
-                            {activeTab === '发件箱' ? <Text style={styles.msgOrigin}>{item.receiveName}(收) </Text> : null}
-                          </View>
-                          <View>
-                            <Text style={styles.startTime}>{this._formateTime(item.sendTime)}</Text>
-                          </View>
-                        </Flex>
-                      </List.Item>
-                    </SwipeAction>
-                  </List>
-                )
+        <UIListView
+          ref={ref => this.BetHistory = ref}
+          api={api}
+          KeyName={`KeyName-${KeyName}`}
+          params={params}
+          renderItem={this.renderItem}
+          // 第一个参数 params 第二个子组件的将要请求的第N页
+          beforeHttpGet={async ({params, page}, fn) => {
+            // 解决父级数据数据源同步问题，然后数据给到子组件本身
+            await this.setState({
+              params: Object.assign({}, params, {
+                pageNumber: page
               })
-            }
-          </View>
-        </ScrollView>
+            })
+            let handlerParams = this.state.params
+            fn(handlerParams, true)
+          }}
+          // 返回数据空或者处理后的数据源
+          beforeUpdateList={({res}, fn) => {
+            let dataList = res.data && res.data.pageColumns ? res.data.pageColumns : []
+            let {currentPage, total} = res.data
+            let NullData = Math.ceil(total / 20) < currentPage
+            // 或在这里增加 其他状态码的处理Alter
+            fn(NullData ? [] : {dataList})
+          }}
+        />
       </View>
     )
   }
