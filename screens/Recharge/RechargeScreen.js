@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import {ScrollView, StyleSheet, View, Text, ToastAndroid, Platform} from 'react-native'
-import {Container, Toast} from 'native-base'
-import { Accordion, Drawer, List, Button, WhiteSpace, Tabs, Radio, InputItem } from '@ant-design/react-native';
+import {ScrollView, StyleSheet, View, Text, Platform} from 'react-native'
+import { Provider, Accordion, Drawer, List, Button, WhiteSpace, Tabs, Radio, InputItem, Toast } from '@ant-design/react-native';
 import {getRechargeChannels, commitRecharge} from '../../api/member'
 import {isObject} from 'lodash'
 import {MyIconFont} from '../../components/MyIconFont'
@@ -117,21 +116,10 @@ class RechargeScreen extends React.Component {
       msg = '请输入正确的充值金额，必须是两位小数，且末尾不能是0!'
     }
     if (!pattern.test(amount)) {
-      // Toast.fail(msg)
-      // Toast.success('Load success !!!', 1);
-      if (Platform.OS === 'android') {
-        ToastAndroid.show(msg, ToastAndroid.SHORT);
-      }
-      // Toast.show({
-      //   text: "Wrong password!",
-      //   type: "warning"
-      // })
+      Toast.info(msg)
     } else {
       if (amount < minRechargeMoney) {
-        // Toast.fail(`最小充值 ${minRechargeMoney} 元`)
-        if (Platform.OS === 'android') {
-          ToastAndroid.show(`最小充值 ${minRechargeMoney} 元`, ToastAndroid.SHORT);
-        }
+        Toast.info(`最小充值 ${minRechargeMoney} 元`)
         return
       }
       this.setState({
@@ -159,15 +147,9 @@ class RechargeScreen extends React.Component {
           this.props.navigation.navigate('RechargeSuccess', {recinfo: tmprecinfo, qrCodeSrc: qrCodeSrc, bankCode: activeAccount.bankCode})
         } else {
           if (res.message.indexOf('}') !== -1) {
-            if (Platform.OS === 'android') {
-              ToastAndroid.show(JSON.parse(res.message).Message || '充值服务异常', ToastAndroid.SHORT);
-            }
-            // Toast.fail(JSON.parse(res.message).Message || '充值服务异常')
+            Toast.info(JSON.parse(res.message).Message || '充值服务异常')
           } else {
-            // Toast.fail(res.message || '充值服务异常')
-            if (Platform.OS === 'android') {
-              ToastAndroid.show(res.message || '充值服务异常', ToastAndroid.SHORT);
-            }
+            Toast.info(res.message || '充值服务异常')
           }
           this.setState({
             amount: '',
@@ -383,39 +365,41 @@ class RechargeScreen extends React.Component {
     )
 
     return (
-      <View style={styles.container}>
-        <Drawer
-          sidebar={activeTabIndex === 0 ? sidebar : sidebarVirtual}
-          position="right"
-          open={false}
-          drawerRef={el => (this.drawer = el)}
-          onOpenChange={this.onOpenChange}
-          drawerBackgroundColor="#ccc"
-        >
-          <View style={{ flex: 1 }}>
-            <Tabs tabs={tabs} onChange={this.channelTabsChange}>
-              <View>
-                <List style={{width: '100%'}}>
-                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
-                    {activeAccount.bankCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[activeAccount.bankCode]} size={30}/> : null}
-                  </List.Item>
-                </List>
-                {infoDesc}
-                {inputArea}
-              </View>
-              <View>
-                <List style={{width: '100%'}}>
-                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
-                    {activeAccount.coinCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[String(activeAccount.coinCode).toLowerCase()]} size={30}/> : null}
-                  </List.Item>
-                </List>
-                {infoDesc}
-                {inputArea}
-              </View>
-            </Tabs>
-          </View>
-        </Drawer>
-      </View>
+      <Provider>
+        <View style={styles.container}>
+          <Drawer
+            sidebar={activeTabIndex === 0 ? sidebar : sidebarVirtual}
+            position="right"
+            open={false}
+            drawerRef={el => (this.drawer = el)}
+            onOpenChange={this.onOpenChange}
+            drawerBackgroundColor="#ccc"
+          >
+            <View style={{ flex: 1 }}>
+              <Tabs tabs={tabs} onChange={this.channelTabsChange}>
+                <View>
+                  <List style={{width: '100%'}}>
+                    <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
+                      {activeAccount.bankCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[activeAccount.bankCode]} size={30}/> : null}
+                    </List.Item>
+                  </List>
+                  {infoDesc}
+                  {inputArea}
+                </View>
+                <View>
+                  <List style={{width: '100%'}}>
+                    <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
+                      {activeAccount.coinCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[String(activeAccount.coinCode).toLowerCase()]} size={30}/> : null}
+                    </List.Item>
+                  </List>
+                  {infoDesc}
+                  {inputArea}
+                </View>
+              </Tabs>
+            </View>
+          </Drawer>
+        </View>
+      </Provider>
     )
   }
 }
