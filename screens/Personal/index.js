@@ -20,6 +20,9 @@ import TeamChaseHistory from './Agent/TeamChaseHistory'
 import TeamLotteryReport from './Agent/TeamLotteryReport'
 import TeamReport from './Agent/TeamReport'
 import TeamWithdrawHistory from './Agent/TeamWithdrawHistory'
+// 其它
+import RebateDetails from './RebateDetails'
+
 
 export default {
   BetHistory,
@@ -41,5 +44,6 @@ export default {
   TeamChaseHistory,
   TeamLotteryReport,
   TeamReport,
-  TeamWithdrawHistory
+  TeamWithdrawHistory,
+  RebateDetails
 }

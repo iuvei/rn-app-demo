@@ -1,9 +1,10 @@
 import React from 'react'
 import {Image, ScrollView, View, Text, StyleSheet, ImageBackground, TouchableHighlight} from 'react-native'
-import {Button, Flex, Modal, Toast, Provider, Grid} from '@ant-design/react-native'
+import {Button, Flex, Modal, Toast, Grid} from '@ant-design/react-native'
 import {Tab, Tabs, Header} from 'native-base'
 import BetHistory from "./Myself/BetHistory"
 import {connect} from 'react-redux'
+import RebateDetails from './RebateDetails'
 import {setLoginStatus} from "../../actions/common"
 
 const REBATE_TYPE = {
@@ -131,7 +132,6 @@ class PersonalScreen extends React.Component {
           src: require('../../assets/images/personal/tbl3.png')
         }
       ],
-      visible1: false,
       lotteryRebate: 0
     }
   }
@@ -180,10 +180,9 @@ class PersonalScreen extends React.Component {
       }
     ]
     let {agent, order, lotteryRebate} = this.state
-    let {loginInfo, rebateInfo, balanceInfo} = this.props
+    let {loginInfo, balanceInfo} = this.props
     let {canWithdrawBalance, currentBalance} = balanceInfo.ye
     let {currentBalance: fdBalance} = balanceInfo.fd
-    let {userRebackWaterVO, userRebateVO} = rebateInfo
     return (
       <View style={styles.container}>
         <ImageBackground resizeMode='cover' source={require('../../assets/images/personal/bg0.png')}
@@ -198,35 +197,10 @@ class PersonalScreen extends React.Component {
               </View>
               <View style={{alignItems: 'flex-end'}}>
                 <Button style={{height: 32, backgroundColor: '#0f81de', borderRadius: 15}}
-                        onPress={() => this.setState({visible1: true})}>
+                        onPress={() => this.changeRoute('RebateDetails')}>
                   <Text style={{color: 'white', fontSize: 14}}>彩票返点:{lotteryRebate}</Text>
                 </Button>
                 <Text>更多返点></Text>
-                <Modal visible={this.state.visible1} transparent maskClosable={true} popup={false}
-                       onClose={() => this.setState({visible1: false})}>
-                  <View>
-                    {
-                      userRebackWaterVO.map((item, index) => {
-                        return (
-                          <Flex key={index} direction={'row'} justify={'center'}>
-                            <Text style={{flex: 1}}>{WATER_TYPE[item.rebackWaterType]} :</Text>
-                            <Text style={{flex: 1}}> {item.userRebackWater}</Text>
-                          </Flex>
-                        )
-                      })
-                    }
-                    {
-                      userRebateVO.map((item, index) => {
-                        return (
-                          <Flex key={index} direction={'row'} justify={'center'}>
-                            <Text style={{flex: 1}}>{REBATE_TYPE[item.rebateType]}:</Text>
-                            <Text style={{flex: 1}}> {item.userRebate}</Text>
-                          </Flex>
-                        )
-                      })
-                    }
-                  </View>
-                </Modal>
               </View>
             </View>
             <View style={{
@@ -268,28 +242,24 @@ class PersonalScreen extends React.Component {
               <ScrollView style={styles.agent}>
                 <Grid data={order} columnNum={4} hasLine={false} renderItem={(el, index) => {
                   return (
-                    <TouchableHighlight key={index} onPress={() => this.changeRoute(el.path)}>
-                      <View style={{alignItems: 'center', width: 90}}>
-                        <Image source={el.src} style={{width: 50, height: 50}}></Image>
-                        <Text>{el.name}</Text>
-                      </View>
-                    </TouchableHighlight>
+                    <View style={{alignItems: 'center', width: 90}}>
+                      <Image source={el.src} style={{width: 50, height: 50}}></Image>
+                      <Text>{el.name}</Text>
+                    </View>
                   )
-                }} />
+                }} onPress={(el) => this.changeRoute(el.path)} />
               </ScrollView>
             </Tab>
             <Tab heading={'代理管理'}>
               <ScrollView style={styles.agent}>
                 <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
                   return (
-                    <TouchableHighlight key={index} onPress={() => this.changeRoute(el.path)}>
-                      <View style={{alignItems: 'center', width: 90}}>
-                        <Image source={el.src} style={{width: 50, height: 50}}></Image>
-                        <Text>{el.name}</Text>
-                      </View>
-                    </TouchableHighlight>
+                    <View style={{alignItems: 'center', width: 90}}>
+                      <Image source={el.src} style={{width: 50, height: 50}}></Image>
+                      <Text>{el.name}</Text>
+                    </View>
                   )
-                }} />
+                }} onPress={(el) => this.changeRoute(el.path)} />
               </ScrollView>
             </Tab>
           </Tabs>

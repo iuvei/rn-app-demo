@@ -7,7 +7,7 @@ import {
   RefreshControl,
 } from 'react-native'
 import Header from './../../components/Header'
-import { Accordion, Provider, Flex, Toast } from '@ant-design/react-native';
+import { Accordion, Flex, Toast } from '@ant-design/react-native';
 import { connect } from "react-redux";
 import { getSystemNews } from "../../actions/common";
 
@@ -61,37 +61,35 @@ class BroadcastScreen extends React.Component {
   render() {
     let { systemNews } = this.props
     return (
-      <Provider>
-        <View style={styles.container}>
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
-            }>
-            <Accordion
-              onChange={this._onChange}
-              duration={400}
-              activeSections={this.state.activeSections}
-            >
-              {
-                systemNews.map((item, index) =>{
-                  return (
-                    <Accordion.Panel key={index} header={this._renderHeader(item.shortTitle)} style={{backgroundColor:'#fff'}}>
-                      <View style={styles.adContent}>
-                        <Text>{item.title}</Text>
-                        <Text>{item.content}</Text>
-                        <Text style={styles.adTime}>{this._formateTime(item.createTime)}</Text>
-                      </View>
-                    </Accordion.Panel>
-                  )
-                })
-              }
-            </Accordion>
-          </ScrollView>
-        </View>
-      </Provider>
+      <View style={styles.container}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }>
+          <Accordion
+            onChange={this._onChange}
+            duration={400}
+            activeSections={this.state.activeSections}
+          >
+            {
+              systemNews.map((item, index) =>{
+                return (
+                  <Accordion.Panel key={index} header={this._renderHeader(item.shortTitle)} style={{backgroundColor:'#fff'}}>
+                    <View style={styles.adContent}>
+                      <Text>{item.title}</Text>
+                      <Text>{item.content}</Text>
+                      <Text style={styles.adTime}>{this._formateTime(item.createTime)}</Text>
+                    </View>
+                  </Accordion.Panel>
+                )
+              })
+            }
+          </Accordion>
+        </ScrollView>
+      </View>
     )
   }
 }
