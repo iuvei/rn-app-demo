@@ -4,10 +4,8 @@ import Header from './Header'
 
 export default class ThirdView extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
-    console.log(navigation)
     return {
-      header: <Header
-        navigation={navigation}/>
+      // header: null
     }
   }
   
@@ -20,7 +18,7 @@ export default class ThirdView extends React.Component {
     return (
       <View style={{flex: 1}}>
         <WebView
-          source={{uri: this.props.uri || 'http://www.baidu.com/'}}
+          source={{uri: this.props.navigation.getParam('uri', 'http://www.baidu.com/')}}
           startInLoadingState={true}
         />
       </View>
