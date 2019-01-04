@@ -19,8 +19,8 @@ class LoginComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      j_username: 'wede01',
-      j_password: 'abc12345',
+      j_username: '',
+      j_password: '',
       ua: Platform.OS,
       rememberPwd: false,
       rememberUser: false,
