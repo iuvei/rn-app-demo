@@ -2,6 +2,7 @@ import React from 'react'
 import {View, Text, StyleSheet, ImageBackground, ScrollView, Image } from 'react-native'
 import { WhiteSpace, Flex } from '@ant-design/react-native';
 import Header from './../../components/Header'
+import { getPlatformReward } from './../../api/basic'
 
 export default class FoundScreen extends React.Component {
   static navigationOptions = {
@@ -11,6 +12,7 @@ export default class FoundScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      accumulateBouns: '',
       list: [
         {
           title: '开奖公告',
@@ -58,8 +60,50 @@ export default class FoundScreen extends React.Component {
     }
   }
 
+  _moneyShow (val) {
+    val += ''
+    let x = val.split('.')
+    let x1 = x[0]
+    let x2 = x.length > 1 ? '.' + x[1] : ''
+    let rgx = /(\d+)(\d{3})/
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + ',' + '$2')
+    }
+    return x1 + x2
+  }
+
+  _getPlatformReward = () => {
+    getPlatformReward().then(res => {
+      if (res.code === 0) {
+        this.setState({
+          accumulateBouns: String(res.data.bonus)
+        })
+      } else {
+        let time = (new Date()).getTime()
+        let num = 109135811
+        let inittime = (new Date('2018-10-01')).getTime()
+        let sec = (time - inittime) / 1000
+        this.setState({
+          accumulateBouns: String(Math.floor(num + sec * 3))
+        })
+      }
+    }).catch(() => {
+      let time = (new Date()).getTime()
+      let num = 109135811
+      let inittime = (new Date('2018-10-01')).getTime()
+      let sec = (time - inittime) / 1000
+      this.setState({
+        accumulateBouns: String(Math.floor(num + sec * 3))
+      })
+    })
+  }
+
   _actionFun = (item) =>{
     console.log(item)
+  }
+
+  componentDidMount() {
+    this._getPlatformReward()
   }
 
   render() {
@@ -76,16 +120,7 @@ export default class FoundScreen extends React.Component {
                     <Text style={styles.findHeadNumber}>¥</Text>
                   </View>
                   <View>
-                    <Text style={styles.findHeadNumber}>563,</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.findHeadNumber}>193,</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.findHeadNumber}>653,</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.findHeadNumber}>245</Text>
+                    <Text style={styles.findHeadNumber}>{this._moneyShow(this.state.accumulateBouns)}</Text>
                   </View>
                 </Flex>
               </View>
@@ -172,6 +207,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   listBlock: {
+    width: 80,
     paddingLeft: 10
   },
   listTitle: {
