@@ -13,6 +13,8 @@ import {
   AsetAllBalance,
   AsetUserBankCards
 } from './../../actions/member'
+import ThirdView from '../../components/ThirdView'
+import { createStackNavigator } from 'react-navigation'
 
 class LoginComponent extends Component {
   static navigationOptions = {
@@ -23,8 +25,8 @@ class LoginComponent extends Component {
     super(props)
     this.state = {
       formData: {
-        j_username: 'johnny',
-        j_password: 'zhong123',
+        j_username: '',
+        j_password: '',
         ua: ''
       },
       rememberPwd: false
@@ -138,7 +140,7 @@ class LoginComponent extends Component {
             </View>
           </Flex.Item>
           <View style={{height: 40, width: 280, flexDirection: 'row'}}>
-            <Text style={{color: '#ffffff', flex: 1}} onPress={() => this.props.navigation.navigate('ThirdView')}>在线客服</Text>
+            <Text style={{color: '#ffffff', flex: 1}} onPress={() => this.props.navigation.navigate('ThirdView', {uri: 'http://www.baidu.com/'})}>在线客服</Text>
             <Text style={{textAlign: 'right', color: '#ffffff', flex: 1}}>1.11版正式发布</Text>
           </View>
         </Flex>
@@ -186,8 +188,14 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(
+const Login = connect(
   mapStateToProps,
   mapDispatchToProps
 )(LoginComponent)
 
+export default createStackNavigator({
+  Login: Login,
+  ThirdView: ThirdView
+}, {
+  initialRouteName: 'Login'
+})

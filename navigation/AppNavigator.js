@@ -14,6 +14,8 @@ const MainNavigator = createStackNavigator({
   ...HomeNavigator,
   ...RechargeNavigator,
   ...Personal
+}, {
+  initialRouteName: 'Main'
 })
 
 MainNavigator.navigationOptions = {
