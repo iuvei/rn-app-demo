@@ -5,9 +5,11 @@ import {
   Text,
   View,
   RefreshControl,
+  Dimensions
 } from 'react-native'
 import Header from './../../components/Header'
 import { Toast } from "@ant-design/react-native/lib/index";
+import HTML from 'react-native-render-html';
 
 export default class ActivityScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -33,8 +35,15 @@ export default class ActivityScreen extends React.Component {
   }
 
   render() {
+    const htmlContent = `
+    <h1>This HTML snippet is now rendered with native components !</h1>
+    <h2>Enjoy a webview-free and blazing fast application</h2>
+    <img src="https://i.imgur.com/dHLmxfO.jpg?2" />
+    <em style="textAlign: center;">Look at how happy this native cat is</em>
+`;
     return (
       <View style={styles.container}>
+        <HTML html={htmlContent} imagesMaxWidth={Dimensions.get('window').width} />
         <Text>活动页面123</Text>
       </View>
     )

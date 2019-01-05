@@ -104,7 +104,6 @@ export default class FoundScreen extends React.Component {
     } else {
       Toast.info(item.title + '正在开发中！')
     }
-    console.log(item)
   }
 
   componentDidMount() {
