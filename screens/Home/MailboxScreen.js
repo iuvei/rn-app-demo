@@ -1,34 +1,14 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import {
-  ScrollView,
   StyleSheet,
   Text,
   View,
-  RefreshControl
 } from 'react-native'
 import Header from './../../components/Header'
 import { List, SwipeAction, SegmentedControl, Toast, Flex } from '@ant-design/react-native'
-import { searchInBox, searchOutBox, delMessage, chatDetail, replyMessage } from './../../api/member'
+import { delMessage, chatDetail, replyMessage } from './../../api/member'
 import UIListView from '../../components/UIListView'
-
-class FlatListItem extends PureComponent {
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    let {item, index} = this.props
-    let {orderId, ruleName} = item
-    return (
-      <View style={{padding: 10}}>
-        <Text>序号: {index}</Text>
-        <Text>RowID: {orderId}</Text>
-        <Text note>Data: {ruleName}</Text>
-      </View>
-    )
-  }
-
-}
+import WriteEmail from './WriteEmail'
 
 class MailboxScreen extends React.Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -48,10 +28,17 @@ class MailboxScreen extends React.Component {
         pageNumber: 1,
         pageSize: 20
       },
+      sendParams: {
+        searchType: 'sendMessage',
+        pageNumber: 1,
+        pageSize: 20
+      },
       chatList: [],
       totalCount: 0,
       KeyName: 'Mailbox',
-      api: '/user/message/searchMessage'
+      SendKeyName: 'SendBox',
+      api: '/user/message/searchMessage',
+      sendApi: '/user/message/sendInboxMessage'
     }
   }
 
@@ -76,7 +63,6 @@ class MailboxScreen extends React.Component {
           <List.Item>
             <Flex>
               <View style={styles.leftMsg}>
-                <Text>{index}</Text>
                 <Text numberOfLines={1}>
                   {activeTab === '收件箱' ?
                     <Text style={styles.msgOrigin}>{item.senderName}: </Text> : null}
@@ -96,44 +82,10 @@ class MailboxScreen extends React.Component {
     )
   }
 
-  _initMessageList = () => {
-    this.setState({
-      chatList: [],
-      totalCount: 0,
-      formData: {
-        searchType: 'receiveMessage',
-        pageNumber: 1,
-        pageSize: 20
-      }
-    }, () => {
-      if (this.state.activeTab === '收件箱') {
-        searchInBox(this.state.formData).then((res) => {
-          if (res.code === 0) {
-            let {pageColumns, pageInfo} = res.data
-            this.setState({
-              chatList: pageColumns || [],
-              totalCount: pageInfo.total || 0
-            })
-          }
-        })
-      } else if (this.state.activeTab === '发件箱') {
-        searchOutBox(this.state.formData).then((res) => {
-          if (res.code === 0) {
-            let {pageColumns, pageInfo} = res.data
-            this.setState({
-              chatList: pageColumns || [],
-              totalCount: pageInfo.total || 0
-            })
-          }
-        })
-      }
-    })
-  }
-
   _getActiveTab = (val) => {
     this.setState({
       activeTab: val
-    }, () => this._initMessageList())
+    })
   }
 
   _formateTime = val => {
@@ -148,12 +100,11 @@ class MailboxScreen extends React.Component {
   }
 
   componentDidMount() {
-    // this._initMessageList()
+
   }
 
   render() {
-    let {api, params, KeyName} = this.state
-    console.log(api, params, KeyName)
+    let {api, params, KeyName, sendApi, sendParams, SendKeyName, activeTab} = this.state
     return (
       <View style={styles.container}>
         <View style={{height: 50}}>
@@ -165,21 +116,24 @@ class MailboxScreen extends React.Component {
             />
           </View>
         </View>
-        <UIListView
-          ref={ref => this.MailBox = ref}
-          api={api}
-          KeyName={`KeyName-${KeyName}`}
-          params={params}
-          renderItem={this.renderItem}
-          // beforeUpdateList={({res}, fn) => {
-          //   let {pageColumns, pageInfo} = res
-          //   console.log('data beforeUpdateList', pageColumns.length)
-          //   let {lastPage, currentPage} = pageInfo
-          //   console.log(lastPage < currentPage, 'lastPage < currentPage ')
-          //   let dataList = lastPage < currentPage ? [] : pageColumns
-          //   fn(dataList)
-          // }}
-        />
+        {
+          activeTab === '收件箱' ? <UIListView
+            ref={ref => this.MailBox = ref}
+            api={api}
+            type={'get'}
+            KeyName={`KeyName-${KeyName}`}
+            params={params}
+            renderItem={this.renderItem}
+          /> :
+          activeTab === '发件箱' ? <UIListView
+            ref={ref => this.MailBox = ref}
+            api={sendApi}
+            type={'get'}
+            KeyName={`KeyName-${SendKeyName}`}
+            params={sendParams}
+            renderItem={this.renderItem}
+          /> : <WriteEmail />
+        }
       </View>
     )
   }
