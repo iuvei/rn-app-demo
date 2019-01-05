@@ -21,6 +21,42 @@ export default class SettingsScreen extends React.Component {
           <List.Item
             thumb={<Ionicons name="md-card" color="#016fca" size={20}/>}
             arrow="horizontal"
+          >
+            修改昵称
+          </List.Item>
+          <List.Item
+            thumb={<Ionicons name="md-card" color="#016fca" size={20}/>}
+            arrow="horizontal"
+          >
+            修改登录密码
+          </List.Item>
+          <List.Item
+            thumb={<Ionicons name="md-card" color="#016fca" size={20}/>}
+            arrow="horizontal"
+          >
+            资金密码
+          </List.Item>
+          <List.Item
+            thumb={<Ionicons name="md-card" color="#016fca" size={20}/>}
+            arrow="horizontal"
+          >
+            支付宝
+          </List.Item>
+          <List.Item
+            thumb={<Ionicons name="md-card" color="#016fca" size={20}/>}
+            arrow="horizontal"
+          >
+            密码保护
+          </List.Item>
+          <List.Item
+            thumb={<Ionicons name="md-card" color="#016fca" size={20}/>}
+            arrow="horizontal"
+          >
+            谷歌验证
+          </List.Item>
+          <List.Item
+            thumb={<Ionicons name="md-card" color="#016fca" size={20}/>}
+            arrow="horizontal"
             onPress={() => this.props.navigation.navigate('BankManager')}
           >
             银行卡管理
