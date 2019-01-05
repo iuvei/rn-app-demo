@@ -30,32 +30,47 @@ class AddBankcard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isLoading: false,
       address: [],
-      curBank: []
+      curBank: [],
+      bankBranch: '',
+      bankCard: '',
+      bankAddress: '',
+      regbankCardNumber: '',
+      pwd: '',
+      bankCode: '',
+      bankWebsite: '',
+      isDefault: 1
     }
     props.AsetSysBanklist()
   }
 
   render() {
     let { sysBankList } = this.props
+    let { bankAddress, bankWebsite, bankCard, regbankCardNumber, bankBranch, pwd } = this.state
 
     return (
       <Provider>
         <View style={{paddingHorizontal: 15, paddingVertical: 10, flex: 1, backgroundColor: '#f0f0f0'}}>
           <View style={styles.inputItem}>
             <Picker
-              data={sysBankList.map(item => {
-                return {...item, value: item.shortName, label: item.bankName}
+              data={sysBankList.map((item, index) => {
+                return {...item, value: index, label: item.bankName}
               })}
               cols={1}
-              value={this.state.curBank}
-              onChange={() => {}}
+              value={''}
+              onChange={(v) => {
+                this.setState({
+                  curBank: v,
+                  bankBranch: sysBankList[v].bankName,
+                  bankCode: sysBankList[v].bankCode
+                })
+              }}
               extra={<Ionicons name="ios-arrow-dropright" size={20} color="#999999"/>}
             >
               <List.Item style={{paddingLeft: 0, marginLeft: 0, width: '100%', height: 44, lineHeight: 43}}>
                 <InputItem
-                  clear
-                  value=""
+                  value={bankBranch}
                   placeholder="请选择开户银行"
                   editable={false}
                   style={{borderBottomWidth: 0}}
@@ -69,14 +84,18 @@ class AddBankcard extends React.Component {
             <Picker
               data={data}
               cols={3}
-              value={this.state.address}
-              onChange={() => {}}
+              value={''}
+              onChange={(v) => {
+                this.setState({
+                  bankAddress: v.join('-'),
+                  address: v
+                })
+              }}
               extra={<Ionicons name="ios-arrow-dropright" size={20} color="#999999"/>}
             >
               <List.Item style={{paddingLeft: 0, marginLeft: 0, width: '100%', height: 44, lineHeight: 43}}>
                 <InputItem
-                  clear
-                  value=""
+                  value={bankAddress}
                   placeholder="请选择省份城市"
                   editable={false}
                   style={{borderBottomWidth: 0}}
@@ -88,9 +107,13 @@ class AddBankcard extends React.Component {
           </View>
           <View style={styles.inputItem}>
             <InputItem
-              clear
-              value=""
+              value={bankWebsite}
               style={{borderBottomWidth: 0}}
+              onChange={(v) => {
+                this.setState({
+                  bankWebsite: v
+                })
+              }}
               placeholder="请输入开户网点"
             >
               <Ionicons name="md-locate" color="#016fca" size={24}/>
@@ -98,40 +121,48 @@ class AddBankcard extends React.Component {
           </View>
           <View style={styles.inputItem}>
             <InputItem
-              clear
-              value=""
+              value="XX持卡人姓名XX"
               style={{borderBottomWidth: 0}}
-              placeholder="请输入持卡人姓名"
+              editable={false}
             >
               <Icon name="user" color="#016fca" size={24}/>
             </InputItem>
           </View>
           <View style={styles.inputItem}>
             <InputItem
-              clear
-              value=""
+              value={bankCard}
               style={{borderBottomWidth: 0}}
               placeholder="请输入银行卡号"
+              type="number"
+              onChange={(v) => this.setState({
+                bankCard: v
+              })}
             >
               <Ionicons name="md-card" color="#016fca" size={24}/>
             </InputItem>
           </View>
           <View style={styles.inputItem}>
             <InputItem
-              clear
-              value=""
+              value={regbankCardNumber}
               style={{borderBottomWidth: 0}}
               placeholder="请再次输入银行卡号"
+              type="number"
+              onChange={(v) => this.setState({
+                regbankCardNumber: v
+              })}
             >
               <Ionicons name="md-card" color="#016fca" size={24}/>
             </InputItem>
           </View>
           <View style={styles.inputItem}>
             <InputItem
-              clear
-              value=""
+              value={pwd}
               style={{borderBottomWidth: 0}}
               placeholder="请输入资金密码"
+              type="password"
+              onChange={(v) => this.setState({
+                pwd: v
+              })}
             >
               <Icon name="lock" color="#016fca" size={24}/>
             </InputItem>
