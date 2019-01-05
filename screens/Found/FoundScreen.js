@@ -1,6 +1,6 @@
 import React from 'react'
 import {View, Text, StyleSheet, ImageBackground, ScrollView, Image } from 'react-native'
-import { WhiteSpace, Flex } from '@ant-design/react-native';
+import { WhiteSpace, Flex, Toast } from '@ant-design/react-native';
 import Header from './../../components/Header'
 import { getPlatformReward } from './../../api/basic'
 
@@ -23,7 +23,7 @@ export default class FoundScreen extends React.Component {
         {
           title: '优惠活动',
           text: '回馈新老客户',
-          route: '',
+          route: 'Activity',
           src: require('./../../assets/images/found/activity.png')
         },
         {
@@ -99,6 +99,11 @@ export default class FoundScreen extends React.Component {
   }
 
   _actionFun = (item) =>{
+    if (item.route) {
+      this.props.navigation.push(item.route)
+    } else {
+      Toast.info(item.title + '正在开发中！')
+    }
     console.log(item)
   }
 
@@ -133,8 +138,8 @@ export default class FoundScreen extends React.Component {
             {
               list.map((item, index) => {
                 return (
-                  <View style={styles.findItem} key={index} onPress={() => this._actionFun(item)}>
-                    <Flex style={{height: 70}}>
+                  <View style={styles.findItem} key={index}>
+                    <Flex style={{height: 70}} onPress={() => this._actionFun(item)}>
                       <View style={styles.listBlock}>
                         <Text style={styles.listTitle}>{item.title}</Text>
                         <Text style={styles.listText}>{item.text}</Text>
