@@ -1,5 +1,5 @@
 import { getSysLottery } from "../api/lottery";
-import { getAllAdversize, getActivities }from "../api/basic";
+import { getAllAdversize, getActivities, getBankList }from "../api/basic";
 import { createAction } from "redux-actions";
 import { AsyncStorage } from "react-native";
 import { list } from "../data/activity";
@@ -136,3 +136,10 @@ export const setUserBalance = (data) => {
     payload: data
   }
 }
+
+export const AsetSysBanklist = createAction(
+  'SET_SYS_BANKLIST',
+  async () => {
+    let res = await getBankList()
+    return res.code === 0 ? res.data.bankList : []
+  })

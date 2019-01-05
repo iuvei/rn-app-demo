@@ -82,7 +82,8 @@ const initialState = {
   systemNews: [],  // 系统公告
   loginInfo: {},  // 用户信息
   rebateInfo: {}, // 用户返点返水信息
-  balanceInfo: {} // 用户账户余额信息
+  balanceInfo: {}, // 用户账户余额信息
+  sysBankList: [], // 系统银行卡列表
 }
 
 // 常规处理
@@ -185,6 +186,12 @@ const common = handleActions({
     return {
       ...state,
       balanceInfo: payload
+    }
+  },
+  SET_SYS_BANKLIST: (state, {payload}) => {
+    return {
+      ...state,
+      sysBankList: payload
     }
   }
 }, initialState)

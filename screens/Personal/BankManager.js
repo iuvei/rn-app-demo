@@ -19,6 +19,12 @@ import {
 } from '../../actions/member'
 
 class BankManager extends React.Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      title: '银行卡管理'
+    }
+  }
+
   constructor(props) {
     super(props)
     this.state = {}
