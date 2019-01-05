@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
-import {Alert, Dimensions, Platform, View, Text, StyleSheet} from 'react-native'
-import {UltimateListView} from 'react-native-ultimate-listview'
+import React, { Component } from 'react'
+import { Alert, Dimensions, Platform, View, Text, StyleSheet } from 'react-native'
+import { UltimateListView } from 'react-native-ultimate-listview'
 import styles from './styles'
 import LoadingSpinner from './loadingSpinner'
-import {fetch} from '../../services/HttpService'
+import { fetch } from '../../services/HttpService'
 import PropTypes from 'prop-types'
 
 const TableRow = 10
@@ -44,7 +44,6 @@ class ExampleScroll extends Component {
         isGet = false
         await this.props.beforeHttpGet(
           {params, page}, (AfterParams, getStatus) => {
-            // console.log('AfterParams, getStatus', AfterParams, getStatus)
             params = AfterParams
             isGet = getStatus
           }
@@ -55,15 +54,26 @@ class ExampleScroll extends Component {
         })
       }
       if (!isGet) {
-        startFetch(rowData, 10)
+        startFetch(rowData, params.pageSize || 10)
         return
       }
       await fetch({api, params, type}).then(res => {
-        this.props.beforeUpdateList({api, params, res}, ({dataList}) => {
-          rowData = dataList
-        })
+        // console.log('to fn', params.pageNumber)
+        if (typeof this.props.beforeUpdateList === 'function') {
+          this.props.beforeUpdateList({api, params, res}, ({dataList}) => {
+            rowData = dataList
+          })
+        } else {
+          try {
+            let {pageColumns, pageInfo: {total}} = res.data
+            let {pageSize, pageNumber} = params
+            rowData = pageNumber > Math.ceil(total / pageSize) ? [] : pageColumns
+          } catch {
+            console.warn('未能正常渲染数据，请检查数据')
+          }
+        }
       })
-      startFetch(rowData, 10)
+      startFetch(rowData, params.pageSize || 10)
     } catch (err) {
       // manually stop the refresh or pagination if it encounters network error
       // console.log(err)

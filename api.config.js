@@ -4,8 +4,8 @@ module.exports = {
   // port: 9302,
 
   // proxy urlhttp://150.109.183.26:8031/
-  // proxyUrl: 'http://150.109.183.26:8031',
-  proxyUrl: 'http://tianxiang.qmuitest.com',
+  proxyUrl: 'http://150.109.183.26:8031',
+  // proxyUrl: 'http://tianxiang.qmuitest.com',
   // proxyUrl: 'http://119.28.86.192:81',
 
   // 请求地址前缀
