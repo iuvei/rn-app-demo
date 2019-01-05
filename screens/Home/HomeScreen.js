@@ -14,7 +14,8 @@ import Header from './../../components/Header'
 import {
   setCustomizeLottery,
   setActiveUsualLot,
-  getSystemNews
+  getSystemNews,
+  queryActivity
 } from './../../actions/common'
 import { getHotLotter } from './../../api/lottery'
 
@@ -90,6 +91,7 @@ class HomeScreen extends React.Component {
     this.props.setActiveUsualLot({custom: 0, data: []})
     this._initHotLottery()
     this.props.navigation.setParams({ changeTextFun: this.changeTextFun })
+    this.props.queryActivity()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -430,7 +432,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     getSystemNews: (data) => {
       dispatch(getSystemNews(data))
-    }
+    },
+    queryActivity: () => {
+      dispatch(queryActivity())
+    },
   }
 }
 
