@@ -1,5 +1,5 @@
 import React from 'react'
-import {createSwitchNavigator, createStackNavigator} from 'react-navigation'
+import { createSwitchNavigator, createStackNavigator } from 'react-navigation'
 // Switch 二选1导航
 import LoginScreen from '../screens/Login/LoginScreen'
 import MainTabNavigator from './MainTabNavigator'
@@ -9,13 +9,15 @@ import HomeNavigator from '../screens/Home'
 import RechargeNavigator from '../screens/Recharge'
 import Personal from '../screens/Personal'
 import Found from '../screens/Found'
+import Bet from '../screens/Bet/BetScreen'
 
 const MainNavigator = createStackNavigator({
   Main: MainTabNavigator,
   ...HomeNavigator,
   ...RechargeNavigator,
   ...Personal,
-    ...Found
+  ...Found,
+  Bet
 }, {
   initialRouteName: 'Main'
 })
