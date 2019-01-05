@@ -12,6 +12,6 @@ const CustomIcon = createIconSet(glyphMap, 'MyIconFont');
 export class MyIconFont extends React.Component {
   // name size color
   render() {
-    return <CustomIcon {...this.props} />;
+    return <CustomIcon {...this.props}/>; // color="red"
   }
 }

@@ -211,6 +211,35 @@ export const glyphMapHex = {
   icon_kefu: "0xe668",
 }
 
+// min 图标map
+export const minbankCodeMap = {
+  ABC: 'nongyeyinhang',
+  BOCOM: 'jiaotongyinhang',
+  BHBC: 'bohaiyinhang',
+  BCCB: 'beijingyinhang', // 北京银行
+  BOB: 'beijingyinhang', // 北京银行
+  BOC: 'zhongguoyinhang',
+  BJRCB: 'beijingnongcunshangyeyinhang',
+  CCB: 'jiansheyinhang',
+  CEB: 'guangdayinhang',
+  CIB: 'xingyeyinhang',
+  CMB: 'zhaoshangyinhang',
+  CMBC: 'minshengyinhang',
+  CITIC: 'zhongxinyinhang',
+  CZB: 'zheshangyinhang',
+  CGB: 'guangfayinhang', // 广发银行
+  GDB: 'guangfayinhang', // 广发银行
+  HXB: 'huaxiayinhang',
+  ICBC: 'gongshangyinhang',
+  NBCB: 'ningboyinhang',
+  NJCB: 'nanjingyinhang',
+  PAB: 'pinganyinhang',
+  PSBC: 'youchuyinhang',
+  BOS: 'shanghaiyinhang',
+  SPDB: 'pufayinhang',
+  SRCB: 'shanghainongshangyinhang'
+}
+
 // 充值页面充值渠道图标map
 export const RechargeChannelIconMap = {
   alipay: 'alipay',

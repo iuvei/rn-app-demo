@@ -37,9 +37,9 @@ class Withdrawal extends React.Component {
       sonOrderList: [] // 拆单-子订单集合
     }
     props.AsetAllBalance(props.loginInfo.acc.user.userId)
-    this.props.AsetUserBankCards(props.loginInfo.acc.user.userId)
-    this.props.AsetIsAllowWithdraw()
-    this.props.AsetUserConsume()
+    props.AsetUserBankCards(props.loginInfo.acc.user.userId)
+    props.AsetIsAllowWithdraw()
+    props.AsetUserConsume()
   }
 
   componentDidMount() {
