@@ -78,6 +78,7 @@ const initialState = {
       status: 0
     }
   ],
+  sysActivities: [], // 活动信息列表
   systemNews: [],  // 系统公告
   loginInfo: {},  // 用户信息
   rebateInfo: {}, // 用户返点返水信息
@@ -166,6 +167,12 @@ const common = handleActions({
     return {
       ...state,
       systemNews: payload
+    }
+  },
+  QUERY_ACTIVITY: (state, {payload}) => {
+    return {
+      ...state,
+      sysActivities: payload
     }
   },
   SET_USER_REBATE: (state, {payload}) => {
