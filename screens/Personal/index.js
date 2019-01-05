@@ -22,6 +22,7 @@ import TeamReport from './Agent/TeamReport'
 import TeamWithdrawHistory from './Agent/TeamWithdrawHistory'
 // 其它
 import RebateDetails from './RebateDetails'
+import SettingsScreen from '../SettingsScreen'
 
 
 export default {
@@ -45,5 +46,6 @@ export default {
   TeamLotteryReport,
   TeamReport,
   TeamWithdrawHistory,
+  SettingsScreen,
   RebateDetails
 }

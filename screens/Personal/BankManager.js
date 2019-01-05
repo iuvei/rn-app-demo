@@ -5,7 +5,8 @@ import {
   Image,
   View,
   StyleSheet,
-  ImageBackground 
+  ImageBackground,
+  TouchableHighlight
 } from 'react-native'
 import {
   Button,
@@ -39,12 +40,14 @@ class BankManager extends React.Component {
         <View style={{flex: 1, alignItems: 'center'}}>
           <View style={{height: 60, backgroundColor: '#ffffff', width: '100%'}}></View>
           <Image source={require('../../assets/images/nobank.jpg')} style={{height: 330, width: '100%'}} />
-          <View style={{width: '100%', backgroundColor: '#f7f7f7', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-            <Button iconLeft bordered>
-              <Icon name='add' />
-              <Text>添加银行卡</Text>
-            </Button>
-          </View>
+          <TouchableHighlight onPress={() => this.props.navigation.navigate('AddBankcard')}>
+            <View style={{width: '100%', backgroundColor: '#f7f7f7', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+              <Button iconLeft bordered>
+                <Icon name='add' />
+                <Text>添加银行卡</Text>
+              </Button>
+            </View>
+          </TouchableHighlight>
         </View>
       )
     } else {
@@ -86,10 +89,12 @@ class BankManager extends React.Component {
           <View style={{flex: 1}}>
             {banks}
           </View>
-          <View style={{...styles.bankItem, backgroundColor: '#ffffff', borderRadius: 5, alignItems: 'center'}}>
-            <Image source={require('../../assets/images/addIconPng.png')} style={{width: 72, height: 72, marginTop: 8}}/>
-            <Text style={{fontSize: 14, color: '#333333'}}>添加银行卡</Text>
-          </View>
+          <TouchableHighlight onPress={() => this.props.navigation.navigate('AddBankcard')}>
+            <View style={{...styles.bankItem, backgroundColor: '#ffffff', borderRadius: 5, alignItems: 'center'}}>
+              <Image source={require('../../assets/images/addIconPng.png')} style={{width: 72, height: 72, marginTop: 8}}/>
+              <Text style={{fontSize: 14, color: '#333333'}}>添加银行卡</Text>
+            </View>
+          </TouchableHighlight>
         </ScrollView>
       )
     }

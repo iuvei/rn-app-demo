@@ -176,6 +176,7 @@ class PersonalScreen extends React.Component {
       },
       {
         name: '设置',
+        path: 'SettingsScreen',
         src: require('../../assets/images/personal/icon5.png')
       }
     ]
