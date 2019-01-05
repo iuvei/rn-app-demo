@@ -3,8 +3,9 @@ import {View, Text, StyleSheet} from 'react-native'
 import {connect} from 'react-redux'
 import {SegmentedControl, InputItem, Flex, Button, Toast, PickerView} from '@ant-design/react-native'
 import {Picker} from 'native-base'
-import {addDown, addSignup} from '../../../api/member'
+import {addDown, addSignup, delSignup} from '../../../api/member'
 import UIListView from '../../../components/UIListView'
+import dayjs from 'dayjs'
 
 const TableRow = 20
 
@@ -13,14 +14,29 @@ class FlatListItem extends PureComponent {
     super(props)
   }
 
+  _delSignUp = (id) => {
+    delSignup({signUpId: id}).then((res) => {
+      if (res.code === 0) {
+        Toast.info(res.message)
+      }
+    })
+  }
   render() {
     let {item, index} = this.props
-    let {balanceHours, createTime} = item
+    let {balanceHours, createTime, id, isProxy, times, useTimes, validDays, rebate} = item
+    validDays = validDays * 1000 * 3600
+    let text = validDays ? dayjs(validDays + createTime).format('YYYY-MM-DD HH:mm:ss') : '长期有效'
     return (
       <View style={{padding: 10}}>
-        <Text style={{color: 'black'}}>序号: {index}</Text>
-        <Text>RowID: {balanceHours}</Text>
-        <Text note>Data: {createTime}</Text>
+        <Text>注册码: {id}</Text>
+        <Text>用户类别: {isProxy === 0 ? '玩家' : '代理'}</Text>
+        <Text>彩票返点: {rebate}</Text>
+        <Text>剩余次数: {times}</Text>
+        <Text>过期时间: {text}</Text>
+        <Flex>
+          <Text>操作:</Text>
+          <Button type={'warning'} style={{height: 30}} onPress={() => this._delSignUp(id)}>删除</Button>
+        </Flex>
       </View>
     )
   }
@@ -252,7 +268,7 @@ class OpenCenter extends React.Component {
   manageRender = () => {
     let {api, params, KeyName, isShow} = this.state
     return (
-      <View style={styles.normal}>
+      <View style={{flex: 1}}>
         <UIListView
           ref={ref => this.OpenCenter = ref}
           api={api}
@@ -272,10 +288,7 @@ class OpenCenter extends React.Component {
           }}
           // 返回数据空或者处理后的数据源
           beforeUpdateList={({res}, fn) => {
-            console.log(res)
             let dataList = res.data && res.data.root ? res.data.root : []
-            let {page, records, totalCount} = res.data
-            let NullData = Math.ceil(totalCount / page) < records
             // 或在这里增加 其他状态码的处理Alter
             fn({dataList})
           }}

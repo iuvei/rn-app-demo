@@ -12,7 +12,7 @@ export default class FoundScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      accumulateBouns: '',
+      accumulateBouns: '99,999,888,789',
       list: [
         {
           title: '开奖公告',

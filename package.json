@@ -15,6 +15,7 @@
     "@expo/samples": "2.1.1",
     "@expo/vector-icons": "^8.1.0",
     "axios": "^0.18.0",
+    "dayjs": "^1.7.8",
     "expo": "^31.0.2",
     "lodash": "^4.17.11",
     "native-base": "^2.8.2",
