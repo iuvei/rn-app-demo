@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { View, Image, StyleSheet, Text, Platform, ImageBackground, Switch, AsyncStorage } from 'react-native'
 import {connect} from 'react-redux'
-import {setLoginStatus, setLoginInfo} from '../../actions/common'
+import {setLoginStatus, setLoginInfo, AsetUserSecureLevel} from '../../actions/common'
 import {signIn} from '../../api/basic'
 import { Button, Icon, InputItem, Flex, Toast } from '@ant-design/react-native';
 import {
@@ -69,6 +69,7 @@ class LoginComponent extends Component {
         this.props.setLoginInfo(res.data)
         this.props.AsetAllBalance(res.data.user.userId)
         this.props.AsetUserBankCards(res.data.user.userId)
+        this.props.AsetUserSecureLevel()
         this.props.navigation.navigate('Main')
       } else {
         Toast.info(res.message || '网络错误，请重试')
@@ -234,7 +235,8 @@ const mapDispatchToProps = (dispatch) => {
     AsetAllBalance: (data) => {
       dispatch(AsetAllBalance(data))
     },
-    AsetUserBankCards: data => dispatch(AsetUserBankCards(data))
+    AsetUserBankCards: data => dispatch(AsetUserBankCards(data)),
+    AsetUserSecureLevel: data => dispatch(AsetUserSecureLevel(data))
   }
 }
 

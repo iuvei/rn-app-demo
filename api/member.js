@@ -392,13 +392,6 @@ export const delSignup = (data) => {
     params: data
   })
 }
-// 获取账户安全等级
-export const getUserSecurityLevel = () => {
-  return fetch({
-    type: 'get',
-    api: '/user/userSecurityLevel'
-  })
-}
 
 /**
  * start 充值/提现/转账 相关接口

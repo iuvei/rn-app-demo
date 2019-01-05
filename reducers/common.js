@@ -84,6 +84,8 @@ const initialState = {
   rebateInfo: {}, // 用户返点返水信息
   balanceInfo: {}, // 用户账户余额信息
   sysBankList: [], // 系统银行卡列表
+  userSecurityLevel: {}, // 账户安全等级
+  userSecurityConfig: {}, // 解绑资金密码，GA密码，银行卡姓名开关
 }
 
 // 常规处理
@@ -192,6 +194,18 @@ const common = handleActions({
     return {
       ...state,
       sysBankList: payload
+    }
+  },
+  SET_USER_SECURELEVEL: (state, {payload}) => {
+    return {
+      ...state,
+      userSecurityLevel: payload
+    }
+  },
+  SET_USER_SECURECONFIG: (state, {payload}) => {
+    return {
+      ...state,
+      userSecurityConfig: payload
     }
   }
 }, initialState)
