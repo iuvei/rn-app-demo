@@ -1,14 +1,9 @@
 import React, {Component} from 'react'
-import {
-  View, Image,
-  StyleSheet, Text, Platform,
-  ImageBackground, Switch
-} from 'react-native'
+import { View, Image, StyleSheet, Text, Platform, ImageBackground, Switch, AsyncStorage } from 'react-native'
 import {connect} from 'react-redux'
 import {setLoginStatus, setLoginInfo} from '../../actions/common'
 import {signIn} from '../../api/basic'
-// import { Ionicons } from '@expo/vector-icons'
-import { Button, Icon, InputItem, Flex } from '@ant-design/react-native';
+import { Button, Icon, InputItem, Flex, Toast } from '@ant-design/react-native';
 import {
   AsetAllBalance,
   AsetUserBankCards
@@ -23,48 +18,66 @@ class LoginComponent extends Component {
 
   constructor(props) {
     super(props)
+    this.willUnmount = false
     this.state = {
-      formData: {
-        j_username: '',
-        j_password: '',
-        ua: ''
-      },
-      rememberPwd: false
+      j_username: '',
+      j_password: '',
+      ua: Platform.OS,
+      rememberPwd: false,
+      rememberUser: false,
+      seePwd: false
     }
     if (this.props.isLogin) this.props.navigation.navigate('Main')
   }
 
   componentDidMount() {
-    // 配置平台
-    // console.log(Platform)
-    this.setState({
-      formData: Object.assign({},
-        this.state.formData,
-        {ua: Platform.OS})
+    AsyncStorage.getItem('j_username').then(v => {
+      if (this.willUnmount) return
+      this.setState({
+        j_username: v
+      })
+    })
+    AsyncStorage.getItem('j_password').then(v => {
+      if (this.willUnmount) return
+      this.setState({
+        j_password: v
+      })
+    })
+    AsyncStorage.getItem('rememberUser').then(v => {
+      if (this.willUnmount) return
+      this.setState({
+        rememberUser: Boolean(v)
+      })
+    })
+    AsyncStorage.getItem('rememberPwd').then(v => {
+      if (this.willUnmount) return
+      this.setState({
+        rememberPwd: Boolean(v)
+      })
     })
   }
 
+  componentWillUnmount() {
+    this.willUnmount = true
+  }
+
   _toLogin() {
-    let {formData} = this.state
-    signIn(formData).then(res => {
+    let {j_username, j_password, ua} = this.state
+    signIn({j_username, j_password, ua}).then(res => {
       if (res.code === 0) {
         this.props.setLoginStatus(res.code === 0)
         this.props.setLoginInfo(res.data)
         this.props.AsetAllBalance(res.data.user.userId)
         this.props.AsetUserBankCards(res.data.user.userId)
         this.props.navigation.navigate('Main')
+      } else {
+        Toast.info(res.message || '网络错误，请重试')
       }
     })
   }
 
-  onSwitchChange = (v) => {
-    this.setState({
-      rememberPwd: v
-    })
-  }
-
   render() {
-    let { j_username, j_password } = this.state.formData
+    let { j_username, j_password, rememberPwd, rememberUser, seePwd } = this.state
 
     return (
       <ImageBackground source={require('../../assets/images/login_bg.jpg')} style={{width: '100%', height: '100%', alignItems: 'center'}}>
@@ -78,29 +91,46 @@ class LoginComponent extends Component {
                 style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0, marginBottom: 18, marginLeft: 0}}
                 placeholder="请输入用户名"
                 value={j_username}
-                extra={<Icon name="account-book" size="32" color="#1789e6" />}
-                labelNumber={2}
-                onChangeText={(j_username) => this.setState({
-                  formData: Object.assign({}, this.state.formData, {j_username})
-                })}
-                onExtraClick={() => this.setState({
-                  formData: Object.assign({}, this.state.formData, {j_username: ''})
-                })}
+                extra={<Icon name="close" size={20} color="#1789e6" />}
+                labelNumber={3}
+                onChangeText={(j_username) => {
+                  this.setState({
+                    j_username: j_username
+                  })
+                  if (rememberUser) {
+                    AsyncStorage.setItem('j_username', j_username)
+                  }
+                }}
+                onExtraClick={() => {
+                  this.setState({
+                    j_username: ''
+                  })
+                }}
               >
-                <Icon name="account-book" size="32" color="#1789e6" />
+                <Icon name="user" size={32} color="#1789e6" style={{paddingLeft: 6}} />
               </InputItem>
               <InputItem
                 style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0, marginLeft: 0}}
                 placeholder="请输入登录密码"
                 value={j_password}
-                labelNumber={2}
-                type="password"
-                extra={<Icon name="account-book" size="32" color="#1789e6" />}
-                onChangeText={(j_password) => this.setState({
-                  formData: Object.assign({}, this.state.formData, {j_password})
-                })}
+                labelNumber={3}
+                type={seePwd ? "text" : "password"}
+                extra={<Icon name="eye" size={20} color="#1789e6" />}
+                onChangeText={(j_password) => {
+                  this.setState({
+                    j_password: j_password
+                  })
+                  if (rememberPwd) {
+                    AsyncStorage.setItem('j_password', j_password)
+                  }
+                }}
+                onExtraClick={() => {
+                  this.setState({
+                    seePwd: !seePwd
+                  })
+                }}
               >
-                <Icon name="account-book" size="32" color="#1789e6" />
+                <Icon name="lock" size={32} color="#1789e6" style={{paddingLeft: 6}} />
               </InputItem>
               <Flex style={{height: 38}}>
                 <Flex.Item style={{ paddingRight: 4 }}>
@@ -108,8 +138,18 @@ class LoginComponent extends Component {
                 </Flex.Item>
                 <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
                   <Switch
-                      value={this.state.rememberPwd}
-                      onValueChange={this.onSwitchChange}
+                      value={rememberUser}
+                      onValueChange={(v) => {
+                        this.setState({
+                          rememberUser: v
+                        })
+                        AsyncStorage.setItem('rememberUser', v ? 'true' : '')
+                        if (v) {
+                          AsyncStorage.setItem('j_username', j_username)
+                        } else {
+                          AsyncStorage.removeItem('j_username')
+                        }
+                      }}
                       trackColor={{true: '#05bde1'}}
                       thumbColor={'#ffffff'}
                     />
@@ -119,8 +159,18 @@ class LoginComponent extends Component {
                 </Flex.Item>
                 <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
                   <Switch
-                      value={this.state.rememberPwd}
-                      onValueChange={this.onSwitchChange}
+                      value={rememberPwd}
+                      onValueChange={(v) => {
+                        this.setState({
+                          rememberPwd: v
+                        })
+                        AsyncStorage.setItem('rememberPwd', v ? 'true' : '')
+                        if (v) {
+                          AsyncStorage.setItem('j_password', j_password)
+                        } else {
+                          AsyncStorage.removeItem('j_password')
+                        }
+                      }}
                       trackColor={{true: '#05bde1'}}
                       thumbColor={'#ffffff'}
                     />

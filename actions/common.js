@@ -1,7 +1,8 @@
 import { getSysLottery } from "../api/lottery";
-import { getAllAdversize }from "../api/basic";
+import { getAllAdversize, getActivities }from "../api/basic";
 import { createAction } from "redux-actions";
 import { AsyncStorage } from "react-native";
+import { list } from "../data/activity";
 const usual = [
   {
     isOuter: 0,
@@ -102,6 +103,23 @@ export const getSystemNews = createAction(
   async () => {
     let res = await getAllAdversize()
     return res.code === 0 ? res.data.pageColumns : []
+  }
+)
+
+export const queryActivity = createAction(
+  'QUERY_ACTIVITY',
+  async () => {
+    let res = await getActivities()
+    let volist = res.data.volist || []
+    let arr = []
+    for (let i = 0; i < volist.length; i++) {
+      if (list[volist[i].activityCode]) {
+        arr.push(Object.assign({}, volist[i], list[volist[i].activityCode]))
+      } else {
+        arr.push(volist[i])
+      }
+    }
+    return arr
   }
 )
 

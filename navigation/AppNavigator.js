@@ -8,12 +8,14 @@ import MainTabNavigator from './MainTabNavigator'
 import HomeNavigator from '../screens/Home'
 import RechargeNavigator from '../screens/Recharge'
 import Personal from '../screens/Personal'
+import Found from '../screens/Found'
 
 const MainNavigator = createStackNavigator({
   Main: MainTabNavigator,
   ...HomeNavigator,
   ...RechargeNavigator,
-  ...Personal
+  ...Personal,
+    ...Found
 }, {
   initialRouteName: 'Main'
 })
