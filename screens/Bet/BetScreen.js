@@ -12,13 +12,51 @@ import PlayNav from './PlayNav'
 import RowBall from './RowBall'
 import BuyRender from './BuyRender'
 
+const someMixin = {
+  getInitialState() {
+    return {
+      newNumber: 1
+    }
+  },
+  setNewNumber(num) {
+    this.setState({
+      newNumber: num
+    })
+  }
+}
+const someOtherMixin = {
+  someMethod(number) {
+    console.log(number)
+  }
+}
+
 export default class BetScreen extends React.Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
-    const params = navigation.state.params || {}
+    const params = navigation.state.params || {
+      countExcept: 0,
+      isOuter: 0,
+      lotterCode: 'cqssc',
+      lotterLabel: 0,
+      lotterName: '重庆时时彩',
+      lotterNumber: 5,
+      lotterTime: '09:50~01:55',
+      maxBonus: 1000000,
+      numberRange: '0,1,2,3,4,5,6,7,8,9',
+      openUrl: 'http://www.baidu.com',
+      realCategory: 'ssc',
+      status: 0,
+      type: 0,
+      updateBy: 'dana001'
+    }
     return {
-      title: params.title || '重庆时时彩'
+      title: params.lotterName || '重庆时时彩'
     }
   }
+
+  // mixins: [
+  //   someMixin,
+  //   someOtherMixin
+  //   ]
 
   constructor(props) {
     super(props)
@@ -39,6 +77,11 @@ export default class BetScreen extends React.Component {
       ballOpen: ['5', '9', '3', '2', '1']
     }
   }
+
+  // 当下已经知道这个彩种了，首先渲染这个视图数据
+  // 绑定球的点击监听数据、注数的监听
+  // 获取这个彩种的玩法数据，奖金数据数据初始化，和联动他的数据
+  // 投注下单
 
   componentDidMount() {
     setTimeout(() => {

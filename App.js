@@ -1,12 +1,15 @@
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Provider as Provider2} from '@ant-design/react-native'
+import { Provider } from 'react-redux'
+import { Provider as Provider2 } from '@ant-design/react-native'
 import promiseMiddleware from 'redux-promise'
 import reducer from './reducers'
 import thunk from 'redux-thunk'
-import {applyMiddleware, createStore} from 'redux'
-import {changeBtnText} from './actions/example'
+import { applyMiddleware, createStore } from 'redux'
+import { changeBtnText } from './actions/example'
 import Main from './main'
+import initReactFastClick from 'react-fastclick'
+
+initReactFastClick()
 
 const store = createStore(
   reducer,

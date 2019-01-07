@@ -92,6 +92,7 @@ class HomeScreen extends React.Component {
     this._initHotLottery()
     this.props.navigation.setParams({ changeTextFun: this.changeTextFun })
     this.props.queryActivity()
+    // this.props.navigation.push('Bet')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -226,7 +227,7 @@ class HomeScreen extends React.Component {
               {
                 usualLottery.map((item, index) =>
                   <View style={styles.favoriteItem} key={index}>
-                    <Flex onPress={() => alert(item.lotterCode)}>
+                    <Flex onPress={() => this.props.navigation.push('Bet', item)}>
                       <View>
                         <Image source={this.getIconName(item.realCategory)} resizeMode={'cover'} style={styles.favoriteItemImg} />
                       </View>
