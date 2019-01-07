@@ -8,7 +8,7 @@ import {AppLoading, Font, Icon} from 'expo'
 import {fetch} from './services/HttpService'
 import {connect} from 'react-redux'
 import {setLoginStatus, setUserRebate, setLoginInfo, setUserBalance} from './actions/common'
-import {getLoginUser, getUserRebateInfo, getUserBalance} from './api/basic'
+import {getLoginUser, getUserRebateInfo, getUserBalance, _getImageSetCookie} from './api/basic'
 
 class Main extends React.Component {
   state = {
@@ -43,12 +43,7 @@ class Main extends React.Component {
   }
 
   _getImageSetCookie = () => {
-    let time = new Date().getTime()
-    return fetch({
-      type: 'get',
-      api: `/user/captcha`,
-      params: {time}
-    })
+    _getImageSetCookie()
   }
 
   _loadResourcesAsync = async () => {

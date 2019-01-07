@@ -5,6 +5,15 @@ const {platformKey, prependUrl} = require('./../api.config')
 // 登录和注册验证码
 export const captcha = `${prependUrl}/user/captcha?platformKey=${platformKey}`
 
+export const _getImageSetCookie = () => {
+  let time = new Date().getTime()
+  return fetch({
+    type: 'get',
+    api: '/user/captcha',
+    params: {time}
+  })
+}
+
 // 是否登录
 export const getLoginUser = () => {
   return fetch({

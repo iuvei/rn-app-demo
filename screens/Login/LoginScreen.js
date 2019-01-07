@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { View, Image, StyleSheet, Text, Platform, ImageBackground, Switch, AsyncStorage } from 'react-native'
 import {connect} from 'react-redux'
 import {setLoginStatus, setLoginInfo, AsetUserSecureLevel} from '../../actions/common'
-import {signIn} from '../../api/basic'
+import {signIn, _getImageSetCookie} from '../../api/basic'
 import { Button, Icon, InputItem, Flex, Toast } from '@ant-design/react-native';
 import {
   AsetAllBalance,
@@ -31,6 +31,7 @@ class LoginComponent extends Component {
   }
 
   componentDidMount() {
+    _getImageSetCookie()
     AsyncStorage.getItem('j_username').then(v => {
       if (this.willUnmount) return
       this.setState({
