@@ -2,15 +2,14 @@ import React from 'react'
 import {View, Text, StyleSheet, ImageBackground} from 'react-native'
 import {Picker} from 'native-base'
 import Echarts from 'native-echarts'
+import {connect} from 'react-redux'
 import {getTeamNumInfo, teamEcharts, getTeamStatistics} from '../../../api/member'
 import dayjs from 'dayjs'
 
-const TableRow = 20
-export default class AgentIndex extends React.Component {
+class AgentIndex extends React.Component {
   static navigationOptions = {
     title: '代理首页'
   }
-  userId = 24
 
   constructor (props) {
     super(props)
@@ -28,6 +27,7 @@ export default class AgentIndex extends React.Component {
         type: 'tz',
         gameType: -1
       },
+      userId: this.props.loginInfo.userId,
       teamStatistics: {},
       teamEcharts: {},
       timeLength: 1
@@ -40,7 +40,7 @@ export default class AgentIndex extends React.Component {
   }
 
   _getTeamNum = async () => {
-    getTeamNumInfo({userId: this.userId, currency: 'CNY'}).then(res => {
+    getTeamNumInfo({userId: this.state.userId, currency: 'CNY'}).then(res => {
       if (res.code === 0) {
         this.setState({
           teamInfo: res.data
@@ -51,7 +51,7 @@ export default class AgentIndex extends React.Component {
 
   _getTeamChart = async () => {
     let echartsObj = {
-      userId: this.userId, // 用户id
+      userId: this.state.userId, // 用户id
       endTime: this.state.formData.endTime, // 结束时间
       startTime: this.state.formData.startTime,
       accountType: 1, // 账户类型
@@ -60,7 +60,6 @@ export default class AgentIndex extends React.Component {
     }
     let chart = await teamEcharts(echartsObj)
     let balanceInfo = await getTeamStatistics(echartsObj)
-    console.log(chart)
     if (balanceInfo.code === 0) {
       this.setState({
         teamStatistics: balanceInfo.data
@@ -76,7 +75,6 @@ export default class AgentIndex extends React.Component {
   onTimeChange = async value => {
     let end = dayjs().format('YYYY-MM-DD')
     let start = dayjs().subtract(value, 'day').format('YYYY-MM-DD')
-    console.log(start, end)
     await this.setState({
       timeLength: value,
       formData: {
@@ -130,7 +128,6 @@ export default class AgentIndex extends React.Component {
         }
       },
       series: {
-        name: '销量',
         type: 'line',
         lineStyle: {
           color: '#fff',
@@ -291,3 +288,14 @@ const styles = StyleSheet.create({
     color: 'white'
   }
 })
+
+const mapStateToProps = (state) => {
+  let {loginInfo} = state.common
+  return ({
+    loginInfo
+  })
+}
+
+export default connect(
+  mapStateToProps
+)(AgentIndex)

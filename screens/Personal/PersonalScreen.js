@@ -193,7 +193,7 @@ class PersonalScreen extends React.Component {
               <Image source={require('../../assets/images/personal/avatar.png')}
                      style={{width: 80, height: 80}}></Image>
               <View>
-                <Text>{loginInfo.loginName}</Text>
+                <Text>{loginInfo.acc.user.loginName}</Text>
                 <Text>余额： {currentBalance}元</Text>
               </View>
               <View style={{alignItems: 'flex-end'}}>
