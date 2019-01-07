@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { View, Image, StyleSheet, Text, Platform, ImageBackground, Switch, AsyncStorage } from 'react-native'
 import {connect} from 'react-redux'
 import {setLoginStatus, setLoginInfo, AsetUserSecureLevel} from '../../actions/common'
-import {signIn, _getImageSetCookie} from '../../api/basic'
+import {signIn, _getImageSetCookie, getLoginUser} from '../../api/basic'
 import { Button, Icon, InputItem, Flex, Toast } from '@ant-design/react-native';
 import {
   AsetAllBalance,
@@ -65,9 +65,14 @@ class LoginComponent extends Component {
   _toLogin() {
     let {j_username, j_password, ua} = this.state
     signIn({j_username, j_password, ua}).then(res => {
+      console.log(res)
       if (res.code === 0) {
-        this.props.setLoginStatus(res.code === 0)
-        this.props.setLoginInfo(res.data)
+        getLoginUser().then(res => {
+          if (res.code === 0) {
+            this.props.setLoginStatus(res.code === 0)
+            this.props.setLoginInfo(res.data)
+          }
+        })
         this.props.AsetAllBalance(res.data.user.userId)
         this.props.AsetUserBankCards(res.data.user.userId)
         this.props.AsetUserSecureLevel()
