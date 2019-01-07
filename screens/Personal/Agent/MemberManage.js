@@ -1,40 +1,117 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
+import UIListView from '../../../components/UIListView'
+import {Button, WingBlank, Flex, SearchBar} from '@ant-design/react-native'
+import {connect} from "react-redux"
+import dayjs from 'dayjs'
 
+class FlatListItem extends PureComponent {
+  constructor (props) {
+    super(props)
+  }
 
-const TableRow = 20
-export default class PersonalScreen extends React.Component {
+  render () {
+    let {item, onPress} = this.props
+    let {loginName, balanceFree, proxy, backPoint, lasttime, teamNum} = item
+    return (
+      <View style={{padding: 10, flexDirection: 'row'}}>
+        <View style={{flex: 3}}>
+          <Flex direction={'row'}>
+            <Text style={{marginRight: 10}}>账号: <Text onPress={() => onPress(loginName, 1)}
+                                                      style={{color: '#1789e6'}}>{loginName}</Text></Text>
+            <Text style={{
+              borderWidth: 1,
+              borderColor: '#1789e6',
+              color: '#1789e6',
+              paddingLeft: 6,
+              paddingRight: 6,
+              borderRadius: 4
+            }}>{proxy === 1 ? '代理' : '玩家'}</Text>
+            <Text>({teamNum})</Text>
+          </Flex>
+          <Flex direction={'row'}>
+            <Text style={{marginRight: 10}}>彩票返点: {backPoint}</Text>
+            <Text>余额: {balanceFree}</Text>
+          </Flex>
+          <Text>{lasttime ? '上次登录:' + dayjs(lasttime).format('YYYY-MM-DD HH:mm:ss') : '未登录'}</Text>
+        </View>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <Button size={'small'}>管理</Button>
+        </View>
+      </View>
+    )
+  }
+}
+
+class MemberManage extends React.Component {
   static navigationOptions = {
     title: '会员管理'
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
+    let {loginInfo} = this.props
     this.state = {
-      KeyName: 'BetHistory',
-      api: '/order/getOrderStatistics',
+      isShow: false,
+      KeyName: 'MemberManage',
+      api: '/user/memberList',
       params: {
-        userId: '',
-        orderId: '',
-        proxyType: 0, // 0自己、1直接下级、2所有下级，默认0
-        orderType: 0, // 0彩票,1游戏
-        orderIssue: '', // 期号
-        lotterCode: '', // 必传
-        startTime: '2018-12-13',
-        endTime: '2019-01-01',
-        status: '',
         pageNumber: 1,
-        isAddition: 0, // 是否追号：0 否、1 是
         pageSize: 10,
-        isOuter: '' // 0 否 1 是
+        type: 1,
+        userId: loginInfo.userId,
+        minMoney: '',
+        maxMoney: '',
+        loginname: loginInfo.acc.user.loginName
       }
     }
   }
 
-  render() {
+  componentDidMount () {
+
+  }
+
+  // renderItem
+  // item, index, separators
+  renderItem = (item, index) => {
+    return (
+      <FlatListItem
+        item={item}
+        index={index}
+        onPress={this.onSearch}/>
+    )
+  }
+
+  onSearch = async (value, type) => {
+    await this.setState({isShow: true}, () => {
+      this.setState({isShow: false, params: {...this.state.params, loginname: value, type}})
+    })
+  }
+
+  render () {
+    let {api, params, KeyName, isShow} = this.state
     return (
       <View style={styles.container}>
-        <Text>hello personal</Text>
+        <WingBlank>
+          <SearchBar value={params.loginname}
+                     onChange={value => this.setState({params: {...this.state.params, loginname: value}})}
+                     placeholder="搜索" onSubmit={value => this.onSearch(value, 0)}/>
+        </WingBlank>
+        {isShow ? null :
+          <UIListView
+            ref={ref => this.MemberManage = ref}
+            api={api}
+            KeyName={`KeyName-${KeyName}`}
+            params={params}
+            renderItem={this.renderItem}
+            beforeUpdateList={({res}, fn) => {
+              let dataList = res.data && res.data.data ? res.data.data : []
+              let {pageNumber, pageSize, totalCount} = res.data
+              let NullData = Math.ceil(totalCount / pageSize) < pageNumber
+              fn({dataList})
+            }}
+          />
+        }
       </View>
     )
   }
@@ -43,7 +120,21 @@ export default class PersonalScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
+    paddingTop: 0,
     backgroundColor: '#fff'
+  },
+  spa: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#8E8E8E'
   }
 })
+
+export default connect(
+  (state) => {
+    let {loginInfo} = state.common
+    return ({
+      loginInfo
+    })
+  }
+)(MemberManage)
