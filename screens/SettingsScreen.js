@@ -4,7 +4,8 @@ import {
   View,
   Text,
   StyleSheet,
-  Switch
+  Switch,
+  ScrollView
 } from 'react-native'
 import {
   Ionicons
@@ -68,7 +69,7 @@ class SettingsScreen extends React.Component {
     let { audioChecked } = this.state
 
     return (
-      <View>
+      <ScrollView style={{flex: 1}}>
         <WhiteSpace size="sm" />
         <List>
           <List.Item
@@ -166,7 +167,7 @@ class SettingsScreen extends React.Component {
         <View style={{paddingHorizontal: 22, paddingVertical: 32}}>
           <Button type="warning" onPress={this.signOut}>退出登录</Button>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
