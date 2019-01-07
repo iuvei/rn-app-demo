@@ -23,6 +23,8 @@ import TeamWithdrawHistory from './Agent/TeamWithdrawHistory'
 // 其它
 import RebateDetails from './RebateDetails'
 import SettingsScreen from '../SettingsScreen'
+import UpdatePwd from '../Settings/UpdatePwd'
+import UpdateNickname from '../Settings/UpdateNickname'
 
 
 export default {
@@ -47,5 +49,7 @@ export default {
   TeamReport,
   TeamWithdrawHistory,
   SettingsScreen,
-  RebateDetails
+  RebateDetails,
+  UpdatePwd,
+  UpdateNickname
 }
