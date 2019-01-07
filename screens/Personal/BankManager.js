@@ -40,14 +40,12 @@ class BankManager extends React.Component {
         <View style={{flex: 1, alignItems: 'center'}}>
           <View style={{height: 60, backgroundColor: '#ffffff', width: '100%'}}></View>
           <Image source={require('../../assets/images/nobank.jpg')} style={{height: 330, width: '100%'}} />
-          <TouchableHighlight onPress={() => this.props.navigation.navigate('AddBankcard')}>
-            <View style={{width: '100%', backgroundColor: '#f7f7f7', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-              <Button iconLeft bordered>
-                <Icon name='add' />
-                <Text>添加银行卡</Text>
-              </Button>
-            </View>
-          </TouchableHighlight>
+          <View style={{width: '100%', backgroundColor: '#f7f7f7', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+            <Button onPress={() => this.props.navigation.navigate('AddBankcard')} iconLeft bordered>
+              <Icon name='add' />
+              <Text>添加银行卡</Text>
+            </Button>
+          </View>
         </View>
       )
     } else {
