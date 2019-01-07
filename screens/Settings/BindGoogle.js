@@ -22,6 +22,8 @@ import { AsetGaKey } from '../../actions/member'
 import ThirdView from '../../components/ThirdView'
 import { createStackNavigator } from 'react-navigation'
 
+let tmpgakey = ''
+
 class BindGoogleComp extends React.Component {
   static navigationOptions = {
     title: '绑定谷歌验证码'
@@ -32,12 +34,44 @@ class BindGoogleComp extends React.Component {
     this.state = {
       gaCode: '',
       password: '',
-      isLoading: false
+      isLoading: false,
+      gaKey: ''
     }
     props.AsetGaKey()
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      gaKey: nextProps.gaKey
+    })
+  }
+
   submitFunc = () => {
+    let { gaCode, password, gaKey } = this.state
+    if (gaCode === '' || password === '') {
+      Toast.info('请完善数据后重试')
+      return
+    }
+    this.setState({
+      isLoading: true
+    })
+    bindGoogleAuto({ gaCode, password, gaKey }).then((res) => {
+      if (res.code === 0) {
+        setTimeout(() => {
+          this.props.AsetUserSecureLevel()
+        }, 100)
+        Toast.success('绑定成功')
+      } else {
+        this.props.AsetGaKey()
+        Toast.fail(res.message + '，已刷新二维码，请重新扫码！')
+      }
+      this.setState({
+        isLoading: false,
+        gaCode: '',
+        password: '',
+        gaKey: ''
+      })
+    })
   }
 
   openBrowser = () => {
@@ -45,8 +79,8 @@ class BindGoogleComp extends React.Component {
   }
 
   render() {
-    let { gaCode, password, isLoading } = this.state
-    let { userSecurityLevel, userSecurityConfig, gaKey } = this.props
+    let { gaCode, password, isLoading, gaKey } = this.state
+    let { userSecurityLevel, userSecurityConfig } = this.props
 
     return (
       <View>
@@ -85,6 +119,7 @@ class BindGoogleComp extends React.Component {
                 onChange={v => this.setState({
                   password: v
                 })}
+                type="password"
                 placeholder="请输入资金密码"
                 labelNumber={6}
               >
