@@ -22,8 +22,6 @@ import { AsetGaKey } from '../../actions/member'
 import ThirdView from '../../components/ThirdView'
 import { createStackNavigator } from 'react-navigation'
 
-let tmpgakey = ''
-
 class BindGoogleComp extends React.Component {
   static navigationOptions = {
     title: '绑定谷歌验证码'

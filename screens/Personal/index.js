@@ -28,6 +28,7 @@ import UpdateNickname from '../Settings/UpdateNickname'
 import BindAliname from '../Settings/BindAliname'
 import BindSecurity from '../Settings/BindSecurity'
 import BindGoogle from '../Settings/BindGoogle'
+import VersionInfo from '../Settings/VersionInfo'
 
 
 export default {
@@ -57,5 +58,6 @@ export default {
   UpdateNickname,
   BindAliname,
   BindSecurity,
-  BindGoogle
+  BindGoogle,
+  VersionInfo
 }

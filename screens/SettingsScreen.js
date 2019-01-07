@@ -137,6 +137,7 @@ class SettingsScreen extends React.Component {
           <List.Item
             thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
             arrow="horizontal"
+            onPress={() => this.props.navigation.navigate('VersionInfo')}
           >
             <Text style={styles.itemTxt}>版本信息</Text>
           </List.Item>

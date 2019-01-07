@@ -15,7 +15,7 @@ import {
 } from '@ant-design/react-native'
 import { AsetUserSecureLevel } from '../../actions/common'
 import { bindSecurity } from '../../api/member'
-import { questions } from '../../data/options-data'
+import { questions } from '../../data/options'
 
 class BindSecurity extends React.Component {
   static navigationOptions = {
