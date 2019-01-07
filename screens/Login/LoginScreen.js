@@ -65,12 +65,11 @@ class LoginComponent extends Component {
   _toLogin() {
     let {j_username, j_password, ua} = this.state
     signIn({j_username, j_password, ua}).then(res => {
-      console.log(res)
       if (res.code === 0) {
-        getLoginUser().then(res => {
-          if (res.code === 0) {
-            this.props.setLoginStatus(res.code === 0)
-            this.props.setLoginInfo(res.data)
+        getLoginUser().then(res2 => {
+          if (res2.code === 0) {
+            this.props.setLoginStatus(res2.code === 0)
+            this.props.setLoginInfo(res2.data)
           }
         })
         this.props.AsetAllBalance(res.data.user.userId)
