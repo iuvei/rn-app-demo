@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, Clipboard} from 'react-native'
 import {connect} from 'react-redux'
-import {SegmentedControl, InputItem, Flex, Button, Toast, PickerView} from '@ant-design/react-native'
+import {SegmentedControl, InputItem, Flex, Button, Toast} from '@ant-design/react-native'
 import {Picker} from 'native-base'
 import {addDown, addSignup, delSignup} from '../../../api/member'
 import UIListView from '../../../components/UIListView'
@@ -10,7 +10,7 @@ import dayjs from 'dayjs'
 const TableRow = 20
 
 class FlatListItem extends PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props)
   }
 
@@ -21,14 +21,18 @@ class FlatListItem extends PureComponent {
       }
     })
   }
-  render() {
+
+  render () {
     let {item, index} = this.props
     let {balanceHours, createTime, id, isProxy, times, useTimes, validDays, rebate} = item
     validDays = validDays * 1000 * 3600
     let text = validDays ? dayjs(validDays + createTime).format('YYYY-MM-DD HH:mm:ss') : '长期有效'
     return (
       <View style={{padding: 10}}>
-        <Text>注册码: {id}</Text>
+        <Text onPress={() => {
+          Clipboard.setString(id)
+          Toast.info('复制成功！')
+        }}>注册码: {id}</Text>
         <Text>用户类别: {isProxy === 0 ? '玩家' : '代理'}</Text>
         <Text>彩票返点: {rebate}</Text>
         <Text>剩余次数: {times}</Text>
@@ -162,7 +166,8 @@ class OpenCenter extends React.Component {
         <View style={styles.normal}>
           <Flex direction={'row'} style={styles.userType}>
             <Text style={{fontSize: 16}}>玩家类型</Text>
-            <SegmentedControl selectedIndex={this.state.isProxy} values={['玩家', '代理']} style={{width: 100, marginLeft: 50}} onChange={e => {
+            <SegmentedControl selectedIndex={this.state.isProxy} values={['玩家', '代理']}
+                              style={{width: 100, marginLeft: 50}} onChange={e => {
               this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
             }}/>
           </Flex>
@@ -212,18 +217,20 @@ class OpenCenter extends React.Component {
         <View style={styles.normal}>
           <Flex direction={'row'} style={styles.userType}>
             <Text style={{fontSize: 16}}>玩家类型</Text>
-            <SegmentedControl selectedIndex={this.state.isProxy} values={['玩家', '代理']} style={{width: 100, marginLeft: 50}} onChange={e => {
+            <SegmentedControl selectedIndex={this.state.isProxy} values={['玩家', '代理']}
+                              style={{width: 100, marginLeft: 50}} onChange={e => {
               this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
             }}/>
           </Flex>
           <Flex direction={'row'} style={styles.userType}>
             <Text style={{fontSize: 16}}>链接有效期</Text>
-            <Picker selectedValue={this.state.validDays} onValueChange={value => this.setState({validDays: value})} mode="dropdown" style={{width: 180, height: 30, marginLeft: 15, marginRight: 20}}>
-              <Picker.Item label="1天" value={24} />
-              <Picker.Item label="3天" value={24 * 3} />
-              <Picker.Item label="7天" value={ 24 * 7} />
-              <Picker.Item label="30天" value={ 24 * 30} />
-              <Picker.Item label="永久有效" value={0} />
+            <Picker selectedValue={this.state.validDays} onValueChange={value => this.setState({validDays: value})}
+                    mode="dropdown" style={{width: 180, height: 30, marginLeft: 15, marginRight: 20}}>
+              <Picker.Item label="1天" value={24}/>
+              <Picker.Item label="3天" value={24 * 3}/>
+              <Picker.Item label="7天" value={24 * 7}/>
+              <Picker.Item label="30天" value={24 * 30}/>
+              <Picker.Item label="永久有效" value={0}/>
             </Picker>
           </Flex>
 
@@ -269,6 +276,10 @@ class OpenCenter extends React.Component {
     let {api, params, KeyName, isShow} = this.state
     return (
       <View style={{flex: 1}}>
+        <View style={{marginTop: 5, height: 40}}>
+          <Text style={styles.hint}>温馨提示</Text>
+          <Text style={styles.hint}>点击注册码可快速复制！</Text>
+        </View>
         <UIListView
           ref={ref => this.OpenCenter = ref}
           api={api}
@@ -302,7 +313,7 @@ class OpenCenter extends React.Component {
       <FlatListItem
         item={item}
         index={index}
-        />
+      />
     )
   }
 
