@@ -9,7 +9,8 @@ import {
   List,
   InputItem,
   Button,
-  Toast
+  Toast,
+  Icon
 } from '@ant-design/react-native'
 import { bindAliName } from '../../api/member'
 import {
