@@ -27,6 +27,7 @@ import UpdatePwd from '../Settings/UpdatePwd'
 import UpdateNickname from '../Settings/UpdateNickname'
 import BindAliname from '../Settings/BindAliname'
 import BindSecurity from '../Settings/BindSecurity'
+import BindGoogle from '../Settings/BindGoogle'
 
 
 export default {
@@ -55,5 +56,6 @@ export default {
   UpdatePwd,
   UpdateNickname,
   BindAliname,
-  BindSecurity
+  BindSecurity,
+  BindGoogle
 }

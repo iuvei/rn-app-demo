@@ -15,6 +15,7 @@ const initialState = {
   isAllowWithdraw: {sign: false, message: '', local: true}, // 是否可提现
   userConsume: {}, // 用户消费量验证对象
   bankList: [], // 系统银行列表
+  gaKey: '',
 }
 
 const member = handleActions({
@@ -76,6 +77,12 @@ const member = handleActions({
     return {
       ...state,
       userConsume: payload
+    }
+  },
+  SET_GA_KEY: (state, {payload}) => {
+    return {
+      ...state,
+      gaKey: payload
     }
   }
 }, initialState)
