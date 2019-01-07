@@ -84,7 +84,7 @@ export default class BetScreen extends React.Component {
           <View style={styles.tabs}>
             <Text>Content of First Tab</Text>
           </View>
-          <View style={{margin: 10}}>
+          <View style={{margin: 4}}>
             <ScrollView>
               <RowBall/>
             </ScrollView>
