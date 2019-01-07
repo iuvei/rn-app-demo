@@ -88,12 +88,14 @@ class SettingsScreen extends React.Component {
           <List.Item
             thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
             arrow="horizontal"
+            onPress={() => this.props.navigation.navigate('BindAliname')}
           >
             <Text style={styles.itemTxt}>支付宝</Text>
           </List.Item>
           <List.Item
             thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
             arrow="horizontal"
+            onPress={() => this.props.navigation.navigate('BindSecurity')}
           >
             <Text style={styles.itemTxt}>密码保护</Text>
           </List.Item>

@@ -25,6 +25,8 @@ import RebateDetails from './RebateDetails'
 import SettingsScreen from '../SettingsScreen'
 import UpdatePwd from '../Settings/UpdatePwd'
 import UpdateNickname from '../Settings/UpdateNickname'
+import BindAliname from '../Settings/BindAliname'
+import BindSecurity from '../Settings/BindSecurity'
 
 
 export default {
@@ -51,5 +53,7 @@ export default {
   SettingsScreen,
   RebateDetails,
   UpdatePwd,
-  UpdateNickname
+  UpdateNickname,
+  BindAliname,
+  BindSecurity
 }
