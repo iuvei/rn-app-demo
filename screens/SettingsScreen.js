@@ -9,13 +9,15 @@ import {
 import {
   Ionicons
 } from '@expo/vector-icons'
-import { List, Icon, WhiteSpace, Button, Modal, Toast } from '@ant-design/react-native'
+import { List, WhiteSpace, Button, Modal, Toast } from '@ant-design/react-native'
 import {
   AsetUserSecureLevel,
   AsetUserSecureConfig,
   setLoginStatus
 } from '../actions/common'
 import { loginOut } from '../api/basic'
+import { WebBrowser } from 'expo'
+import { host } from '../api.config'
 
 class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -55,6 +57,11 @@ class SettingsScreen extends React.Component {
         })
       } },
     ])
+  }
+
+  _handlePressButtonAsync = async () => {
+    let result = await WebBrowser.openBrowserAsync(host+'/app/#/download')
+    console.log(result)
   }
 
   render() {
@@ -144,6 +151,7 @@ class SettingsScreen extends React.Component {
           <List.Item
             thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
             arrow="horizontal"
+            onPress={this._handlePressButtonAsync}
           >
             <Text style={styles.itemTxt}>APP下载</Text>
           </List.Item>
