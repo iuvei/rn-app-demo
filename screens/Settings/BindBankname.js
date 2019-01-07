@@ -12,88 +12,78 @@ import {
   Toast,
   Icon
 } from '@ant-design/react-native'
-import { bindAliName } from '../../api/member'
+import { bindBankName } from '../../api/member'
 import {
   AsetUserSecureLevel,
   AsetUserSecureConfig
 } from '../../actions/common'
 
-class BindAliname extends React.Component {
+class BindBankname extends React.Component {
   static navigationOptions = {
-    title: '支付宝'
+    title: '绑定银行卡姓名'
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      alipayName: '',
-      alipayAccount: '',
-      isLoading: false
+      bankName: ''
     }
   }
 
   submitFunc = () => {
-    let { alipayName, alipayAccount } = this.state
-    if (alipayName === '' || alipayAccount === '') {
+    let { bankName } = this.state
+    if (bankName === '') {
       Toast.info('请先完善相关信息')
       return
     }
     this.setState({
       isLoading: true
     })
-    bindAliName({ alipayName, alipayAccount }).then(res => {
+    bindBankName({bankName}).then((res) => {
       if (res.code === 0) {
-        Toast.success(res.message)
+        this.props.AsetUserSecureLevel()
+        Toast.success('绑定银行卡姓名成功')
       } else {
-        Toast.fail(res.message)
+        Toast.fail(res.message || '网络异常，请稍后重试')
       }
-      this.props.AsetUserSecureLevel()
-      this.props.AsetUserSecureConfig()
       this.setState({
+        bankName: '',
         isLoading: false
       })
     })
   }
 
   render() {
-    let { alipayName, alipayAccount, isLoading } = this.state
+    let { bankName, isLoading } = this.state
     let { userSecurityLevel, userSecurityConfig } = this.props
 
     return (
       <View>
         <WhiteSpace size="sm" />
         {
-          (userSecurityLevel.alipay && userSecurityConfig.alipaySwitch) ? <List>
+          (userSecurityLevel.isBankUserName) && <List>
             <List.Item
               thumb={<Icon name="heart" color="#333333" size={20}/>}
-              extra={<Button type="warning" size="small" onPress={() => {
+              extra={userSecurityConfig.bankNamePwdSwitch && <Button type="warning" size="small" onPress={() => {
                 this.props.navigation.navigate('UnbindSet')
               }}>解绑</Button>}
             >
               <Text style={{color: '#333333', paddingLeft: 6}}>已绑定</Text>
             </List.Item>
-          </List> :
+          </List>
+        }
+        { !userSecurityLevel.isBankUserName &&
           <View>
             <List>
               <InputItem
-                value={alipayName}
+                value={bankName}
                 onChange={v => this.setState({
-                  alipayName: v
+                  bankName: v
                 })}
-                placeholder="请输入支付宝姓名"
+                placeholder="请输入银行卡姓名"
                 labelNumber={5}
               >
-                支付宝姓名
-              </InputItem>
-              <InputItem
-                value={alipayAccount}
-                onChange={v => this.setState({
-                  alipayAccount: v
-                })}
-                placeholder="请输入支付宝账号"
-                labelNumber={5}
-              >
-                支付宝账号
+                银行卡姓名
               </InputItem>
             </List>
             <View style={{paddingVertical: 16, alignItems: 'center'}}>
@@ -120,4 +110,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BindAliname)
+export default connect(mapStateToProps, mapDispatchToProps)(BindBankname)
