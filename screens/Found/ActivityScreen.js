@@ -30,6 +30,7 @@ class ActivityScreen extends React.Component {
       refreshing: false,
       list: [],
       activeId: -1,
+      height: 0,
       ImageList: {
         'activity/czxfs.png': require(`./../../assets/images/activity/czxfs.png`),
         'activity/dayhyscs.png': require(`./../../assets/images/activity/dayhyscs.png`),
@@ -100,6 +101,7 @@ class ActivityScreen extends React.Component {
   render() {
     let { sysActivities } = this.props
     let { activeId } = this.state
+    let width = Dimensions.get('window').width
     return (
       <View style={styles.container}>
         <ScrollView
@@ -117,7 +119,7 @@ class ActivityScreen extends React.Component {
                     !!item.local_banner && <Flex onPress={() => this.setActiveList(index)}><Image
                       source={this.getImg(item.local_banner)}
                       resizeMode={'contain'}
-                      style={{width: 400, height: 90}}/></Flex>
+                      style={{width: '100%', height: (width*220)/750}}/></Flex>
                   }
                   <List>
                     <Item arrow={[activeId === index ? 'up' : 'down']} onPress={() => this.setActiveList(index)}>
@@ -127,9 +129,9 @@ class ActivityScreen extends React.Component {
                   {
                     activeId === index ?
                       <Animated.View style={{paddingLeft: 10, paddingRight: 10}}>
-                        <HTML html={item.local_introduce} imagesMaxWidth={Dimensions.get('window').width} />
+                        <HTML html={item.local_introduce} imagesMaxWidth={width} />
                         <Text>活动说明:</Text>
-                        <HTML html={item.local_explanation} imagesMaxWidth={Dimensions.get('window').width} />
+                        <HTML html={item.local_explanation} imagesMaxWidth={width} />
                         <WhiteSpace size="sm" />
                         {
                           this._getButtonAction(item)
