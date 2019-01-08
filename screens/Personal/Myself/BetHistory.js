@@ -44,8 +44,8 @@ class BetHistory extends React.Component {
         orderType: 0, // 0彩票,1游戏
         orderIssue: '', // 期号
         lotterCode: '', // 必传
-        startTime: '2018-12-13',
-        endTime: '2019-01-01',
+        startTime: '',
+        endTime: '',
         status: '',
         pageNumber: 1,
         isAddition: 0, // 是否追号：0 否、1 是
@@ -56,11 +56,9 @@ class BetHistory extends React.Component {
   }
 
   handleDate = ({startTime, endTime}) => {
-    console.log({startTime, endTime})
-    // this.setState({
-    //   startIime,
-    //   endTime
-    // })
+    this.setState(prevState => ({
+      params: {...prevState.params, startTime, endTime}
+    }))
   }
 
   // renderItem
@@ -91,6 +89,7 @@ class BetHistory extends React.Component {
 
   render() {
     let {api, params, KeyName, isShow} = this.state
+    console.log('params', params)
     return (
       <View style={styles.container}>
         <WingBlank>

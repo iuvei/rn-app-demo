@@ -2,11 +2,9 @@ import React from 'react'
 import { View, StyleSheet, TouchableHighlight, Platform } from 'react-native'
 import {
   DatePicker,
-  List,
   Text,
   Flex,
   Icon,
-  Button,
   ActionSheet
 } from '@ant-design/react-native'
 import dayjs from 'dayjs'
@@ -45,13 +43,14 @@ export default class QueryDate extends React.Component {
       startTime: today,
       endTime: today
     }
+    props.handleDate({startTime: today, endTime: today})
   }
 
   render() {
     let { startTime, endTime, buttonIndex } = this.state
 
     return (
-      <View style={{}}>
+      <View>
         <Flex style={styles.wrapper} justify={'around'} align="center">
           <Flex.Item>
             <DatePicker
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     width: '100%',
     height: 30,
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderColor: '#cacaca',
     borderRadius: 4,
     paddingVertical: 2,
