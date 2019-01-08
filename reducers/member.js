@@ -16,6 +16,7 @@ const initialState = {
   userConsume: {}, // 用户消费量验证对象
   bankList: [], // 系统银行列表
   gaKey: '',
+  subUserInfo: {} // 下级用户信息
 }
 
 const member = handleActions({
@@ -83,6 +84,12 @@ const member = handleActions({
     return {
       ...state,
       gaKey: payload
+    }
+  },
+  SET_SUB_USER_INFO: (state, {payload}) => {
+    return {
+      ...state,
+      subUserInfo: payload
     }
   }
 }, initialState)

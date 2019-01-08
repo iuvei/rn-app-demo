@@ -20,6 +20,7 @@ import TeamChaseHistory from './Agent/TeamChaseHistory'
 import TeamLotteryReport from './Agent/TeamLotteryReport'
 import TeamReport from './Agent/TeamReport'
 import TeamWithdrawHistory from './Agent/TeamWithdrawHistory'
+import SubManaging from './Agent/SubManaging'
 // 其它
 import RebateDetails from './RebateDetails'
 import SettingsScreen from '../SettingsScreen'
@@ -63,5 +64,6 @@ export default {
   BindGoogle,
   VersionInfo,
   UnbindSet,
-  BindBankname
+  BindBankname,
+  SubManaging
 }

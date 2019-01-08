@@ -18,6 +18,7 @@ class FlatListItem extends PureComponent {
     delSignup({signUpId: id}).then((res) => {
       if (res.code === 0) {
         Toast.info(res.message)
+        this.props.refresh()
       }
     })
   }
@@ -44,7 +45,6 @@ class FlatListItem extends PureComponent {
       </View>
     )
   }
-
 }
 
 class OpenCenter extends React.Component {
@@ -66,7 +66,8 @@ class OpenCenter extends React.Component {
       userRebate: '',
       isProxy: 0,
       availableTimes: '',
-      validDays: 24
+      validDays: 24,
+      isShow: false
     }
   }
 
@@ -75,6 +76,7 @@ class OpenCenter extends React.Component {
       selectedIndex: e.nativeEvent.selectedSegmentIndex
     })
   }
+
   _addDown = () => {
     let {userName, userRebate, isProxy} = this.state
     let {systemMaxRebate, systemMinRebate, userRebateVO} = this.props.rebateInfo
@@ -280,7 +282,7 @@ class OpenCenter extends React.Component {
           <Text style={styles.hint}>温馨提示</Text>
           <Text style={styles.hint}>点击注册码可快速复制！</Text>
         </View>
-        <UIListView
+        {isShow ? null : <UIListView
           ref={ref => this.OpenCenter = ref}
           api={api}
           KeyName={`KeyName-${KeyName}`}
@@ -300,12 +302,20 @@ class OpenCenter extends React.Component {
           // 返回数据空或者处理后的数据源
           beforeUpdateList={({res}, fn) => {
             let dataList = res.data && res.data.root ? res.data.root : []
+            let {records, totalCount} = res.data
+            let NullData = Math.ceil(totalCount / 10) < records
             // 或在这里增加 其他状态码的处理Alter
-            fn({dataList})
+            fn(NullData ? [] : {dataList})
           }}
-        />
+        />}
       </View>
     )
+  }
+
+  onSearch = async () => {
+    await this.setState({isShow: true}, () => {
+      this.setState({isShow: false})
+    })
   }
 
   renderItem = (item, index) => {
@@ -313,6 +323,7 @@ class OpenCenter extends React.Component {
       <FlatListItem
         item={item}
         index={index}
+        refresh={this.onSearch}
       />
     )
   }

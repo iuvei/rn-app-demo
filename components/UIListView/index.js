@@ -31,18 +31,6 @@ class ExampleScroll extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    // @parent component function
-    // onRefresh = async () => {
-    //   await this.setState({refreshing: true}, () => {
-    //     this.setState({refreshing: false})
-    //   })
-    // }
-    if (this.props.refresh && this.props.refresh!== nextProps.refresh) {
-      this.listView.refresh()
-    }
-  }
-
   // 获取数据
   // page = 1, startFetch, abortFetch
   getTableList = async (page = 1, startFetch, abortFetch) => {

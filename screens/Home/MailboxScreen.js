@@ -22,7 +22,6 @@ class MailboxScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      refreshing: false,
       tabs: ['收件箱', '发件箱', '写信'],
       activeTab: '收件箱',
       params: {
@@ -44,12 +43,6 @@ class MailboxScreen extends React.Component {
       replyData: {},
       showDetail: false
     }
-  }
-
-  onRefresh = async () => {
-    await this.setState({refreshing: true}, () => {
-      this.setState({refreshing: false})
-    })
   }
 
   renderItem = (item, index) => {
@@ -105,7 +98,7 @@ class MailboxScreen extends React.Component {
     delMessage(formData).then((res) => {
       if (res.code === 0) {
         Toast.success(res.message)
-        this.onRefresh()
+        this.MailBox.listView.refresh()
       }
     })
   }
@@ -136,7 +129,7 @@ class MailboxScreen extends React.Component {
   }
 
   render() {
-    let {api, params, KeyName, sendApi, sendParams, SendKeyName, activeTab, refreshing, replyData, showDetail} = this.state
+    let {api, params, KeyName, sendApi, sendParams, SendKeyName, activeTab, replyData, showDetail} = this.state
     return (
       <View style={styles.container}>
         <View style={{height: 50}}>
@@ -152,7 +145,6 @@ class MailboxScreen extends React.Component {
           activeTab === '收件箱' ? <UIListView
             ref={ref => this.MailBox = ref}
             api={api}
-            refresh={refreshing}
             type={'get'}
             KeyName={`KeyName-${KeyName}`}
             params={params}
@@ -161,7 +153,6 @@ class MailboxScreen extends React.Component {
           activeTab === '发件箱' ? <UIListView
             ref={ref => this.MailBox = ref}
             api={sendApi}
-            refresh={refreshing}
             type={'get'}
             KeyName={`KeyName-${SendKeyName}`}
             params={sendParams}
