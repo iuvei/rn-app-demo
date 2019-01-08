@@ -1,8 +1,25 @@
 import React from 'react'
 import {ScrollView, View, Text, ImageBackground, Image, StyleSheet} from 'react-native'
 import {Card, WhiteSpace, WingBlank} from '@ant-design/react-native'
+import Panel from './../../components/Panel'
 
 export default class LotteryHall extends React.Component {
+
+  renderHeader = item => {
+    return (
+      <View>
+        <ImageBackground source={item.bgImg}
+                         style={styles.card}>
+          <View>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.desc}>{item.desc}</Text>
+          </View>
+          <Image source={item.img} style={{width: 100, height: 100}}></Image>
+        </ImageBackground>
+      </View>
+    )
+  }
+
   render () {
     let list = [
       {
@@ -83,15 +100,7 @@ export default class LotteryHall extends React.Component {
         {
           list.map((item, index) => {
             return (
-              <View key={index} style={{margin: 8}}>
-                <ImageBackground source={item.bgImg}
-                                 style={styles.card}>
-                  <View>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.desc}>{item.desc}</Text>
-                  </View>
-                  <Image source={item.img} style={{width: 100, height: 100}}></Image>
-                </ImageBackground>
+              <Panel key={index} header={this.renderHeader(item)}>
                 {
                   item.suffix ? (
                     <View style={styles.suffix}>
@@ -106,9 +115,9 @@ export default class LotteryHall extends React.Component {
                         })
                       }
                     </View>
-                  ) : <Text></Text>
+                  ) : null
                 }
-              </View>
+              </Panel>
             )
           })
         }
