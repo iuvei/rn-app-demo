@@ -19,11 +19,7 @@ HomeStack.navigationOptions = {
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+      name={Platform.OS === 'ios' ? "ios-home" : "md-home"}
     />
   )
 }
@@ -37,7 +33,7 @@ GamesStack.navigationOptions = {
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'logo-game-controller-b' : 'md-link'}
+      name="logo-game-controller-b"
     />
   )
 }
@@ -51,7 +47,7 @@ RechargeStack.navigationOptions = {
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-refresh-circle' : 'md-options'}
+      name={Platform.OS === 'ios' ? "logo-yen" : "logo-yen"}
     />
   )
 }
@@ -79,7 +75,7 @@ PersonalStack.navigationOptions = {
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-person' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'}
     />
   )
 }
