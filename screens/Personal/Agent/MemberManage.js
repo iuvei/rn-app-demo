@@ -1,17 +1,18 @@
 import React, {PureComponent} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 import UIListView from '../../../components/UIListView'
-import {Button, WingBlank, Flex, SearchBar} from '@ant-design/react-native'
+import {Button, WingBlank, Flex, SearchBar, Modal} from '@ant-design/react-native'
 import {connect} from "react-redux"
 import dayjs from 'dayjs'
-
+import SubManaging from "./SubManaging"
+import {AsetSubUserInfo} from "../../../actions/member"
 class FlatListItem extends PureComponent {
   constructor (props) {
     super(props)
   }
 
   render () {
-    let {item, onPress} = this.props
+    let {item, onPress, showSub} = this.props
     let {loginName, balanceFree, proxy, backPoint, lasttime, teamNum} = item
     return (
       <View style={{padding: 10, flexDirection: 'row'}}>
@@ -36,7 +37,7 @@ class FlatListItem extends PureComponent {
           <Text>{lasttime ? '上次登录:' + dayjs(lasttime).format('YYYY-MM-DD HH:mm:ss') : '未登录'}</Text>
         </View>
         <View style={{flex: 1, justifyContent: 'center'}}>
-          <Button size={'small'}>管理</Button>
+          <Button size={'small'} onPress={() => showSub(item)}>管理</Button>
         </View>
       </View>
     )
@@ -78,6 +79,7 @@ class MemberManage extends React.Component {
       <FlatListItem
         item={item}
         index={index}
+        showSub={this.onOpen}
         onPress={this.onSearch}/>
     )
   }
@@ -86,6 +88,11 @@ class MemberManage extends React.Component {
     await this.setState({isShow: true}, () => {
       this.setState({isShow: false, params: {...this.state.params, loginname: value, type}})
     })
+  }
+
+  onOpen = async (downInfo) => {
+    await this.props.setDownUserInfo(downInfo)
+    this.props.navigation.navigate('SubManaging')
   }
 
   render () {
@@ -130,11 +137,18 @@ const styles = StyleSheet.create({
   }
 })
 
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setDownUserInfo: data => dispatch(AsetSubUserInfo(data))
+  }
+}
+
 export default connect(
   (state) => {
     let {loginInfo} = state.common
     return ({
       loginInfo
     })
-  }
+  }, mapDispatchToProps
 )(MemberManage)

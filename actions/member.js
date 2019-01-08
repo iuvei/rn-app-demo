@@ -89,6 +89,13 @@ export const AgetUserBalance_HB = (data) => {
   }
 }
 
+export const AsetSubUserInfo = (data) => {
+  return {
+    type: 'SET_SUB_USER_INFO',
+    payload: data
+  }
+}
+
 export const AsetAllBalance = (userId) => {
   return (dispatch, getState) => {
     getUserBalance({userId}).then(res => {
