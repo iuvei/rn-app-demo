@@ -15,7 +15,7 @@ const HomeStack = createStackNavigator({
 })
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+  tabBarLabel: '首页',
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
@@ -61,7 +61,7 @@ const FoundStack = createStackNavigator({
   Found: FoundScreen
 })
 FoundStack.navigationOptions = {
-  tabBarLabel: 'Found',
+  tabBarLabel: '发现',
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
@@ -75,7 +75,7 @@ const PersonalStack = createStackNavigator({
   Personal: PersonalScreen
 })
 PersonalStack.navigationOptions = {
-  tabBarLabel: 'Personal',
+  tabBarLabel: '个人中心',
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}

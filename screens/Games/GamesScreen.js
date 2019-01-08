@@ -5,10 +5,11 @@ import LotteryHall from './LotteryHall'
 import RealPeople from './RealPeople'
 import Slot from './Slot'
 import Chess from './Chess'
+import Header from './../../components/Header'
 
 export default class GamesScreen extends React.Component {
   static navigationOptions = {
-    title: 'Games'
+    header: <Header hideLeft={true} title={'彩厅'}/>
   }
 
   render() {

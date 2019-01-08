@@ -6,6 +6,7 @@ import BetHistory from "./Myself/BetHistory"
 import {connect} from 'react-redux'
 import RebateDetails from './RebateDetails'
 import {setLoginStatus} from "../../actions/common"
+import Headers from './../../components/Header'
 
 const REBATE_TYPE = {
   0: '彩票返点', 1: '快乐彩返点', 2: '百家乐彩票返点'
@@ -21,8 +22,10 @@ const WATER_TYPE = {
 }
 
 class PersonalScreen extends React.Component {
+
   static navigationOptions = {
-    title: '个人'
+
+    header: <Headers hideLeft={true} title={'个人中心'}/>
   }
 
   constructor (props) {

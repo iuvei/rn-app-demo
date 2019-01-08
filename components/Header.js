@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     height:25,
   },
   logo: {
-    width: 30
+    width: 35
   },
   headerCenterContainer: {
     flexDirection: 'row',
