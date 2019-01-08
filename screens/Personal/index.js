@@ -23,6 +23,14 @@ import TeamWithdrawHistory from './Agent/TeamWithdrawHistory'
 // 其它
 import RebateDetails from './RebateDetails'
 import SettingsScreen from '../SettingsScreen'
+import UpdatePwd from '../Settings/UpdatePwd'
+import UpdateNickname from '../Settings/UpdateNickname'
+import BindAliname from '../Settings/BindAliname'
+import BindSecurity from '../Settings/BindSecurity'
+import BindGoogle from '../Settings/BindGoogle'
+import VersionInfo from '../Settings/VersionInfo'
+import UnbindSet from '../Settings/UnbindSet'
+import BindBankname from '../Settings/BindBankname'
 
 
 export default {
@@ -47,5 +55,13 @@ export default {
   TeamReport,
   TeamWithdrawHistory,
   SettingsScreen,
-  RebateDetails
+  RebateDetails,
+  UpdatePwd,
+  UpdateNickname,
+  BindAliname,
+  BindSecurity,
+  BindGoogle,
+  VersionInfo,
+  UnbindSet,
+  BindBankname
 }

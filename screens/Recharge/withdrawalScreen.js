@@ -224,6 +224,7 @@ class Withdrawal extends React.Component {
                 data={pickerdata}
                 cols={1}
                 value={[curBankItem.value]}
+                itemStyle={{color: '#333333', fontSize: 14, lineHeight: 32}}
                 onChange={(val) => {
                   this.setState({
                     curBankItem: pickerdata[val[0]]

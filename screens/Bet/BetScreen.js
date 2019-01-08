@@ -1,36 +1,89 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { Tabs, Card, WhiteSpace, Button, WingBlank } from '@ant-design/react-native'
+import {
+  View, Text,
+  StyleSheet, Image, ScrollView
+} from 'react-native'
+import {
+  Tabs, Card, WhiteSpace,
+  Button, WingBlank
+} from '@ant-design/react-native'
+import DownTime from './DownTime'
+import PlayNav from './PlayNav'
+import RowBall from './RowBall'
+import BuyRender from './BuyRender'
+
+const someMixin = {
+  getInitialState() {
+    return {
+      newNumber: 1
+    }
+  },
+  setNewNumber(num) {
+    this.setState({
+      newNumber: num
+    })
+  }
+}
+const someOtherMixin = {
+  someMethod(number) {
+    console.log(number)
+  }
+}
 
 export default class BetScreen extends React.Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state
+    const params = navigation.state.params || {
+      countExcept: 0,
+      isOuter: 0,
+      lotterCode: 'cqssc',
+      lotterLabel: 0,
+      lotterName: '重庆时时彩',
+      lotterNumber: 5,
+      lotterTime: '09:50~01:55',
+      maxBonus: 1000000,
+      numberRange: '0,1,2,3,4,5,6,7,8,9',
+      openUrl: 'http://www.baidu.com',
+      realCategory: 'ssc',
+      status: 0,
+      type: 0,
+      updateBy: 'dana001'
+    }
     return {
-      title: params.lotName
+      title: params.lotterName || '重庆时时彩'
     }
   }
+
+  // mixins: [
+  //   someMixin,
+  //   someOtherMixin
+  //   ]
 
   constructor(props) {
     super(props)
     this.state = {
-      tabs: [
+      ContentTabs: [
         {title: '开奖'},
         {title: '投注'},
         {title: '记录'},
         {title: '趋势'}
       ],
-      tabs2: [
+      playTabs: [
         {title: '五星复式', value: 'wxfs'},
         {title: '五星单式', value: 'wxds'},
         {title: '四星复式', value: 'sxfs'},
         {title: '四星单式', value: 'sxds'}
       ],
-      actPlay: {title: '五星复式', value: 'wxfs'}
+      actPlay: {title: '五星复式', value: 'wxfs'},
+      ballOpen: ['5', '9', '3', '2', '1']
     }
   }
 
+  // 当下已经知道这个彩种了，首先渲染这个视图数据
+  // 绑定球的点击监听数据、注数的监听
+  // 获取这个彩种的玩法数据，奖金数据数据初始化，和联动他的数据
+  // 投注下单
+
   componentDidMount() {
-    console.log('componentDidMount')
     setTimeout(() => {
       let data = [
         {title: '三星复式', value: 'sanxfs'},
@@ -39,58 +92,45 @@ export default class BetScreen extends React.Component {
         {title: '二星单式', value: 'exds'}
       ]
       this.setState({
-        tabs2: [].concat(this.state.tabs2, data)
+        playTabs: [].concat(this.state.playTabs, data)
       })
-    }, 3000)
+    }, 300)
   }
 
   _onPlayTabs = (tab, number) => {
-    console.log(number)
     this.setState({actPlay: tab})
   }
 
   _onChangeTabs = (tab, number) => {
-    console.log(tab, number)
   }
 
   render() {
-    let {tabs, tabs2, actPlay} = this.state
+    let {ContentTabs, playTabs, actPlay} = this.state
     return (
       <View style={styles.container}>
-        <Tabs
-          style={{height: 10, padding: 0, margin: 0}}
-          tabs={tabs2} initialPage={0} tabBarPosition="top"
-          onTabClick={(tab, index) => this._onPlayTabs(tab, index)}
-          tabBarUnderlineStyle={{height: 0}}
-          renderTab={(tab, index) => (
-            <Button
-              style={{padding: 0, margin: 0}}
-              size="small"
-              type={tab.value === actPlay.value ? 'primary' : 'ghost'}
-              onPress={() => this._onPlayTabs(tab, index)}>
-              {tab.title}
-            </Button>
-          )}
-        />
-        <WingBlank size="lg" style={{borderTop: 0}}>
-          <Card style={{borderTop: 0}}>
-            <Card.Body style={{borderTop: 0}}>
-              <View>
-                <Text style={{marginLeft: 16}}>Card Content</Text>
-              </View>
-            </Card.Body>
-          </Card>
-        </WingBlank>
+
+        {/* playNav Container */}
+        <PlayNav
+          playTabs={playTabs}
+          _onPlayTabs={this._onPlayTabs}
+          actPlay={actPlay}/>
+
+        {/* down Container*/}
+        <DownTime ballOpen={this.state.ballOpen}/>
+
         {/* Tabs Nav */}
-        <Tabs tabs={tabs}
+        <Tabs tabs={ContentTabs}
+              style={{background: '#ededed'}}
               onChange={this._onChangeTabs}
+              initialPage={1}
               animated={false}>
           <View style={styles.tabs}>
             <Text>Content of First Tab</Text>
           </View>
-          <View style={styles.tabs}>
-            <Text>Content of Second Tab</Text>
-            {/*<ScrollScreen/>*/}
+          <View style={{margin: 4}}>
+            <ScrollView>
+              <RowBall/>
+            </ScrollView>
           </View>
           <View style={styles.tabs}>
             <Text>Content of Third Tab</Text>
@@ -106,6 +146,9 @@ export default class BetScreen extends React.Component {
             <Text>Content of Four Tab</Text>
           </View>
         </Tabs>
+
+        {/*投注信息*/}
+        <BuyRender/>
       </View>
     )
   }
@@ -114,12 +157,12 @@ export default class BetScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#ededed'
   },
   tabs: {
+    marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 150,
     backgroundColor: '#fff',
     paddingRight: 20
   }

@@ -5,6 +5,9 @@ import {
   isAllowWithdraw,
   getUserConsume
 } from '../api/basic'
+import {
+  getGaKey
+} from '../api/member'
 import { AsyncStorage } from 'react-native'
 
 export const AsetUserBankCards = function(userId) {
@@ -33,6 +36,14 @@ export const AsetUserConsume = createAction(
   async () => {
     let res = await getUserConsume()
     return res.code === 0 ? Object.assign({}, res.data, {code: 0}) : {code: res.code, message: res.message}
+  }
+)
+
+export const AsetGaKey = createAction(
+  'SET_GA_KEY',
+  async () => {
+    let res = await getGaKey()
+    return res.code === 0 ? res.data.gaKey : ''
   }
 )
 

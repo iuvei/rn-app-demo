@@ -98,16 +98,16 @@ class BetHistory extends React.Component {
             params={params}
             renderItem={this.renderItem}
             // 第一个参数 params 第二个子组件的将要请求的第N页
-            beforeHttpGet={async ({params, page}, fn) => {
-              // 解决父级数据数据源同步问题，然后数据给到子组件本身
-              await this.setState({
-                params: Object.assign({}, params, {
-                  pageNumber: page
-                })
-              })
-              let handlerParams = this.state.params
-              fn(handlerParams, true)
-            }}
+            // beforeHttpGet={async ({params, page}, fn) => {
+            //   // 解决父级数据数据源同步问题，然后数据给到子组件本身
+            //   await this.setState({
+            //     params: Object.assign({}, params, {
+            //       pageNumber: page
+            //     })
+            //   })
+            //   let handlerParams = this.state.params
+            //   fn(handlerParams, true)
+            // }}
             // 返回数据空或者处理后的数据源
             beforeUpdateList={({res}, fn) => {
               let dataList = res.data && res.data.orderInfoList ? res.data.orderInfoList : []

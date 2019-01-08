@@ -40,19 +40,18 @@ class BankManager extends React.Component {
         <View style={{flex: 1, alignItems: 'center'}}>
           <View style={{height: 60, backgroundColor: '#ffffff', width: '100%'}}></View>
           <Image source={require('../../assets/images/nobank.jpg')} style={{height: 330, width: '100%'}} />
-          <TouchableHighlight onPress={() => this.props.navigation.navigate('AddBankcard')}>
-            <View style={{width: '100%', backgroundColor: '#f7f7f7', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-              <Button iconLeft bordered>
-                <Icon name='add' />
-                <Text>添加银行卡</Text>
-              </Button>
-            </View>
-          </TouchableHighlight>
+          <View style={{width: '100%', backgroundColor: '#f7f7f7', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+            <Button onPress={() => this.props.navigation.navigate('AddBankcard')} iconLeft bordered>
+              <Icon name='add' />
+              <Text>添加银行卡</Text>
+            </Button>
+          </View>
         </View>
       )
     } else {
       let banks = userBankCards.map((item, idx) => {
         let bgimg = null
+        let statustxt = ''
         switch (idx%3) {
           case 0:
             bgimg = require('../../assets/images/bankitembg1.png')
@@ -67,6 +66,20 @@ class BankManager extends React.Component {
             bgimg = require('../../assets/images/bankitembg3.png')
             break
         }
+        switch (item.status) {
+          case -1:
+            statustxt = '已删除'
+            break
+          case 0:
+            statustxt = '有效'
+            break
+          case 1:
+            statustxt = '审核中'
+            break
+          case 2:
+            statustxt = '已注销'
+            break
+        }
         return (
           <View style={styles.bankItem} key={item.bankCard}>
             <ImageBackground style={{width: '100%', height: 115}} source={bgimg}>
@@ -76,7 +89,7 @@ class BankManager extends React.Component {
                 </View>
                 <Text style={{marginTop: 16, marginLeft: 16, color: '#ffffff'}}>{item.bankName}</Text>
               </View>
-              <Text style={styles.statuBtn}>审核中</Text>
+              <Text style={styles.statuBtn}>{statustxt}</Text>
               <Text style={{marginLeft: 28, marginTop: 16, color: '#ffffff', fontSize: 16}}>{String(item.bankCard).slice(0, 4) + '  ****  ****  ' + String(item.bankCard).slice(-4)}</Text>
               <Text style={styles.bankTypeTxt}>{item.bankType ? '信用卡' : '借记卡'}</Text>
             </ImageBackground>
