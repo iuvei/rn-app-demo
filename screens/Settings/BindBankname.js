@@ -65,7 +65,7 @@ class BindBankname extends React.Component {
             <List.Item
               thumb={<Icon name="heart" color="#333333" size={20}/>}
               extra={userSecurityConfig.bankNamePwdSwitch && <Button type="warning" size="small" onPress={() => {
-                this.props.navigation.navigate('UnbindSet')
+                this.props.navigation.navigate('UnbindSet', {title: '解绑银行卡姓名', type: 'userbankname'})
               }}>解绑</Button>}
             >
               <Text style={{color: '#333333', paddingLeft: 6}}>已绑定</Text>

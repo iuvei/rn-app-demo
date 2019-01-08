@@ -9,10 +9,13 @@ import {
   Picker,
   WhiteSpace,
   List,
-  Button
+  Button,
+  Toast,
+  Modal
 } from '@ant-design/react-native'
 import { AsetUserSecureLevel } from '../../actions/common'
 import { questions } from '../../data/options'
+import { unBindBankName, unBindPayPwd, unBindMiBao, unBindGa, unbindAliName } from '../../api/member'
 
 class UnbindSet extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -47,6 +50,82 @@ class UnbindSet extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps)
+  }
+
+  submitFunc = () => {
+    let { pwd, answer, userName, gaPassword, alipayName, question, selectType } = this.state
+    let type = this.props.navigation.getParam('type', '')
+
+    if (pwd === '') {
+      Toast.info('请完善数据后重试')
+      return
+    }
+    if (columns[selectType].valueTxt === 'mbq') {
+      if (question === '' || answer === '') {
+        Toast.info('请完善数据后重试')
+        return
+      }
+    }
+    if (type !== 'paypwd' && answer === '' && userName === '' && gaPassword === '' && alipayName === '') {
+      Toast.info('请完善数据后重试')
+      return
+    }
+    Modal.alert('您确认解绑吗?', '', [
+      {
+        text: '取消',
+        onPress: () => {console.log('cancel')},
+        style: 'cancel',
+      },
+      { text: '确认', onPress: () => {
+        switch (this.unbind) {
+          case 'bankname':
+            unBindBankName(this.formData).then(res => {
+              this.callBack(res)
+              // setTimeout(() => {
+              //   this.AgetUserBankcards()
+              // }, 200)
+            })
+            break
+          case 'paypwd':
+            unBindPayPwd({pwd: this.formData.pwd}).then(res => {
+              this.callBack(res)
+            })
+            break
+          case 'security':
+            unBindMiBao(this.formData).then(res => {
+              this.callBack(res)
+            })
+            break
+          case 'ga':
+            unBindGa(this.formData).then(res => {
+              this.callBack(res)
+            })
+            break
+          case 'aliname':
+            unbindAliName(this.formData).then(res => {
+              this.callBack(res)
+            })
+            break
+        }
+      } },
+    ])
+  }
+
+  callBack = (res) => {
+    if (res.code === 0) {
+      Toast.success('解绑成功')
+      this.props.AsetUserSecureLevel()
+      this.setState({
+        question: '',
+        answer: '',
+        pwd: '',
+        userName: '',
+        gaPassword: '',
+        alipayName: ''
+      })
+    } else {
+      Toast.fail(res.message || '网络异常，请稍后重试')
+    }
   }
 
   render() {

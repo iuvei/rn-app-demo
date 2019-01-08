@@ -41,7 +41,9 @@ class UpdatePwd extends React.Component {
           <List>
             <List.Item
               thumb={<Icon name="heart" color="#333333" size={20}/>}
-              extra={<Button type="warning" size="small">解绑</Button>}
+              extra={<Button type="warning" size="small" onPress={() => {
+                this.props.navigation.navigate('UnbindSet', {title: '解绑资金密码', type: 'paypwd'})
+              }}>解绑</Button>}
             >
               <Text style={{color: '#333333', paddingLeft: 6}}>已绑定</Text>
             </List.Item>

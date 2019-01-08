@@ -67,7 +67,7 @@ class BindAliname extends React.Component {
             <List.Item
               thumb={<Icon name="heart" color="#333333" size={20}/>}
               extra={<Button type="warning" size="small" onPress={() => {
-                this.props.navigation.navigate('UnbindSet')
+                this.props.navigation.navigate('UnbindSet', {title: '解绑支付宝', type: 'aliname'})
               }}>解绑</Button>}
             >
               <Text style={{color: '#333333', paddingLeft: 6}}>已绑定</Text>
