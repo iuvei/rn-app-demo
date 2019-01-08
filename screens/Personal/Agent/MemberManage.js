@@ -56,6 +56,7 @@ class MemberManage extends React.Component {
       isShow: false,
       KeyName: 'MemberManage',
       api: '/user/memberList',
+      userList: [],
       params: {
         pageNumber: 1,
         pageSize: 10,
@@ -85,8 +86,26 @@ class MemberManage extends React.Component {
   }
 
   onSearch = async (value, type) => {
+    if (type === 1) {
+      await this.setState({
+        userList: [...this.state.userList, this.state.params.loginname]
+      })
+    } else {
+      await this.setState({
+        userList: []
+      })
+    }
     await this.setState({isShow: true}, () => {
       this.setState({isShow: false, params: {...this.state.params, loginname: value, type}})
+    })
+  }
+
+  // 返回上一级
+  goBack = async () => {
+    let {userList} = this.state
+    let name = userList.pop()
+    await this.setState({isShow: true}, () => {
+      this.setState({isShow: false, params: {...this.state.params, loginname: name, type: 1}, userList})
     })
   }
 
@@ -96,7 +115,7 @@ class MemberManage extends React.Component {
   }
 
   render () {
-    let {api, params, KeyName, isShow} = this.state
+    let {api, params, KeyName, isShow, userList} = this.state
     return (
       <View style={styles.container}>
         <WingBlank>
@@ -105,19 +124,24 @@ class MemberManage extends React.Component {
                      placeholder="搜索" onSubmit={value => this.onSearch(value, 0)}/>
         </WingBlank>
         {isShow ? null :
-          <UIListView
-            ref={ref => this.MemberManage = ref}
-            api={api}
-            KeyName={`KeyName-${KeyName}`}
-            params={params}
-            renderItem={this.renderItem}
-            beforeUpdateList={({res}, fn) => {
-              let dataList = res.data && res.data.data ? res.data.data : []
-              let {pageNumber, pageSize, totalCount} = res.data
-              let NullData = Math.ceil(totalCount / pageSize) < pageNumber
-              fn({dataList})
-            }}
-          />
+          <View style={{flex: 1}}>
+            <UIListView
+              ref={ref => this.MemberManage = ref}
+              api={api}
+              KeyName={`KeyName-${KeyName}`}
+              params={params}
+              renderItem={this.renderItem}
+              beforeUpdateList={({res}, fn) => {
+                let dataList = res.data && res.data.data ? res.data.data : []
+                let {pageNumber, pageSize, totalCount} = res.data
+                let NullData = Math.ceil(totalCount / pageSize) < pageNumber
+                fn({dataList})
+              }}
+            />
+            {
+              userList.length > 0 ? <Button type={'primary'} style={{margin: 10}} onPress={this.goBack}>返回上级</Button> : null
+            }
+          </View>
         }
       </View>
     )
