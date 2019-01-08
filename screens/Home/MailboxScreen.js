@@ -149,17 +149,19 @@ class MailboxScreen extends React.Component {
           </View>
         </View>
         {
-          activeTab === '收件箱' && !refreshing ? <UIListView
+          activeTab === '收件箱' ? <UIListView
             ref={ref => this.MailBox = ref}
             api={api}
+            refresh={refreshing}
             type={'get'}
             KeyName={`KeyName-${KeyName}`}
             params={params}
             renderItem={this.renderItem}
           /> :
-          activeTab === '发件箱' && !refreshing ? <UIListView
+          activeTab === '发件箱' ? <UIListView
             ref={ref => this.MailBox = ref}
             api={sendApi}
+            refresh={refreshing}
             type={'get'}
             KeyName={`KeyName-${SendKeyName}`}
             params={sendParams}
