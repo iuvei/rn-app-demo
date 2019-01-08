@@ -484,23 +484,24 @@ export const bjlWaterInfo = [
   {name: '百家乐彩票返水', value: 5}
 ]
 
-export const questionsItem = [
-  {value: '您的出生地是?', loc: 0},
-  {value: '您的小学校名是?', loc: 0},
-  {value: '您母亲的姓名是?', loc: 0},
-  {value: '您母亲的生日是?', loc: 0},
-  {value: '您父亲的姓名是?', loc: 0},
-  {value: '您父亲的生日是?', loc: 0},
-  {value: '您配偶的姓名是?', loc: 0},
-  {value: '您配偶的生日是?', loc: 0},
-  {value: '您最喜欢的运动是?', loc: 0},
-  {value: '您最喜欢的明星名字是?', loc: 0},
-  {value: '您小学班主任的名字是?', loc: 0},
-  {value: '您中学班主任的名字是?', loc: 0},
-  {value: '您高中班主任的名字是?', loc: 0},
-  {value: '您大学班主任的名字是?', loc: 0},
-  {value: '对您影响最大的人名字是?', loc: 0},
-  {value: '您最熟悉的童年好友名字是?', loc: 0}
+export const questions = [
+  {label: '您的出生地是?', loc: 0, value: '您的出生地是?'},
+  {label: '您小学班主任的名字是?', loc: 0, value: '您小学班主任的名字是?'},
+  {label: '您中学班主任的名字是?', loc: 0, value: '您中学班主任的名字是?'},
+  {label: '您高中班主任的名字是?', loc: 0, value: '您高中班主任的名字是?'},
+  {label: '您大学班主任的名字是?', loc: 0, value: '您大学班主任的名字是?'},
+  {label: '您的小学校名是?', loc: 0, value: '您的小学校名是?'},
+  {label: '您母亲的姓名是?', loc: 0, value: '您母亲的姓名是?'},
+  {label: '您母亲的生日是?', loc: 0, value: '您母亲的生日是?'},
+  {label: '您父亲的姓名是?', loc: 0, value: '您父亲的姓名是?'},
+  {label: '您父亲的生日是?', loc: 0, value: '您父亲的生日是?'},
+  {label: '您配偶的姓名是?', loc: 0, value: '您配偶的姓名是?'},
+  {label: '您配偶的生日是?', loc: 0, value: '您配偶的生日是?'},
+  {label: '对您影响最大的人名字是?', loc: 0, value: '对您影响最大的人名字是?'},
+  {label: '您最喜欢的运动是?', loc: 0, value: '您最喜欢的运动是?'},
+  {label: '您的学号（或工号）是?', loc: 0, value: '您的学号（或工号）是?'},
+  {label: '您最喜欢的明星名字是?', loc: 0, value: '您最喜欢的明星名字是?'},
+  {label: '您最熟悉的童年好友名字是?', loc: 0, value: '您最熟悉的童年好友名字是?'}
 ]
 
 // -1---已过期；0--进行中；1---未派发；2---未领取，3---待审核;4---已领取已审核
