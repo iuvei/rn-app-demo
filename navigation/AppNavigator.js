@@ -19,12 +19,18 @@ const MainNavigator = createStackNavigator({
   ...Found,
   Bet
 }, {
-  initialRouteName: 'Main'
+  initialRouteName: 'Main',
+  headerLayoutPreset: 'center',
+  // 在 v2 及其以下版本, 您要用于执行此操作的属性是 navigationOptions`。
+  // 在 v3 中，我们将其重命名为 `defaultNavigationOptions`.
+  navigationOptions: {
+    headerStyle: {
+      elevation: 0, // 去阴影
+      backgroundColor: '#016fca',
+    },
+    headerTintColor: '#fff'
+  }
 })
-
-MainNavigator.navigationOptions = {
-  header: null
-}
 
 const RootNavigation = createSwitchNavigator(
   {
