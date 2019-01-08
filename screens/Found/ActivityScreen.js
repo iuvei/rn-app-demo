@@ -112,7 +112,7 @@ class ActivityScreen extends React.Component {
           {
             sysActivities.map((item, index) => {
               return (
-                <View style={styles.acItem} key={index}>
+                item.status === 1 ? <View style={styles.acItem} key={index}>
                   {
                     !!item.local_banner && <Flex onPress={() => this.setActiveList(index)}><Image
                       source={this.getImg(item.local_banner)}
@@ -137,7 +137,7 @@ class ActivityScreen extends React.Component {
                       </Animated.View>
                       : null
                   }
-                </View>
+                </View>: null
               )
             })
           }

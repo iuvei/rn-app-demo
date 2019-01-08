@@ -4,12 +4,14 @@ import {
   StyleSheet,
   Text,
   View,
-  RefreshControl,
+  RefreshControl, Dimensions,
 } from 'react-native'
 import Header from './../../components/Header'
 import { Accordion, Flex, Toast } from '@ant-design/react-native';
 import { connect } from "react-redux";
 import { getSystemNews } from "../../actions/common";
+import dayjs from 'dayjs'
+import HTML from 'react-native-render-html';
 
 class BroadcastScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -37,17 +39,6 @@ class BroadcastScreen extends React.Component {
 
   _onChange = activeSections => {
     this.setState({ activeSections });
-  }
-
-  _formateTime = val => {
-    let date = new Date(val)
-    Y = date.getFullYear() + '-'
-    M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-'
-    D = date.getDate() + '  '
-    h = date.getHours() + ':'
-    m = date.getMinutes() + ':'
-    s = date.getSeconds();
-    return Y+M+D+h+m+s
   }
 
   _renderHeader = val => {
@@ -80,8 +71,9 @@ class BroadcastScreen extends React.Component {
                   <Accordion.Panel key={index} header={this._renderHeader(item.shortTitle)} style={{backgroundColor:'#fff'}}>
                     <View style={styles.adContent}>
                       <Text>{item.title}</Text>
-                      <Text>{item.content}</Text>
-                      <Text style={styles.adTime}>{this._formateTime(item.createTime)}</Text>
+                      <HTML html={item.content} imagesMaxWidth={Dimensions.get('window').width} />
+                      {/*<Text>{item.content}</Text>*/}
+                      <Text style={styles.adTime}>{dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
                     </View>
                   </Accordion.Panel>
                 )

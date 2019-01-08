@@ -6,9 +6,11 @@ import {
 } from 'react-native'
 import Header from './../../components/Header'
 import { List, SwipeAction, SegmentedControl, Toast, Flex } from '@ant-design/react-native'
-import { delMessage, chatDetail, replyMessage } from './../../api/member'
+import { delMessage } from './../../api/member'
 import UIListView from '../../components/UIListView'
 import WriteEmail from './WriteEmail'
+import ReplyEmail from './ReplyEmail'
+import dayjs from 'dayjs'
 
 class MailboxScreen extends React.Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -38,15 +40,23 @@ class MailboxScreen extends React.Component {
       KeyName: 'Mailbox',
       SendKeyName: 'SendBox',
       api: '/user/message/searchMessage',
-      sendApi: '/user/message/sendInboxMessage'
+      sendApi: '/user/message/sendInboxMessage',
+      replyData: {},
+      showDetail: false
     }
+  }
+
+  onRefresh = async () => {
+    await this.setState({refreshing: true}, () => {
+      this.setState({refreshing: false})
+    })
   }
 
   renderItem = (item, index) => {
     const right = [
       {
         text: '删除',
-        onPress: () => console.log('delete'),
+        onPress: () => this.remove(item.messageId),
         style: {backgroundColor: 'red', color: 'white'}
       }
     ]
@@ -57,11 +67,9 @@ class MailboxScreen extends React.Component {
           autoClose
           style={{backgroundColor: 'transparent'}}
           right={right}
-          onOpen={() => console.log('open')}
-          onClose={() => console.log('close')}
         >
           <List.Item>
-            <Flex>
+            <Flex onPress={() => this.showDetail(item)}>
               <View style={styles.leftMsg}>
                 <Text numberOfLines={1}>
                   {activeTab === '收件箱' ?
@@ -73,7 +81,7 @@ class MailboxScreen extends React.Component {
               </View>
               <View>
                 <Text style={styles.startTime}>
-                  {this._formateTime(item.sendTime)}</Text>
+                  {dayjs(item.sendTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
               </View>
             </Flex>
           </List.Item>
@@ -88,15 +96,39 @@ class MailboxScreen extends React.Component {
     })
   }
 
-  _formateTime = val => {
-    let date = new Date(val)
-    Y = date.getFullYear() + '-'
-    M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
-    D = date.getDate() + '  '
-    h = date.getHours() + ':'
-    m = date.getMinutes() + ':'
-    s = date.getSeconds()
-    return Y + M + D + h + m + s
+  remove = (messageId) => {
+    let { activeTab } = this.state
+    let formData = {
+      messageId: messageId.toString(),  // 多个消息id用逗号间隔
+      delMessageType: activeTab === '收件箱' ? 'receiveBox' : 'sendBox'  // 发件箱删除默认值sendBox,收件箱删除默认为receiveBox
+    }
+    delMessage(formData).then((res) => {
+      if (res.code === 0) {
+        Toast.success(res.message)
+        this.onRefresh()
+      }
+    })
+  }
+
+  showDetail = item => {
+    let { activeTab } = this.state
+    let {messageId, senderId, messageType} = item
+    let replyData = {
+      messageId: messageId,
+      messageType,
+      replyUserId: senderId,
+      messageAddress: activeTab === '收件箱' ? 'receive' : 'send'
+    }
+    this.setState({
+      showDetail: true,
+      replyData
+    })
+  }
+
+  closeReModal = (showDetail = false) => {
+    this.setState({
+      showDetail
+    })
   }
 
   componentDidMount() {
@@ -104,7 +136,7 @@ class MailboxScreen extends React.Component {
   }
 
   render() {
-    let {api, params, KeyName, sendApi, sendParams, SendKeyName, activeTab} = this.state
+    let {api, params, KeyName, sendApi, sendParams, SendKeyName, activeTab, refreshing, replyData, showDetail} = this.state
     return (
       <View style={styles.container}>
         <View style={{height: 50}}>
@@ -117,7 +149,7 @@ class MailboxScreen extends React.Component {
           </View>
         </View>
         {
-          activeTab === '收件箱' ? <UIListView
+          activeTab === '收件箱' && !refreshing ? <UIListView
             ref={ref => this.MailBox = ref}
             api={api}
             type={'get'}
@@ -125,7 +157,7 @@ class MailboxScreen extends React.Component {
             params={params}
             renderItem={this.renderItem}
           /> :
-          activeTab === '发件箱' ? <UIListView
+          activeTab === '发件箱' && !refreshing ? <UIListView
             ref={ref => this.MailBox = ref}
             api={sendApi}
             type={'get'}
@@ -134,6 +166,11 @@ class MailboxScreen extends React.Component {
             renderItem={this.renderItem}
           /> : <WriteEmail />
         }
+        {showDetail ? <ReplyEmail
+          show={showDetail}
+          replyData={replyData}
+          closeReModal={this.closeReModal}
+        /> : null}
       </View>
     )
   }
