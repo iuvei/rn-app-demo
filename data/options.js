@@ -79,6 +79,35 @@ export const shortcuts = [
   }
 ]
 
+export const shortcutsDays = [
+  {
+    text: '今天',
+    value() {
+      const endTime = new Date()
+      const startTime = new Date()
+      return {startTime, endTime}
+    }
+  }, {
+    text: '三天',
+    value() {
+      const endTime = new Date()
+      const startTime = new Date()
+      startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 2)
+      endTime.setTime(endTime.getTime())
+      return {startTime, endTime}
+    }
+  }, {
+    text: '七天',
+    value() {
+      const endTime = new Date()
+      const startTime = new Date()
+      startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 6)
+      endTime.setTime(endTime.getTime())
+      return {startTime, endTime}
+    }
+  }
+]
+
 export const shortcut = [
   {
     text: '今天',

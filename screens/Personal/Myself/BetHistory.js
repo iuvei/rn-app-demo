@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native'
 import UIListView from '../../../components/UIListView'
 // List Item
 import {Button, WingBlank} from '@ant-design/react-native'
+import QueryDate from '../../../components/QueryDate'
 
 const TableRow = 20
 
@@ -54,6 +55,14 @@ class BetHistory extends React.Component {
     }
   }
 
+  handleDate = ({startTime, endTime}) => {
+    console.log({startTime, endTime})
+    // this.setState({
+    //   startIime,
+    //   endTime
+    // })
+  }
+
   // renderItem
   // item, index, separators
   renderItem = (item, index) => {
@@ -89,6 +98,7 @@ class BetHistory extends React.Component {
             type="ghost"
             onPress={() => this.onSearch()}
             style={{marginTop: 4}}>查询</Button>
+            <QueryDate handleDate={this.handleDate}/>
         </WingBlank>
         {isShow ? null :
           <UIListView
