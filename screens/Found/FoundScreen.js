@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
     color: '#333333'
   },
   listText: {
+    marginTop: 5,
     fontSize: 10,
     color: '#8d8b8e'
   }

@@ -6,17 +6,17 @@ class Panel extends PureComponent{
     super(props);
 
     this.state = {
-      expanded    : false,
-      animation   : new Animated.Value()
+      expanded: false,
+      animation: new Animated.Value()
     };
   }
 
   toggle(){
-    let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight,
-      finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
+    let initialValue= this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight,
+      finalValue= this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
 
     this.setState({
-      expanded : !this.state.expanded
+      expanded: !this.state.expanded
     });
 
     this.state.animation.setValue(initialValue);
@@ -30,21 +30,22 @@ class Panel extends PureComponent{
 
   _setMaxHeight(event){
     this.setState({
-      maxHeight   : event.nativeEvent.layout.height
+      maxHeight: event.nativeEvent.layout.height
     });
   }
 
   _setMinHeight(event){
+    let height = event.nativeEvent.layout.height
     this.setState({
-      minHeight   : event.nativeEvent.layout.height,
-      animation: new Animated.Value(event.nativeEvent.layout.height)
+      minHeight: height,
+      animation: new Animated.Value(height)
     });
   }
 
   render(){
     return (
       <Animated.View
-        style={[styles.container,{height: this.state.animation}]}>
+        style={[styles.container, this.props.style, {height: this.state.animation}]}>
         <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
           <TouchableHighlight
             onPress={this.toggle.bind(this)}
@@ -64,7 +65,8 @@ class Panel extends PureComponent{
 
 const styles = StyleSheet.create({
   container: {
-   flex: 1
+   flex: 1,
+   overflow: 'hidden'
   },
   header: {
     width: '100%',
