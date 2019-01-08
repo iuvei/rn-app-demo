@@ -39,6 +39,7 @@ export default class WriteEmail extends React.Component {
     let { down_data } = this.state
     this.setState({
       messageType,
+      checkAll: false,
       visible: messageType === 3,
       down_data: messageType === 3 ? down_data : down_data.map(item => {return {...item, checked:false}})
     })
