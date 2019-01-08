@@ -131,11 +131,11 @@ class MemberManage extends React.Component {
               KeyName={`KeyName-${KeyName}`}
               params={params}
               renderItem={this.renderItem}
-              beforeUpdateList={({res}, fn) => {
+              beforeUpdateList={({res, params}, fn) => {
                 let dataList = res.data && res.data.data ? res.data.data : []
-                let {pageNumber, pageSize, totalCount} = res.data
-                let NullData = Math.ceil(totalCount / pageSize) < pageNumber
-                fn({dataList})
+                let {totalCount} = res.data
+                let NullData = Math.ceil(totalCount / 10) < params.pageNumber
+                fn(!NullData ? {dataList} : [])
               }}
             />
             {
