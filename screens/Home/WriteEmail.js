@@ -3,9 +3,16 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
+  Keyboard
 } from 'react-native'
-import { Toast, Flex, WhiteSpace, WingBlank, Button, InputItem, TextareaItem } from '@ant-design/react-native'
+import {
+  Toast, Flex, WhiteSpace, WingBlank,
+  Button, InputItem, TextareaItem,
+  Modal, Checkbox, List
+} from '@ant-design/react-native'
 import {downUser, sendMessage} from './../../api/member'
+const CheckboxItem = Checkbox.CheckboxItem;
 
 export default class WriteEmail extends React.Component {
   constructor(props) {
@@ -14,10 +21,12 @@ export default class WriteEmail extends React.Component {
       this.setState({ content });
     };
     this.state = {
-      activeId: 0, // 0上级 1下级 2客服
+      visible: false,
+      checkAll: false,
+      messageType: 1, // 1上级 3下级 2客服
       Rtabs: [
-        {name:'上级', key: 0},
-        {name:'下级', key: 1},
+        {name:'上级', key: 1},
+        {name:'下级', key: 3},
         {name:'客服', key: 2}
       ],
       topic: '',
@@ -26,8 +35,13 @@ export default class WriteEmail extends React.Component {
     }
   }
 
-  setActiveRtab = activeId => {
-    this.setState({activeId})
+  setActiveRtab = messageType => {
+    let { down_data } = this.state
+    this.setState({
+      messageType,
+      visible: messageType === 3,
+      down_data: messageType === 3 ? down_data : down_data.map(item => {return {...item, checked:false}})
+    })
   }
 
   getDownUser = () => {
@@ -37,20 +51,96 @@ export default class WriteEmail extends React.Component {
     }
     downUser(obj).then((res) => {
       if (res.code === 0) {
+        let formateData = res.data.map(item =>{
+          return {
+            ...item,
+            checked: false
+          }
+        })
         this.setState({
-          down_data: res.data || []
+          down_data: formateData || []
         })
       }
     })
   }
 
+  _setCheckItem = (key) => {
+    this.setState((prevState) => {
+      return {
+        down_data: prevState.down_data.map((item, index) => {
+          return key === index ? {...item, checked: !item.checked} : item
+        })
+      }
+    })
+  }
+
+  _setCheckAll = () => {
+    this.setState((prevState) => {
+      return {
+        checkAll: !prevState.checkAll,
+        down_data: prevState.down_data.map((item) => {
+          return {...item, checked: !prevState.checkAll}
+        })
+      }
+    })
+  }
+
+  onClose = () => {
+    this.setState((prevState) => {
+      return {
+        visible: false,
+        checkAll: false,
+        messageType: 1,
+        checkAll: false,
+        down_data: prevState.down_data.map((item) => {
+          return {...item, checked: false}
+        })
+      }
+    })
+  }
+
+  submitDownUser = (visible = false) => {
+    this.setState({visible})
+  }
+
   sendEmail = () => {
-    let { topic, content } = this.state
+    let { topic, content, messageType, down_data } = this.state
+    let downUserId = []
     if (!topic || !content) {
       Toast.fail(!topic ? '主题不能为空': '邮件内容不能为空')
       return
     }
-    Toast.success('发送成功！')
+    if (messageType === 3) {
+      down_data.forEach(item => {
+        if (item.checked) {
+          downUserId.push(item.user_id)
+        }
+      })
+    }
+    let formData = {
+      subUserId: downUserId.length ? downUserId.join(','): '',
+      title: topic,
+      content: content,
+      messageType: messageType
+    }
+    sendMessage(formData).then((res) => {
+      if (res.code === 0) {
+        Toast.success(res.message)
+        this.resetFormateData()
+      } else {
+        Toast.info(res.message)
+      }
+    })
+  }
+
+  resetFormateData = () => {
+    let { down_data } = this.state
+    this.setState({
+      messageType: 1,
+      topic: '',
+      content: '',
+      down_data: down_data.map(item => {return {...item, checked:false}})
+    })
   }
 
   componentDidMount() {
@@ -58,7 +148,11 @@ export default class WriteEmail extends React.Component {
   }
 
   render() {
-    let { activeId, Rtabs, down_data } = this.state
+    let { messageType, Rtabs, down_data, checkAll } = this.state
+    const footerButtons = [
+      { text: '取消', onPress: () => this.onClose() },
+      { text: '确认', onPress: () => this.submitDownUser() },
+    ];
     return (
       <View style={styles.container}>
         <WhiteSpace size="lg" />
@@ -69,11 +163,11 @@ export default class WriteEmail extends React.Component {
               <Flex>
                 {
                   Rtabs.map((item, index) => {
-                    let d = down_data.length === 0 && item.key === 1
+                    let d = down_data.length === 0 && item.key === 3
                     return (
                       !d ? <View
                         key={index}
-                        style={[styles.defaultBt, activeId === item.key ? styles.activeBt : '']}>
+                        style={[styles.defaultBt, messageType === item.key ? styles.activeBt : '']}>
                         <Text
                           onPress={() => this.setActiveRtab(item.key)}
                           style={styles.defaultBtText}>{item.name}</Text>
@@ -84,6 +178,23 @@ export default class WriteEmail extends React.Component {
               </Flex>
             </View>
           </Flex>
+          <View>
+            <Flex wrap="wrap">
+              {
+                down_data.map((item, index) => {
+                  return item.checked ? (
+                    <View
+                      style={styles.downActiveBt}
+                      key={index}>
+                      <Text
+                        onPress={() => {this.setState({visible: true})}}
+                        style={styles.downActiveBtText}>{item.userName}</Text>
+                    </View>
+                  ) : null
+                })
+              }
+            </Flex>
+          </View>
           <WhiteSpace size="lg" />
           <View>
             <Text>主题：</Text>
@@ -94,6 +205,7 @@ export default class WriteEmail extends React.Component {
                   topic: value,
                 });
               }}
+              onSubmitEditing={Keyboard.dismiss}
               placeholder="输入主题" />
           </View>
           <WhiteSpace size="lg" />
@@ -106,7 +218,8 @@ export default class WriteEmail extends React.Component {
                 placeholder="写点什么呢"
                 value={this.state.content}
                 onChange={this.onChange}
-                autoHeight count={200} />
+                onSubmitEditing={Keyboard.dismiss}
+                autoHeight />
             </View>
           </View>
           <WhiteSpace size="lg" />
@@ -115,10 +228,7 @@ export default class WriteEmail extends React.Component {
               <Button
                 type="warning"
                 onPress={() => {
-                  this.setState({
-                    topic: '',
-                    content: ''
-                  })
+                  this.resetFormateData()
                 }}
                 style={{width: 150,height: 35, marginLeft: 10}}>重置</Button>
             </View>
@@ -130,6 +240,39 @@ export default class WriteEmail extends React.Component {
             </View>
           </Flex>
         </WingBlank>
+        <Modal
+          title="下级列表"
+          transparent
+          visible={this.state.visible}
+          footer={footerButtons}
+        >
+          <View>
+            <Checkbox
+              checked={checkAll}
+              onChange={() => {
+                this._setCheckAll()
+              }}>全选</Checkbox>
+          </View>
+          <WhiteSpace size="lg" />
+          <View style={{height: 200, width: '100%'}}>
+            <ScrollView>
+              <List>
+                {
+                  down_data.map((item, index) => {
+                    return (
+                      <CheckboxItem
+                        checked={item.checked}
+                        onChange={() => {
+                          this._setCheckItem(index)
+                        }}
+                        key={index}>{item.userName}</CheckboxItem>
+                    )
+                  })
+                }
+              </List>
+            </ScrollView>
+          </View>
+        </Modal>
       </View>
     )
   }
@@ -146,6 +289,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 5,
     backgroundColor: '#ccc'
+  },
+  downActiveBt: {
+    width: 40,
+    height: 20,
+    borderRadius: 10,
+    marginRight: 2,
+    marginTop: 5,
+    backgroundColor: '#097bd9'
+  },
+  downActiveBtText: {
+    lineHeight: 20,
+    fontSize: 10,
+    color: '#ffffff',
+    textAlign: 'center'
   },
   activeBt: {
     backgroundColor: '#097bd9'

@@ -231,7 +231,7 @@ class HomeScreen extends React.Component {
                         <Image source={this.getIconName(item.realCategory)} resizeMode={'cover'} style={styles.favoriteItemImg} />
                       </View>
                       <View style={styles.favoriteItemCenter}>
-                        <Text style={styles.favoriteItemTitle}>{item.lotterName}</Text>
+                        <Text numberOfLines={1} style={styles.favoriteItemTitle}>{item.lotterName}</Text>
                         <Text style={styles.favoriteItemText}>100万派送中</Text>
                       </View>
                     </Flex>
@@ -380,6 +380,7 @@ const styles = StyleSheet.create({
 
   },
   favoriteItemTitle: {
+    width: 90,
     fontSize: 14
   },
   favoriteItemText: {
