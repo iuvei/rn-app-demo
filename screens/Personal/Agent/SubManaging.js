@@ -4,6 +4,7 @@ import {InputItem, Button, Toast, Flex} from '@ant-design/react-native'
 import {connect} from "react-redux"
 import {Tab, Tabs, Picker} from 'native-base'
 import {setRebate, downRecharge, updateBaijlWater, updateBaijlRebate, canSignContract} from '../../../api/member'
+import Contract from '../../../components/Contract'
 
 class SubManaging extends Component {
   static navigationOptions = {
@@ -262,25 +263,7 @@ class SubManaging extends Component {
             {
               contractStatus === 1 ? <Tab heading={'契约分红'}>
                 <View style={styles.tab}>
-                  <View style={styles.textArea}>
-                    <InputItem
-                      clear
-                      type="number"
-                      value={this.state.chargeData.money}
-                      placeholder="请输入金额"
-                      onChange={value => {
-                        this.setState({
-                          chargeData: {
-                            ...this.state.chargeData,
-                            money: value
-                          }
-                        })
-                      }}
-                    >
-                      充值金额
-                    </InputItem>
-                  </View>
-                  <Button type={'primary'} onPress={this.downRecharge}>确定</Button>
+                  <Contract subUserInfo={subUserInfo}></Contract>
                 </View>
               </Tab> : null
             }

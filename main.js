@@ -15,6 +15,14 @@ class Main extends React.Component {
     isLoadingComplete: false
   }
 
+  componentWillReceiveProps(nextProps, lastProps) {
+    if (nextProps.isLogin && !lastProps.isLogin) {
+      this.setState({
+        isLoadingComplete: false
+      })
+    }
+  }
+
   render() {
     if (!this.state.isLoadingComplete) {
       if (!this.props.skipLoadingScreen) {
