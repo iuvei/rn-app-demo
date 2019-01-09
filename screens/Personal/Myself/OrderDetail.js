@@ -39,12 +39,13 @@ class OrderDetail extends React.Component {
         // {key: 'stopTime', title: '截止时间'},
         {key: 'bonus', title: '中奖金额'},
         {key: 'openCode', title: '开奖号码'}
-      ]
+      ],
+      detailInfo: props.navigation.getParam('detail', {})
     }
   }
 
   render() {
-    let detailInfo = this.props.navigation.getParam('detail', {})
+    let { detailInfo, keyList } = this.state
     let statusobj = orderStatus.filter(obj => {
       return obj.value === detailInfo.status
     })[0]
@@ -57,7 +58,7 @@ class OrderDetail extends React.Component {
           </View>
           <Text style={{fontSize: 20, lineHeight: 44, textAlign: 'center', color: statusobj.color, marginTop: -5, backgroundColor: '#fff', width: '98%'}}>{statusobj.label}</Text>
           {
-            this.state.keyList.map(item => {
+            keyList.map(item => {
               return (
                 <View style={{backgroundColor: '#fff', width: '98%'}} key={item.title}>
                   <Flex>
