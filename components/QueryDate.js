@@ -108,7 +108,7 @@ export default class QueryDate extends React.Component {
           </Flex.Item>
           <Flex.Item>
             <View>
-              <Text onPress={this.showActionSheet} style={{textAlign: 'center'}}>{BUTTONS[buttonIndex]}</Text>
+              <Text style={{textAlign: 'center', lineHeight: 25, color: '#111', fontSize: 12}} onPress={this.showActionSheet} style={{textAlign: 'center'}}>{BUTTONS[buttonIndex]}</Text>
             </View>
           </Flex.Item>
         </Flex>

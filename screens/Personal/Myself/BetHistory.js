@@ -1,9 +1,16 @@
 import React, {PureComponent} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
 import UIListView from '../../../components/UIListView'
 // List Item
-import {Button, WingBlank} from '@ant-design/react-native'
+import {
+  Button,
+  WingBlank,
+  Flex,
+  Icon,
+  Picker
+} from '@ant-design/react-native'
 import QueryDate from '../../../components/QueryDate'
+import QueryPickerOne from '../../../components/QueryPickerOne'
 
 const TableRow = 20
 
@@ -14,12 +21,15 @@ class FlatListItem extends PureComponent {
 
   render() {
     let {item, index} = this.props
-    let {orderId, ruleName} = item
+    let {orderId, ruleName, lotterName, orderIssue, castAmount, castCodes} = item
     return (
-      <View style={{padding: 10}}>
-        <Text>序号: {index}</Text>
-        <Text>RowID: {orderId}</Text>
-        <Text note>Data: {ruleName}</Text>
+      <View style={{padding: 10, backgroundColor: '#fff'}}>
+        <Text>{lotterName}</Text>
+        <Flex>
+          <Text style={{width: 150}}>期号: {orderIssue}</Text><Text>{ruleName}</Text>
+        </Flex>
+        <Text note>投注金额: {castAmount}</Text>
+        <Text note>投注号码: {castCodes}</Text>
       </View>
     )
   }
@@ -89,7 +99,6 @@ class BetHistory extends React.Component {
 
   render() {
     let {api, params, KeyName, isShow} = this.state
-    console.log('params', params)
     return (
       <View style={styles.container}>
         <WingBlank>
@@ -98,6 +107,32 @@ class BetHistory extends React.Component {
             onPress={() => this.onSearch()}
             style={{marginTop: 4}}>查询</Button>
             <QueryDate handleDate={this.handleDate}/>
+            <View>
+              <Flex justify="between" style={{height: 30}}>
+                <Flex.Item>
+                  <QueryPickerOne
+                    data={[
+                      {
+                        label: '彩票',
+                        id: 1,
+                        value: 0
+                      }, {
+                        label: '快乐彩',
+                        id: 2,
+                        value: 1
+                      }, {
+                        label: '百家乐',
+                        id: 3,
+                        value: 2
+                      }
+                    ]} queryName={'orderType'} handlePickerBack={(val) => this.setState({
+                      params: {...params, ...val}
+                    })}/>
+                </Flex.Item>
+                <Flex.Item><Text>百家乐</Text></Flex.Item>
+                <Flex.Item><Text>百家乐</Text></Flex.Item>
+              </Flex>
+            </View>
         </WingBlank>
         {isShow ? null :
           <UIListView
@@ -135,8 +170,9 @@ class BetHistory extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
     paddingTop: 0,
-    backgroundColor: '#fff'
+    backgroundColor: '#f0f0f0',
   },
   spa: {
     flex: 1,

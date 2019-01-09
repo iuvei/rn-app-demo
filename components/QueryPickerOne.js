@@ -1,0 +1,57 @@
+import React from 'react'
+import { View, StyleSheet, TouchableHighlight } from 'react-native'
+import {
+  Picker,
+  Text,
+  Flex,
+  Icon,
+} from '@ant-design/react-native'
+
+export default class QueryPickerOne extends React.PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      pickered: [props.data[0]]
+    }
+    props.handlePickerBack({[props.queryName]:props.data[0].value})
+  }
+
+  render() {
+    let { pickered }= this.state
+    let { data, queryName } = this.props
+
+    return (
+      <Picker
+        data={data}
+        cols={1}
+        value={''}
+        itemStyle={{color: '#333333', fontSize: 14, lineHeight: 32}}
+        onChange={(val) => {
+          let arr = data.filter(item => {
+            return item.value === val[0]
+          })
+          this.setState({
+            pickered: [].concat(arr)
+          })
+          let obj = {}
+          obj[queryName] = val[0]
+          this.props.handlePickerBack(obj)
+        }}
+      >
+        <TouchableHighlight>
+          <Flex style={{backgroundColor: '#1182df', borderRadius: 3}}>
+            <View style={{flex: 1}}>
+              <Text style={{textAlign: 'center', lineHeight: 25, color: '#fff', fontSize: 12}}>{pickered[0].label}</Text>
+            </View>
+            <View style={{width: 30, alignItems: 'center'}}>
+              <Icon name="down" size={16} color="#fff"/>
+            </View>
+          </Flex>
+        </TouchableHighlight>
+      </Picker>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+})
