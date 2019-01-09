@@ -200,10 +200,10 @@ export const lotteryStatus = [
 
 // 订单状态
 export const orderStatus = [
-  {value: '', label: '所有状态'},
+  {value: '', label: '所有状态', color: '#999'},
   {value: 1, label: '未开奖', color: '#999'},
-  {value: 3, label: '未中奖', color: 'green'},
-  {value: 2, label: '已中奖', color: 'red'},
+  {value: 3, label: '未中奖', color: '#018000'},
+  {value: 2, label: '已中奖', color: '#ef3155'},
   {value: -1, label: '系统自动撤单', color: '#999'},
   {value: -2, label: '用户手动撤单', color: '#999'},
   {value: -3, label: '后台手动撤单', color: '#999'}
