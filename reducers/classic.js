@@ -1,14 +1,14 @@
-import {handleActions} from 'redux-actions'
+import { handleActions } from 'redux-actions'
 
 const initialState = {
-  classicText: ''
+  latelyOpenList: []
 }
 
 const classic = handleActions({
-  SET_CLASSIC_NAME: (state, {payload}) => {
+  SET_LATELY_OPEN: (state, {payload}) => {
     return {
       ...state,
-      classicText: payload
+      latelyOpenList: payload
     }
   }
 }, initialState)

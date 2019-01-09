@@ -11,6 +11,7 @@ import DownTime from './DownTime'
 import PlayNav from './PlayNav'
 import RowBall from './RowBall'
 import BuyRender from './BuyRender'
+import LatelyList from './LatelyList'
 
 import { DownTimeHoc } from '../../HOC'
 
@@ -92,6 +93,7 @@ export default class BetScreen extends React.Component {
 
   render() {
     let {ContentTabs, playTabs, actPlay} = this.state
+    let {params} = this.props.navigation.state
     return (
       <View style={styles.container}>
 
@@ -103,7 +105,10 @@ export default class BetScreen extends React.Component {
 
         {/* down Container*/}
         {/*<DownTime ballOpen={this.state.ballOpen}/>*/}
-        <DownTimeHocView ballOpen={this.state.ballOpen}/>
+        <DownTimeHocView
+          ballOpen={this.state.ballOpen}
+          activeLot={params}
+        />
 
         {/* Tabs Nav */}
         <Tabs tabs={ContentTabs}
@@ -111,8 +116,10 @@ export default class BetScreen extends React.Component {
               onChange={this._onChangeTabs}
               initialPage={1}
               animated={false}>
-          <View style={styles.tabs}>
-            <Text>Content of First Tab</Text>
+          <View>
+            <ScrollView>
+              <LatelyList/>
+            </ScrollView>
           </View>
           <View style={{margin: 4}}>
             <ScrollView>

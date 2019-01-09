@@ -78,6 +78,7 @@ const initialState = {
       status: 0
     }
   ],
+  userId: '',
   sysActivities: [], // 活动信息列表
   systemNews: [],  // 系统公告
   loginInfo: {},  // 用户信息
@@ -85,7 +86,7 @@ const initialState = {
   balanceInfo: {}, // 用户账户余额信息
   sysBankList: [], // 系统银行卡列表
   userSecurityLevel: {}, // 账户安全等级
-  userSecurityConfig: {}, // 解绑资金密码，GA密码，银行卡姓名开关
+  userSecurityConfig: {} // 解绑资金密码，GA密码，银行卡姓名开关
 }
 
 // 常规处理
@@ -99,7 +100,8 @@ const common = handleActions({
   SET_LOGIN_INFO: (state, {payload}) => {
     return {
       ...state,
-      loginInfo: payload
+      loginInfo: payload,
+      userId: payload.userId
     }
   },
   SET_CUSTOMIZE_LOTTERY: (state, {payload}) => {
@@ -163,7 +165,7 @@ const common = handleActions({
   SET_ACTIVE_USUAL_LOT: (state, {payload}) => {
     return {
       ...state,
-      usualLottery: payload,
+      usualLottery: payload
     }
   },
   GET_SYSTEM_NEWS: (state, {payload}) => {
