@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react'
 import { connect } from 'react-redux'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
 import UIListView from '../../../components/UIListView'
 // List Item
 import {
@@ -23,22 +23,30 @@ class FlatListItem extends PureComponent {
     let {item, index} = this.props
     let {orderId, ruleName, lotterName, orderIssue, castAmount, castCodes} = item
     return (
-      <View style={{padding: 10, backgroundColor: '#fff'}}>
-        <Text>{lotterName}</Text>
-        <Flex>
-          <Text style={{width: 150}}>期号: {orderIssue}</Text><Text>{ruleName}</Text>
-        </Flex>
-        <Text note>投注金额: {castAmount}</Text>
-        <Text note>投注号码: {castCodes}</Text>
-      </View>
+      <TouchableHighlight onPress={() => this.props.onPressFunc(item)}>
+        <View style={{padding: 10, backgroundColor: '#fff'}}>
+          <Text style={{fontSize: 15, lineHeight: 24}}>{lotterName}</Text>
+          <Flex>
+            <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22}}>期号: <Text style={{color: '#1689e6'}}>{orderIssue}</Text></Text>
+            <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22}}>{ruleName}</Text>
+          </Flex>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>投注金额: <Text style={{color: '#1689e6'}}>{castAmount}</Text></Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>投注号码: <Text style={{color: '#1689e6'}}>{castCodes}</Text></Text>
+        </View>
+      </TouchableHighlight>
     )
   }
 
 }
 
 class BetHistory extends React.Component {
-  static navigationOptions = {
-    title: '游戏记录'
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      title: '游戏记录',
+      headerRight: <Button style={{marginRight: 14}} type="ghost" size="small" onPress={navigation.getParam('onSearch')}>
+        <Text style={{color: '#fff'}}>查询</Text>
+      </Button>
+    }
   }
 
   constructor(props) {
@@ -79,19 +87,20 @@ class BetHistory extends React.Component {
       <FlatListItem
         item={item}
         index={index}
-        onPress={(Type, Item) =>
-          this.onPressItem(Type, Item)
-        }/>
+        onPressFunc={(Item) => {
+          this.onPressItem(Item)
+        }}/>
     )
   }
 
   // 点击单元表格
-  onPressItem = (type, item) => { 
-    console.log('====')
-    // this.props.navigation.navigate('OrderSingleInfo')
-    let Row = this.BetHistory.listView.getRows().slice()
-    Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
-    this.BetHistory.listView.updateDataSource(Row)
+  onPressItem = (item) => { 
+    // 跳转详情页
+    this.props.navigation.navigate('OrderDetail', {detail: item})
+    // 点击一项改变数据重置数据
+    // let Row = this.BetHistory.listView.getRows().slice()
+    // Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
+    // this.BetHistory.listView.updateDataSource(Row)
   }
 
   onSearch = async () => {
@@ -107,6 +116,7 @@ class BetHistory extends React.Component {
   }
 
   componentDidMount() {
+    this.props.navigation.setParams({ onSearch: this.onSearch })
     let { sysSortLottery } = this.props
     let arr = []
     sysSortLottery.forEach(item => {
@@ -123,15 +133,10 @@ class BetHistory extends React.Component {
 
   render() {
     let {api, params, KeyName, isShow, lotterList} = this.state
-    console.log('params', params)
 
     return (
       <View style={styles.container}>
         <View>
-          <Button
-            type="ghost"
-            onPress={() => this.onSearch()}
-            style={{marginTop: 4}}>查询{params.lotterCode}</Button>
             <QueryDate handleDate={this.handleDate}/>
             <View>
               <Flex justify="between" style={{height: 30}}>
@@ -196,7 +201,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    paddingTop: 0,
+    paddingTop: 5,
     backgroundColor: '#f0f0f0',
   },
   spa: {

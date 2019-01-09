@@ -9,6 +9,7 @@ import LotteryReport from './Myself/LotteryReport'
 import RebateHistory from './Myself/RebateHistory'
 import TransferHistory from './Myself/TransferHistory'
 import WithdrawHistory from './Myself/WithdrawHistory'
+import OrderDetail from './Myself/OrderDetail'
 // 代理管理
 import AgentIndex from './Agent/AgentIndex'
 import MemberManage from './Agent/MemberManage'
@@ -65,5 +66,6 @@ export default {
   VersionInfo,
   UnbindSet,
   BindBankname,
-  SubManaging
+  SubManaging,
+  OrderDetail
 }
