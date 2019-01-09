@@ -88,6 +88,15 @@ export const queryOrderDetails = (data) => {
   })
 }
 
+// 撤单（单笔）
+export const doCancelOrder = (formdata = {}) => {
+  return axiosHttp({
+    api: '/order/revked',
+    type: 'post',
+    formdata
+  })
+}
+
 // 修改登录密码
 export const updateLoginPwd = (data) => {
   return fetch({

@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import {
   View,
   Text,
@@ -11,6 +12,7 @@ import {
   Button
 } from '@ant-design/react-native'
 import { orderStatus } from '../../../data/options'
+import { queryOrderDetails, doCancelOrder } from '../../../api/member'
 
 class OrderDetail extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -29,7 +31,7 @@ class OrderDetail extends React.Component {
         {key: 'ruleName', title: '玩法'},
         {key: 'castMode', title: '资金模式'},
         // {key: 'rewardLevel', title: '奖级'},
-        {key: 'money', title: '投注金额'},
+        {key: 'castAmount', title: '投注金额'},
         {key: 'rewardAndRebate', title: '奖金/返点'},
         {key: 'profit', title: '盈亏金额'},
         {key: 'orderTime', title: '加入时间'},
@@ -38,10 +40,18 @@ class OrderDetail extends React.Component {
         {key: 'castMultiple', title: '倍数', desc: '倍'},
         // {key: 'stopTime', title: '截止时间'},
         {key: 'bonus', title: '中奖金额'},
-        {key: 'openCode', title: '开奖号码'}
+        {key: 'openCode', title: '开奖号码'},
+        {key: 'castCodes', title: '投注号码'},
       ],
       detailInfo: props.navigation.getParam('detail', {})
     }
+    queryOrderDetails({userId: props.loginInfo.acc.user.userId, orderId: props.navigation.getParam('detail', {}).orderId}).then(res => {
+      if (res.code === 0) {
+        this.setState(prevState => ({
+          detailInfo: {...prevState.detailInfo, ...res.data}
+        }))
+      }
+    })
   }
 
   render() {
@@ -81,7 +91,16 @@ class OrderDetail extends React.Component {
   }
 }
 
-export default OrderDetail
+const mapStateToProps = (state, props) => {
+  let {loginInfo} = state.common
+  return {loginInfo}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderDetail)
 
 const styles = StyleSheet.create({
   container: {
