@@ -1,16 +1,16 @@
 import React, {PureComponent} from 'react'
-import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
+import { connect } from 'react-redux'
+import {View, Text, StyleSheet} from 'react-native'
 import UIListView from '../../../components/UIListView'
 // List Item
 import {
   Button,
   WingBlank,
   Flex,
-  Icon,
-  Picker
 } from '@ant-design/react-native'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
+import { orderTypes, orderStatus } from '../../../data/options'
 
 const TableRow = 20
 
@@ -61,13 +61,14 @@ class BetHistory extends React.Component {
         isAddition: 0, // 是否追号：0 否、1 是
         pageSize: 10,
         isOuter: '' // 0 否 1 是
-      }
+      },
+      lotterList: []
     }
   }
 
   handleDate = ({startTime, endTime}) => {
     this.setState(prevState => ({
-      params: {...prevState.params, startTime, endTime}
+      params: Object.assign({}, {...prevState.params, startTime, endTime})
     }))
   }
 
@@ -85,7 +86,9 @@ class BetHistory extends React.Component {
   }
 
   // 点击单元表格
-  onPressItem = (type, item) => {
+  onPressItem = (type, item) => { 
+    console.log('====')
+    // this.props.navigation.navigate('OrderSingleInfo')
     let Row = this.BetHistory.listView.getRows().slice()
     Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
     this.BetHistory.listView.updateDataSource(Row)
@@ -97,43 +100,65 @@ class BetHistory extends React.Component {
     })
   }
 
+  handlePickerBack = (val) => {
+    this.setState(prevState => ({
+      params: {...prevState.params, ...val}
+    }))
+  }
+
+  componentDidMount() {
+    let { sysSortLottery } = this.props
+    let arr = []
+    sysSortLottery.forEach(item => {
+      arr = arr.concat(item.gpLot, item.originLot)
+    })
+    let tmp = arr.map(item => {
+      return {...item, value: item.lotterCode, label: item.lotterName}
+    })
+    tmp.unshift({value: '', label: '全部'})
+    this.setState({
+      lotterList: tmp
+    })
+  }
+
   render() {
-    let {api, params, KeyName, isShow} = this.state
+    let {api, params, KeyName, isShow, lotterList} = this.state
+    console.log('params', params)
+
     return (
       <View style={styles.container}>
-        <WingBlank>
+        <View>
           <Button
             type="ghost"
             onPress={() => this.onSearch()}
-            style={{marginTop: 4}}>查询</Button>
+            style={{marginTop: 4}}>查询{params.lotterCode}</Button>
             <QueryDate handleDate={this.handleDate}/>
             <View>
               <Flex justify="between" style={{height: 30}}>
                 <Flex.Item>
                   <QueryPickerOne
-                    data={[
-                      {
-                        label: '彩票',
-                        id: 1,
-                        value: 0
-                      }, {
-                        label: '快乐彩',
-                        id: 2,
-                        value: 1
-                      }, {
-                        label: '百家乐',
-                        id: 3,
-                        value: 2
-                      }
-                    ]} queryName={'orderType'} handlePickerBack={(val) => this.setState({
-                      params: {...params, ...val}
-                    })}/>
+                    data={orderTypes}
+                    queryName={'orderType'}
+                    handlePickerBack={this.handlePickerBack}/>
                 </Flex.Item>
-                <Flex.Item><Text>百家乐</Text></Flex.Item>
-                <Flex.Item><Text>百家乐</Text></Flex.Item>
+                <Flex.Item style={{marginHorizontal: 16}}>
+                  <QueryPickerOne
+                    data={orderStatus}
+                    queryName={'status'}
+                    handlePickerBack={this.handlePickerBack}/>
+                </Flex.Item>
+                <Flex.Item>
+                  {
+                    lotterList.length > 0 &&
+                    <QueryPickerOne
+                      data={lotterList}
+                      queryName={'lotterCode'}
+                      handlePickerBack={this.handlePickerBack}/>
+                  }
+                </Flex.Item>
               </Flex>
             </View>
-        </WingBlank>
+        </View>
         {isShow ? null :
           <UIListView
             ref={ref => this.BetHistory = ref}
@@ -181,4 +206,14 @@ const styles = StyleSheet.create({
   }
 })
 
-export default BetHistory
+
+const mapStateToProps = (state, props) => {
+  let {sysSortLottery} = state.common
+  return {sysSortLottery}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BetHistory)
