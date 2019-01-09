@@ -33,9 +33,7 @@ export default class QueryPickerOne extends React.PureComponent {
           this.setState({
             pickered: [].concat(arr)
           })
-          let obj = {}
-          obj[queryName] = val[0]
-          this.props.handlePickerBack(obj)
+          this.props.handlePickerBack({[queryName]:val[0]})
         }}
       >
         <TouchableHighlight>
