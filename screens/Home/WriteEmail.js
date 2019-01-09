@@ -51,7 +51,7 @@ export default class WriteEmail extends React.Component {
       pageSize: 35
     }
     downUser(obj).then((res) => {
-      if (res.code === 0) {
+      if (res.code === 0 && res.data && res.data.length) {
         let formateData = res.data.map(item =>{
           return {
             ...item,
