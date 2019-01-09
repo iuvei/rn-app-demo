@@ -7,14 +7,14 @@ import {
   Image,
   RefreshControl,
   Dimensions,
-  Animated
 } from 'react-native';
-import { List, Toast, Flex, WhiteSpace, Button } from "@ant-design/react-native";
+import { List, Toast, Flex, WhiteSpace, Button, Icon } from "@ant-design/react-native";
 import HTML from 'react-native-render-html';
 import { connect } from "react-redux";
 import Header from './../../components/Header';
 import { queryActivity } from "../../actions/common";
 import {joinActivity, getCashBouns} from './../../api/basic'
+import Accordion from 'react-native-collapsible/Accordion'
 const Item = List.Item;
 
 class ActivityScreen extends React.Component {
@@ -29,7 +29,7 @@ class ActivityScreen extends React.Component {
     this.state = {
       refreshing: false,
       list: [],
-      activeId: -1,
+      activeSections: [],
       height: 0,
       ImageList: {
         'activity/czxfs.png': require(`./../../assets/images/activity/czxfs.png`),
@@ -37,6 +37,43 @@ class ActivityScreen extends React.Component {
         'activity/hyscs.png': require(`./../../assets/images/activity/hyscs.png`)
       }
     }
+  }
+
+  _renderHeader = (item, index) => {
+    let width = Dimensions.get('window').width
+    return (
+      <View>
+        {
+          !!item.local_banner && <Flex><Image
+            source={this.getImg(item.local_banner)}
+            resizeMode={'contain'}
+            style={{width: '100%', height: (width*220)/750}}/></Flex>
+        }
+        <Flex justify="space-between" style={{padding: 10}}>
+          <Text>{item.activityName}</Text>
+          <Icon name={[this.state.activeSections[0] === index ? 'up' : 'down']} />
+        </Flex>
+      </View>
+    )
+  }
+
+  _renderContent = item => {
+    let width = Dimensions.get('window').width
+    return (
+      <View style={{paddingLeft: 10, paddingRight: 10}}>
+        <HTML html={item.local_introduce || '<div>--</div>'} imagesMaxWidth={width} />
+        <Text>活动说明:</Text>
+        <HTML html={item.local_explanation || '<div>--</div>'} imagesMaxWidth={width} />
+        <WhiteSpace size="sm" />
+        {
+          this._getButtonAction(item)
+        }
+      </View>
+    )
+  }
+
+  _updateSections = activeSections => {
+    this.setState({ activeSections });
   }
 
   _onRefresh = () => {
@@ -49,10 +86,6 @@ class ActivityScreen extends React.Component {
 
   getImg = (url) => {
     return this.state.ImageList[url]
-  }
-
-  setActiveList = activeId => {
-    this.state.activeId === activeId ? this.setState({activeId: -1}) : this.setState({activeId})
   }
 
   getAllAct = () => {
@@ -100,8 +133,7 @@ class ActivityScreen extends React.Component {
 
   render() {
     let { sysActivities } = this.props
-    let { activeId } = this.state
-    let width = Dimensions.get('window').width
+    let data = sysActivities.filter(item => item.status === 1)
     return (
       <View style={styles.container}>
         <ScrollView
@@ -111,38 +143,15 @@ class ActivityScreen extends React.Component {
               onRefresh={this._onRefresh}
             />
           }>
-          {
-            sysActivities.map((item, index) => {
-              return (
-                item.status === 1 ? <View style={styles.acItem} key={index}>
-                  {
-                    !!item.local_banner && <Flex onPress={() => this.setActiveList(index)}><Image
-                      source={this.getImg(item.local_banner)}
-                      resizeMode={'contain'}
-                      style={{width: '100%', height: (width*220)/750}}/></Flex>
-                  }
-                  <List>
-                    <Item arrow={[activeId === index ? 'up' : 'down']} onPress={() => this.setActiveList(index)}>
-                      {item.activityName}
-                    </Item>
-                  </List>
-                  {
-                    activeId === index ?
-                      <Animated.View style={{paddingLeft: 10, paddingRight: 10}}>
-                        <HTML html={item.local_introduce} imagesMaxWidth={width} />
-                        <Text>活动说明:</Text>
-                        <HTML html={item.local_explanation} imagesMaxWidth={width} />
-                        <WhiteSpace size="sm" />
-                        {
-                          this._getButtonAction(item)
-                        }
-                      </Animated.View>
-                      : null
-                  }
-                </View>: null
-              )
-            })
-          }
+          <Accordion
+            sections={data}
+            sectionContainerStyle={{marginBottom:10, backgroundColor:'#ffffff'}}
+            underlayColor={'#cccccc'}
+            activeSections={this.state.activeSections}
+            renderHeader={this._renderHeader}
+            renderContent={this._renderContent}
+            onChange={this._updateSections}
+          />
         </ScrollView>
       </View>
     )
@@ -152,11 +161,8 @@ class ActivityScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#f0f0f0'
   },
-  acItem: {
-    marginBottom: 15
-  }
 })
 
 const mapStateToProps = (state) => {
