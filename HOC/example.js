@@ -1,22 +1,53 @@
-import { View, Text } from 'react-native'
-// export default containerWrapper({title: '话题'})(TopicPage)
+import React, { Component } from 'react'
+import { LayoutAnimation, Keyboard, Platform } from 'react-native'
 
-export const containerWrapper = (title) => {
-  return (Container) => {
-    let WrappedComponent = (props) => <Container {...props} title={title}/>
-    // ...
-    return WrappedComponent
-  }
-}
+export default (Comp) => {
+  return class KeyboardAware extends Component {
+    state = {keyboardOn: false}
+    keyboardWillShowSub = Keyboard.addListener
+    keyboardWillHideSub = Keyboard.addListener
 
-@containerWrapper({title: '话题'})
-export default class TopicPage extends Component {
-  render() {
-    return (
-      //
-      <View>
-        <Text>我是一个写数据</Text>
-      </View>
-    )
+    componentWillMount() {
+      this.keyboardWillShowSub = Keyboard.addListener(
+        Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+        event => {
+          this.setState({keyboardOn: true})
+        }
+      )
+      this.keyboardWillHideSub = Keyboard.addListener(
+        Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+        event => {
+          this.setState({keyboardOn: false})
+        }
+      )
+    }
+
+    componentWillUpdate() {
+      !this.props.noAnimation && LayoutAnimation.easeInEaseOut()
+    }
+
+    componentWillUnmount() {
+      this.keyboardWillShowSub && this.keyboardWillShowSub.remove()
+      this.keyboardWillHideSub && this.keyboardWillHideSub.remove()
+    }
+
+    render() {
+      const {
+        styleDuringKeyboardShow,
+        style,
+        children,
+        hideOnKeyboard,
+        ...props
+      } = this.props
+      if (this.state.keyboardOn && hideOnKeyboard) return null
+      return (
+        <Comp
+          style={[style, this.state.keyboardOn && styleDuringKeyboardShow]}
+          {...props}
+        >
+          {children}
+        </Comp>
+      )
+    }
   }
 }
