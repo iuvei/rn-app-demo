@@ -8,6 +8,22 @@ import { Button } from '@ant-design/react-native'
 class DownTime extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      data: []
+    }
+  }
+
+  componentWillMount() {
+    // console.log('bei包裹组件 WillMount')
+  }
+
+  componentDidMount() {
+    // console.log('被包裹组件')
+    this.props.initTime()
+  }
+
+  logFn = () => {
+    console.log('我是一个数据')
   }
 
   render() {
@@ -34,7 +50,7 @@ class DownTime extends Component {
             期开奖结果
           </Text>
           <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-              {
+            {
               this.props.ballOpen.map(b =>
                 <Button
                   key={b}

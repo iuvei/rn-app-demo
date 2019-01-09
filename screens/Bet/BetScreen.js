@@ -12,23 +12,9 @@ import PlayNav from './PlayNav'
 import RowBall from './RowBall'
 import BuyRender from './BuyRender'
 
-const someMixin = {
-  getInitialState() {
-    return {
-      newNumber: 1
-    }
-  },
-  setNewNumber(num) {
-    this.setState({
-      newNumber: num
-    })
-  }
-}
-const someOtherMixin = {
-  someMethod(number) {
-    console.log(number)
-  }
-}
+import { DownTimeHoc } from '../../HOC'
+
+const DownTimeHocView = DownTimeHoc(DownTime)
 
 export default class BetScreen extends React.Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -52,11 +38,6 @@ export default class BetScreen extends React.Component {
       title: params.lotterName || '重庆时时彩'
     }
   }
-
-  // mixins: [
-  //   someMixin,
-  //   someOtherMixin
-  //   ]
 
   constructor(props) {
     super(props)
@@ -97,6 +78,11 @@ export default class BetScreen extends React.Component {
     }, 300)
   }
 
+  componentWillUnmount() {
+    this.setState = () => () => {
+    }
+  }
+
   _onPlayTabs = (tab, number) => {
     this.setState({actPlay: tab})
   }
@@ -116,7 +102,8 @@ export default class BetScreen extends React.Component {
           actPlay={actPlay}/>
 
         {/* down Container*/}
-        <DownTime ballOpen={this.state.ballOpen}/>
+        {/*<DownTime ballOpen={this.state.ballOpen}/>*/}
+        <DownTimeHocView ballOpen={this.state.ballOpen}/>
 
         {/* Tabs Nav */}
         <Tabs tabs={ContentTabs}
