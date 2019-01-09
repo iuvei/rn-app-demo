@@ -200,13 +200,13 @@ export const lotteryStatus = [
 
 // 订单状态
 export const orderStatus = [
-  {value: '', name: '所有状态'},
-  {value: 1, name: '未开奖', color: '#999'},
-  {value: 3, name: '未中奖', color: 'green'},
-  {value: 2, name: '已中奖', color: 'red'},
-  {value: -1, name: '系统自动撤单', color: '#999'},
-  {value: -2, name: '用户手动撤单', color: '#999'},
-  {value: -3, name: '后台手动撤单', color: '#999'}
+  {value: '', label: '所有状态', color: '#999'},
+  {value: 1, label: '未开奖', color: '#999'},
+  {value: 3, label: '未中奖', color: '#018000'},
+  {value: 2, label: '已中奖', color: '#ef3155'},
+  {value: -1, label: '系统自动撤单', color: '#999'},
+  {value: -2, label: '用户手动撤单', color: '#999'},
+  {value: -3, label: '后台手动撤单', color: '#999'}
 ]
 // 追号订单状态
 export const chaseOrderStatus = [
@@ -680,6 +680,22 @@ export const menuData = [
       {to: 'OfficialNews', tit: '官方公告'},
       {to: 'Messages', tit: '消息中心'}
     ]
+  }
+]
+
+export const orderTypes = [
+  {
+    label: '彩票',
+    id: 1,
+    value: 0
+  }, {
+    label: '快乐彩',
+    id: 2,
+    value: 1
+  }, {
+    label: '百家乐',
+    id: 3,
+    value: 2
   }
 ]
 

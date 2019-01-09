@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react'
+import { connect } from 'react-redux'
 import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
 import UIListView from '../../../components/UIListView'
 // List Item
@@ -6,11 +7,10 @@ import {
   Button,
   WingBlank,
   Flex,
-  Icon,
-  Picker
 } from '@ant-design/react-native'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
+import { orderTypes, orderStatus } from '../../../data/options'
 
 const TableRow = 20
 
@@ -22,23 +22,36 @@ class FlatListItem extends PureComponent {
   render() {
     let {item, index} = this.props
     let {orderId, ruleName, lotterName, orderIssue, castAmount, castCodes} = item
+    let statusarr = orderStatus.filter(obj => {
+      return obj.value === item.status
+    })
     return (
-      <View style={{padding: 10, backgroundColor: '#fff'}}>
-        <Text>{lotterName}</Text>
-        <Flex>
-          <Text style={{width: 150}}>期号: {orderIssue}</Text><Text>{ruleName}</Text>
-        </Flex>
-        <Text note>投注金额: {castAmount}</Text>
-        <Text note>投注号码: {castCodes}</Text>
-      </View>
+      <TouchableHighlight onPress={() => this.props.onPressFunc(item)}>
+        <View style={{padding: 10, backgroundColor: '#fff', position: 'relative'}}>
+          <Text style={{fontSize: 15, lineHeight: 24}}>{lotterName}</Text>
+          <Flex>
+            <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22}}>期号: <Text style={{color: '#1689e6'}}>{orderIssue}</Text></Text>
+            <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22}}>{ruleName}</Text>
+          </Flex>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>投注金额: <Text style={{color: '#1689e6'}}>{castAmount}</Text></Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>投注号码: <Text style={{color: '#1689e6'}}>{castCodes}</Text></Text>
+          <Button type="ghost" size="small"
+            style={{position: 'absolute', top: 6, right: 8, borderColor: statusarr[0].color}}><Text style={{color: statusarr[0].color}}>{statusarr[0].label}</Text></Button>
+        </View>
+      </TouchableHighlight>
     )
   }
 
 }
 
 class BetHistory extends React.Component {
-  static navigationOptions = {
-    title: '游戏记录'
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      title: '游戏记录',
+      headerRight: <Button style={{marginRight: 14}} type="ghost" size="small" onPress={navigation.getParam('onSearch')}>
+        <Text style={{color: '#fff'}}>查询</Text>
+      </Button>
+    }
   }
 
   constructor(props) {
@@ -61,13 +74,14 @@ class BetHistory extends React.Component {
         isAddition: 0, // 是否追号：0 否、1 是
         pageSize: 10,
         isOuter: '' // 0 否 1 是
-      }
+      },
+      lotterList: []
     }
   }
 
   handleDate = ({startTime, endTime}) => {
     this.setState(prevState => ({
-      params: {...prevState.params, startTime, endTime}
+      params: Object.assign({}, {...prevState.params, startTime, endTime})
     }))
   }
 
@@ -78,17 +92,20 @@ class BetHistory extends React.Component {
       <FlatListItem
         item={item}
         index={index}
-        onPress={(Type, Item) =>
-          this.onPressItem(Type, Item)
-        }/>
+        onPressFunc={(Item) => {
+          this.onPressItem(Item)
+        }}/>
     )
   }
 
   // 点击单元表格
-  onPressItem = (type, item) => {
-    let Row = this.BetHistory.listView.getRows().slice()
-    Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
-    this.BetHistory.listView.updateDataSource(Row)
+  onPressItem = (item) => { 
+    // 跳转详情页
+    this.props.navigation.navigate('OrderDetail', {detail: item})
+    // 点击一项改变数据重置数据
+    // let Row = this.BetHistory.listView.getRows().slice()
+    // Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
+    // this.BetHistory.listView.updateDataSource(Row)
   }
 
   onSearch = async () => {
@@ -97,43 +114,61 @@ class BetHistory extends React.Component {
     })
   }
 
+  handlePickerBack = (val) => {
+    this.setState(prevState => ({
+      params: {...prevState.params, ...val}
+    }))
+  }
+
+  componentDidMount() {
+    this.props.navigation.setParams({ onSearch: this.onSearch })
+    let { sysSortLottery } = this.props
+    let arr = []
+    sysSortLottery.forEach(item => {
+      arr = arr.concat(item.gpLot, item.originLot)
+    })
+    let tmp = arr.map(item => {
+      return {...item, value: item.lotterCode, label: item.lotterName}
+    })
+    tmp.unshift({value: '', label: '全部'})
+    this.setState({
+      lotterList: tmp
+    })
+  }
+
   render() {
-    let {api, params, KeyName, isShow} = this.state
+    let {api, params, KeyName, isShow, lotterList} = this.state
+
     return (
       <View style={styles.container}>
-        <WingBlank>
-          <Button
-            type="ghost"
-            onPress={() => this.onSearch()}
-            style={{marginTop: 4}}>查询</Button>
+        <View>
             <QueryDate handleDate={this.handleDate}/>
             <View>
               <Flex justify="between" style={{height: 30}}>
                 <Flex.Item>
                   <QueryPickerOne
-                    data={[
-                      {
-                        label: '彩票',
-                        id: 1,
-                        value: 0
-                      }, {
-                        label: '快乐彩',
-                        id: 2,
-                        value: 1
-                      }, {
-                        label: '百家乐',
-                        id: 3,
-                        value: 2
-                      }
-                    ]} queryName={'orderType'} handlePickerBack={(val) => this.setState({
-                      params: {...params, ...val}
-                    })}/>
+                    data={orderTypes}
+                    queryName={'orderType'}
+                    handlePickerBack={this.handlePickerBack}/>
                 </Flex.Item>
-                <Flex.Item><Text>百家乐</Text></Flex.Item>
-                <Flex.Item><Text>百家乐</Text></Flex.Item>
+                <Flex.Item style={{marginHorizontal: 16}}>
+                  <QueryPickerOne
+                    data={orderStatus}
+                    queryName={'status'}
+                    handlePickerBack={this.handlePickerBack}/>
+                </Flex.Item>
+                <Flex.Item>
+                  {
+                    lotterList.length > 0 &&
+                    <QueryPickerOne
+                      data={lotterList}
+                      queryName={'lotterCode'}
+                      handlePickerBack={this.handlePickerBack}/>
+                  }
+                </Flex.Item>
               </Flex>
             </View>
-        </WingBlank>
+        </View>
         {isShow ? null :
           <UIListView
             ref={ref => this.BetHistory = ref}
@@ -171,7 +206,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    paddingTop: 0,
+    paddingTop: 5,
     backgroundColor: '#f0f0f0',
   },
   spa: {
@@ -181,4 +216,14 @@ const styles = StyleSheet.create({
   }
 })
 
-export default BetHistory
+
+const mapStateToProps = (state, props) => {
+  let {sysSortLottery} = state.common
+  return {sysSortLottery}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BetHistory)

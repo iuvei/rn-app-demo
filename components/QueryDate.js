@@ -126,6 +126,5 @@ const styles = StyleSheet.create({
     borderColor: '#cacaca',
     borderRadius: 4,
     paddingVertical: 2,
-    marginVertical: 20
   }
 })

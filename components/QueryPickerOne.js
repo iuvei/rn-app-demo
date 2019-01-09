@@ -33,15 +33,13 @@ export default class QueryPickerOne extends React.PureComponent {
           this.setState({
             pickered: [].concat(arr)
           })
-          let obj = {}
-          obj[queryName] = val[0]
-          this.props.handlePickerBack(obj)
+          this.props.handlePickerBack({[queryName]:val[0]})
         }}
       >
         <TouchableHighlight>
           <Flex style={{backgroundColor: '#1182df', borderRadius: 3}}>
             <View style={{flex: 1}}>
-              <Text style={{textAlign: 'center', lineHeight: 25, color: '#fff', fontSize: 12}}>{pickered[0].label}</Text>
+              <Text style={{textAlign: 'center', lineHeight: 25, color: '#fff', fontSize: 12, overflow: 'hidden', height: 25}}>{pickered[0].label}</Text>
             </View>
             <View style={{width: 30, alignItems: 'center'}}>
               <Icon name="down" size={16} color="#fff"/>

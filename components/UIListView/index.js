@@ -5,6 +5,7 @@ import styles from './styles'
 import LoadingSpinner from './loadingSpinner'
 import { fetch } from '../../services/HttpService'
 import PropTypes from 'prop-types'
+import dayjs from 'dayjs'
 
 const TableRow = 10
 const {width, height} = Dimensions.get('window')
@@ -35,6 +36,8 @@ class ExampleScroll extends Component {
   // page = 1, startFetch, abortFetch
   getTableList = async (page = 1, startFetch, abortFetch) => {
     let {params, api, type} = this.props
+    params.startTime = params.startTime || dayjs(new Date()).format('YYYY-MM-DD')
+    params.endTime = params.endTime || dayjs(new Date()).format('YYYY-MM-DD')
     try {
       // Generate dummy data
       let rowData = []
