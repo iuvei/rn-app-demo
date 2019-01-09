@@ -6,7 +6,10 @@ import {
   StyleSheet,
   Text,
   View,
-  RefreshControl
+  RefreshControl,
+  BackHandler,
+  Vibration,
+  ToastAndroid
 } from 'react-native'
 import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native';
 import {connect} from 'react-redux'
@@ -95,8 +98,30 @@ class HomeScreen extends React.Component {
     // this.props.navigation.push('Bet')
   }
 
+  componentWillMount() {
+    if (Platform.OS === 'android') {
+      BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
+    }
+  }
+  componentWillUnmount() {
+    if (Platform.OS === 'android') {
+      BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
 
+  }
+
+  onBackAndroid = () => {
+    if (this.props.navigation.isFocused()) {
+      if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+        return false;
+      }
+      this.lastBackPressed = Date.now();
+      ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
+      return true;
+    }
   }
 
   _initHotLottery() {
