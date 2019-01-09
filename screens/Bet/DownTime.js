@@ -8,18 +8,17 @@ import { Button } from '@ant-design/react-native'
 class DownTime extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      data: []
-    }
+    this.state = {}
   }
 
   componentWillMount() {
-    // console.log('bei包裹组件 WillMount')
   }
 
   componentDidMount() {
-    // console.log('被包裹组件')
     this.props.initTime()
+  }
+
+  componentWillUnmount() {
   }
 
   logFn = () => {
@@ -27,6 +26,10 @@ class DownTime extends Component {
   }
 
   render() {
+    let {
+      prevOpenResult, prevOpenResult: {openList}, openIssue,
+      downTime: {h1, h2, m1, m2, s1, s2}
+    } = this.props
     return (
       <View style={{
         flexDirection: 'row',
@@ -46,14 +49,14 @@ class DownTime extends Component {
         {/*backgroundColor: 'darkcyan'*/}
         <View style={{flex: 4, margin: 5}}>
           <Text style={{fontSize: 12}}>
-            <Text style={{color: 'blue'}}>20181214048</Text>
+            <Text style={{color: 'blue'}}>{prevOpenResult.openIssue || '000000000'}</Text>
             期开奖结果
           </Text>
-          <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'flex-start', padding: 2}}>
             {
-              this.props.ballOpen.map(b =>
+              openList.length ? openList.map((b, bIdx) =>
                 <Button
-                  key={b}
+                  key={`${bIdx}-${b}`}
                   type="ghost" size="small" style={{
                   width: 30,
                   height: 30,
@@ -61,13 +64,15 @@ class DownTime extends Component {
                   marginLeft: 0,
                   marginRight: 6
                 }}>{b}</Button>
-              )
+              ) : <Text>正在开奖中...</Text>
             }
           </View>
           <Text style={{fontSize: 12}}>
-            <Text style={{color: 'blue'}}>20181214048</Text>
+            <Text style={{color: 'blue'}}>{openIssue.currentIssue}</Text>
             距离封单
-            <Text style={{color: 'red'}}>00:00:49</Text>
+            <Text style={{color: 'red'}}>
+              {`${h1}${h2}:${m1}${m2}:${s1}${s2}`}
+            </Text>
           </Text>
         </View>
       </View>
