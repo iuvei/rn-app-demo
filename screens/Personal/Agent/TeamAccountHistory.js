@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import { View, Text, StyleSheet, Keyboard } from 'react-native'
 import UIListView from '../../../components/UIListView'
-import { Flex, Button } from '@ant-design/react-native';
+import { Flex, Button, InputItem } from '@ant-design/react-native';
 import { connect } from "react-redux";
 import dayjs from 'dayjs'
 import QueryDate from '../../../components/QueryDate'
@@ -58,6 +58,7 @@ class PersonalScreen extends React.Component {
         pageSize: 10,
         selectType: 0,
         changeType: '',
+        loginName: '',
         startTime: '',
         endTime: '',
       },
@@ -122,6 +123,17 @@ class PersonalScreen extends React.Component {
                   data={userAccountChangeType}
                   queryName={'changeType'}
                   handlePickerBack={this.handlePickerBack}/>
+              </Flex.Item>
+              <Flex.Item>
+                <InputItem
+                  value={this.state.params.loginName}
+                  onChange={value => {
+                    this.setState(prevState => ({
+                      params: {...prevState.params, loginName: value}
+                    }))
+                  }}
+                  onSubmitEditing={Keyboard.dismiss}
+                  placeholder="输入账号" />
               </Flex.Item>
             </Flex>
           </View>
