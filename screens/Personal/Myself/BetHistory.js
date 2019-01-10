@@ -108,9 +108,10 @@ class BetHistory extends React.Component {
   }
 
   onSearch = async () => {
-    await this.setState({isShow: true}, () => {
-      this.setState({isShow: false})
-    })
+    this.BetHistory.listView.refresh()
+    // await this.setState({isShow: true}, () => {
+    //   this.setState({isShow: false})
+    // })
   }
 
   handlePickerBack = (val) => {
