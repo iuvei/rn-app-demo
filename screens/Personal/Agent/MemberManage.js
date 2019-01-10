@@ -125,7 +125,7 @@ class MemberManage extends React.Component {
                      placeholder="搜索" onSubmit={value => this.onSearch(value, 0)}/>
         </WingBlank>
         {isShow ? null :
-          <View style={{flex: 1, backgroundColor: 'white'}}>
+          <View style={{flex: 1, backgroundColor: 'white', borderRadius: 8}}>
             <UIListView
               ref={ref => this.MemberManage = ref}
               api={api}
