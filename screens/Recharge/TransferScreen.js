@@ -24,12 +24,16 @@ import {
 } from '../../api/member'
 
 class Transfer extends React.Component {
+  static navigationOptions = {
+    title: '转账'
+  }
+
   constructor(props) {
     super(props)
     this.state = {
       isLoading: false,
-      outCode: '-1',
-      toCode: '-1',
+      outCode: '',
+      toCode: '',
       amount: '',
       toObj: {},
       outObj: {},
@@ -100,7 +104,7 @@ class Transfer extends React.Component {
           if (res.code === 0) {
             Toast.success('转出成功')
             setTimeout(() => {
-              this.props.AsetAllBalance()
+              this.props.AsetAllBalance(this.props.loginInfo.acc.user.userId)
             }, 50)
           } else {
             Toast.fail(res.message || '网络异常')
@@ -122,7 +126,7 @@ class Transfer extends React.Component {
           if (res.code === 0) {
             Toast.success('转出成功')
             setTimeout(() => {
-              this.props.AsetAllBalance()
+              this.props.AsetAllBalance(this.props.loginInfo.acc.user.userId)
             }, 50)
           } else {
             Toast.fail(res.message || '网络异常')
@@ -144,7 +148,7 @@ class Transfer extends React.Component {
           if (res.code === 0) {
             Toast.success('转出成功')
             setTimeout(() => {
-              this.props.AsetAllBalance()
+              this.props.AsetAllBalance(this.props.loginInfo.acc.user.userId)
             }, 50)
           } else {
             Toast.fail(res.message || '网络异常')
@@ -167,7 +171,7 @@ class Transfer extends React.Component {
             if (res.code === 0) {
               Toast.success('转出成功')
               setTimeout(() => {
-                this.props.AsetAllBalance()
+                this.props.AsetAllBalance(this.props.loginInfo.acc.user.userId)
               }, 50)
             } else {
               Toast.fail(res.message || '网络异常')
@@ -182,7 +186,7 @@ class Transfer extends React.Component {
 
   render() {
     let {userBalanceInfoFD, userBalanceInfoFH, userBalanceInfoHD, userBalanceInfoHB} = this.props
-    let { allAccs, amount, toObj, outObj }= this.state
+    let { allAccs, amount, toObj, outObj, isLoading }= this.state
 
     return (
       <View style={{flex: 1, backgroundColor: '#f0f0f0'}}>
@@ -293,12 +297,15 @@ class Transfer extends React.Component {
             placeholder="请输入转账金额"
             value={amount}
             type="number"
+            onChange={val => this.setState({
+              amount: val
+            })}
           >
             金额
           </InputItem>
         </List>
         <View style={{paddingHorizontal: 30, paddingVertical: 15, alignItems: 'center'}}>
-          <Button type="primary" onPress={this.submitFunc} style={{width: '100%'}}>
+          <Button type="primary" loading={isLoading} onPress={this.submitFunc} style={{width: '100%'}}>
             确认
           </Button>
         </View>
