@@ -1,5 +1,12 @@
 import { getSysLottery } from "../api/lottery";
-import { getAllAdversize, getActivities, getBankList, getUserSecurityLevel, getUserSecurityConfig }from "../api/basic";
+import {
+  getAllAdversize,
+  getActivities,
+  getBankList,
+  getUserSecurityLevel,
+  getUserSecurityConfig,
+  getUserPlatformInfo
+} from "../api/basic";
 import { createAction } from "redux-actions";
 import { AsyncStorage } from "react-native";
 import { list } from "../data/activity";
@@ -157,3 +164,11 @@ export const AsetUserSecureConfig = createAction(
     let res = await getUserSecurityConfig()
     return res.code === 0 ? res.data : {gaSwitch: false, bankNamePwdSwitch: false}
 })
+
+export const AsetUserPlatfrom = createAction(
+  'SET_USER_PLATFORM',
+  async () => {
+    let res = await getUserPlatformInfo()
+    return res.code === 0 ? res.data.partnerInfo : []
+  }
+)

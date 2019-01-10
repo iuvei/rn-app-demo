@@ -171,6 +171,7 @@ class PersonalScreen extends React.Component {
       },
       {
         name: '转账',
+        path: 'Transfer',
         src: require('../../assets/images/personal/icon3.png')
       },
       {
