@@ -24,6 +24,7 @@ class SubManaging extends Component {
       chargeData: {
         money: '',
         tradePassword: '',
+        downName: subUserInfo.loginName,
         userId: subUserInfo.userId
       },
       updateWater: {

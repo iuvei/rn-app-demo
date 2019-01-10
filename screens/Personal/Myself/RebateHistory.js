@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react'
 import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
 import UIListView from '../../../components/UIListView'
-import {WingBlank, Flex, InputItem} from '@ant-design/react-native'
+import {WingBlank, Flex, Modal,Button} from '@ant-design/react-native'
 import QueryDate from '../../../components/QueryDate'
 import dayjs from 'dayjs'
 import QueryPickerOne from '../../../components/QueryPickerOne'
@@ -46,8 +46,10 @@ const MAP_TYPE_NAME = {
   4: '百家乐电子返点',
   5: '百家乐彩票返点',
 }
+
 class FlatListItem extends PureComponent {
   render () {
+    let {item, showDetails} = this.props
     let {
       actualAmount,
       actualRebate,
@@ -59,39 +61,48 @@ class FlatListItem extends PureComponent {
       rebateType,
       status,
       userId
-    } = this.props.item
+    } = item
     return (
-      <View style={styles.table}>
-        <Flex><Text style={styles.capital}>{status === 0 ? '成功' : '失败'}</Text></Flex>
-        <Flex direction={'row'} justify={'space-between'}>
-          <View style={styles.column}>
-            <Text style={styles.title}>返点类型:</Text>
-            <Text style={styles.value}>{MAP_TYPE_NAME[rebateType]}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.title}>返点金额:</Text>
-            <Text style={styles.value}>{toFixed4(rebateAmount)}</Text>
-          </View>
-        </Flex>
-        <Flex direction={'row'} justify={'space-between'}>
-          <View style={styles.column}>
-            <Text style={styles.title}>实际返点金额:</Text>
-            <Text style={styles.value}>{toFixed4(actualAmount)}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.title}>个人返点:</Text>
-            <Text style={styles.value}>{toFixed4(rebateAmount)}</Text>
-          </View>
-        </Flex>
-        <Flex direction={'row'} justify={'space-between'}>
-          <View style={styles.column}>
-            <Text style={styles.title}>操作时间:</Text>
-            <Text style={styles.value}>{formatTime(rebateTime)}</Text>
-          </View>
-          <View style={styles.column}>
-          </View>
-        </Flex>
-      </View>
+      <TouchableHighlight onPress={() => {
+        showDetails(item)
+      }}>
+        <View style={styles.table}>
+          <Flex>
+            {
+              status === 0 ? <Text style={styles.capital}>成功</Text> :
+                <Text style={styles.failed}>{'失败'}</Text>
+            }
+          </Flex>
+          <Flex direction={'row'} justify={'space-between'}>
+            <View style={styles.column}>
+              <Text style={styles.title}>返点类型:</Text>
+              <Text style={styles.value}>{MAP_TYPE_NAME[rebateType]}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.title}>返点金额:</Text>
+              <Text style={styles.value}>{toFixed4(rebateAmount)}</Text>
+            </View>
+          </Flex>
+          <Flex direction={'row'} justify={'space-between'}>
+            <View style={styles.column}>
+              <Text style={styles.title}>实际返点金额:</Text>
+              <Text style={styles.value}>{toFixed4(actualAmount)}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.title}>个人返点:</Text>
+              <Text style={styles.value}>{toFixed4(rebateAmount)}</Text>
+            </View>
+          </Flex>
+          <Flex direction={'row'} justify={'space-between'}>
+            <View style={styles.column}>
+              <Text style={styles.title}>操作时间:</Text>
+              <Text style={styles.value}>{formatTime(rebateTime)}</Text>
+            </View>
+            <View style={styles.column}>
+            </View>
+          </Flex>
+        </View>
+      </TouchableHighlight>
     )
   }
 }
@@ -109,6 +120,8 @@ export default class RebateHistory extends React.Component {
       KeyName: 'RebateHistory',
       api: '/frontReport/capitalBase/queryRebateRecords',
       isShow: false,
+      visible: false,
+      details: {},
       params: {
         orderId: '',
         pageNumber: 1,
@@ -125,8 +138,15 @@ export default class RebateHistory extends React.Component {
     return (
       <FlatListItem
         item={item}
-        index={index}/>
+        index={index} showDetails={this.showDetails}/>
     )
+  }
+
+  showDetails = (item) => {
+    this.setState({
+      visible: true,
+      details: item
+    })
   }
 
   onSearch = async () => {
@@ -149,7 +169,7 @@ export default class RebateHistory extends React.Component {
   }
 
   render () {
-    let {api, params, KeyName, isShow} = this.state
+    let {api, params, KeyName, isShow, visible, details} = this.state
     return (
       <View style={styles.container}>
         <WingBlank>
@@ -181,6 +201,44 @@ export default class RebateHistory extends React.Component {
             }}
           />
         }
+        <Modal transparent visible={visible} title={<Text style={{fontSize: 20, color: '#1789e6'}}>详情</Text>}
+               onClose={() => this.setState({visible: false})}>
+          <View style={{marginTop: 10}}>
+            <View style={styles.popColumn}>
+              <Text>订单号:</Text>
+              <Text>{details.orderId}</Text>
+            </View>
+            <View style={styles.popColumn}>
+              <Text>返点:</Text>
+              <Text>{details.currentRebate}</Text>
+            </View>
+            <View style={styles.popColumn}>
+              <Text>实际返点:</Text>
+              <Text>{details.actualRebate}</Text>
+            </View>
+            <View style={styles.popColumn}>
+              <Text>返点类型:</Text>
+              <Text>{MAP_TYPE_NAME[details.rebateType]}</Text>
+            </View>
+            <View style={styles.popColumn}>
+              <Text>返点金额:</Text>
+              <Text>{toFixed4(details.rebateAmount)}</Text>
+            </View>
+            <View style={styles.popColumn}>
+              <Text>状态:</Text>
+              <Text>{details.status === 0 ? '成功' : '失败'}</Text>
+            </View>
+            <View style={styles.popColumn}>
+              <Text>实际返点金额:</Text>
+              <Text>{toFixed4(details.actualAmount)}</Text>
+            </View>
+            <View style={styles.popColumn}>
+              <Text>操作时间:</Text>
+              <Text>{formatTime(details.rebateTime)}</Text>
+            </View>
+            <Button style={{marginTop: 10}} onPress={() => this.setState({visible: false})}>确定</Button>
+          </View>
+        </Modal>
       </View>
     )
   }
@@ -199,6 +257,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'gold'
   },
+  failed: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'red'
+  },
   title: {
     fontSize: 16,
     color: '#999'
@@ -212,5 +275,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
     marginRight: 8
+  },
+  popColumn: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 5,
+    paddingRight: 20,
+    paddingLeft: 20,
+    borderColor: '#dedede',
+    borderBottomWidth: 0.5
   }
 })
