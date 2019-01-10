@@ -371,60 +371,60 @@ export const BillType = [
 
 // 个人账变类型
 export const userAccountChangeType = [
-  {value: '', name: '全部'},
-  {value: 1, name: '充值'},
-  {value: 2, name: '提款'},
-  {value: 3, name: '转账'},
-  {value: 4, name: '购买'},
+  {value: '', label: '全部'},
+  {value: 1, label: '充值'},
+  {value: 2, label: '提款'},
+  {value: 3, label: '转账'},
+  {value: 4, label: '购买'},
   {
     value: 5,
-    name: '撤单'
+    label: '撤单'
   },
-  {value: 6, name: '中奖'},
-  {value: 8, name: '返点'},
-  {value: 9, name: '修正资金'},
+  {value: 6, label: '中奖'},
+  {value: 8, label: '返点'},
+  {value: 9, label: '修正资金'},
   {
     value: 10,
-    name: '百家乐转账到系统'
+    label: '百家乐转账到系统'
   },
-  {value: 11, name: '百家乐返水'},
-  {value: 12, name: '百家乐返点'},
-  {value: 13, name: '百家乐活动'}, {
+  {value: 11, label: '百家乐返水'},
+  {value: 12, label: '百家乐返点'},
+  {value: 13, label: '百家乐活动'}, {
     value: 14,
-    name: '活动彩金'
+    label: '活动彩金'
   },
-  {value: 15, name: '提现失败退款'},
-  {value: 16, name: '上级取款'},
-  {value: 17, name: '下级充值'},
+  {value: 15, label: '提现失败退款'},
+  {value: 16, label: '上级取款'},
+  {value: 17, label: '下级充值'},
   {
     value: 18,
-    name: '抢红包'
+    label: '抢红包'
   },
-  {value: 19, name: '日分红'}, {value: 20, name: '日工资'}, {value: 21, name: '契约日工资'}, {
+  {value: 19, label: '日分红'}, {value: 20, label: '日工资'}, {value: 21, label: '契约日工资'}, {
     value: 22,
-    name: '契约分红'
-  }, {value: 23, name: '平台分红'}, {value: 24, name: '充值手续费'}, {value: 25, name: '提现手续费'}, {
+    label: '契约分红'
+  }, {value: 23, label: '平台分红'}, {value: 24, label: '充值手续费'}, {value: 25, label: '提现手续费'}, {
     value: 26,
-    name: '修正彩票分红'
-  }, {value: 27, name: '修正真人分红'}, {value: 28, name: '修正体育分红'}, {value: 29, name: '修正电子分红'}, {
+    label: '修正彩票分红'
+  }, {value: 27, label: '修正真人分红'}, {value: 28, label: '修正体育分红'}, {value: 29, label: '修正电子分红'}, {
     value: 30,
-    name: '修正棋牌分红'
-  }, {value: 31, name: '修正彩票返水'}, {value: 32, name: '修正百家乐返水'}, {value: 33, name: '修正活动奖金'}, {
+    label: '修正棋牌分红'
+  }, {value: 31, label: '修正彩票返水'}, {value: 32, label: '修正百家乐返水'}, {value: 33, label: '修正活动奖金'}, {
     value: 34,
-    name: '修正百家乐活动奖金'
-  }, {value: 35, name: '修正分红'}, {value: 36, name: '修正红包账户'}, {value: 37, name: '修正日工资'}, {
+    label: '修正百家乐活动奖金'
+  }, {value: 35, label: '修正分红'}, {value: 36, label: '修正红包账户'}, {value: 37, label: '修正日工资'}, {
     value: 38,
-    name: '修正契约日工资'
-  }, {value: 39, name: '修正日分红'}, {value: 40, name: '修正平台分红'}, {value: 41, name: '修正契约分红'}, {
+    label: '修正契约日工资'
+  }, {value: 39, label: '修正日分红'}, {value: 40, label: '修正平台分红'}, {value: 41, label: '修正契约分红'}, {
     value: 42,
-    name: '修正首冲送'
-  }, {value: 43, name: '修正消费送'}, {value: 44, name: '修正三级亏损佣金'}, {value: 46, name: '系统转百家乐'}, {
+    label: '修正首冲送'
+  }, {value: 43, label: '修正消费送'}, {value: 44, label: '修正三级亏损佣金'}, {value: 46, label: '系统转百家乐'}, {
     value: 47,
-    name: '系统转百家乐失败退款'
-  }, {value: 48, name: '日佣金'}, {value: 49, name: '修正日佣金'}, {value: 50, name: '系统转久发'}, {
+    label: '系统转百家乐失败退款'
+  }, {value: 48, label: '日佣金'}, {value: 49, label: '修正日佣金'}, {value: 50, label: '系统转久发'}, {
     value: 51,
-    name: '久发转系统'
-  }, {value: 52, name: '系统转久发失败退款'}
+    label: '久发转系统'
+  }, {value: 52, label: '系统转久发失败退款'}
 ]
 
 // 信息收发类型
