@@ -4,11 +4,10 @@ import {
   Platform, StatusBar,
   StyleSheet, View
 } from 'react-native'
-import {AppLoading, Font, Icon} from 'expo'
-import {fetch} from './services/HttpService'
-import {connect} from 'react-redux'
-import {setLoginStatus, setUserRebate, setLoginInfo, setUserBalance} from './actions/common'
-import {getLoginUser, getUserRebateInfo, getUserBalance, _getImageSetCookie} from './api/basic'
+import { AppLoading, Font, Icon } from 'expo'
+import { connect } from 'react-redux'
+import { setLoginStatus, setUserRebate, setLoginInfo, setUserBalance } from './actions/common'
+import { getLoginUser, getUserRebateInfo, getUserBalance, _getImageSetCookie } from './api/basic'
 
 class Main extends React.Component {
   state = {

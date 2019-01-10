@@ -322,26 +322,26 @@ export const CardStatus = [
 
 // 充值类型
 export const RechargeType = [
-  {value: '', name: '全部'},
-  {value: 1, name: '网银充值'},
-  {value: 2, name: '转账汇款'},
-  {value: 0, name: '系统充值'}
+  {value: '', label: '全部'},
+  {value: 1, label: '网银充值'},
+  {value: 2, label: '转账汇款'},
+  {value: 0, label: '系统充值'}
 ]
 
 // 充值状态 取款状态 转账状态
 export const ReWiTrStatus = [
-  {value: '', name: '全部'},
-  {value: -5, name: '删除'},
-  {value: -4, name: '锁定'},
-  {value: -3, name: '失败'},
-  {value: -2, name: '拒绝'},
-  {value: -1, name: '取消申请'},
-  {value: 0, name: '已提交'},
-  {value: 1, name: '处理中'},
-  {value: 2, name: '待审核'},
-  {value: 3, name: '审核中'},
-  {value: 4, name: '审核通过'},
-  {value: 5, name: '已完成'}
+  {value: '', label: '全部'},
+  {value: -5, label: '删除'},
+  {value: -4, label: '锁定'},
+  {value: -3, label: '失败'},
+  {value: -2, label: '拒绝'},
+  {value: -1, label: '取消申请'},
+  {value: 0, label: '已提交'},
+  {value: 1, label: '处理中'},
+  {value: 2, label: '待审核'},
+  {value: 3, label: '审核中'},
+  {value: 4, label: '审核通过'},
+  {value: 5, label: '已完成'}
 ]
 
 // 账单类型

@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import { loadLatelyOpenHistory } from '../api/lottery'
+import { loadGamesPlay, loadLatelyOpenHistory } from '../api/lottery'
 
 // 回掉回调处理
 export const getLatelyOpen = createAction(
@@ -11,6 +11,31 @@ export const getLatelyOpen = createAction(
           item.codelist = item.openCode.split(',')
         })
         return res.data
+      } else {
+        return []
+      }
+    }
+  })
+)
+
+// 简约处理
+export const navParams = createAction(
+  'UPDATE_NAV_PARAMS',
+  text => text
+)
+
+export const setActivePlay = createAction(
+  'SET_ACTIVE_PLAY',
+  text => text
+)
+
+export const getGamesPlay = createAction(
+  'SET_GAMES_PLAY_STORE',
+  params => loadGamesPlay(params).then(res => {
+    if (res.code === 0) {
+      if (res.data ? res.data.length : false) {
+        return res.data
+        // 是否可见 .find(item => item.status === 2)
       } else {
         return []
       }
