@@ -7,17 +7,30 @@ import {
   Tabs, Card, WhiteSpace,
   Button, WingBlank
 } from '@ant-design/react-native'
+import { connect } from 'react-redux'
+
 import DownTime from './DownTime'
 import PlayNav from './PlayNav'
 import RowBall from './RowBall'
 import BuyRender from './BuyRender'
 import LatelyList from './LatelyList'
-
-import { DownTimeHoc } from '../../HOC'
+import { DownTimeHoc, RowBallHoc } from '../../HOC'
+import { navParams, getGamesPlay } from '../../actions/classic'
 
 const DownTimeHocView = DownTimeHoc(DownTime)
+const RowBallHocView = RowBallHoc(RowBall)
+const selfRoute = [
+  {name: '时时彩', code: 'lo1', mapCode: ['ssc']},
+  {name: '11选5', code: 'lo2', mapCode: ['syx5']},
+  {name: '快三', code: 'lo3', mapCode: ['k3']},
+  {name: 'PK拾', code: 'lo4', mapCode: ['pk10']},
+  {name: '快乐十分', code: 'lo5', mapCode: ['kl10']},
+  {name: '基诺', code: 'lo6', mapCode: ['kl8']},
+  {name: '幸运彩', code: 'lo7', mapCode: ['xyc']},
+  {name: '低频彩', code: 'lo8', mapCode: ['dpc']}
+]
 
-export default class BetScreen extends React.Component {
+class BetScreen extends React.Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
     const params = navigation.state.params || {
       countExcept: 0,
@@ -36,7 +49,7 @@ export default class BetScreen extends React.Component {
       updateBy: 'dana001'
     }
     return {
-      title: params.lotterName || '重庆时时彩'
+      title: params.lotterName
     }
   }
 
@@ -49,13 +62,6 @@ export default class BetScreen extends React.Component {
         {title: '记录'},
         {title: '趋势'}
       ],
-      playTabs: [
-        {title: '五星复式', value: 'wxfs'},
-        {title: '五星单式', value: 'wxds'},
-        {title: '四星复式', value: 'sxfs'},
-        {title: '四星单式', value: 'sxds'}
-      ],
-      actPlay: {title: '五星复式', value: 'wxfs'},
       ballOpen: ['5', '9', '3', '2', '1']
     }
   }
@@ -64,28 +70,23 @@ export default class BetScreen extends React.Component {
   // 绑定球的点击监听数据、注数的监听
   // 获取这个彩种的玩法数据，奖金数据数据初始化，和联动他的数据
   // 投注下单
+  componentWillMount() {
+  }
 
   componentDidMount() {
-    setTimeout(() => {
-      let data = [
-        {title: '三星复式', value: 'sanxfs'},
-        {title: '三星单式', value: 'sanxds'},
-        {title: '二星复式', value: 'exfs'},
-        {title: '二星单式', value: 'exds'}
-      ]
-      this.setState({
-        playTabs: [].concat(this.state.playTabs, data)
-      })
-    }, 300)
+    // 获取当前彩种的赔率
+    let {params, params: {lotterCode, isOuter}} = this.props.navigation.state
+    this.props.navParams(params)
+    this.props.getGamesPlay({
+      lotterCode,
+      isOuter,
+      userId: this.props.userId
+    })
   }
 
   componentWillUnmount() {
     this.setState = () => () => {
     }
-  }
-
-  _onPlayTabs = (tab, number) => {
-    this.setState({actPlay: tab})
   }
 
   _onChangeTabs = (tab, number) => {
@@ -98,13 +99,9 @@ export default class BetScreen extends React.Component {
       <View style={styles.container}>
 
         {/* playNav Container */}
-        <PlayNav
-          playTabs={playTabs}
-          _onPlayTabs={this._onPlayTabs}
-          actPlay={actPlay}/>
+        <PlayNav/>
 
-        {/* down Container*/}
-        {/*<DownTime ballOpen={this.state.ballOpen}/>*/}
+        {/* down Container */}
         <DownTimeHocView
           ballOpen={this.state.ballOpen}
           activeLot={params}
@@ -123,7 +120,7 @@ export default class BetScreen extends React.Component {
           </View>
           <View style={{margin: 4}}>
             <ScrollView>
-              <RowBall/>
+              <RowBallHocView activeLot={params}/>
             </ScrollView>
           </View>
           <View style={styles.tabs}>
@@ -147,6 +144,24 @@ export default class BetScreen extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  let {userId} = state.common
+  return ({
+    userId
+  })
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    navParams: params => dispatch(navParams(params)),
+    getGamesPlay: params => dispatch(getGamesPlay(params))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BetScreen)
 
 const styles = StyleSheet.create({
   container: {

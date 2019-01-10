@@ -8,7 +8,7 @@ import * as lo7 from './lo7'
 import * as lo8 from './lo8'
 
 export default {
-  lo1,
+  ssc: lo1,
   lo2,
   lo3,
   lo4,

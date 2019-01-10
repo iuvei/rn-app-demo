@@ -2,7 +2,7 @@ import axios from 'axios'
 // import {NoticeTips} from 'util/pop-tool'
 const {prependUrl, platformKey} = require('./../api.config')
 // axios 配置
-axios.defaults.timeout = 8000
+axios.defaults.timeout = 30000
 axios.defaults.retry = 2
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 // axios.defaults.baseURL = apiConfig.proxyUrl
