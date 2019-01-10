@@ -1,13 +1,10 @@
 import React, {PureComponent} from 'react'
 import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
 import UIListView from '../../../components/UIListView'
-import {Button, WingBlank, Flex, InputItem} from '@ant-design/react-native'
+import {WingBlank, Flex, InputItem} from '@ant-design/react-native'
 import QueryDate from '../../../components/QueryDate'
 import dayjs from 'dayjs'
 import QueryPickerOne from '../../../components/QueryPickerOne'
-import {Picker} from 'native-base'
-import {connect} from "react-redux"
-import {orderTypes} from "../../../data/options"
 
 const GAME_TYPE = [
   {
@@ -23,7 +20,6 @@ const GAME_TYPE = [
 
 class FlatListItem extends PureComponent {
   render () {
-    let {item, showDetails} = this.props
     let {
       userName,
       lotterName,
@@ -34,7 +30,7 @@ class FlatListItem extends PureComponent {
       bonus,
       bettingAmount,
       undrawnAmount,
-    } = item
+    } = this.props.item
     return (
       <View style={styles.table}>
         <Flex><Text>{userName}</Text></Flex>

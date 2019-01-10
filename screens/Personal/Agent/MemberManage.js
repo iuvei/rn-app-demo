@@ -6,6 +6,7 @@ import {connect} from "react-redux"
 import dayjs from 'dayjs'
 import SubManaging from "./SubManaging"
 import {AsetSubUserInfo} from "../../../actions/member"
+
 class FlatListItem extends PureComponent {
   constructor (props) {
     super(props)
@@ -124,7 +125,7 @@ class MemberManage extends React.Component {
                      placeholder="搜索" onSubmit={value => this.onSearch(value, 0)}/>
         </WingBlank>
         {isShow ? null :
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, backgroundColor: 'white'}}>
             <UIListView
               ref={ref => this.MemberManage = ref}
               api={api}
@@ -139,7 +140,8 @@ class MemberManage extends React.Component {
               }}
             />
             {
-              userList.length > 0 ? <Button type={'primary'} style={{margin: 10}} onPress={this.goBack}>返回上级</Button> : null
+              userList.length > 0 ?
+                <Button type={'primary'} style={{margin: 10}} onPress={this.goBack}>返回上级</Button> : null
             }
           </View>
         }
@@ -151,8 +153,9 @@ class MemberManage extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f0f0f0',
+    padding: 10,
     paddingTop: 0,
-    backgroundColor: '#fff'
   },
   spa: {
     flex: 1,
