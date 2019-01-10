@@ -9,7 +9,9 @@ import {
 } from 'react-native'
 import {
   Flex,
-  Button
+  Button,
+  Modal,
+  Toast
 } from '@ant-design/react-native'
 import { orderStatus } from '../../../data/options'
 import { queryOrderDetails, doCancelOrder } from '../../../api/member'
@@ -25,7 +27,6 @@ class OrderDetail extends React.Component {
     super(props)
     this.state = {
       keyList: [
-        {key: 'status', title: '状态', after: ''},
         {key: 'orderId', title: '订单编号'},
         {key: 'lotterName', title: '彩种'},
         {key: 'ruleName', title: '玩法'},
@@ -54,6 +55,36 @@ class OrderDetail extends React.Component {
     })
   }
 
+  cancelOrder = () => {
+    let {detailInfo} = this.state
+    let {orderId, index} = detailInfo
+    let formData = {orderId, userId: this.props.loginInfo.acc.user.userId}
+    Modal.alert('您确认撤销这笔订单吗？', '', [
+      {
+        text: '取消',
+        onPress: () => {console.log('cancel')},
+        style: 'cancel',
+      },
+      { text: '确认', onPress: () => {
+        doCancelOrder(formData).then((res) => {
+          if (res.code === 0) {
+            Toast.success('撤单成功')
+            this.setState(prevState => ({
+              detailInfo: {...prevState.detailInfo, status: -2, isRevoked: false}
+            }))
+            // this.AsetCancelOrder({time: new Date().getTime(), index: index})
+            setTimeout(() => {
+              // this.props.AsetAllBalance(this.props.loginInfo.acc.user.userId)
+            }, 50)
+          } else {
+            Toast.fail(res.message || '网络异常')
+          }
+          // this.afterCancelOrder({res, orderItem})
+        })
+      } },
+    ])
+  }
+
   render() {
     let { detailInfo, keyList } = this.state
     let statusobj = orderStatus.filter(obj => {
@@ -77,13 +108,17 @@ class OrderDetail extends React.Component {
                   </Flex>
                   <Image source={require('../../../assets/images/detail_dashed.png')} style={{width: '100%', height: 0.5}} />
                 </View>
-            )})
+              )
+            })
           }
-          <View style={{backgroundColor: '#fff', paddingTop: 16, width: '98%', alignItems: 'center'}}>
-            <Button type="warning" size="small" style={{width: 90}}>
-              撤销订单
-            </Button>
-          </View>
+          {
+            Boolean(detailInfo.isRevoked) &&
+            <View style={{backgroundColor: '#fff', paddingTop: 16, width: '98%', alignItems: 'center'}}>
+              <Button type="warning" size="small" style={{width: 90}} onPress={this.cancelOrder}>
+                撤销订单
+              </Button>
+            </View>
+          }
           <Image source={require('../../../assets/images/detail_bottom.png')} style={{width: '98%'}}/>
         </View>
       </ScrollView>

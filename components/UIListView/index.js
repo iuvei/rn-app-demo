@@ -5,7 +5,6 @@ import styles from './styles'
 import LoadingSpinner from './loadingSpinner'
 import { fetch } from '../../services/HttpService'
 import PropTypes from 'prop-types'
-import dayjs from 'dayjs'
 
 const TableRow = 10
 const {width, height} = Dimensions.get('window')

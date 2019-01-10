@@ -89,11 +89,11 @@ export const queryOrderDetails = (data) => {
 }
 
 // 撤单（单笔）
-export const doCancelOrder = (formdata = {}) => {
-  return axiosHttp({
+export const doCancelOrder = (data) => {
+  return fetch({
     api: '/order/revked',
     type: 'post',
-    formdata
+    params: data
   })
 }
 
