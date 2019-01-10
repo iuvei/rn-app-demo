@@ -10,6 +10,7 @@ import RebateHistory from './Myself/RebateHistory'
 import TransferHistory from './Myself/TransferHistory'
 import WithdrawHistory from './Myself/WithdrawHistory'
 import OrderDetail from './Myself/OrderDetail'
+import ChaseDetail from './Myself/ChaseDetail'
 // 代理管理
 import AgentIndex from './Agent/AgentIndex'
 import MemberManage from './Agent/MemberManage'
@@ -67,5 +68,6 @@ export default {
   UnbindSet,
   BindBankname,
   SubManaging,
-  OrderDetail
+  OrderDetail,
+  ChaseDetail
 }
