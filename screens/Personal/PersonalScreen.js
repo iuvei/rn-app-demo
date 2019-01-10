@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import RebateDetails from './RebateDetails'
 import {setLoginStatus} from "../../actions/common"
 import Headers from './../../components/Header'
+import { AsetAllBalance } from "../../actions/member";
 
 const REBATE_TYPE = {
   0: '彩票返点', 1: '快乐彩返点', 2: '百家乐彩票返点'
@@ -137,6 +138,7 @@ class PersonalScreen extends React.Component {
       ],
       lotteryRebate: 0
     }
+    props.AsetAllBalance(props.loginInfo.acc.user.userId)
   }
 
   componentDidMount () {
@@ -295,7 +297,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // setLoginStatus: status => dispatch(setLoginStatus(status))
+    AsetAllBalance: data => dispatch(AsetAllBalance(data)),
   }
 }
 
