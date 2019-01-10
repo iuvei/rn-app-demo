@@ -86,7 +86,8 @@ const initialState = {
   balanceInfo: {}, // 用户账户余额信息
   sysBankList: [], // 系统银行卡列表
   userSecurityLevel: {}, // 账户安全等级
-  userSecurityConfig: {} // 解绑资金密码，GA密码，银行卡姓名开关
+  userSecurityConfig: {}, // 解绑资金密码，GA密码，银行卡姓名开关
+  userPlatformInfo: [],
 }
 
 // 常规处理
@@ -208,6 +209,12 @@ const common = handleActions({
     return {
       ...state,
       userSecurityConfig: payload
+    }
+  },
+  SET_USER_PLATFORM: (state, {payload}) => {
+    return {
+      ...state,
+      userPlatformInfo: payload
     }
   }
 }, initialState)

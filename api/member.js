@@ -556,15 +556,6 @@ export const toLiveGame = (params) => {
   })
 }
 
-// 获取平台开通情况
-export const getUserPlatformInfo = (params) => {
-  return fetch({
-    api: '/user/getUserPlatformInfo',
-    type: 'get',
-    params
-  })
-}
-
 // 团队图形化接口
 export const teamEcharts = (data) => {
   return fetch({
