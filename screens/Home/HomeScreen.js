@@ -14,6 +14,7 @@ import {
 import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native';
 import {connect} from 'react-redux'
 import Header from './../../components/Header'
+import FloatBall from './../../components/FloatBall'
 import {
   setCustomizeLottery,
   setActiveUsualLot,
@@ -163,7 +164,7 @@ class HomeScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
-
+        <FloatBall />
         <Carousel
           style={styles.wrapper}
           autoplay
