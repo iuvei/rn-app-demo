@@ -25,12 +25,40 @@ class RowBall extends React.Component {
   }
 
   render() {
-    let {tools, RowData} = this.props
+    let {tools, activeViewData} = this.props
+    let {showBet, showLayout, showBit, showText} = false
+
+    if (Object.keys(activeViewData).length) showBet = true
+
+    if (showBet && activeViewData.layout.length) showLayout = true
+
+    if (activeViewData.bit) showBit = true
+
+    if (activeViewData.text) showText = true
+
     return (
-      <View>
+      showBet ?
         <View>
           {
-            RowData.map((row, index) => {
+            showBit ? <List style={{marginTop: 12}}>
+              <Text style={{marginTop: 12}}>Multiple options</Text>
+              <CheckboxItem
+                checked={this.state.checkboxItem1}
+                onChange={event => {
+                  this.setState({checkboxItem1: event.target.checked})
+                }}
+              >
+                Option 1
+              </CheckboxItem>
+              <CheckboxItem>Option 2</CheckboxItem>
+              <CheckboxItem disabled>Option 3</CheckboxItem>
+              <CheckboxItem disabled checked>
+                Option 4
+              </CheckboxItem>
+            </List> : null
+          }
+          {
+            showLayout ? activeViewData.layout.map((row, index) => {
               return (
                 <View key={index} style={styles.warp}>
                   <Flex justify="start">
@@ -39,7 +67,7 @@ class RowBall extends React.Component {
                     </Text>
                     <View style={styles.ballItem}>
                       {
-                        row.data.map((b, bIdx) =>
+                        row.balls.map((b, bIdx) =>
                           <Button
                             key={`${bIdx + '--' + b.title}`}
                             type="ghost" size="small" style={{
@@ -48,7 +76,7 @@ class RowBall extends React.Component {
                             borderRadius: 15,
                             marginLeft: 0,
                             marginRight: 6
-                          }}>{b.text}</Button>
+                          }}>{b.text || b.ball}</Button>
                         )
                       }
                       {
@@ -68,35 +96,20 @@ class RowBall extends React.Component {
                   </Flex>
                 </View>
               )
-            })
+            }) : null
+          }
+          {
+            showText ? <TextareaItem
+              rows={10}
+              placeholder="高度自适应"
+              style={{margin: 6, padding: 10, borderRadius: 6}}
+            /> : null
           }
         </View>
+        :
         <View>
-          <List style={{marginTop: 12}}>
-            <Text style={{marginTop: 12}}>Multiple options</Text>
-            <CheckboxItem
-              checked={this.state.checkboxItem1}
-              onChange={event => {
-                this.setState({checkboxItem1: event.target.checked})
-              }}
-            >
-              Option 1
-            </CheckboxItem>
-            <CheckboxItem>Option 2</CheckboxItem>
-            <CheckboxItem disabled>Option 3</CheckboxItem>
-            <CheckboxItem disabled checked>
-              Option 4
-            </CheckboxItem>
-          </List>
+          <Text>Not Found</Text>
         </View>
-        <View>
-          <TextareaItem
-            rows={10}
-            placeholder="高度自适应"
-            style={{margin: 6, padding: 10, borderRadius: 6}}
-          />
-        </View>
-      </View>
     )
   }
 }
