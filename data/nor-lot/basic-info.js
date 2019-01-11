@@ -256,8 +256,8 @@ export const ruleBuilder = ({playCode, viewData, rulesDoc, codeMap}) => {
   // t.help = doc.help
   t.tools = !!data.ball_key
   t.playOrgin = codeMap[playCode]
+  t.layout = []
   if (data.ball_num) {
-    t.layout = []
     // 非单式
     if (_.isArray(data.ball_num)) {
       t.layout = _.map(data.row, (i) => {

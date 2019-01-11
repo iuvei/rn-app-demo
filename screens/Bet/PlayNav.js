@@ -7,8 +7,8 @@ import {
   Tabs, Card, WhiteSpace,
   Button, WingBlank
 } from '@ant-design/react-native'
+import _ from 'lodash'
 import { connect } from 'react-redux'
-import norLot from '../../data/nor-lot'
 import { ruleBuilder } from '../../data/nor-lot/basic-info'
 import { setActivePlay } from '../../actions/classic'
 
@@ -19,7 +19,14 @@ class PlayNav extends React.Component {
 
       playTabs: [
         {code: 'lo1_5x_fs', name: '五星复式'},
-        {code: 'lo1_5x_ds', name: '五星单式'}
+        {code: 'lo1_5x_ds', name: '五星单式'},
+        {code: 'lo1_rx_r4fs', name: '任四复式'},
+        {code: 'lo1_rx_r4ds', name: '任四单式'},
+        {code: 'lo1_rx_r3fs', name: '任三复式'},
+        {code: 'lo1_rx_r3ds', name: '任三单式'},
+        {code: 'lo1_rx_r3z3', name: '任三组三'},
+        {code: 'lo1_rx_r3z6', name: '任三组六'},
+        {code: 'lo1_rx_r3hh', name: '任三混合'}
       ],
 
       localData: {
@@ -29,13 +36,6 @@ class PlayNav extends React.Component {
           {code: 'lo1_5x_zh', name: '五星组合'}
         ]
       },
-
-      // 当前彩种的视图数据
-      codeMap: {},
-      viewData: {},
-      playTips: false,
-      // viewData生产的视图数据及相关信息
-      activeViewData: {},
 
       // 五星+其子nav 和 选中的
       navList: [],
@@ -62,6 +62,13 @@ class PlayNav extends React.Component {
     this.InitBetView()
   }
 
+  componentWillReceiveProps(np) {
+    // let {gamesPlayStore} = this.props
+    // if (!_.isEqual(gamesPlayStore !== np.gamesPlayStore)) {
+    // console.log('你的数据改变了', 'play')
+    // }
+  }
+
   InitBetView = (item) => {
     this.props.setActivePlay(item || {code: 'lo1_5x_fs', name: '五星复式'})
     // let {navParams: {realCategory}} = this.props
@@ -70,18 +77,6 @@ class PlayNav extends React.Component {
     // this.setState({codeMap, viewData}, () =>
     //   this.activePlay(this.state.localData[realCategory][0])
     // )
-  }
-
-  // 切换玩法类型
-  activePlay = (val) => {
-    let {viewData, codeMap} = this.state
-    // 重新build 布局数据
-    // 这里或应该增加防御控制 预防非法玩法报错
-    // 切换对应的赔率信息
-    this.setState({
-      activeViewData: ruleBuilder({playCode: val.code, viewData, codeMap})
-    })
-    // this.changePlayRate(val)
   }
 
   // let {navBar, viewData, codeMap} =
@@ -120,10 +115,8 @@ class PlayNav extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  let {navParams, activePlay} = state.classic
   return ({
-    navParams,
-    activePlay
+    ...state.classic
   })
 }
 
@@ -132,6 +125,7 @@ const mapDispatchToProps = (dispatch) => {
     setActivePlay: params => dispatch(setActivePlay(params))
   }
 }
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
