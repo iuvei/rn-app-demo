@@ -171,12 +171,12 @@ class TeamReport extends React.Component {
             KeyName={`KeyName-${KeyName}`}
             params={params}
             renderItem={this.renderItem}
-            beforeUpdateList={({res}, fn) => {
+            beforeUpdateList={({res, params}, fn) => {
               let dataList = res.data && res.data.pageColumns ? res.data.pageColumns : []
-              let {currentPage, total} = res.data.pageInfo
-              let NullData = Math.ceil(total / 10) < currentPage
+              let {total} = res.data.pageInfo
+              let NullData = (total / 10) <= params.pageNumber
               // 或在这里增加 其他状态码的处理Alter
-              fn(NullData ? [] : {dataList})
+              fn(!NullData ? {dataList} : [])
             }}
           />
         }

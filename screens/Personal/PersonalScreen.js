@@ -142,9 +142,9 @@ class PersonalScreen extends React.Component {
   }
 
   componentDidMount () {
-    let {userRebateVO} = this.props.rebateInfo
+    let {userRebateVO} = this.props.rebateInfo || []
     let lotteryRebate = 0
-    userRebateVO.forEach(item => {
+    userRebateVO?.forEach(item => {
       if (item.rebateType === 0) {
         lotteryRebate = item.userRebate
       }
@@ -188,8 +188,8 @@ class PersonalScreen extends React.Component {
     ]
     let {agent, order, lotteryRebate} = this.state
     let {loginInfo, balanceInfo} = this.props
-    let {canWithdrawBalance, currentBalance} = balanceInfo.ye
-    let {currentBalance: fdBalance} = balanceInfo.fd
+    let {canWithdrawBalance, currentBalance} = balanceInfo.ye || {}
+    let {currentBalance: fdBalance} = balanceInfo.fd || {}
     return (
       <View style={styles.container}>
         <ImageBackground resizeMode='cover' source={require('../../assets/images/personal/bg0.png')}

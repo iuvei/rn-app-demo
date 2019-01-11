@@ -142,11 +142,50 @@ export default class RebateHistory extends React.Component {
     )
   }
 
-  showDetails = (item) => {
-    this.setState({
-      visible: true,
-      details: item
-    })
+  showDetails = (details) => {
+    Modal.alert(
+      <Text style={{fontSize: 20, color: '#1789e6'}}>详情</Text>,
+      <View style={{marginTop: 10}}>
+        <View style={styles.popColumn}>
+          <Text>订单号:</Text>
+          <Text>{details.orderId}</Text>
+        </View>
+        <View style={styles.popColumn}>
+          <Text>返点:</Text>
+          <Text>{details.currentRebate}</Text>
+        </View>
+        <View style={styles.popColumn}>
+          <Text>实际返点:</Text>
+          <Text>{details.actualRebate}</Text>
+        </View>
+        <View style={styles.popColumn}>
+          <Text>返点类型:</Text>
+          <Text>{MAP_TYPE_NAME[details.rebateType]}</Text>
+        </View>
+        <View style={styles.popColumn}>
+          <Text>返点金额:</Text>
+          <Text>{toFixed4(details.rebateAmount)}</Text>
+        </View>
+        <View style={styles.popColumn}>
+          <Text>状态:</Text>
+          <Text>{details.status === 0 ? '成功' : '失败'}</Text>
+        </View>
+        <View style={styles.popColumn}>
+          <Text>实际返点金额:</Text>
+          <Text>{toFixed4(details.actualAmount)}</Text>
+        </View>
+        <View style={styles.popColumn}>
+          <Text>操作时间:</Text>
+          <Text>{formatTime(details.rebateTime)}</Text>
+        </View>
+      </View>,
+      [{
+        text: '确定',
+        style: {
+          borderWidth: 0,
+        }
+      }]
+    )
   }
 
   onSearch = async () => {
@@ -193,7 +232,6 @@ export default class RebateHistory extends React.Component {
             params={params}
             renderItem={this.renderItem}
             beforeUpdateList={({res}, fn) => {
-              console.log(res)
               let dataList = res.data && res.data.data ? res.data.data : []
               let {pageNumber, totalCount} = res.data
               let NullData = Math.ceil(totalCount / 10) < pageNumber
@@ -201,44 +239,6 @@ export default class RebateHistory extends React.Component {
             }}
           />
         }
-        <Modal transparent visible={visible} title={<Text style={{fontSize: 20, color: '#1789e6'}}>详情</Text>}
-               onClose={() => this.setState({visible: false})}>
-          <View style={{marginTop: 10}}>
-            <View style={styles.popColumn}>
-              <Text>订单号:</Text>
-              <Text>{details.orderId}</Text>
-            </View>
-            <View style={styles.popColumn}>
-              <Text>返点:</Text>
-              <Text>{details.currentRebate}</Text>
-            </View>
-            <View style={styles.popColumn}>
-              <Text>实际返点:</Text>
-              <Text>{details.actualRebate}</Text>
-            </View>
-            <View style={styles.popColumn}>
-              <Text>返点类型:</Text>
-              <Text>{MAP_TYPE_NAME[details.rebateType]}</Text>
-            </View>
-            <View style={styles.popColumn}>
-              <Text>返点金额:</Text>
-              <Text>{toFixed4(details.rebateAmount)}</Text>
-            </View>
-            <View style={styles.popColumn}>
-              <Text>状态:</Text>
-              <Text>{details.status === 0 ? '成功' : '失败'}</Text>
-            </View>
-            <View style={styles.popColumn}>
-              <Text>实际返点金额:</Text>
-              <Text>{toFixed4(details.actualAmount)}</Text>
-            </View>
-            <View style={styles.popColumn}>
-              <Text>操作时间:</Text>
-              <Text>{formatTime(details.rebateTime)}</Text>
-            </View>
-            <Button style={{marginTop: 10}} onPress={() => this.setState({visible: false})}>确定</Button>
-          </View>
-        </Modal>
       </View>
     )
   }

@@ -535,13 +535,13 @@ export const questions = [
 
 // -1---已过期；0--进行中；1---未派发；2---未领取，3---待审核;4---已领取已审核
 export const ActivityStatus = [
-  {value: '', name: '全部'},
-  {value: 0, name: '进行中'},
-  {value: 1, name: '未派发'},
-  {value: 2, name: '未领取'},
-  {value: 3, name: '待审核'},
-  {value: 4, name: '已领取已审核'},
-  {value: -1, name: '已过期'}
+  {value: '', label: '全部'},
+  {value: 0, label: '进行中'},
+  {value: 1, label: '未派发'},
+  {value: 2, label: '未领取'},
+  {value: 3, label: '待审核'},
+  {value: 4, label: '已领取已审核'},
+  {value: -1, label: '已过期'}
 ]
 
 // 充值页面充值渠道图标map
