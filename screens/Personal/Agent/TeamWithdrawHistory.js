@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
-import { View, Text, StyleSheet, Keyboard } from 'react-native'
-import { Flex, Button, InputItem } from '@ant-design/react-native';
+import { View, Text, StyleSheet, Keyboard, TouchableHighlight } from 'react-native'
+import { Flex, Button, InputItem, Modal } from '@ant-design/react-native';
 import UIListView from '../../../components/UIListView'
-import dayjs from 'dayjs'
+import {toFixed4, formatTime} from '../../../utils/MathUtils'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
 import { connect } from "react-redux";
@@ -38,22 +38,19 @@ class FlatListItem extends PureComponent {
   render() {
     let {item, index} = this.props
     return (
+      <TouchableHighlight onPress={() => this.props.onPressFun(item)}>
       <View style={{padding: 10, backgroundColor: '#fff'}}>
         <Text>账号：{item.loginName}</Text>
         <Flex justify="space-between">
           <Text>
             <Text>申请金额：</Text>
-            <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item.amount}</Text>
+            <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{toFixed4(item.amount)}</Text>
           </Text>
           <Text>
             <Text>手续费：</Text>
-            <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item.fee}</Text>
+            <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{toFixed4(item.fee)}</Text>
           </Text>
         </Flex>
-        <Text>
-          <Text>创建时间：</Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{dayjs(item["createTime"]).format('YYYY-MM-DD HH:mm:ss')}</Text>
-        </Text>
         <Flex justify="space-between">
           <Text>
             <Text>币种代码：</Text>
@@ -69,6 +66,7 @@ class FlatListItem extends PureComponent {
           </Text>
         </Flex>
       </View>
+      </TouchableHighlight>
     )
   }
 
@@ -86,6 +84,8 @@ class PersonalScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      show: false,
+      item: {},
       KeyName: 'TeamWithdrawHistory',
       api: '/user/getTeamReWiLog',
       changeList: [
@@ -127,6 +127,10 @@ class PersonalScreen extends React.Component {
         currencyCode: 'CNY'
       },
     }
+    this.formateKey = (arr, key) => {
+      let rst = arr.filter(item => item.value === key)
+      return rst.length ? rst[0].label : '--'
+    }
   }
 
   handleDate = ({startTime, endTime}) => {
@@ -150,20 +154,32 @@ class PersonalScreen extends React.Component {
       <FlatListItem
         item={item}
         index={index}
-        onPress={(Type, Item) =>
-          this.onPressItem(Type, Item)
+        onPressFun={(Item) =>
+          this.onPressItem(Item)
         }/>
     )
   }
 
-  onPressItem = (type, item) => {}
+  onPressItem = (item) => {
+    this.setState({
+      item: item,
+      show: true
+    })
+  }
+
+  closeReModal = () => {
+    this.setState({
+      item: {},
+      show: false
+    })
+  }
 
   componentDidMount() {
     this.props.navigation.setParams({ onSearch: this.onSearch })
   }
 
   render() {
-    let {api, params, KeyName} = this.state
+    let {api, params, KeyName, item, show} = this.state
     return (
       <View style={styles.container}>
         <View>
@@ -203,13 +219,65 @@ class PersonalScreen extends React.Component {
           params={params}
           renderItem={this.renderItem}
           beforeUpdateList={({res}, fn) => {
-            console.log(res.data)
             let dataList = res.data && res.data.teamReWiList ? res.data.teamReWiList : []
             let {pageNumber, pageSize, totalCount} = res.data
             let NullData = Math.ceil(totalCount / pageSize) < pageNumber
             // 或在这里增加 其他状态码的处理Alter
             fn(NullData ? [] : {dataList})
           }}/>
+        <Modal
+          title="详情"
+          transparent
+          visible={show}
+          footer={[{ text: '关闭', onPress: () => this.closeReModal() }]}
+        >
+          <View style={{padding: 10, backgroundColor: '#fff'}}>
+            <Flex justify="space-between">
+              <Text>账号</Text>
+              <Text>{item.loginName}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>申请金额：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{toFixed4(item.amount)}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>账变前金额：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{toFixed4(item["oldBalance"])}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>账变后金额：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{toFixed4(item["newBalance"])}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>实际申请金额：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{toFixed4(item["actualAmount"])}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>实际手续费：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{toFixed4(item["actualFee"])}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>账变金额：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{toFixed4(item["changeAmount"])}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>手续费：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{toFixed4(item.fee)}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>币种代码：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item.currencyCode}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>类型：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{this.formateKey(this.state.changeList2,item.type)}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>创建时间：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{formatTime(item["createTime"])}</Text>
+            </Flex>
+          </View>
+        </Modal>
       </View>
     )
   }

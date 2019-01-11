@@ -84,7 +84,7 @@ class HomeScreen extends React.Component {
   }
 
   changeTextFun = (val) => {
-    this.props.navigation.push(val)
+    this.props.navigation.navigate(val)
     // Toast.info(val+ '正在开发中')
   }
 
@@ -138,7 +138,7 @@ class HomeScreen extends React.Component {
   }
 
   setLot() {
-    this.props.navigation.push('CustomizeGames')
+    this.props.navigation.navigate('CustomizeGames')
   }
 
   _onRefresh = () => {
@@ -185,7 +185,7 @@ class HomeScreen extends React.Component {
         <View>
           <WhiteSpace size="sm" />
           <NoticeBar
-            onPress={() => this.props.navigation.push('Broadcast')}
+            onPress={() => this.props.navigation.navigate('Broadcast')}
             marqueeProps={{ loop: true, style: { fontSize: 12, color: '#000' } }}
           >
             {str}
@@ -252,7 +252,7 @@ class HomeScreen extends React.Component {
               {
                 usualLottery.map((item, index) =>
                   <View style={styles.favoriteItem} key={index}>
-                    <Flex onPress={() => this.props.navigation.push('Bet', item)}>
+                    <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
                       <View>
                         <Image source={this.getIconName(item.realCategory)} resizeMode={'cover'} style={styles.favoriteItemImg} />
                       </View>
