@@ -1,12 +1,19 @@
 import React, {PureComponent} from 'react'
 import { connect } from 'react-redux'
-import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  Image,
+  ScrollView
+} from 'react-native'
 import UIListView from '../../../components/UIListView'
-// List Item
 import {
   Button,
   Flex,
-  InputItem
+  InputItem,
+  Modal
 } from '@ant-design/react-native'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
@@ -80,7 +87,60 @@ class TeamChaseHistory extends React.Component {
         isOuter: '',  // 是否外盘                       （0 否、1 是）
         loginName: ''
       },
-      lotterList: []
+      lotterList: [],
+      detailInfo: null,
+      popVisible: false,
+      keyList: [
+        {
+          key: 'loginName',
+          name: '用户名：'
+        },
+        {
+          key: 'lotterName',
+          name: '彩种：'
+        },
+        {
+          key: 'ruleName',
+          name: '玩法：'
+        },
+        {
+          key: 'castCodes',
+          name: '投注号码：'
+        },
+        {
+          key: 'openCode',
+          name: '开奖号码：'
+        },
+        {
+          key: 'orderId',
+          name: '单号：'
+        },
+        {
+          key: 'orderTime',
+          name: '下单时间：',
+          callbackTxt: 'moment'
+        },
+        {
+          key: 'castAmount',
+          name: '投注金额：',
+          number: true
+        },
+        {
+          key: 'bonus',
+          name: '中奖金额：',
+          number: true
+        },
+        {
+          key: 'status',
+          name: '状态：',
+          formatter: (v) => {
+            let statusobj = orderStatus.filter(obj => {
+              return obj.value === v
+            })[0]
+            return statusobj.label
+          }
+        }
+      ]
     }
   }
 
@@ -104,9 +164,13 @@ class TeamChaseHistory extends React.Component {
   }
 
   // 点击单元表格
-  onPressItem = (item) => { 
+  onPressItem = (item) => {
+    this.setState(prevState => ({
+      popVisible: true,
+      detailInfo: Object.assign({}, item)
+    }))
     // 跳转详情页
-    this.props.navigation.navigate('OrderDetail', {detail: item})
+    // this.props.navigation.navigate('OrderDetail', {detail: item})
     // 点击一项改变数据重置数据
     // let Row = this.TeamChaseHistory.listView.getRows().slice()
     // Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
@@ -121,6 +185,12 @@ class TeamChaseHistory extends React.Component {
     this.setState(prevState => ({
       params: {...prevState.params, ...val}
     }))
+  }
+
+  onClosePop = () => {
+    this.setState({
+      popVisible: false
+    })
   }
 
   componentDidMount() {
@@ -140,7 +210,7 @@ class TeamChaseHistory extends React.Component {
   }
 
   render() {
-    let {api, params, KeyName, lotterList} = this.state
+    let {api, params, KeyName, lotterList, keyList, detailInfo} = this.state
 
     return (
       <View style={styles.container}>
@@ -221,6 +291,34 @@ class TeamChaseHistory extends React.Component {
             fn(NullData ? [] : {dataList})
           }}
         />
+        {
+          detailInfo &&
+          <Modal
+            transparent={false}
+            visible={this.state.popVisible}
+            animationType="slide-down"
+            onClose={this.onClosePop}
+          >
+            <View style={{ paddingVertical: 10, paddingTop: 50 }}>
+              {
+                keyList.map((item, idx) => {
+                  return (
+                    <View style={{backgroundColor: '#fff', width: '98%'}} key={item.name}>
+                      <Flex>
+                        <Text style={{width: 100, paddingLeft: 20, color: '#a4a4a4', lineHeight: 32, fontSize: 14}}>{item.name}</Text>
+                        <Text style={{flex: 1, textAlign: 'right', color: '#585858', paddingRight: 16, lineHeight: 32, fontSize: 14}}>{item.formatter ? item.formatter(detailInfo[item.key]) : detailInfo[item.key]}</Text>
+                      </Flex>
+                      <Image source={require('../../../assets/images/detail_dashed.png')} style={{width: '100%', height: 0.5}} />
+                    </View>
+                  )
+                })
+              }
+            </View>
+            <Button type="primary" onPress={this.onClosePop} style={{borderRadius: 0}}>
+              关闭
+            </Button>
+          </Modal>
+        }
       </View>
     )
   }
