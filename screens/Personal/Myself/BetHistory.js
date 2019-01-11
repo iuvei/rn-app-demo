@@ -210,7 +210,6 @@ const styles = StyleSheet.create({
   }
 })
 
-
 const mapStateToProps = (state, props) => {
   let {sysSortLottery} = state.common
   return {sysSortLottery}
