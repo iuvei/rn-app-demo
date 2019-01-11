@@ -10,7 +10,9 @@ import {
 import {
   Flex,
   Button,
-  Tabs
+  Tabs,
+  Modal,
+  Toast
 } from '@ant-design/react-native'
 import { doCancelOrder } from '../../../api/member'
 import {queryOrderAdditions, getChaseOrderDetail} from '../../../api/lottery'
@@ -65,7 +67,10 @@ class ChaseDetail extends React.Component {
           key: 'status',
           title: '状态',
           render: ({item, index, value}) => {
-            return value
+            let obj = orderStatus.filter(v => {
+              return v.value === value
+            })[0]
+            return <Text style={{...styles.chaseListText, color: obj.color}}>{obj.label}</Text>
           },
           width: '22%'
         },
@@ -73,7 +78,12 @@ class ChaseDetail extends React.Component {
           key: 'status',
           title: '操作',
           render: ({item, index, value}) => {
-            return value
+            return value === 1 ?
+              <Button
+                size="small"
+                type="primary" 
+                onPress={() => this.allowCancelSingle({item, index})}>撤单</Button> :
+              <Text style={styles.chaseListText}>-</Text>
           },
           width: '13%'
         }
@@ -106,6 +116,71 @@ class ChaseDetail extends React.Component {
     })
   }
 
+  // 撤销单个追单记录
+  allowCancelSingle ({item, index}) {
+    let formData = {
+      orderId: item.orderId,
+      userId: this.props.loginInfo.acc.user.userId
+    }
+    Modal.alert('您确认撤销此订单吗？', '', [
+      {
+        text: '取消',
+        onPress: () => {console.log('cancel')},
+        style: 'cancel',
+      },
+      { text: '确认', onPress: () => {
+        doCancelOrder(formData).then((res) => {
+          if (res.code === 0) {
+            Toast.success('撤单成功')
+            let arr = [].concat(this.state.orderShareList)
+            arr[index].status = -2
+            this.setState({
+              orderShareList: arr
+            })
+            // this.AsetCancelOrder({time: new Date().getTime(), index: index})
+            // this.AgetUserBalance({userId: this.userId})
+          }
+        })
+      } },
+    ])
+  }
+
+  cancelOrder = ({isBatch, orderId}) => {
+    let {index, batchNo} = this.state.detailInfo
+    let formData = {
+      userId: this.props.loginInfo.acc.user.userId
+    }
+    if (isBatch) {
+      formData = Object.assign({}, formData, {batchNo})
+    } else {
+      formData = Object.assign({}, formData, {orderId})
+    }
+    Modal.alert(isBatch ? '您确认批量撤单吗？' : '您确认撤销此订单吗？', '', [
+      {
+        text: '取消',
+        onPress: () => {console.log('cancel')},
+        style: 'cancel',
+      },
+      { text: '确认', onPress: () => {
+        doCancelOrder(formData).then((res) => {
+          if (res.code === 0) {
+            Toast.success('撤单成功')
+            this.setState(prevState => ({
+              detailInfo: {...prevState.detailInfo, status: 2, isCanRevked: false}
+            }))
+            // this.AsetCancelOrder({time: new Date().getTime(), index: index})
+            setTimeout(() => {
+              // this.props.AsetAllBalance(this.props.loginInfo.acc.user.userId)
+            }, 50)
+          } else {
+            Toast.fail(res.message || '网络异常')
+          }
+          // this.afterCancelOrder({res, orderItem})
+        })
+      } },
+    ])
+  }
+
   render() {
     let { detailInfo, keyList, columns, orderShareList } = this.state
     let statusobj = chaseOrderStatus.filter(obj => {
@@ -131,13 +206,17 @@ class ChaseDetail extends React.Component {
                       </Flex>
                       <Image source={require('../../../assets/images/detail_dashed.png')} style={{width: '100%', height: 0.5}} />
                     </View>
-                )})
+                  )
+                })
               }
-              <View style={{backgroundColor: '#fff', paddingTop: 16, width: '98%', alignItems: 'center'}}>
-                <Button type="warning" size="small" style={{width: 90}}>
-                  撤销订单
-                </Button>
-              </View>
+              {
+                Boolean(detailInfo.isCanRevked) &&
+                <View style={{backgroundColor: '#fff', paddingTop: 16, width: '98%', alignItems: 'center'}}>
+                  <Button type="warning" size="small" style={{width: 90}} onPress={() => this.cancelOrder({isBatch: true})}>
+                    批量撤单
+                  </Button>
+                </View>
+              }
               <Image source={require('../../../assets/images/detail_bottom.png')} style={{width: '98%'}}/>
             </View>
           </ScrollView>
@@ -153,12 +232,12 @@ class ChaseDetail extends React.Component {
               {
                 orderShareList.map((order, idx) => {
                   return (
-                    <Flex key={order.orderId} style={{backgroundColor: '#fff'}}>
+                    <Flex key={order.orderId} style={{backgroundColor: '#fff', paddingVertical: 8}}>
                       {
                         columns.map(col => {
                           return (
                             <View key={col.title} style={{width: col.width}}>
-                              <Text style={styles.chaseListText}>{col.render ? col.render({item: order, value: order[col.key], index: idx}) : order[col.key]}</Text>
+                              {col.render ? col.render({item: order, value: order[col.key], index: idx}) : <Text style={styles.chaseListText}>{order[col.key]}</Text>}
                             </View>
                           )
                         })
@@ -199,7 +278,7 @@ const styles = StyleSheet.create({
   },
   chaseListText: {
     color: '#666',
-    lineHeight: 32,
+    lineHeight: 20,
     textAlign: 'center'
   }
 })

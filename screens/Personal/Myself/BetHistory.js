@@ -56,7 +56,6 @@ class BetHistory extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isShow: false,
       KeyName: 'BetHistory',
       api: '/frontReport/getOrderStatistics',
       params: {
@@ -109,9 +108,6 @@ class BetHistory extends React.Component {
 
   onSearch = async () => {
     this.BetHistory.listView.refresh()
-    // await this.setState({isShow: true}, () => {
-    //   this.setState({isShow: false})
-    // })
   }
 
   handlePickerBack = (val) => {
@@ -137,7 +133,7 @@ class BetHistory extends React.Component {
   }
 
   render() {
-    let {api, params, KeyName, isShow, lotterList} = this.state
+    let {api, params, KeyName, lotterList} = this.state
 
     return (
       <View style={styles.container}>
@@ -169,34 +165,32 @@ class BetHistory extends React.Component {
               </Flex>
             </View>
         </View>
-        {isShow ? null :
-          <UIListView
-            ref={ref => this.BetHistory = ref}
-            api={api}
-            KeyName={`KeyName-${KeyName}`}
-            params={params}
-            renderItem={this.renderItem}
-            // 第一个参数 params 第二个子组件的将要请求的第N页
-            // beforeHttpGet={async ({params, page}, fn) => {
-            //   // 解决父级数据数据源同步问题，然后数据给到子组件本身
-            //   await this.setState({
-            //     params: Object.assign({}, params, {
-            //       pageNumber: page
-            //     })
-            //   })
-            //   let handlerParams = this.state.params
-            //   fn(handlerParams, true)
-            // }}
-            // 返回数据空或者处理后的数据源
-            beforeUpdateList={({res}, fn) => {
-              let dataList = res.data && res.data.orderInfoList ? res.data.orderInfoList : []
-              let {pageNumber, pageSize, totalCount} = res.data
-              let NullData = Math.ceil(totalCount / pageSize) < pageNumber
-              // 或在这里增加 其他状态码的处理Alter
-              fn(NullData ? [] : {dataList})
-            }}
-          />
-        }
+        <UIListView
+          ref={ref => this.BetHistory = ref}
+          api={api}
+          KeyName={`KeyName-${KeyName}`}
+          params={params}
+          renderItem={this.renderItem}
+          // 第一个参数 params 第二个子组件的将要请求的第N页
+          // beforeHttpGet={async ({params, page}, fn) => {
+          //   // 解决父级数据数据源同步问题，然后数据给到子组件本身
+          //   await this.setState({
+          //     params: Object.assign({}, params, {
+          //       pageNumber: page
+          //     })
+          //   })
+          //   let handlerParams = this.state.params
+          //   fn(handlerParams, true)
+          // }}
+          // 返回数据空或者处理后的数据源
+          beforeUpdateList={({res}, fn) => {
+            let dataList = res.data && res.data.orderInfoList ? res.data.orderInfoList : []
+            let {pageNumber, pageSize, totalCount} = res.data
+            let NullData = Math.ceil(totalCount / pageSize) < pageNumber
+            // 或在这里增加 其他状态码的处理Alter
+            fn(NullData ? [] : {dataList})
+          }}
+        />
       </View>
     )
   }
