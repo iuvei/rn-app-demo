@@ -52,7 +52,7 @@ class FlatListItem extends PureComponent {
 class TeamBetHistory extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      title: '游戏记录',
+      title: '团队游戏记录',
       headerRight: <Button style={{marginRight: 14}} type="ghost" size="small" onPress={navigation.getParam('onSearch')}>
         <Text style={{color: '#fff'}}>查询</Text>
       </Button>
@@ -70,7 +70,6 @@ class TeamBetHistory extends React.Component {
         orderType: 0, // 0彩票,1游戏
         orderId: '',
         lotterCode: '',
-        lotterCode2: [],
         startTime: '',
         endTime: '',
         status: '', // -1已撤单,1未开奖,2已中奖,3未中奖
@@ -179,8 +178,9 @@ class TeamBetHistory extends React.Component {
                     handlePickerBack={this.handlePickerBack}/>
                 </Flex.Item>
                 <Flex.Item style={{paddingLeft: 8}}>
-                  <View>
+                  <View style={{backgroundColor: '#fff', height: 25, lineHeight: 25}}>
                     <InputItem
+                      style={{lineHeight: 25, height: 25, borderBottomWidth: 0}}
                       value={params.loginName}
                       onChange={val => {
                         this.setState(prevState => ({
