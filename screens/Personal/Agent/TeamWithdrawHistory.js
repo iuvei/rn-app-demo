@@ -219,7 +219,6 @@ class PersonalScreen extends React.Component {
           params={params}
           renderItem={this.renderItem}
           beforeUpdateList={({res}, fn) => {
-            console.log(res.data)
             let dataList = res.data && res.data.teamReWiList ? res.data.teamReWiList : []
             let {pageNumber, pageSize, totalCount} = res.data
             let NullData = Math.ceil(totalCount / pageSize) < pageNumber
