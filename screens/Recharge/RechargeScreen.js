@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import {ScrollView, StyleSheet, View, Text, Platform} from 'react-native'
-import { Provider, Accordion, Drawer, List, Button, WhiteSpace, Tabs, Radio, InputItem, Toast } from '@ant-design/react-native';
+import { Accordion, Drawer, List, Button, WhiteSpace, Tabs, Radio, InputItem, Toast } from '@ant-design/react-native';
 import {getRechargeChannels, commitRecharge} from '../../api/member'
 import {isObject} from 'lodash'
 import {MyIconFont} from '../../components/MyIconFont'
@@ -365,41 +365,39 @@ class RechargeScreen extends React.Component {
     )
 
     return (
-      <Provider>
-        <View style={styles.container}>
-          <Drawer
-            sidebar={activeTabIndex === 0 ? sidebar : sidebarVirtual}
-            position="right"
-            open={false}
-            drawerRef={el => (this.drawer = el)}
-            onOpenChange={this.onOpenChange}
-            drawerBackgroundColor="#ccc"
-          >
-            <View style={{ flex: 1 }}>
-              <Tabs tabs={tabs} onChange={this.channelTabsChange}>
-                <View>
-                  <List style={{width: '100%'}}>
-                    <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
-                      {activeAccount.bankCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[activeAccount.bankCode]} size={30}/> : null}
-                    </List.Item>
-                  </List>
-                  {infoDesc}
-                  {inputArea}
-                </View>
-                <View>
-                  <List style={{width: '100%'}}>
-                    <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
-                      {activeAccount.coinCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[String(activeAccount.coinCode).toLowerCase()]} size={30}/> : null}
-                    </List.Item>
-                  </List>
-                  {infoDesc}
-                  {inputArea}
-                </View>
-              </Tabs>
-            </View>
-          </Drawer>
-        </View>
-      </Provider>
+      <View style={styles.container}>
+        <Drawer
+          sidebar={activeTabIndex === 0 ? sidebar : sidebarVirtual}
+          position="right"
+          open={false}
+          drawerRef={el => (this.drawer = el)}
+          onOpenChange={this.onOpenChange}
+          drawerBackgroundColor="#ccc"
+        >
+          <View style={{ flex: 1 }}>
+            <Tabs tabs={tabs} onChange={this.channelTabsChange}>
+              <View>
+                <List style={{width: '100%'}}>
+                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
+                    {activeAccount.bankCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[activeAccount.bankCode]} size={30}/> : null}
+                  </List.Item>
+                </List>
+                {infoDesc}
+                {inputArea}
+              </View>
+              <View>
+                <List style={{width: '100%'}}>
+                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
+                    {activeAccount.coinCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[String(activeAccount.coinCode).toLowerCase()]} size={30}/> : null}
+                  </List.Item>
+                </List>
+                {infoDesc}
+                {inputArea}
+              </View>
+            </Tabs>
+          </View>
+        </Drawer>
+      </View>
     )
   }
 }
