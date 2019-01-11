@@ -37,12 +37,11 @@ class ExampleScroll extends Component {
   getTableList = async (page = 1, startFetch, abortFetch) => {
     let {params, api, type} = this.props
     if (params.hasOwnProperty('startTime') && params.startTime === '') {
-      params.startTime = dayjs(new Date()).format('YYYY-MM-DD')
+      params.startTime = dayjs().format('YYYY-MM-DD')
     }
     if (params.hasOwnProperty('endTime') && params.endTime === '') {
-      params.endTime = dayjs(new Date()).format('YYYY-MM-DD')
+      params.endTime = dayjs().format('YYYY-MM-DD')
     }
-    console.log(params)
     try {
       // Generate dummy data
       let rowData = []

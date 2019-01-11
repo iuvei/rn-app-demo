@@ -78,7 +78,12 @@ class ChaseDetail extends React.Component {
           key: 'status',
           title: '操作',
           render: ({item, index, value}) => {
-            return value === 1 ? <Button size="small" type="primary" onPress={() => this.allowCancelSingle({item, index})}>撤单</Button> : <Text>-</Text>
+            return value === 1 ?
+              <Button
+                size="small"
+                type="primary" 
+                onPress={() => this.allowCancelSingle({item, index})}>撤单</Button> :
+              <Text style={styles.chaseListText}>-</Text>
           },
           width: '13%'
         }
