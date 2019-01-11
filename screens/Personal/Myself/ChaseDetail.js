@@ -67,7 +67,10 @@ class ChaseDetail extends React.Component {
           key: 'status',
           title: '状态',
           render: ({item, index, value}) => {
-            return value
+            let obj = orderStatus.filter(v => {
+              return v.value === value
+            })[0]
+            return <Text style={{...styles.chaseListText, color: obj.color}}>{obj.label}</Text>
           },
           width: '22%'
         },
@@ -75,7 +78,7 @@ class ChaseDetail extends React.Component {
           key: 'status',
           title: '操作',
           render: ({item, index, value}) => {
-            return value
+            return value === 1 ? <Button size="small" type="primary" onPress={() => this.allowCancelSingle({item, index})}>撤单</Button> : <Text>-</Text>
           },
           width: '13%'
         }
@@ -109,27 +112,32 @@ class ChaseDetail extends React.Component {
   }
 
   // 撤销单个追单记录
-  allowCancelSingle ({head, item}) {
-    let {currentOrderItem} = this
-    let {index} = currentOrderItem // orderId
+  allowCancelSingle ({item, index}) {
     let formData = {
       orderId: item.orderId,
-      userId: this.userId
+      userId: this.props.loginInfo.acc.user.userId
     }
-    Dialog.confirm({
-      message: '您确认撤销此订单吗？'
-    }).then(() => {
-      doCancelOrder(formData).then((res) => {
-        if (res.code === ERR_OK) {
-          this.$toast.success('撤单成功')
-          this.AsetCancelOrder({time: new Date().getTime(), index: index})
-          this.AgetUserBalance({userId: this.userId})
-          this.$emit('revoke-success')
-        }
-        this.show()
-        this.showTabs = 'list'
-      })
-    }).catch(() => {})
+    Modal.alert('您确认撤销此订单吗？', '', [
+      {
+        text: '取消',
+        onPress: () => {console.log('cancel')},
+        style: 'cancel',
+      },
+      { text: '确认', onPress: () => {
+        doCancelOrder(formData).then((res) => {
+          if (res.code === 0) {
+            Toast.success('撤单成功')
+            let arr = [].concat(this.state.orderShareList)
+            arr[index].status = -2
+            this.setState({
+              orderShareList: arr
+            })
+            // this.AsetCancelOrder({time: new Date().getTime(), index: index})
+            // this.AgetUserBalance({userId: this.userId})
+          }
+        })
+      } },
+    ])
   }
 
   cancelOrder = ({isBatch, orderId}) => {
@@ -219,12 +227,12 @@ class ChaseDetail extends React.Component {
               {
                 orderShareList.map((order, idx) => {
                   return (
-                    <Flex key={order.orderId} style={{backgroundColor: '#fff'}}>
+                    <Flex key={order.orderId} style={{backgroundColor: '#fff', paddingVertical: 8}}>
                       {
                         columns.map(col => {
                           return (
                             <View key={col.title} style={{width: col.width}}>
-                              <Text style={styles.chaseListText}>{col.render ? col.render({item: order, value: order[col.key], index: idx}) : order[col.key]}</Text>
+                              {col.render ? col.render({item: order, value: order[col.key], index: idx}) : <Text style={styles.chaseListText}>{order[col.key]}</Text>}
                             </View>
                           )
                         })
@@ -265,7 +273,7 @@ const styles = StyleSheet.create({
   },
   chaseListText: {
     color: '#666',
-    lineHeight: 32,
+    lineHeight: 20,
     textAlign: 'center'
   }
 })
