@@ -241,7 +241,7 @@ class Withdrawal extends React.Component {
               </Picker>
             </List> :
             <View style={{backgroundColor: '#fff'}}>
-              <Text style={{color: '#f15a23', fontSize: 14, lineHeight: 30, textAlign: 'center'}}>请您先前往绑卡页面添加银行卡！</Text>
+              <Text style={{color: '#f15a23', fontSize: 14, lineHeight: 30, textAlign: 'center'}}>请您先前往银行卡管理页面添加银行卡！</Text>
             </View>
           }
           <View style={{padding: 12}}>
