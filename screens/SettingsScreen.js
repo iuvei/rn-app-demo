@@ -10,7 +10,7 @@ import {
 import {
   Ionicons
 } from '@expo/vector-icons'
-import { List, WhiteSpace, Button, Modal, Toast } from '@ant-design/react-native'
+import { List, WhiteSpace, Button, Modal, Toast, Icon } from '@ant-design/react-native'
 import {
   AsetUserSecureLevel,
   AsetUserSecureConfig,
@@ -73,49 +73,49 @@ class SettingsScreen extends React.Component {
         <WhiteSpace size="sm" />
         <List>
           <List.Item
-            thumb={<Ionicons name="md-card" size={20} color="#333333"/>}
+            thumb={<Icon name="edit" size={20} color="#333333"/>}
             arrow="horizontal"
             onPress={() => this.props.navigation.navigate('UpdateNickname')}
           >
             <Text style={styles.itemTxt}>修改昵称</Text>
           </List.Item>
           <List.Item
-            thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
+            thumb={<Icon name="star" color="#333333" size={20}/>}
             arrow="horizontal"
             onPress={() => this.props.navigation.navigate('UpdatePwd', {title: '登录密码', type: 'login'})}
           >
             <Text style={styles.itemTxt}>修改登录密码</Text>
           </List.Item>
           <List.Item
-            thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
+            thumb={<Icon name="hdd" color="#333333" size={20}/>}
             arrow="horizontal"
             onPress={() => this.props.navigation.navigate('UpdatePwd', {title: '资金密码', type: 'paypwd'})}
           >
             <Text style={styles.itemTxt}>资金密码</Text>
           </List.Item>
           <List.Item
-            thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
+            thumb={<Icon name="alipay-circle" color="#333333" size={20}/>}
             arrow="horizontal"
             onPress={() => this.props.navigation.navigate('BindAliname')}
           >
             <Text style={styles.itemTxt}>支付宝</Text>
           </List.Item>
           <List.Item
-            thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
+            thumb={<Icon name="key" color="#333333" size={20}/>}
             arrow="horizontal"
             onPress={() => this.props.navigation.navigate('BindSecurity')}
           >
             <Text style={styles.itemTxt}>密码保护</Text>
           </List.Item>
           <List.Item
-            thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
+            thumb={<Icon name="google" color="#333333" size={20}/>}
             arrow="horizontal"
             onPress={() => this.props.navigation.navigate('BindGoogle')}
           >
             <Text style={styles.itemTxt}>谷歌验证</Text>
           </List.Item>
           <List.Item
-            thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
+            thumb={<Icon name="smile" color="#333333" size={20}/>}
             arrow="horizontal"
             onPress={() => this.props.navigation.navigate('BindBankname')}
           >
@@ -132,7 +132,7 @@ class SettingsScreen extends React.Component {
         <WhiteSpace size="sm" />
         <List>
           <List.Item
-            thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
+            thumb={<Ionicons name="ios-musical-notes" color="#333333" size={20}/>}
             extra={
               <Switch
                 value={audioChecked}
@@ -150,14 +150,14 @@ class SettingsScreen extends React.Component {
         <WhiteSpace size="sm" />
         <List>
           <List.Item
-            thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
+            thumb={<Icon name="book" color="#333333" size={20}/>}
             arrow="horizontal"
             onPress={() => this.props.navigation.navigate('VersionInfo')}
           >
             <Text style={styles.itemTxt}>版本信息</Text>
           </List.Item>
           <List.Item
-            thumb={<Ionicons name="md-card" color="#333333" size={20}/>}
+            thumb={<Ionicons name="md-download" color="#333333" size={20}/>}
             arrow="horizontal"
             onPress={this._handlePressButtonAsync}
           >

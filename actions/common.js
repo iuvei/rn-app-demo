@@ -5,7 +5,8 @@ import {
   getBankList,
   getUserSecurityLevel,
   getUserSecurityConfig,
-  getUserPlatformInfo
+  getUserPlatformInfo,
+  coustomerService
 } from "../api/basic";
 import { createAction } from "redux-actions";
 import { AsyncStorage } from "react-native";
@@ -170,5 +171,13 @@ export const AsetUserPlatfrom = createAction(
   async () => {
     let res = await getUserPlatformInfo()
     return res.code === 0 ? res.data.partnerInfo : []
+  }
+)
+
+export const AsetServiceUrl = createAction(
+  'SET_SERVICE_URL',
+  async () => {
+    let res = await coustomerService()
+    return res.code === 0 ? res.data : {}
   }
 )

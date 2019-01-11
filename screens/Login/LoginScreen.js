@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { View, Image, StyleSheet, Text, Platform, ImageBackground, Switch, AsyncStorage } from 'react-native'
 import {connect} from 'react-redux'
-import {setLoginStatus, setLoginInfo, AsetUserSecureLevel} from '../../actions/common'
+import {setLoginStatus, setLoginInfo, AsetUserSecureLevel, AsetServiceUrl} from '../../actions/common'
 import {signIn, _getImageSetCookie, getLoginUser} from '../../api/basic'
 import { Button, Icon, InputItem, Flex, Toast } from '@ant-design/react-native';
 import {
@@ -10,6 +10,8 @@ import {
 } from './../../actions/member'
 import ThirdView from '../../components/ThirdView'
 import { createStackNavigator } from 'react-navigation'
+import { WebBrowser } from 'expo'
+import { host } from '../../api.config'
 
 class LoginComponent extends Component {
   static navigationOptions = {
@@ -56,6 +58,11 @@ class LoginComponent extends Component {
         rememberPwd: Boolean(v)
       })
     })
+    this.props.AsetServiceUrl()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
   }
 
   componentWillUnmount() {
@@ -80,6 +87,17 @@ class LoginComponent extends Component {
         Toast.info(res.message || '网络错误，请重试')
       }
     })
+  }
+
+  _handleDownloadAsync = async () => {
+    let result = await WebBrowser.openBrowserAsync(host+'/app/#/download')
+    console.log(result)
+  }
+
+  _handleServiceAsync = async () => {
+    let { serviceUrl } = this.props
+    let result = await WebBrowser.openBrowserAsync(serviceUrl.url)
+    console.log(result)
   }
 
   render() {
@@ -187,7 +205,7 @@ class LoginComponent extends Component {
               </View>
               <Flex style={{width: 280, marginTop: 25}}>
                 <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-                  <Text style={{color: '#ffffff'}}>移动端下载</Text>
+                  <Text style={{color: '#ffffff'}} onPress={this._handleDownloadAsync}>移动端下载</Text>
                 </Flex.Item>
                 <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
                   <Text style={{textAlign: 'right', color: '#ffffff'}}>线路检测</Text>
@@ -196,7 +214,7 @@ class LoginComponent extends Component {
             </View>
           </Flex.Item>
           <View style={{height: 40, width: 280, flexDirection: 'row'}}>
-            <Text style={{color: '#ffffff', flex: 1}} onPress={() => this.props.navigation.navigate('ThirdView', {uri: 'http://www.baidu.com/'})}>在线客服</Text>
+            <Text style={{color: '#ffffff', flex: 1}}  onPress={this._handleServiceAsync}>在线客服</Text>
             <Text style={{textAlign: 'right', color: '#ffffff', flex: 1}}>1.11版正式发布</Text>
           </View>
         </Flex>
@@ -227,9 +245,10 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  let {isLogin} = state.common
+  let {isLogin, serviceUrl} = state.common
   return ({
-    isLogin
+    isLogin,
+    serviceUrl
   })
 }
 
@@ -241,7 +260,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(AsetAllBalance(data))
     },
     AsetUserBankCards: data => dispatch(AsetUserBankCards(data)),
-    AsetUserSecureLevel: data => dispatch(AsetUserSecureLevel(data))
+    AsetUserSecureLevel: data => dispatch(AsetUserSecureLevel(data)),
+    AsetServiceUrl: data => dispatch(AsetServiceUrl(data))
   }
 }
 

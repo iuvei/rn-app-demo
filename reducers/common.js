@@ -88,6 +88,7 @@ const initialState = {
   userSecurityLevel: {}, // 账户安全等级
   userSecurityConfig: {}, // 解绑资金密码，GA密码，银行卡姓名开关
   userPlatformInfo: [],
+  serviceUrl: {}, //  客服地址
 }
 
 // 常规处理
@@ -215,6 +216,12 @@ const common = handleActions({
     return {
       ...state,
       userPlatformInfo: payload
+    }
+  },
+  SET_SERVICE_URL: (state, {payload}) => {
+    return {
+      ...state,
+      serviceUrl: payload
     }
   }
 }, initialState)
