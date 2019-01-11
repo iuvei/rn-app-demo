@@ -25,7 +25,10 @@ class RowBall extends React.Component {
   }
 
   render() {
-    let {tools, activeViewData} = this.props
+    let {
+      tools, activeViewData,
+      clickBall, toolsCur
+    } = this.props
     let {showBet, showLayout, showBit, showText} = false
 
     if (Object.keys(activeViewData).length) showBet = true
@@ -70,19 +73,24 @@ class RowBall extends React.Component {
                         row.balls.map((b, bIdx) =>
                           <Button
                             key={`${bIdx + '--' + b.title}`}
-                            type="ghost" size="small" style={{
-                            width: 30,
-                            height: 30,
-                            borderRadius: 15,
-                            marginLeft: 0,
-                            marginRight: 6
-                          }}>{b.text || b.ball}</Button>
+                            type={b.choose ? 'primary' : 'ghost'} size="small"
+                            onPress={() =>
+                              clickBall(b, row, activeViewData.layout, index, activeViewData)
+                            }
+                            style={{
+                              width: 30,
+                              height: 30,
+                              borderRadius: 15,
+                              marginLeft: 0,
+                              marginRight: 6
+                            }}>{b.text || b.ball}</Button>
                         )
                       }
                       {
                         tools.map((t, tIdx) =>
                           <Button
                             key={`${tIdx + '--' + t.code}`}
+                            onPress={() => toolsCur(t, row)}
                             type="ghost" size="small" style={{
                             width: 30,
                             height: 30,

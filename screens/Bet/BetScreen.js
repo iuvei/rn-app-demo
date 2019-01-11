@@ -75,8 +75,11 @@ class BetScreen extends React.Component {
 
   componentDidMount() {
     // 获取当前彩种的赔率
-    let {params, params: {lotterCode, isOuter}} = this.props.navigation.state
-    this.props.navParams(params)
+    let {params, params: {lotterCode, realCategory, isOuter}} = this.props.navigation.state
+    let {code} = selfRoute.find(lot => lot.mapCode.includes(realCategory))
+    this.props.navParams(
+      Object.assign({}, params, {lotType: code})
+    )
     this.props.getGamesPlay({
       lotterCode,
       isOuter,

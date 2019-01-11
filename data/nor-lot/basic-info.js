@@ -195,52 +195,30 @@ export const ballTools = [
 
 // 快捷选号按钮方法
 export const handlerBall = {
-  full ({ball}) {
+  full({ball}) {
     this.empty({ball})
-    ball.filter(list => {
-      list.choose = true
-    })
+    ball.filter(list => list.choose = true)
   },
-  big ({ball}) {
-    // console.log(ball)
-    this.empty({ball})
-    // let Half = ball.length % 2 === 0
-    let len = Math.ceil(ball.length / 2)
-    ball.filter((list, idx) => {
-      if (idx >= len) {
-        list.choose = true
-      }
-    })
-  },
-  small ({ball}) {
+  big({ball}) {
     this.empty({ball})
     let len = Math.ceil(ball.length / 2)
-    ball.filter((list, idx) => {
-      if (idx < len) {
-        list.choose = true
-      }
-    })
+    ball.filter((list, idx) => idx >= len ? list.choose = true : list.choose = false)
   },
-  single ({ball}) {
+  small({ball}) {
     this.empty({ball})
-    ball.filter(list => {
-      if (list.ball % 2) {
-        list.choose = true
-      }
-    })
+    let len = Math.ceil(ball.length / 2)
+    ball.filter((list, idx) => idx < len ? list.choose = true : list.choose = false)
   },
-  double ({ball}) {
+  single({ball}) {
     this.empty({ball})
-    ball.filter(list => {
-      if (list.ball % 2 === 0) {
-        list.choose = true
-      }
-    })
+    ball.filter(list => list.ball % 2 ? list.choose = true : list.choose = false)
   },
-  empty ({ball}) {
-    ball.filter(list => {
-      list.choose = false
-    })
+  double({ball}) {
+    this.empty({ball})
+    ball.filter(list => list.ball % 2 === 0 ? list.choose = true : list.choose = false)
+  },
+  empty({ball}) {
+    ball.filter(list => list.choose = false)
   }
 }
 
@@ -312,4 +290,78 @@ export const ruleBuilder = ({playCode, viewData, rulesDoc, codeMap}) => {
     // })
   }
   return t
+}
+
+export const filterCurBall = ({activeViewData, lotType}) => {
+  let LazmDataSel = ''
+  let BetContentarr = []
+  let BetContent = ''
+  // let {activeViewData, activeLot} = this
+  let {layout, text, textarea, bit, checkbox} = activeViewData
+  let [balls, textareas, places, place] = [[], [], [], []]
+  if (layout) {
+    layout.forEach((item, idx) => {
+      let arr = []
+      balls[idx] = []
+      let sonIdx = 0
+      item.balls.forEach((list) => {
+        if (list.choose) {
+          if (list.text) {
+            arr.push(list.text)
+          }
+          LazmDataSel += list.value || list.ball
+          balls[idx][sonIdx] = list.value || list.ball
+          sonIdx++
+        }
+      })
+      if (arr.length) {
+        BetContentarr.push(arr)
+      }
+      LazmDataSel += ','
+    })
+    for (let i = 0; i < BetContentarr.length; i++) {
+      BetContent += BetContentarr[i].join(',')
+      if (i < BetContentarr.length - 1) {
+        BetContent += ' '
+      }
+    }
+  }
+  if (text) {
+    let reg = /,|，|;|；|\n|\s|、|\r|\./g
+    // if (['lo2', 'lo6'].includes(activeLot.lotRoute)) {
+    //   reg = /,|;|\n/g
+    // }
+    textarea = textarea.trim()
+    let as = textarea.split(reg)
+    _.each(as, (val, idx) => {
+      if (val) {
+        if (['lo2', 'lo4'].includes(lotType)) {
+          let newVal = val.replace(/ /g, '')
+          let aftVal = ''
+          for (let i = 0; i < Math.ceil(newVal.length / 2); i++) {
+            aftVal += newVal.slice(i * 2, i * 2 + 2) + ' '
+          }
+          val = aftVal.slice(0, aftVal.length - 1)
+        }
+      }
+      LazmDataSel += val + ','
+      textareas[idx] = val
+    })
+  }
+  if (bit) {
+    let bitMap = ['0', '1', '2', '3', '4']
+    _.each(bit, (bitVal, bitIdx) => {
+      if (checkbox.indexOf(bitVal.position) > -1) {
+        BetContentarr.push(bitVal.name)
+        place.push(bitMap[bitIdx])
+      }
+    })
+    if (BetContentarr.length) {
+      BetContent = '[' + BetContentarr.join(',') + ']' + LazmDataSel
+    }
+    places.push(place)
+  }
+  let dataSel = [].concat(places).concat(balls).concat(textareas)
+  LazmDataSel = LazmDataSel.slice(0, LazmDataSel.length - 1)
+  return Promise.resolve({dataSel, LazmDataSel, BetContent})
 }
