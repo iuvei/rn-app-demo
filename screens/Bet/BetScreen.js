@@ -12,13 +12,15 @@ import { connect } from 'react-redux'
 import DownTime from './DownTime'
 import PlayNav from './PlayNav'
 import RowBall from './RowBall'
-import BuyRender from './BuyRender'
+// import BuyPrice from './BuyPrice'
 import LatelyList from './LatelyList'
 import { DownTimeHoc, RowBallHoc } from '../../HOC'
-import { navParams, getGamesPlay } from '../../actions/classic'
+import { setNavParams, getGamesPlay } from '../../actions/classic'
+import { modeInfo } from '../../data/options'
 
 const DownTimeHocView = DownTimeHoc(DownTime)
 const RowBallHocView = RowBallHoc(RowBall)
+// const BuyPriceHocView = BuyPriceHoc(BuyPrice)
 const selfRoute = [
   {name: '时时彩', code: 'lo1', mapCode: ['ssc']},
   {name: '11选5', code: 'lo2', mapCode: ['syx5']},
@@ -62,8 +64,13 @@ class BetScreen extends React.Component {
         {title: '记录'},
         {title: '趋势'}
       ],
-      ballOpen: ['5', '9', '3', '2', '1']
+      ballOpen: ['5', '9', '3', '2', '1'],
+      changingValue: 1800,
+      afterValue: 0,
+      stepValue: 1,
+      modeItem: {}
     }
+    this.time = 1700
   }
 
   // 当下已经知道这个彩种了，首先渲染这个视图数据
@@ -100,7 +107,6 @@ class BetScreen extends React.Component {
     let {params} = this.props.navigation.state
     return (
       <View style={styles.container}>
-
         {/* playNav Container */}
         <PlayNav/>
 
@@ -109,7 +115,6 @@ class BetScreen extends React.Component {
           ballOpen={this.state.ballOpen}
           activeLot={params}
         />
-
         {/* Tabs Nav */}
         <Tabs tabs={ContentTabs}
               style={{background: '#ededed'}}
@@ -121,10 +126,8 @@ class BetScreen extends React.Component {
               <LatelyList/>
             </ScrollView>
           </View>
-          <View style={{margin: 4}}>
-            <ScrollView>
-              <RowBallHocView activeLot={params}/>
-            </ScrollView>
+          <View style={{flex: 1}}>
+            <RowBallHocView activeLot={params}/>
           </View>
           <View style={styles.tabs}>
             <Text>Content of Third Tab</Text>
@@ -142,7 +145,7 @@ class BetScreen extends React.Component {
         </Tabs>
 
         {/*投注信息*/}
-        <BuyRender/>
+        {/*<BuyPriceHocView/>*/}
       </View>
     )
   }
@@ -156,7 +159,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    navParams: params => dispatch(navParams(params)),
+    navParams: params => dispatch(setNavParams(params)),
     getGamesPlay: params => dispatch(getGamesPlay(params))
   }
 }

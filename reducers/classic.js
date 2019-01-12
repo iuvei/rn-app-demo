@@ -5,7 +5,9 @@ const initialState = {
   navParams: {},
   activePlay: {},
 
-  gamesPlayStore: []
+  gamesPlayStore: [],
+
+  openIssue: {}
 }
 
 const classic = handleActions({
@@ -28,6 +30,11 @@ const classic = handleActions({
   SET_GAMES_PLAY_STORE: (state, {payload}) => {
     return {
       ...state, gamesPlayStore: payload
+    }
+  },
+  SET_OPEN_ISSUE: (state, {payload}) => {
+    return {
+      ...state, openIssue: payload
     }
   }
 }, initialState)

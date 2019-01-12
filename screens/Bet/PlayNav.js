@@ -51,14 +51,14 @@ class PlayNav extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      let data = [
-        {code: 'lo1_5x_zh', name: '五星组合'}
-      ]
-      this.setState({
-        playTabs: [].concat(this.state.playTabs, data)
-      })
-    }, 3000)
+    // setTimeout(() => {
+    //   let data = [
+    //     {code: 'lo1_5x_zh', name: '五星组合'}
+    //   ]
+    //   this.setState({
+    //     playTabs: [].concat(this.state.playTabs, data)
+    //   })
+    // }, 3000)
     this.InitBetView()
   }
 

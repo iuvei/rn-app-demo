@@ -19,13 +19,18 @@ export const getLatelyOpen = createAction(
 )
 
 // 简约处理
-export const navParams = createAction(
+export const setNavParams = createAction(
   'UPDATE_NAV_PARAMS',
   text => text
 )
 
 export const setActivePlay = createAction(
   'SET_ACTIVE_PLAY',
+  text => text
+)
+
+export const setOpenIssue = createAction(
+  'SET_OPEN_ISSUE',
   text => text
 )
 

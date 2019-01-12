@@ -6,7 +6,7 @@ import {
   queryLastIssueReward
 } from '../api/lottery'
 
-import { getLatelyOpen } from '../actions/classic'
+import { getLatelyOpen, setOpenIssue } from '../actions/classic'
 
 export default (Comp) => {
   class DownTimeHoc extends Component {
@@ -21,9 +21,9 @@ export default (Comp) => {
         latelyOpenList: [],
 
         // 开奖期号数据
-        openIssue: {
-          currentIssue: ''
-        },
+        // openIssue: {
+        //   currentIssue: ''
+        // },
 
         // 上一期开奖结果
         prevOpenResult: {
@@ -90,9 +90,11 @@ export default (Comp) => {
           } else if (Object.keys(res.data).length) {
             res.data.latelyIssue = Number(res.data.currentIssue) - 1
             // this.AsetOpenIssue(res.data)
-            this.setState({
-              openIssue: res.data
-            })
+            // this.setState({
+            //   openIssue: res.data
+            // })
+            this.props._setOpenIssue(res.data)
+            // currentIssue
             setTimeout(() => {
               this.setStopTime(res.data, Date.now())
             }, 20)
@@ -300,13 +302,14 @@ export default (Comp) => {
   }
 
   const mapStateToProps = (state, props) => {
-    let {common: {userId}} = state
-    return {userId}
+    let {common: {userId}, classic: {openIssue}} = state
+    return {userId, openIssue}
   }
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      _getLatelyOpen: (params) => dispatch(getLatelyOpen(params))
+      _getLatelyOpen: (params) => dispatch(getLatelyOpen(params)),
+      _setOpenIssue: params => dispatch(setOpenIssue(params))
     }
   }
   return connect(mapStateToProps, mapDispatchToProps)(DownTimeHoc)

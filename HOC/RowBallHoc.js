@@ -5,6 +5,9 @@ import norLot from '../data/nor-lot'
 import { ruleBuilder, handlerBall } from '../data/nor-lot/basic-info'
 import { filterCurBall } from '../data/nor-lot/basic-info'
 import utilLot from '../filiter/classic'
+import { toBuyLottery } from '../api/lottery'
+// import { modeInfo } from '../data/options'
+// import { navParams } from '../actions/classic'
 
 export default (Comp) => {
   class RowBallHoc extends Component {
@@ -24,10 +27,14 @@ export default (Comp) => {
         codeMap: {},
         viewData: {},
         playTips: false,
+
         // viewData生产的视图数据及相关信息
         activeViewData: {
           layout: []
         },
+
+        // 当前选中的赔率
+        activeGamesPlay: {},
 
         // 购买的情景
         buyInfo: {
@@ -35,12 +42,14 @@ export default (Comp) => {
           content: '',
           multiple: 1,
           model: 1,
-          rebateMode: 0,
+          rebateMode: 1800,
           total: '0.000'
         },
 
         // 已选中的号码
         dataSel: [],
+        buyCardData: [],
+
         // 已选中的压缩号码
         LazmDataSel: '',
         BetContent: ''
@@ -49,21 +58,30 @@ export default (Comp) => {
     }
 
     componentWillReceiveProps(np) {
-      let {activePlay, gamesPlayStore} = this.props
+      let {activePlay, gamesPlayStore, navParams} = this.props
+      // 改变该种时，重新渲染视图
+      if (!_.isEqual(navParams, np.navParams) && Object.keys(np.navParams).length) {
+        this.initBetView(np.navParams)
+      }
+
       // 改变玩法时候
-      if (!_.isEqual(activePlay !== np.activePlay)) {
+      if (!_.isEqual(activePlay, np.activePlay) && Object.keys(np.activePlay).length) {
         this.updateGameRate(np)
       }
 
-      // 数据有变更时
-      if (!_.isEqual(gamesPlayStore !== np.gamesPlayStore)) {
+      // 返回rule赔率数据时候
+      if (!_.isEqual(gamesPlayStore, np.gamesPlayStore) && np.gamesPlayStore.length) {
         this.updateGameRate(np)
       }
 
     }
 
     componentDidMount() {
-      this.initBetView()
+    }
+
+    initBetView = ({lotType}) => {
+      let {viewData, codeMap} = JSON.parse(JSON.stringify(norLot[lotType]))
+      this.setState({viewData, codeMap})
     }
 
     updateGameRate = ({activePlay}) => {
@@ -79,19 +97,10 @@ export default (Comp) => {
             num: 0,
             total: '0.000'
           }
-        }, () => this.changePlayRate()
+        }, () => {
+          this.changePlayRate()
+        }
       )
-    }
-
-    initBetView = () => {
-      let {navParams} = this.props
-      if (Object.keys(navParams).length > 0) {
-        let {realCategory: cg} = navParams
-        let {viewData, codeMap} = JSON.parse(JSON.stringify(norLot[cg]))
-        this.setState({viewData, codeMap})
-      } else {
-        setTimeout(() => this.initBetView(), 200)
-      }
     }
 
     // 切换玩法类型
@@ -119,7 +128,6 @@ export default (Comp) => {
             num = utilLot[lotType].inputNumbers(code, dataSel)
             LazmDataSel = utilLot[lotType].inputFormat(code, dataSel)
             this.setBuyInfo({num})
-            console.log(num, LazmDataSel)
             this.setState({dataSel, LazmDataSel, BetContent})
           }
         )
@@ -129,7 +137,7 @@ export default (Comp) => {
       this.setState({
         buyInfo: Object.assign({}, this.state.buyInfo, {...info})
       }, () => {
-        // this.getTotal()
+        this.getTotal()
       })
     }
 
@@ -239,16 +247,224 @@ export default (Comp) => {
           layout: newLayout
         }
       }, () => {
-        this.getZhuShu()
+        // this.getZhuShu()
+      })
+    }
+
+    // price
+
+    // onChangeStep = multiple => this.setBuyInfo({multiple})
+
+    // 添加购物车
+    addBuyCard = (toBuy) => {
+      let {navParams, navParams: {lotType}, openIssue} = this.props
+      let {activeGamesPlay} = this.state
+      if (!Object.keys(navParams).length || activeGamesPlay.isOuter) {
+        // NoticeTips({
+        //   content: '该彩种已关闭'
+        // })
+        return false
+      }
+      // if (!this.isIncludeRule || this.activeGamesPlay.status === 2) {
+      //   NoticeTips({
+      //     content: '该玩法未开启投注'
+      //   })
+      // return false
+      // }
+      if (activeGamesPlay.status === 0) {
+        // NoticeTips({
+        //   content: '该玩法已禁用'
+        // })
+        return false
+      }
+      // 保存添加到购物车时间
+      // this.AsetAddToCartTime((new Date()).getTime())
+      // if (this.pwdRaram.bandUserPassword) return
+      let {
+        dataSel, activeViewData, buyInfo, bonusPrize
+      } = this.state
+      // compress 这个不知道是什么？
+      let {playOrgin, bit, checkbox} = activeViewData
+      let {num, multiple, total, model, rebateMode} = buyInfo
+      let {ruleName, title, singlePrice} = activeGamesPlay
+      // console.log('num', num)
+      if (num === 0) {
+        // NoticeTips({
+        //   content: '您还没有选择号码或所选号码不全！'
+        // })
+        return false
+      }
+      // 稍后补充 动画
+      // set type
+      let content = utilLot[lotType].inputFormat(activeViewData.code, dataSel)
+      // 时时彩 组合单式玩法计算
+      if (['lo1'].includes(lotType)) {
+        content = utilLot[lotType].inputFormat(activeViewData.code, dataSel)
+        let repaceString = content.split(']')
+        if (repaceString.length !== 1) {
+          let bitArr = []
+          bit.filter(checkItem => {
+            if (checkbox.includes(checkItem.position)) {
+              bitArr.push(checkItem.name)
+            } else {
+              bitArr.push('')
+            }
+          })
+          let posi = '[' + bitArr.toString() + ']'
+          content = (posi + repaceString[1]).toString()
+          content = content.replace(/ ,/g, ',')
+        }
+      }
+      // 生成投注栏数据
+      let {currentIssue} = openIssue
+      let orderlist = {
+        // 玩法规则
+        activeGamesPlay,
+        bonusPrize,
+        castAmount: total,
+        castCodes: content,
+        model,
+        num,
+        castMultiple: multiple,
+        orderIssue: currentIssue,
+        rebateMode,
+        castNumber: num,
+        ruleCode: playOrgin,
+        ruleName: ruleName || title,
+        singlePrice: singlePrice
+      }
+      // console.log(orderlist)
+      // let methodInfo = this.gameMethod[playOrgin]
+      // this.isKlcXycLot && _.isArray(content)
+      if (false) {
+        // content.filter(d => {
+        //   let xyclist = Object.assign({}, orderlist, {
+        //     // 投注号码 dan shuang
+        //     castCodes: d,
+        //     castNumber: 1,
+        //     num: 1,
+        //     castAmount: (total / num).toFixed(4)
+        //   })
+        //   this.buyCardData.push(xyclist)
+        //   this.commitBuyCardAfter()
+        // })
+      } else {
+        let {maxRecord} = activeGamesPlay
+        if (maxRecord >= orderlist.castNumber || maxRecord === -1) {
+          // localStorage.setItem('orderlist', JSON.stringify(orderlist))
+          this.setState({
+            buyCardData: [].concat(this.state.buyCardData, orderlist)
+          }, () => this.toBuy())
+          // this.commitBuyCardAfter()
+          // console.log(orderlist)
+        } else {
+          // NoticeTips({
+          //   content: `注数不能超过${this.activeGamesPlay.maxRecord} ！`
+          // })
+          return
+        }
+      }
+      // let that = this
+
+      // if (num <= methodInfo.oooNums) {
+      //   ModalTips({
+      //     title: '温馨提示',
+      //     type: 'confirm',
+      //     content: `<div style="font-size: 14px">
+      //                 <div>您所投注内容属于单挑玩法，最高奖金为 ${methodInfo.oooBonus}元，</div>
+      //               <div>确认继续投注？</div>
+      //               </div>`,
+      //     onOk() {
+      //       that.buyCardData.push(row)
+      //       that.commitBuyCardAfter()
+      //       console.warn(toBuy)
+      //       if (toBuy) {
+      //         that.toBuy()
+      //       }
+      //     }
+      //   })
+      // } else {
+      // this.buyCardData.push(row)
+      //   this.commitBuyCardAfter()
+      // }
+      // if (toBuy)
+      // this.toBuy()
+    }
+
+    toBuy = () => {
+      // 购买
+      let detailsList = []
+      let {currentIssue} = this.props.openIssue
+      let [reqAmount] = [0]
+      this.state.buyCardData.filter((list) => {
+        let {castAmount, castCodes, castMode, model, castMultiple, ruleCode, rebateMode} = list
+        reqAmount += parseFloat(Number(castAmount).toFixed(4))
+        // resNum += castNumber
+        if (model === 1) castMode = 0
+        if (model === 0.1) castMode = 1
+        if (model === 0.01) castMode = 2
+        if (model === 0.001) castMode = 3
+        detailsList.push({
+          castAmount: parseFloat(Number(castAmount).toFixed(4)),
+          castCodes,
+          castMode,
+          castMultiple,
+          orderIssue: currentIssue,
+          // this.isKlcXycLot ? '' : rebateMode
+          rebateMode: rebateMode,
+          ruleCode
+        })
+      })
+      // currency
+      let {userId, navParams: {lotterCode, isOuter}} = this.props
+      let limitRedId
+      // if (activeLot.lotRoute === 'lo7') {
+      //   limitRedId = 1
+      // }
+      // currency.currencyCode
+      // 这里要改成多币种的
+      let rep = {
+        currencyCode: 'rmb',
+        amount: parseFloat(Number(reqAmount).toFixed(4)),
+        // castNumber: resNum,
+        detailsList: detailsList,
+        isOuter,
+        [limitRedId]: limitRedId,
+        lotterCode,
+        orderType: 0,
+        userId
+      }
+      // console.log(rep)
+      // let repZip = ''
+      // if (!this.isTest) {
+      //   repZip = toCrypto(rep)
+      // }
+      // AESKey
+      // repZip ||
+      toBuyLottery(rep).then(res => {
+        console.log(res)
+        //   if (res.code === ERR_OK) {
+        //     NoticeTips({
+        //       content: '购买成功',
+        //       type: 'success'
+        //     })
+        //     this.toBuyAfter()
+        //   } else {
+        //     this.buyCardData = []
+        //     NoticeTips({
+        //       content: res.message
+        //     })
+        //   }
       })
     }
 
     render() {
-      let {clickBall, toolsCur} = this
       return (
         <Comp
-          clickBall={clickBall}
-          toolsCur={toolsCur}
+          clickBall={this.clickBall}
+          toolsCur={this.toolsCur}
+          setBuyInfo={this.setBuyInfo}
+          addBuyCard={this.addBuyCard}
           {...this.state}
           {...this.props}
         />
@@ -257,8 +473,10 @@ export default (Comp) => {
   }
 
   const mapStateToProps = (state) => {
+    let {userId} = state.common
     return ({
-      ...state.classic
+      ...state.classic,
+      userId
     })
   }
 

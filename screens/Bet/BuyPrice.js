@@ -18,26 +18,6 @@ class BuyRender extends React.Component {
   componentDidMount() {
   }
 
-  handleChange = value => {
-    this.setState({
-      changingValue: value
-    })
-  }
-
-  handleAfterChange = value => {
-    this.setState({
-      afterValue: value
-    }, () => {
-      this.setState({
-        changingValue: value
-      })
-      this.setState({
-        afterValue: 0
-      })
-    })
-  }
-
-  onChangeStep = value => this.setState({stepValue: value})
 
   render() {
     let {changingValue, stepValue} = this.state
