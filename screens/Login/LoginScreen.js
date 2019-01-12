@@ -12,6 +12,7 @@ import ThirdView from '../../components/ThirdView'
 import { createStackNavigator } from 'react-navigation'
 import { WebBrowser } from 'expo'
 import { host } from '../../api.config'
+import { Constants } from 'expo'
 
 class LoginComponent extends Component {
   static navigationOptions = {
@@ -101,6 +102,7 @@ class LoginComponent extends Component {
 
   render() {
     let { j_username, j_password, rememberPwd, rememberUser, seePwd } = this.state
+    const { manifest } = Constants
 
     return (
       <ImageBackground source={require('../../assets/images/login_bg.jpg')} style={{width: '100%', height: '100%', alignItems: 'center'}}>
@@ -214,7 +216,7 @@ class LoginComponent extends Component {
           </Flex.Item>
           <View style={{height: 40, width: 280, flexDirection: 'row'}}>
             <Text style={{color: '#ffffff', flex: 1}}  onPress={this._handleServiceAsync}>在线客服</Text>
-            <Text style={{textAlign: 'right', color: '#ffffff', flex: 1}}>1.11版正式发布</Text>
+            <Text style={{textAlign: 'right', color: '#ffffff', flex: 1}}>v{manifest.version}</Text>
           </View>
         </Flex>
       </ImageBackground>
