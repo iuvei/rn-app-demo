@@ -128,12 +128,7 @@ class RowBall extends React.Component {
           }
         </ScrollView>
 
-        <View style={[{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0
-        }, styles.priceWarp]}>
+        <View style={styles.priceWarp}>
           <View style={styles.bonusWarp}>
             <Text>
               奖金调节
