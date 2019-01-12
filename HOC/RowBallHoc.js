@@ -73,10 +73,6 @@ export default (Comp) => {
       if (!_.isEqual(gamesPlayStore, np.gamesPlayStore) && np.gamesPlayStore.length) {
         this.updateGameRate(np)
       }
-
-    }
-
-    componentDidMount() {
     }
 
     initBetView = ({lotType}) => {

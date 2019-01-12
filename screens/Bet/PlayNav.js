@@ -7,9 +7,7 @@ import {
   Tabs, Card, WhiteSpace,
   Button, WingBlank
 } from '@ant-design/react-native'
-import _ from 'lodash'
 import { connect } from 'react-redux'
-import { ruleBuilder } from '../../data/nor-lot/basic-info'
 import { setActivePlay } from '../../actions/classic'
 
 class PlayNav extends React.Component {
