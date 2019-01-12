@@ -6,6 +6,7 @@ import QueryDate from '../../../components/QueryDate'
 import dayjs from 'dayjs'
 import {connect} from "react-redux"
 import {getTeamCount} from '../../../api/member'
+import {toFixed4} from '../../../utils/MathUtils'
 
 class FlatListItem extends PureComponent {
   constructor (props) {
@@ -13,38 +14,45 @@ class FlatListItem extends PureComponent {
   }
 
   render () {
-    let {item, showDetails} = this.props
-    let {activity, bonus, userName, buyAmount, rebate, profit} = item
+    let {item, showDetails, onPress, highUser, index} = this.props
+    let {activity, bonus, userName, buyAmount, rebate, profit, userId} = item
+    let flag = userName !== '总计' && userName !== highUser && index !== 0
     return (
-      <TouchableHighlight style={{padding: 10, paddingRight: 60}} onPress={() => {
+      <TouchableHighlight style={{padding: 10}} onPress={() => {
         showDetails(item)
       }}>
         <View>
-          <Flex><Text>{userName}</Text></Flex>
+          <Flex>
+            {
+              flag ? <Text style={styles.light} onPress={() => {
+                onPress(userId, userName)
+              }}>{userName}</Text> : <Text style={styles.dark}>{userName}</Text>
+            }
+          </Flex>
           <Flex direction={'row'} justify={'space-between'}>
             <Flex direction={'row'} justify={'space-between'}>
               <Text style={styles.title}>消费:</Text>
-              <Text style={styles.value}>{buyAmount}</Text>
+              <Text style={styles.value}>{toFixed4(buyAmount)}</Text>
             </Flex>
             <Flex direction={'row'} justify={'space-between'}>
               <Text style={styles.title}>中奖:</Text>
-              <Text style={styles.value}>{bonus}</Text>
+              <Text style={styles.value}>{toFixed4(bonus)}</Text>
             </Flex>
           </Flex>
           <Flex direction={'row'} justify={'space-between'}>
             <Flex direction={'row'} justify={'space-between'}>
               <Text style={styles.title}>盈亏:</Text>
-              <Text style={styles.value}>{profit}</Text>
+              <Text style={styles.value}>{toFixed4(profit)}</Text>
             </Flex>
             <Flex direction={'row'} justify={'space-between'}>
               <Text style={styles.title}>返点:</Text>
-              <Text style={styles.value}>{rebate}</Text>
+              <Text style={styles.value}>{toFixed4(rebate)}</Text>
             </Flex>
           </Flex>
           <Flex direction={'row'} justify={'space-between'}>
             <Flex direction={'row'} justify={'space-between'}>
               <Text style={styles.title}>活动:</Text>
-              <Text style={styles.value}>{activity}</Text>
+              <Text style={styles.value}>{toFixed4(activity)}</Text>
             </Flex>
           </Flex></View>
       </TouchableHighlight>
@@ -66,11 +74,13 @@ class TeamReport extends React.Component {
       isShow: false,
       visible: false,
       details: {},
+      previousId: [],
+      previousUser: [],
       api: '/report/system/webComplexReport',
       summary: {},
       params: {
         userName: '',
-        userId: props.loginInfo.userId,
+        userId: props.loginInfo?.userId,
         currencyCode: 'CNY',
         startTime: start,
         endTime: end,
@@ -79,6 +89,16 @@ class TeamReport extends React.Component {
         pageNum: 1
       }
     }
+  }
+
+  // 返回上一级
+  goBack = async () => {
+    let {previousId, previousUser} = this.state
+    let userId = previousId.pop()
+    let userName = previousUser.pop()
+    await this.setState({isShow: true}, () => {
+      this.setState({isShow: false, params: {...this.state.params, userId, userName}, previousId, previousUser})
+    })
   }
 
   handleDate = async ({startTime, endTime}) => {
@@ -91,12 +111,26 @@ class TeamReport extends React.Component {
   // renderItem
   // item, index, separators
   renderItem = (item, index) => {
+    let highUser = this.props.loginInfo?.acc?.user?.loginName
     return (
       <FlatListItem
         item={item}
+        highUser={highUser}
         index={index}
+        onPress={this.onPress}
         showDetails={this.showDetails}/>
     )
+  }
+
+  // 查询下级团队报表信息，
+  onPress = async (userId, userName) => {
+    let {params, previousId, previousUser} = this.state
+    await this.setState({
+      params: {...params, userId, userName},
+      previousId: [...previousId, params.userId],
+      previousUser: [...previousUser, params.userName]
+    })
+    this.onSearch()
   }
 
   showDetails = (item) => {
@@ -123,7 +157,7 @@ class TeamReport extends React.Component {
   }
 
   render () {
-    let {api, params, KeyName, isShow, summary, visible, details} = this.state
+    let {api, params, KeyName, isShow, summary, visible, details, previousId} = this.state
     return (
       <View style={styles.container}>
         <WingBlank>
@@ -135,31 +169,31 @@ class TeamReport extends React.Component {
           <View style={{marginTop: 10}}>
             <View style={styles.popColumn}>
               <Text>充值金额:</Text>
-              <Text>{details.rechargeAmount}</Text>
+              <Text>{toFixed4(details.rechargeAmount)}</Text>
             </View>
             <View style={styles.popColumn}>
               <Text>取款金额:</Text>
-              <Text>{details.withdrawAmount}</Text>
+              <Text>{toFixed4(details.withdrawAmount)}</Text>
             </View>
             <View style={styles.popColumn}>
               <Text>消费量:</Text>
-              <Text>{details.buyAmount}</Text>
+              <Text>{toFixed4(details.buyAmount)}</Text>
             </View>
             <View style={styles.popColumn}>
               <Text>中奖:</Text>
-              <Text>{details.bonus}</Text>
+              <Text>{toFixed4(details.bonus)}</Text>
             </View>
             <View style={styles.popColumn}>
               <Text>盈亏:</Text>
-              <Text>{details.profit}</Text>
+              <Text>{toFixed4(details.profit)}</Text>
             </View>
             <View style={styles.popColumn}>
               <Text>返点:</Text>
-              <Text>{details.rebate}</Text>
+              <Text>{toFixed4(details.rebate)}</Text>
             </View>
             <View style={styles.popColumn}>
               <Text>活动:</Text>
-              <Text>{details.activity}</Text>
+              <Text>{toFixed4(details.activity)}</Text>
             </View>
             <Button style={{marginTop: 10}} onPress={() => this.setState({visible: false})}>确定</Button>
           </View>
@@ -174,11 +208,15 @@ class TeamReport extends React.Component {
             beforeUpdateList={({res, params}, fn) => {
               let dataList = res.data && res.data.pageColumns ? res.data.pageColumns : []
               let {total} = res.data.pageInfo
-              let NullData = (total / 10) <= params.pageNumber
+              let NullData =  params.pageNumber > Math.ceil(total / 20)
               // 或在这里增加 其他状态码的处理Alter
-              fn(!NullData ? {dataList} : [])
+              fn(NullData ? [] : {dataList})
             }}
           />
+        }
+        {
+          previousId.length > 0 ?
+            <Button type={'primary'} style={{margin: 10}} onPress={this.goBack}>返回上级</Button> : null
         }
       </View>
     )
@@ -189,6 +227,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff'
+  },
+  light: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'gold'
+  },
+  dark: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   title: {
     marginRight: 25,

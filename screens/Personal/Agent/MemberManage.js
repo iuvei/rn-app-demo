@@ -6,6 +6,7 @@ import {connect} from "react-redux"
 import dayjs from 'dayjs'
 import SubManaging from "./SubManaging"
 import {AsetSubUserInfo} from "../../../actions/member"
+import {formatTime} from '../../../utils/MathUtils'
 
 class FlatListItem extends PureComponent {
   constructor (props) {
@@ -35,7 +36,7 @@ class FlatListItem extends PureComponent {
             <Text style={{marginRight: 10}}>彩票返点: {backPoint}</Text>
             <Text>余额: {balanceFree}</Text>
           </Flex>
-          <Text>{lasttime ? '上次登录:' + dayjs(lasttime).format('YYYY-MM-DD HH:mm:ss') : '未登录'}</Text>
+          <Text>{lasttime ? '上次登录:' + formatTime(lasttime) : '未登录'}</Text>
         </View>
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Button size={'small'} onPress={() => showSub(item)}>管理</Button>
