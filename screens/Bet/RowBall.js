@@ -29,8 +29,11 @@ class RowBall extends React.Component {
   render() {
     let {
       tools, activeViewData,
-      clickBall, toolsCur, setBuyInfo, addBuyCard
+      clickBall, toolsCur, setBuyInfo, addBuyCard,
+      balanceInfo, handleText
     } = this.props
+
+    let {currentBalance} = balanceInfo.ye || {}
 
     let {num, multiple, model, rebateMode, total} = this.props.buyInfo
 
@@ -116,6 +119,8 @@ class RowBall extends React.Component {
                 {
                   showText ? <TextareaItem
                     rows={10}
+                    onChange={(val) => handleText(val)}
+                    value={activeViewData.textarea}
                     placeholder="高度自适应"
                     style={{margin: 6, padding: 10, borderRadius: 6}}
                   /> : null
@@ -199,7 +204,7 @@ class RowBall extends React.Component {
           </View>
           <View style={{flexDirection: 'row', marginTop: 6}}>
             <View style={{flex: 1}}>
-              {/*<Text>人民币余额：<Text style={{color: 'blue'}}>125678</Text></Text>*/}
+              <Text>人民币余额：<Text style={{color: 'blue'}}>{currentBalance}</Text></Text>
               <Text>注数：
                 <Text style={{color: 'blue', marginRight: 5}}>{num}</Text>
                 <Text style={{paddingLeft: 5}}>{'\t'}投注金额：</Text>

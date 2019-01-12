@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
+import { Alert } from 'react-native'
 import { connect } from 'react-redux'
 import norLot from '../data/nor-lot'
 import { ruleBuilder, handlerBall } from '../data/nor-lot/basic-info'
 import { filterCurBall } from '../data/nor-lot/basic-info'
 import utilLot from '../filiter/classic'
 import { toBuyLottery } from '../api/lottery'
+import { Toast } from '@ant-design/react-native'
+import { AsetAllBalance } from '../actions/member'
 // import { modeInfo } from '../data/options'
 // import { navParams } from '../actions/classic'
 
@@ -194,7 +197,15 @@ export default (Comp) => {
                 clearTimeout(this.curBallTime)
                 this.curBallTime = setTimeout(() => {
                   // message.warn('胆码拖码数字不能相同')
-                  console.log('胆码拖码数字不能相同')
+                  Alert.alert(
+                    '温馨提示',
+                    '胆码拖码数字不能相同',
+                    [
+                      // {text: '', onPress: () => console.log('Cancel Pressed')},
+                      {text: '确定', onPress: () => console.log('OK Pressed')}
+                    ],
+                    {cancelable: false}
+                  )
                 }, 100)
                 b.choose = false
                 this.setState(prevState => ({
@@ -285,9 +296,16 @@ export default (Comp) => {
       let {ruleName, title, singlePrice} = activeGamesPlay
       // console.log('num', num)
       if (num === 0) {
-        // NoticeTips({
-        //   content: '您还没有选择号码或所选号码不全！'
-        // })
+        // Alert.alert(
+        //   '温馨提示',
+        //   '您还没有选择号码或所选号码不全！',
+        //   [
+        //     // {text: '', onPress: () => console.log('Cancel Pressed')},
+        //     {text: '确定', onPress: () => console.log('OK Pressed')}
+        //   ],
+        //   {cancelable: false}
+        // )
+        Toast.info('您还没有选择号码或所选号码不全！')
         return false
       }
       // 稍后补充 动画
@@ -355,8 +373,9 @@ export default (Comp) => {
           // console.log(orderlist)
         } else {
           // NoticeTips({
-          //   content: `注数不能超过${this.activeGamesPlay.maxRecord} ！`
+          //   content:  ！`
           // })
+          Toast.info(`注数不能超过${this.activeGamesPlay.maxRecord}`)
           return
         }
       }
@@ -438,20 +457,54 @@ export default (Comp) => {
       // AESKey
       // repZip ||
       toBuyLottery(rep).then(res => {
-        console.log(res)
-        //   if (res.code === ERR_OK) {
-        //     NoticeTips({
-        //       content: '购买成功',
-        //       type: 'success'
-        //     })
-        //     this.toBuyAfter()
-        //   } else {
-        //     this.buyCardData = []
-        //     NoticeTips({
-        //       content: res.message
-        //     })
-        //   }
+        if (res.code === 0) {
+          Toast.success('购买成功')
+          this.clearAllData()
+          // 刷新余额
+          this.props.updateBalance()
+        } else {
+          Toast.success(res.message)
+        }
+        this.setState({
+          buyCardData: []
+        })
       })
+    }
+
+    // 清除投注区数据
+    clearAllData = () => {
+      let {layout, textarea} = Object.assign({}, this.state.activeViewData)
+      if (layout) {
+        layout = layout.map(items => {
+          items.balls.forEach(item => {
+            item.choose = false
+          })
+          return items
+        })
+        this.setState({
+          activeViewData: {
+            ...this.state.activeViewData,
+            layout
+          }
+        }, () => this.getZhuShu())
+      }
+      if (textarea) {
+        this.setState({
+          activeViewData: {
+            ...this.state.activeViewData,
+            textarea: ''
+          }
+        }, () => this.getZhuShu())
+      }
+    }
+
+    handleText = (value) => {
+      this.setState({
+        activeViewData: {
+          ...this.state.activeViewData,
+          textarea: value
+        }
+      }, () => this.getZhuShu())
     }
 
     render() {
@@ -461,6 +514,7 @@ export default (Comp) => {
           toolsCur={this.toolsCur}
           setBuyInfo={this.setBuyInfo}
           addBuyCard={this.addBuyCard}
+          handleText={this.handleText}
           {...this.state}
           {...this.props}
         />
@@ -469,12 +523,19 @@ export default (Comp) => {
   }
 
   const mapStateToProps = (state) => {
-    let {userId} = state.common
+    let {userId, balanceInfo} = state.common
     return ({
       ...state.classic,
-      userId
+      userId,
+      balanceInfo
     })
   }
 
-  return connect(mapStateToProps)(RowBallHoc)
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      updateBalance: data => dispatch(AsetAllBalance(data))
+    }
+  }
+
+  return connect(mapStateToProps, mapDispatchToProps)(RowBallHoc)
 }
