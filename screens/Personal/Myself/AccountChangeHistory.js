@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native'
 import UIListView from '../../../components/UIListView'
 import { Flex, Button } from '@ant-design/react-native';
 import { connect } from "react-redux";
-import dayjs from 'dayjs'
+import {toFixed4, formatTime} from '../../../utils/MathUtils'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
 
@@ -19,16 +19,16 @@ class FlatListItem extends PureComponent {
         <Flex justify="space-between">
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>
             <Text>操作金额：</Text>
-            <Text style={{color: item["changeAmount"] > 0 ? 'red' : 'green'}}>{item["changeAmount"]}</Text>
+            <Text style={{color: item["changeAmount"] > 0 ? 'red' : 'green'}}>{toFixed4(item["changeAmount"])}</Text>
           </Text>
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item["description"]}</Text>
         </Flex>
         <Flex justify="space-between">
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作日期：{dayjs(item["operateTime"]).format('YYYY-MM-DD HH:mm:ss')}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作日期：{formatTime(item["operateTime"])}</Text>
         </Flex>
         <Flex justify="space-between">
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作前金额：{item["oldBalance"] ? item["oldBalance"].toFixed(4) : '0.0000'}</Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作后金额：{item["newBalance"] ? item["newBalance"].toFixed(4) : '0.0000'}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作前金额：{toFixed4(item["oldBalance"])}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作后金额：{toFixed4(item["newBalance"])}</Text>
         </Flex>
       </View>
     )
@@ -39,7 +39,7 @@ class PersonalScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       title: '个人账变记录',
-      headerRight: <Button style={{marginRight: 14}} type="warning" size="small" onPress={navigation.getParam('onSearch')}>
+      headerRight: <Button style={{marginRight: 14}} type="ghost" size="small" onPress={navigation.getParam('onSearch')}>
         <Text style={{color: '#fff'}}>查询</Text>
       </Button>
     }

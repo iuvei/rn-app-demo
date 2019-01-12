@@ -8,7 +8,6 @@ import {
   View,
   RefreshControl,
   BackHandler,
-  Vibration,
   ToastAndroid
 } from 'react-native'
 import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native';
@@ -241,49 +240,44 @@ class HomeScreen extends React.Component {
           </Flex>
         </View>
 
-        <View style={{height: 180}}>
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
-            }>
-            <Flex wrap="wrap">
-              {
-                usualLottery.map((item, index) =>
-                  <View style={styles.favoriteItem} key={index}>
-                    <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
-                      <View>
-                        <Image source={this.getIconName(item.realCategory)} resizeMode={'cover'} style={styles.favoriteItemImg} />
-                      </View>
-                      <View style={styles.favoriteItemCenter}>
-                        <Text numberOfLines={1} style={styles.favoriteItemTitle}>{item.lotterName}</Text>
-                        <Text style={styles.favoriteItemText}>100万派送中</Text>
-                      </View>
-                    </Flex>
-                  </View>)
-              }
-            </Flex>
-          </ScrollView>
-        </View>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Flex>
-            <View style={styles.gameItem}>
-              <Image source={require('./../../assets/images/home/ag.png')} resizeMode={'contain'} style={{width: 50}} />
-            </View>
-            <View style={styles.gameItem}>
-              <Image source={require('./../../assets/images/home/og.png')} resizeMode={'contain'} style={{width: 50}} />
-            </View>
-            <View style={styles.gameItem}>
-              <Image source={require('./../../assets/images/home/eb.png')} resizeMode={'contain'} style={{width: 50}} />
-            </View>
-            <View style={styles.gameItem}>
-              <Image source={require('./../../assets/images/home/ob.png')} resizeMode={'contain'} style={{width: 50}} />
-            </View>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }>
+          <Flex wrap="wrap">
+            {
+              usualLottery.map((item, index) =>
+                <View style={styles.favoriteItem} key={index}>
+                  <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
+                    <View>
+                      <Image source={this.getIconName(item.realCategory)} resizeMode={'cover'} style={styles.favoriteItemImg} />
+                    </View>
+                    <View style={styles.favoriteItemCenter}>
+                      <Text numberOfLines={1} style={styles.favoriteItemTitle}>{item.lotterName}</Text>
+                      <Text style={styles.favoriteItemText}>100万派送中</Text>
+                    </View>
+                  </Flex>
+                </View>)
+            }
           </Flex>
-        </View>
+        </ScrollView>
+        <Flex>
+          <View style={styles.gameItem}>
+            <Image source={require('./../../assets/images/home/ag.png')} resizeMode={'contain'} style={{width: 50}} />
+          </View>
+          <View style={styles.gameItem}>
+            <Image source={require('./../../assets/images/home/og.png')} resizeMode={'contain'} style={{width: 50}} />
+          </View>
+          <View style={styles.gameItem}>
+            <Image source={require('./../../assets/images/home/eb.png')} resizeMode={'contain'} style={{width: 50}} />
+          </View>
+          <View style={styles.gameItem}>
+            <Image source={require('./../../assets/images/home/ob.png')} resizeMode={'contain'} style={{width: 50}} />
+          </View>
+        </Flex>
       </View>
     )
   }
@@ -414,31 +408,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#787878'
   },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 10,
-    right: 10,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: {height: -3},
-        shadowOpacity: 0.1,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 20
-      }
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb'
-  },
   gameItem: {
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     width: '25%',
-    height: 50
+    height: 50,
+    backgroundColor: '#ffffff'
   }
 })
 

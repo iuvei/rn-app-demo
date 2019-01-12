@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Keyboard } from 'react-native'
 import UIListView from '../../../components/UIListView'
 import { Flex, Button, InputItem } from '@ant-design/react-native';
 import { connect } from "react-redux";
-import dayjs from 'dayjs'
+import {toFixed4, formatTime} from '../../../utils/MathUtils'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
 import { userAccountChangeType } from '../../../data/options'
@@ -20,17 +20,17 @@ class FlatListItem extends PureComponent {
         <Flex justify="space-between">
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>
             <Text>操作金额：</Text>
-            <Text style={{color: item["changeAmount"] > 0 ? 'red' : 'green'}}>{item["changeAmount"]}</Text>
+            <Text style={{color: item["changeAmount"] > 0 ? 'red' : 'green'}}>{toFixed4(item["changeAmount"])}</Text>
           </Text>
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item["description"]}</Text>
         </Flex>
         <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>用户名：{item["loginName"]}</Text>
         <Flex justify="space-between">
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作日期：{dayjs(item["operateTime"]).format('YYYY-MM-DD HH:mm:ss')}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作日期：{formatTime(item["operateTime"])}</Text>
         </Flex>
         <Flex justify="space-between">
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作前金额：{item["oldBalance"] ? item["oldBalance"].toFixed(4) : '0.0000'}</Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作后金额：{item["newBalance"] ? item["newBalance"].toFixed(4) : '0.0000'}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作前金额：{toFixed4(item["oldBalance"])}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作后金额：{toFixed4(item["newBalance"])}</Text>
         </Flex>
       </View>
     )
