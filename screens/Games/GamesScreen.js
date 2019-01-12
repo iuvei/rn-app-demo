@@ -28,7 +28,7 @@ export default class GamesScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Tabs tabs={tabs} tabBarUnderlineStyle={{backgroundColor: 'orange'}} tabBarBackgroundColor={'#0066ba'} tabBarActiveTextColor={'orange'} tabBarInactiveTextColor={'#eff5fb'}>
-          <LotteryHall></LotteryHall>
+          <LotteryHall navigation={this.props.navigation}></LotteryHall>
           <RealPeople></RealPeople>
           <Slot></Slot>
           <Chess></Chess>
