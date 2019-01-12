@@ -3,12 +3,11 @@ import { View, Image, StyleSheet, Text, Platform, ImageBackground, Switch, Async
 import {connect} from 'react-redux'
 import {setLoginStatus, setLoginInfo, AsetUserSecureLevel, AsetServiceUrl} from '../../actions/common'
 import {signIn, _getImageSetCookie, getLoginUser} from '../../api/basic'
-import { Button, Icon, InputItem, Flex, Toast } from '@ant-design/react-native';
+import { Button, Icon, InputItem, Flex, Toast } from '@ant-design/react-native'
 import {
   AsetAllBalance,
   AsetUserBankCards
 } from './../../actions/member'
-import ThirdView from '../../components/ThirdView'
 import { createStackNavigator } from 'react-navigation'
 import { WebBrowser } from 'expo'
 import { host } from '../../api.config'
@@ -28,7 +27,8 @@ class LoginComponent extends Component {
       ua: Platform.OS,
       rememberPwd: false,
       rememberUser: false,
-      seePwd: false
+      seePwd: false,
+      isLoading: false
     }
     if (this.props.isLogin) this.props.navigation.navigate('Main')
   }
@@ -71,6 +71,9 @@ class LoginComponent extends Component {
 
   _toLogin() {
     let {j_username, j_password, ua} = this.state
+    this.setState({
+      isLoading: true
+    })
     signIn({j_username, j_password, ua}).then(res => {
       if (res.code === 0) {
         getLoginUser().then(res2 => {
@@ -84,6 +87,9 @@ class LoginComponent extends Component {
         this.props.AsetUserSecureLevel()
         this.props.navigation.navigate('Main')
       } else {
+        this.setState({
+          isLoading: false
+        })
         Toast.info(res.message || '网络错误，请重试')
       }
     })
@@ -101,7 +107,7 @@ class LoginComponent extends Component {
   }
 
   render() {
-    let { j_username, j_password, rememberPwd, rememberUser, seePwd } = this.state
+    let { j_username, j_password, rememberPwd, rememberUser, seePwd, isLoading } = this.state
     const { manifest } = Constants
 
     return (
@@ -201,9 +207,7 @@ class LoginComponent extends Component {
                     />
                 </View>
               </Flex>
-              <View style={{width: 280}}>
-                <Button style={styles.btn} type="primary" onPress={() => this._toLogin()}>登 录</Button>
-              </View>
+              <Button activeStyle={false} style={styles.btn} loading={isLoading} type="primary" onPress={() => this._toLogin()}>登 录</Button>
               <Flex style={{width: 280, marginTop: 25}}>
                 <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
                   <Text style={{color: '#ffffff'}} onPress={this._handleDownloadAsync}>移动端下载</Text>
@@ -271,9 +275,4 @@ const Login = connect(
   mapDispatchToProps
 )(LoginComponent)
 
-export default createStackNavigator({
-  Login: Login,
-  ThirdView: ThirdView
-}, {
-  initialRouteName: 'Login'
-})
+export default Login
