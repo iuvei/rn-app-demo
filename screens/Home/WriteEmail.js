@@ -4,7 +4,8 @@ import {
   Text,
   View,
   ScrollView,
-  Keyboard
+  Keyboard,
+  KeyboardAvoidingView
 } from 'react-native'
 import {
   Toast, Flex, WhiteSpace, WingBlank,
@@ -101,7 +102,11 @@ export default class WriteEmail extends React.Component {
   }
 
   submitDownUser = (visible = false) => {
-    this.setState({visible})
+    let down_data = this.state.down_data.filter(item => item.checked)
+    this.setState({
+      messageType: down_data.length === 0 ? 1 : 3,
+      visible
+    })
   }
 
   sendEmail = () => {
@@ -155,7 +160,8 @@ export default class WriteEmail extends React.Component {
       { text: '确认', onPress: () => this.submitDownUser() },
     ];
     return (
-      <View style={styles.container}>
+      <ScrollView style={{flex: 1}}>
+      <KeyboardAvoidingView behavior='position'  style={styles.container}>
         <WhiteSpace size="lg" />
         <WingBlank size="md">
           <Flex>
@@ -274,14 +280,14 @@ export default class WriteEmail extends React.Component {
             </ScrollView>
           </View>
         </Modal>
-      </View>
+      </KeyboardAvoidingView>
+      </ScrollView>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#ffffff'
   },
   defaultBt: {

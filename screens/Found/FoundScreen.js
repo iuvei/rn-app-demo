@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet, ImageBackground, ScrollView, Image } from 'react-native'
+import { View, Text, StyleSheet, ImageBackground, ScrollView, Animated, Easing } from 'react-native'
 import { WhiteSpace, Flex, Toast } from '@ant-design/react-native';
 import Header from './../../components/Header'
 import { getPlatformReward } from './../../api/basic'
@@ -13,48 +13,56 @@ export default class FoundScreen extends React.Component {
     super(props)
     this.state = {
       accumulateBouns: '99,999,888,789',
+      top: new Animated.Value(0),
       list: [
         {
           title: '开奖公告',
           text: '实时公布开奖号',
           route: '',
-          src: require('./../../assets/images/found/open.png')
+          src: require('./../../assets/images/found/open.png'),
+          rotation: new Animated.Value(0),
         },
         {
           title: '优惠活动',
           text: '回馈新老客户',
           route: 'Activity',
-          src: require('./../../assets/images/found/activity.png')
+          src: require('./../../assets/images/found/activity.png'),
+          rotation: new Animated.Value(0),
         },
         {
           title: '趣味游戏',
           text: '趣味休闲小游戏',
           route: '',
-          src: require('./../../assets/images/found/game.png')
+          src: require('./../../assets/images/found/game.png'),
+          rotation: new Animated.Value(0),
         },
         {
           title: '积分商城',
           text: '小惊喜大回报',
           route: '',
-          src: require('./../../assets/images/found/shop.png')
+          src: require('./../../assets/images/found/shop.png'),
+          rotation: new Animated.Value(0),
         },
         {
           title: '幸运选号',
           text: '狠狠提高中奖率',
           route: '',
-          src: require('./../../assets/images/found/lucky.png')
+          src: require('./../../assets/images/found/lucky.png'),
+          rotation: new Animated.Value(0),
         },
         {
           title: '应用分享',
           text: '与朋友分享娱乐',
           route: '',
-          src: require('./../../assets/images/found/share.png')
+          src: require('./../../assets/images/found/share.png'),
+          rotation: new Animated.Value(0),
         },
         {
           title: '抢红包',
           text: '手气旺抢红包',
           route: '',
-          src: require('./../../assets/images/found/packet.png')
+          src: require('./../../assets/images/found/packet.png'),
+          rotation: new Animated.Value(0),
         }
       ]
     }
@@ -106,8 +114,28 @@ export default class FoundScreen extends React.Component {
     }
   }
 
+  _animateFun = () => {
+    var timing = Animated.timing;
+    Animated.parallel([...this.state.list.map((property, index) => {
+      return timing(property["rotation"], {
+        toValue: 1,
+        duration: 600,
+        delay: index*600 + 1000,
+        easing: Easing.linear
+      });
+    }),timing(
+      this.state.top,
+      {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.bounce
+      }
+    )]).start();
+  }
+
   componentDidMount() {
-    this._getPlatformReward()
+    this._getPlatformReward();
+    this._animateFun()
   }
 
   render() {
@@ -119,14 +147,21 @@ export default class FoundScreen extends React.Component {
             <Flex justify="center">
               <View style={styles.findHeaderContent}>
                 <Text style={styles.findHeadText}>天祥国际累积派发奖金</Text>
-                <Flex justify="center">
-                  <View>
-                    <Text style={styles.findHeadNumber}>¥</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.findHeadNumber}>{this._moneyShow(this.state.accumulateBouns)}</Text>
-                  </View>
-                </Flex>
+                <Animated.View style={{
+                    top: this.state.top.interpolate({
+                      inputRange: [0, 0.5, 1],
+                      outputRange: [-100, 10, 0]
+                    })
+                  }}>
+                  <Flex justify="center">
+                    <View>
+                      <Text style={styles.findHeadNumber}>¥</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.findHeadNumber}>{this._moneyShow(this.state.accumulateBouns)}</Text>
+                    </View>
+                  </Flex>
+                </Animated.View>
               </View>
             </Flex>
           </ImageBackground>
@@ -137,17 +172,22 @@ export default class FoundScreen extends React.Component {
             {
               list.map((item, index) => {
                 return (
-                  <View style={styles.findItem} key={index}>
+                  <View style={[styles.findItem]} key={index}>
                     <Flex style={{height: 70}} onPress={() => this._actionFun(item)}>
                       <View style={styles.listBlock}>
                         <Text style={styles.listTitle}>{item.title}</Text>
                         <Text style={styles.listText}>{item.text}</Text>
                       </View>
                       <View>
-                        <Image
+                        <Animated.Image
                           source={item.src}
                           resizeMode={'contain'}
-                          style={{width: 60, marginLeft: 10}}/>
+                          style={{width: 60, marginLeft: 10, transform: [{
+                              rotateZ: item["rotation"].interpolate({
+                                inputRange: [0, 1],
+                                outputRange: ['0deg', '360deg']
+                              })
+                            }]}}/>
                       </View>
                     </Flex>
                   </View>

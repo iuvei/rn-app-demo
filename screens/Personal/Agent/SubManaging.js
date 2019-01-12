@@ -5,6 +5,7 @@ import {connect} from "react-redux"
 import {Tab, Tabs, Picker} from 'native-base'
 import {setRebate, downRecharge, updateBaijlWater, updateBaijlRebate, canSignContract} from '../../../api/member'
 import Contract from '../../../components/Contract'
+import Quota from '../../../components/Quota'
 
 class SubManaging extends Component {
   static navigationOptions = {
@@ -137,7 +138,7 @@ class SubManaging extends Component {
   }
 
   render () {
-    let {subUserInfo} = this.props
+    let {subUserInfo, loginInfo} = this.props
     let {userPlatform} = subUserInfo
     let {contractStatus, dailyWages} = this.state.isCanSign
     return (
@@ -225,7 +226,9 @@ class SubManaging extends Component {
               }
             </Tab>
             <Tab heading={'开户额'}>
-              <Text>开户额</Text>
+              <View style={styles.tab}>
+                <Quota subUserInfo={subUserInfo} loginInfo={loginInfo}></Quota>
+              </View>
             </Tab>
             <Tab heading={'百家乐信息'}>
               <View style={styles.tab}>
