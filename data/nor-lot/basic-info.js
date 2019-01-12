@@ -272,9 +272,11 @@ export const ruleBuilder = ({playCode, viewData, rulesDoc, codeMap}) => {
       })
     }
   } else {
-    // 单式
-    t.text = true
-    t.textarea = ''
+    if (Object.keys(data).length) {
+      // 单式
+      t.text = true
+      t.textarea = ''
+    }
   }
 
   // 是否有任选位

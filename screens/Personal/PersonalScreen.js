@@ -178,6 +178,7 @@ class PersonalScreen extends React.Component {
       },
       {
         name: '公告',
+        path: 'Broadcast',
         src: require('../../assets/images/personal/icon4.png')
       },
       {

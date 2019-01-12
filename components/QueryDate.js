@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, StyleSheet, TouchableHighlight, Platform } from 'react-native'
+import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
 import {
   DatePicker,
-  Text,
   Flex,
   Icon,
   ActionSheet

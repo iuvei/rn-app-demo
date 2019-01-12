@@ -40,14 +40,14 @@ class RowBall extends React.Component {
 
     if (showBet && activeViewData.layout.length) showLayout = true
 
-    if (activeViewData.bit) showBit = true
+    if (showBet && activeViewData.bit) showBit = true
 
-    if (activeViewData.text) showText = true
+    if (showBet && activeViewData.text) showText = true
     return (
       <View style={{flex: 1}}>
-        <ScrollView>
-          {
-            showBet ?
+        {
+          showLayout || showBit || showText ?
+            <ScrollView>
               <View>
                 {
                   showBit ? <List style={{marginTop: 12}}>
@@ -121,12 +121,18 @@ class RowBall extends React.Component {
                   /> : null
                 }
               </View>
-              :
-              <View>
-                <Text>Not Found</Text>
-              </View>
-          }
-        </ScrollView>
+            </ScrollView>
+            :
+            <View style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <Text style={{marginTop: 100, fontSize: 20}}>
+                Loading...
+              </Text>
+            </View>
+        }
 
         <View style={styles.priceWarp}>
           <View style={styles.bonusWarp}>
