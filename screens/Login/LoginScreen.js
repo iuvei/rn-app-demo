@@ -62,7 +62,6 @@ class LoginComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
   }
 
   componentWillUnmount() {

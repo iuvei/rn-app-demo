@@ -50,6 +50,8 @@ class BindAliname extends React.Component {
       this.props.AsetUserSecureLevel()
       this.props.AsetUserSecureConfig()
       this.setState({
+        alipayName: '',
+        alipayAccount: '',
         isLoading: false
       })
     })

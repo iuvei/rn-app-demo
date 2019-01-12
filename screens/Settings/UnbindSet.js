@@ -53,7 +53,7 @@ class UnbindSet extends React.Component {
   }
 
   submitFunc = () => {
-    let { pwd, answer, userName, gaPassword, alipayName, question, selectType } = this.state
+    let { pwd, answer, userName, gaPassword, alipayName, question, selectType, columns } = this.state
     let type = this.props.navigation.getParam('type', '')
 
     if (pwd === '') {
@@ -77,9 +77,9 @@ class UnbindSet extends React.Component {
         style: 'cancel',
       },
       { text: '确认', onPress: () => {
-        switch (this.unbind) {
+        switch (type) {
           case 'bankname':
-            unBindBankName(this.formData).then(res => {
+            unBindBankName({ pwd, answer, userName, gaPassword, alipayName, question }).then(res => {
               this.callBack(res)
               // setTimeout(() => {
               //   this.AgetUserBankcards()
@@ -87,22 +87,22 @@ class UnbindSet extends React.Component {
             })
             break
           case 'paypwd':
-            unBindPayPwd({pwd: this.formData.pwd}).then(res => {
+            unBindPayPwd({ pwd }).then(res => {
               this.callBack(res)
             })
             break
           case 'security':
-            unBindMiBao(this.formData).then(res => {
+            unBindMiBao({ pwd, answer, userName, gaPassword, alipayName, question }).then(res => {
               this.callBack(res)
             })
             break
           case 'ga':
-            unBindGa(this.formData).then(res => {
+            unBindGa({ pwd, answer, userName, gaPassword, alipayName, question }).then(res => {
               this.callBack(res)
             })
             break
           case 'aliname':
-            unbindAliName(this.formData).then(res => {
+            unbindAliName({ pwd, answer, userName, gaPassword, alipayName, question }).then(res => {
               this.callBack(res)
             })
             break
@@ -139,16 +139,22 @@ class UnbindSet extends React.Component {
             data={columns}
             cols={1}
             itemStyle={{color: '#333333', fontSize: 14, lineHeight: 26}}
-            value={''}
+            value={[columns[selectType].value,]}
             onChange={(val) => {
               this.setState({
-                selectType: val[0]
+                selectType: val[0],
+                question: '',
+                answer: '',
+                pwd: '',
+                userName: '',
+                gaPassword: '',
+                alipayName: ''
               })
             }}
           >
             <List.Item
               arrow="horizontal"
-            ><Text>选择类型：{columns[selectType].label}</Text></List.Item>
+            ><Text>选择类型：</Text></List.Item>
           </Picker>
           {
             columns[selectType].valueTxt === 'mbq' &&
@@ -156,7 +162,7 @@ class UnbindSet extends React.Component {
               <Picker
                 data={questions}
                 cols={1}
-                value={''}
+                value={[question,]}
                 itemStyle={{color: '#333333', fontSize: 14, lineHeight: 26}}
                 onChange={(val) => {
                   this.setState({
@@ -166,7 +172,7 @@ class UnbindSet extends React.Component {
               >
                 <List.Item
                   arrow="horizontal"
-                ><Text>密保问题：{question}</Text></List.Item>
+                ><Text>密保问题：</Text></List.Item>
               </Picker>
               <InputItem
                 value={answer}

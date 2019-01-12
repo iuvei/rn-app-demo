@@ -84,10 +84,10 @@ class BindGoogleComp extends React.Component {
       <View>
         <WhiteSpace size="sm" />
         {
-          (userSecurityLevel.isGoogle && userSecurityConfig.gaSwitch) && <List>
+          userSecurityLevel.isGoogle && <List>
             <List.Item
               thumb={<Icon name="heart" color="#333333" size={20}/>}
-              extra={<Button type="warning" size="small" onPress={() => {
+              extra={userSecurityConfig.gaSwitch && <Button type="warning" size="small" onPress={() => {
                 this.props.navigation.navigate('UnbindSet', {title: '解绑谷歌', type: 'google'})
               }}>解绑</Button>}
             >

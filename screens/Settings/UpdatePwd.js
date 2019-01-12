@@ -9,8 +9,16 @@ import {
   WhiteSpace,
   Button,
   Icon,
-  InputItem
+  InputItem,
+  Toast
 } from '@ant-design/react-native'
+import {updateLoginPwd, savePayPwd, modifyPayPwd} from '../../api/member'
+import {loginOut} from '../../api/basic'
+import {
+  AsetUserSecureLevel,
+  AsetUserSecureConfig,
+  setLoginStatus
+} from '../../actions/common'
 
 class UpdatePwd extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -22,14 +30,98 @@ class UpdatePwd extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isLoading: false,
       oldPwd: '',
       newPwd: '',
       rePwd: ''
     }
+    props.AsetUserSecureLevel()
+    props.AsetUserSecureConfig()
+  }
+
+  /** @description
+   * 确认按钮点击
+   */
+  submitFunc = () => {
+    let { oldPwd, newPwd, rePwd } = this.state
+    let typeStr = this.props.navigation.getParam('type', '')
+    let pattern = /((?=.*[a-z])(?=.*\d)|(?=[a-z])(?=.*[#@!~%^&*])|(?=.*\d)(?=.*[#@!~%^&*]))[a-z\d#@!~%^&*]{8,16}/i
+    if (!pattern.test(newPwd)) {
+      Toast.info('请输入符合规则的密码')
+      return
+    }
+    if (newPwd !== rePwd) {
+      Toast.info('新密码和确认密码必须相同')
+      return
+    }
+    if (typeStr === 'login' || this.props.userSecurityLevel.isTradePassword) {
+      if (oldPwd === '' || newPwd === '' || rePwd === '') {
+        Toast.info('请输入密码')
+        return
+      }
+      this.setState({
+        isLoading: true
+      })
+      switch (typeStr) {
+        case 'login':
+          // let pattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
+          updateLoginPwd({ oldPwd, newPwd, rePwd }).then(res => {
+            if (res.code === 0) {
+              Toast.success(res.message || '修改成功')
+              loginOut().then((res) => {
+                if (res.code === 0) {
+                  this.props.setLoginStatus(false)
+                  this.props.navigation.navigate('Login')
+                }
+              })
+            } else {
+              Toast.fail(res.message || '网络异常，请稍后重试')
+            }
+            this.setState({
+              isLoading: false,
+              oldPwd: '',
+              newPwd: '',
+              rePwd: ''
+            })
+          })
+          break
+        case 'paypwd':
+          modifyPayPwd({ oldPwd, newPwd, rePwd }).then(res => {
+            if (res.code === 0) {
+              Toast.success(res.message || '修改成功')
+              this.props.AsetUserSecureLevel()
+            } else {
+              Toast.fail(res.message || '网络异常，请稍后重试')
+            }
+            this.setState({
+              isLoading: false,
+              oldPwd: '',
+              newPwd: '',
+              rePwd: ''
+            })
+          })
+          break
+      }
+    } else {
+      savePayPwd({newPwd, rePwd}).then(res => {
+        if (res.code === 0) {
+          Toast.success('绑定成功')
+          this.props.AsetUserSecureLevel()
+        } else {
+          Toast.fail(res.message || '网络异常，请稍后重试')
+        }
+        this.setState({
+          isLoading: false,
+          oldPwd: '',
+          newPwd: '',
+          rePwd: ''
+        })
+      })
+    }
   }
 
   render() {
-    let { oldPwd, newPwd, rePwd } = this.state
+    let { oldPwd, newPwd, rePwd, isLoading } = this.state
     let { userSecurityConfig, userSecurityLevel, navigation } = this.props
     let type = navigation.getParam('type')
 
@@ -91,7 +183,7 @@ class UpdatePwd extends React.Component {
           </InputItem>
         </List>
         <View style={{paddingVertical: 16, alignItems: 'center'}}>
-          <Button type="primary" style={{width: 220, height: 40}}>
+          <Button type="primary" style={{width: 220, height: 40}} onPress={this.submitFunc} loading={isLoading}>
             <Text>{(type === 'login' || userSecurityLevel.isTradePassword) ? '修改' : '确认'}</Text>
           </Button>
         </View>
@@ -106,7 +198,11 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
+    AsetUserSecureConfig: (data) => { dispatch(AsetUserSecureConfig(data)) },
+    setLoginStatus: (data) => { dispatch(setLoginStatus(data)) }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdatePwd)

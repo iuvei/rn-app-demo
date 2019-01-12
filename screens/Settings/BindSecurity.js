@@ -69,22 +69,26 @@ class BindSecurity extends React.Component {
       <View>
         <WhiteSpace size="sm" />
         {
-          (userSecurityLevel.isQuestion && userSecurityConfig.questionSwitch) ? <List>
+          userSecurityLevel.isQuestion &&
+          <List>
             <List.Item
               thumb={<Icon name="heart" color="#333333" size={20}/>}
-              extra={<Button type="warning" size="small" onPress={() => {
+              extra={userSecurityConfig.questionSwitch && <Button type="warning" size="small" onPress={() => {
                 this.props.navigation.navigate('UnbindSet', {title: '解绑密保', type: 'mibao'})
               }}>解绑</Button>}
             >
               <Text style={{color: '#333333', paddingLeft: 6}}>已绑定</Text>
             </List.Item>
-          </List> :
+          </List>
+        }
+        {
+          !userSecurityLevel.isQuestion &&
           <View>
             <List>
               <Picker
                 data={questions}
                 cols={1}
-                value={''}
+                value={[questionOne,]}
                 itemStyle={{color: '#333333', fontSize: 14, lineHeight: 26}}
                 onChange={(val) => {
                   this.setState({
@@ -94,7 +98,7 @@ class BindSecurity extends React.Component {
               >
                 <List.Item
                   arrow="horizontal"
-                ><Text>问题一：{questionOne}</Text></List.Item>
+                ><Text>问题一：</Text></List.Item>
               </Picker>
               <InputItem
                 value={answerOne}
@@ -110,7 +114,7 @@ class BindSecurity extends React.Component {
                 data={questions}
                 cols={1}
                 itemStyle={{color: '#333333', fontSize: 14, lineHeight: 26}}
-                value={''}
+                value={[questionTwo,]}
                 onChange={(val) => {
                   this.setState({
                     questionTwo: val[0]
@@ -119,7 +123,7 @@ class BindSecurity extends React.Component {
               >
                 <List.Item
                   arrow="horizontal"
-                ><Text>问题二：{questionTwo}</Text></List.Item>
+                ><Text>问题二：</Text></List.Item>
               </Picker>
               <InputItem
                 value={answerTwo}
@@ -135,7 +139,7 @@ class BindSecurity extends React.Component {
                 data={questions}
                 cols={1}
                 itemStyle={{color: '#333333', fontSize: 14, lineHeight: 26}}
-                value={''}
+                value={[questionThree,]}
                 onChange={(val) => {
                   this.setState({
                     questionThree: val[0]
@@ -144,7 +148,7 @@ class BindSecurity extends React.Component {
               >
                 <List.Item
                   arrow="horizontal"
-                ><Text>问题三：{questionThree}</Text></List.Item>
+                ><Text>问题三：</Text></List.Item>
               </Picker>
               <InputItem
                 value={answerThree}
