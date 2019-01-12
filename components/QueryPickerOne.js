@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, StyleSheet, TouchableHighlight } from 'react-native'
+import { View, StyleSheet, Text, TouchableHighlight } from 'react-native'
 import {
   Picker,
-  Text,
   Flex,
   Icon,
 } from '@ant-design/react-native'
