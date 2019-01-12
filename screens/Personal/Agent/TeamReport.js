@@ -99,6 +99,7 @@ class TeamReport extends React.Component {
     await this.setState({isShow: true}, () => {
       this.setState({isShow: false, params: {...this.state.params, userId, userName}, previousId, previousUser})
     })
+    this.getTeamCount()
   }
 
   handleDate = async ({startTime, endTime}) => {

@@ -36,6 +36,7 @@ export default class Quota extends React.Component {
     let {quotaId, quotaNumber, quotaType} = this.state
     if (!quotaNumber) {
       Toast.info('请输入配额')
+      return false
     }
     let type = quotaType === 0 ? 'add' : 'sub'
     let {subUserInfo, loginInfo} = this.props
