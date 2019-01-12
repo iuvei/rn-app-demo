@@ -24,13 +24,17 @@ class FlatListItem extends React.PureComponent {
   render() {
     let {item, index} = this.props
     let {activityName, activityBonus, activitytTime, allConsumeQuota, bonus, distributeCurrency, joinCurrency, nowConsumeQuota, status} = item
+    let statusObj = ActivityStatus.filter(v => {
+      return v.value === status
+    })[0]
+
     return (
       <TouchableHighlight onPress={() => this.props.onPressFunc(item)}>
         <View style={{padding: 10, backgroundColor: '#fff', position: 'relative'}}>
           <Text style={{fontSize: 15, lineHeight: 24}}>{activityName}</Text>
           <Flex>
-            <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22}}>活动时间: <Text style={{color: '#1689e6'}}>{activitytTime}</Text></Text>
-            <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22}}>{status}</Text>
+            <Text style={{flex: 1, color: '#666', fontSize: 14, lineHeight: 22}}>活动时间: <Text style={{color: '#1689e6'}}>{activitytTime}</Text></Text>
+            <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22, textAlign: 'right'}}>{statusObj.label}</Text>
           </Flex>
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>活动参与金额: <Text style={{color: '#1689e6'}}>{activityBonus}</Text></Text>
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>当前限制: <Text style={{color: '#1689e6'}}>{nowConsumeQuota}</Text></Text>

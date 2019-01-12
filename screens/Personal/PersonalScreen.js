@@ -164,6 +164,7 @@ class PersonalScreen extends React.Component {
     let list = [
       {
         name: '充值',
+        path: 'Recharge',
         src: require('../../assets/images/personal/icon1.png')
       },
       {

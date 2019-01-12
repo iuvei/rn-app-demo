@@ -204,7 +204,7 @@ class HomeScreen extends React.Component {
               let codeList = item.openCode.split(',')
               return (
                 <View style={styles.hotItem} key={index}>
-                  <Flex>
+                  <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
                     <View>
                       <Image source={this.getIconName(item.categoryCode)} resizeMode={'contain'} style={styles.hotItemImg} />
                     </View>
