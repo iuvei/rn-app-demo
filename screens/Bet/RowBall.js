@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  View, Text, StyleSheet, ScrollView
+  View, Text, StyleSheet, ScrollView, KeyboardAvoidingView
 } from 'react-native'
 import {
   Flex, Tabs, Card, WhiteSpace,
@@ -55,19 +55,22 @@ class RowBall extends React.Component {
                 {
                   showBit ? <List style={{marginTop: 12}}>
                     <Text style={{marginTop: 12}}>Multiple options</Text>
-                    <CheckboxItem
-                      checked={this.state.checkboxItem1}
-                      onChange={event => {
-                        this.setState({checkboxItem1: event.target.checked})
-                      }}
-                    >
-                      Option 1
-                    </CheckboxItem>
-                    <CheckboxItem>Option 2</CheckboxItem>
-                    <CheckboxItem disabled>Option 3</CheckboxItem>
-                    <CheckboxItem disabled checked>
-                      Option 4
-                    </CheckboxItem>
+
+
+                    {
+                      activeViewData.bit.map((item, key) => {
+                        return (
+                          <CheckboxItem
+                            key={key}
+                            checked={item.choose}
+                            onChange={() => {
+                              // console.log('稍后处理')
+                            }}
+                          >{item.name}</CheckboxItem>
+                        )
+                      })
+                    }
+
                   </List> : null
                 }
                 {
@@ -117,13 +120,19 @@ class RowBall extends React.Component {
                   }) : null
                 }
                 {
-                  showText ? <TextareaItem
-                    rows={10}
-                    onChange={(val) => handleText(val)}
-                    value={activeViewData.textarea}
-                    placeholder="高度自适应"
-                    style={{margin: 6, padding: 10, borderRadius: 6}}
-                  /> : null
+                  showText ? <View>
+                      <Text>请在下方的输入框内输入或粘贴投注内容，每注请使用
+                        <Text>逗号</Text>、<Text>空格</Text>或'<Text>;</Text>'分割开。
+                      </Text>
+                      <TextareaItem
+                        rows={10}
+                        onChange={(val) => handleText(val)}
+                        value={activeViewData.textarea}
+                        placeholder="高度自适应"
+                        style={{margin: 6, padding: 10, borderRadius: 6}}
+                      />
+                    </View>
+                    : null
                 }
               </View>
             </ScrollView>

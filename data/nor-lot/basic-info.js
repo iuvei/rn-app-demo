@@ -285,48 +285,32 @@ export const ruleBuilder = ({playCode, viewData, rulesDoc, codeMap}) => {
     t.bitMax = data.bitMax
     t.checkbox = []
     // bug100 说不要自动选中
-    // t.bit.filter(list => {
-    //   if (list.choose) {
-    //     t.checkbox.push(list.position)
-    //   }
-    // })
+    t.bit.filter(list => {
+      if (list.choose) {
+        t.checkbox.push(list.position)
+      }
+    })
   }
   return t
 }
 
 export const filterCurBall = ({activeViewData, lotType}) => {
-  let LazmDataSel = ''
-  let BetContentarr = []
-  let BetContent = ''
-  // let {activeViewData, activeLot} = this
+  let LazmDatasel = ''
   let {layout, text, textarea, bit, checkbox} = activeViewData
   let [balls, textareas, places, place] = [[], [], [], []]
   if (layout) {
-    layout.forEach((item, idx) => {
-      let arr = []
+    layout.filter((item, idx) => {
       balls[idx] = []
       let sonIdx = 0
-      item.balls.forEach((list) => {
+      item.balls.filter((list) => {
         if (list.choose) {
-          if (list.text) {
-            arr.push(list.text)
-          }
-          LazmDataSel += list.value || list.ball
-          balls[idx][sonIdx] = list.value || list.ball
+          LazmDatasel += list.ball
+          balls[idx][sonIdx] = list.ball
           sonIdx++
         }
       })
-      if (arr.length) {
-        BetContentarr.push(arr)
-      }
-      LazmDataSel += ','
+      LazmDatasel += ','
     })
-    for (let i = 0; i < BetContentarr.length; i++) {
-      BetContent += BetContentarr[i].join(',')
-      if (i < BetContentarr.length - 1) {
-        BetContent += ' '
-      }
-    }
   }
   if (text) {
     let reg = /,|，|;|；|\n|\s|、|\r|\./g
@@ -338,32 +322,36 @@ export const filterCurBall = ({activeViewData, lotType}) => {
     _.each(as, (val, idx) => {
       if (val) {
         if (['lo2', 'lo4'].includes(lotType)) {
-          let newVal = val.replace(/ /g, '')
-          let aftVal = ''
-          for (let i = 0; i < Math.ceil(newVal.length / 2); i++) {
-            aftVal += newVal.slice(i * 2, i * 2 + 2) + ' '
+          let newval = val.replace(/ /g, '')
+          let aftval = ''
+          for (let i = 0; i < Math.ceil(newval.length / 2); i++) {
+            aftval += newval.slice(i * 2, i * 2 + 2) + ' '
           }
-          val = aftVal.slice(0, aftVal.length - 1)
+          val = aftval.slice(0, aftval.length - 1)
         }
       }
-      LazmDataSel += val + ','
       textareas[idx] = val
     })
   }
   if (bit) {
-    let bitMap = ['0', '1', '2', '3', '4']
     _.each(bit, (bitVal, bitIdx) => {
       if (checkbox.indexOf(bitVal.position) > -1) {
-        BetContentarr.push(bitVal.name)
-        place.push(bitMap[bitIdx])
+        place[bitIdx] = '√'
+      } else {
+        place[bitIdx] = '-'
       }
     })
-    if (BetContentarr.length) {
-      BetContent = '[' + BetContentarr.join(',') + ']' + LazmDataSel
-    }
+    // let bitMap = ['0', '1', '2', '3', '4']
+    // _.each(bit, (bitVal, bitIdx) => {
+    //   if (checkbox.indexOf(bitVal.position) > -1) {
+    //     BetContentarr.push(bitVal.name)
+    //     place.push(bitMap[bitIdx])
+    //   }
+    // })
     places.push(place)
   }
+  console.log(places)
   let dataSel = [].concat(places).concat(balls).concat(textareas)
-  LazmDataSel = LazmDataSel.slice(0, LazmDataSel.length - 1)
-  return Promise.resolve({dataSel, LazmDataSel, BetContent})
+  LazmDatasel = LazmDatasel.slice(0, LazmDatasel.length - 1)
+  return Promise.resolve({dataSel, LazmDatasel})
 }

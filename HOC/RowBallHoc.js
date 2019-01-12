@@ -261,7 +261,6 @@ export default (Comp) => {
     // price
 
     // onChangeStep = multiple => this.setBuyInfo({multiple})
-
     // 添加购物车
     addBuyCard = (toBuy) => {
       let {navParams, navParams: {lotType}, openIssue} = this.props
@@ -282,6 +281,7 @@ export default (Comp) => {
         // NoticeTips({
         //   content: '该玩法已禁用'
         // })
+        Toast.info('该玩法已禁用')
         return false
       }
       // 保存添加到购物车时间
