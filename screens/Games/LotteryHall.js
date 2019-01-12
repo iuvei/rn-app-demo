@@ -148,7 +148,7 @@ class LotteryHall extends React.Component {
                 <View key={j} style={{width: '25%', alignItems: 'center'}}>
                   <TouchableHighlight
                     underlayColor="#f0f0f0"
-                    onPress={() => console.log(list.lotterCode)}>
+                    onPress={() => this.props.navigation.navigate('Bet', list)}>
                     <View>
                       <Image source={this.getIconName(list.realCategory || list.categoryCode)} style={{width: 80, height: 80}}></Image>
                       <Text style={{fontSize: 10, textAlign: 'center'}} numberOfLines={1}>{list.lotterName}</Text>
