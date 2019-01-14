@@ -13,7 +13,6 @@ import {
 import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native';
 import {connect} from 'react-redux'
 import Header from './../../components/Header'
-import FloatBall from './../../components/FloatBall'
 import {
   setCustomizeLottery,
   setActiveUsualLot,
@@ -102,11 +101,13 @@ class HomeScreen extends React.Component {
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
     }
+    this.didBlurSubscription = this.props.navigation.addListener('didFocus', this.updateImmediateData)
   }
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
     }
+    this.didBlurSubscription.remove();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -122,6 +123,11 @@ class HomeScreen extends React.Component {
       ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
       return true;
     }
+  }
+
+  updateImmediateData = () => {
+    // 每次来到首页都更新热门彩种
+    this._initHotLottery()
   }
 
   _initHotLottery() {
@@ -163,7 +169,6 @@ class HomeScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <FloatBall />
         <Carousel
           style={styles.wrapper}
           autoplay

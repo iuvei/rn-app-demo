@@ -81,7 +81,7 @@ class FloatBall extends Component {
 
     //2. 根据触发点计算真实的左侧,顶侧位移变化
     let realMarginLeft = g.moveX - this.touchX;
-    let realMarginTop = g.moveY - this.touchY - 40;
+    let realMarginTop = g.moveY - this.touchY;
 
     this.setState({
       marginLeft: realMarginLeft,
@@ -118,8 +118,8 @@ class FloatBall extends Component {
         marginLeft: pageX,
       })
     }
-    if (pageY >= pxdp.height* 3 / 4) {
-      pageY = pxdp.height* 1 / 2;
+    if (pageY >= pxdp.height - 50) {
+      pageY = pxdp.height - 120;
       this.setState({
         marginTop: pageY,
       })
@@ -140,7 +140,7 @@ class FloatBall extends Component {
         left: this.state.marginLeft,
         top: this.state.marginTop,
       }} {...this.panResponder.panHandlers}
-        />
+      >{this.props.children}</View>
     )
   }
 }

@@ -1,20 +1,13 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Provider as Provider2 } from '@ant-design/react-native'
-import promiseMiddleware from 'redux-promise'
-import reducer from './reducers'
-import thunk from 'redux-thunk'
-import { applyMiddleware, createStore } from 'redux'
+import store from './store'
 import { changeBtnText } from './actions/example'
 import Main from './main'
 import initReactFastClick from 'react-fastclick'
+import LinesPanel from './components/LinesPanel'
 
 initReactFastClick()
-
-const store = createStore(
-  reducer,
-  applyMiddleware(thunk, promiseMiddleware)
-)
 
 // 开始监听，每次state更新，那么就会打印出当前状态
 const unsubscribe = store.subscribe(() => {
@@ -34,6 +27,7 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <Provider2>
+          <LinesPanel />
           <Main/>
         </Provider2>
       </Provider>
