@@ -16,7 +16,7 @@ class FloatBall extends Component {
       // 移动手势是否可以成为响应者
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       // 拦截子组件的单击手势传递,是否拦截
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
       // 拦截子组件的移动手势传递,是否拦截
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 

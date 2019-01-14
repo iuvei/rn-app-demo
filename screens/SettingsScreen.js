@@ -14,7 +14,8 @@ import { List, WhiteSpace, Button, Modal, Toast, Icon } from '@ant-design/react-
 import {
   AsetUserSecureLevel,
   AsetUserSecureConfig,
-  setLoginStatus
+  setLoginStatus,
+  setShowFloatBall
 } from '../actions/common'
 import { loginOut } from '../api/basic'
 import { WebBrowser } from 'expo'
@@ -150,6 +151,22 @@ class SettingsScreen extends React.Component {
         <WhiteSpace size="sm" />
         <List>
           <List.Item
+            thumb={<Ionicons name="ios-musical-notes" color="#333333" size={20}/>}
+            extra={
+              <Switch
+                value={this.props.showFloatBall}
+                onValueChange={(v) => this.props.setShowFloatBall(v)}
+                trackColor={{true: '#05bde1'}}
+                thumbColor={'#ffffff'}
+              />
+            }
+          >
+            <Text style={styles.itemTxt}>显示悬浮球</Text>
+          </List.Item>
+        </List>
+        <WhiteSpace size="sm" />
+        <List>
+          <List.Item
             thumb={<Icon name="book" color="#333333" size={20}/>}
             arrow="horizontal"
             onPress={() => this.props.navigation.navigate('VersionInfo')}
@@ -173,7 +190,10 @@ class SettingsScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  return {}
+  let { showFloatBall } = state.common
+  return ({
+    showFloatBall
+  })
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -181,6 +201,7 @@ const mapDispatchToProps = (dispatch) => {
     AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
     AsetUserSecureConfig: (data) => { dispatch(AsetUserSecureConfig(data)) },
     setLoginStatus: (data) => { dispatch(setLoginStatus(data)) },
+    setShowFloatBall: (data) => { dispatch(setShowFloatBall(data)) },
   }
 }
 

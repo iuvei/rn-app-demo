@@ -182,7 +182,7 @@ export const AsetServiceUrl = createAction(
   }
 )
 
-export const isShowFloatBall = (status) => {
+export const setShowFloatBall = (status) => {
   return {
     type: 'SET_FLOAT_BALL_STATUS',
     payload: status
