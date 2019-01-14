@@ -181,3 +181,17 @@ export const AsetServiceUrl = createAction(
     return res.code === 0 ? res.data : {}
   }
 )
+
+export const isShowFloatBall = (status) => {
+  return {
+    type: 'SET_FLOAT_BALL_STATUS',
+    payload: status
+  }
+}
+
+export const setCurrentApiUrl = (url) => {
+  return {
+    type: 'SET_CURRENT_API_URL',
+    payload: url
+  }
+}

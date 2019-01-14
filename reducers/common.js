@@ -36,6 +36,8 @@ const sortArray = arr => {
 
 const initialState = {
   isLogin: false,
+  showFloatBall: true,
+  currentApiUrl: 'http://tianxiang.qmuitest.com/qm',
   count: 1,
   sysSortLottery: [],
   syswpSortLottery: [],
@@ -223,7 +225,19 @@ const common = handleActions({
       ...state,
       serviceUrl: payload
     }
-  }
+  },
+  SET_FLOAT_BALL_STATUS: (state, {payload}) => {
+    return {
+      ...state,
+      showFloatBall: payload
+    }
+  },
+  SET_CURRENT_API_URL: (state, {payload}) => {
+    return {
+      ...state,
+      currentApiUrl: payload
+    }
+  },
 }, initialState)
 
 export default common
