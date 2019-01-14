@@ -11,6 +11,7 @@ import {
 const CheckboxItem = Checkbox.CheckboxItem
 
 import { modeInfo } from '../../data/options'
+import { withNavigation } from 'react-navigation'
 
 class RowBall extends React.Component {
   constructor(props) {
@@ -208,7 +209,11 @@ class RowBall extends React.Component {
                 type="ghost" size="small" style={{
                 height: 28,
                 borderRadius: 4
-              }}>追号</Button>
+              }} onPress={() => {
+                this.props.navigation.navigate('ChaseScreen', {
+                  orderList: this.props.buyCardData,
+                  buyCardInfo: this.props.buyInfo
+                })}}>追号</Button>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginTop: 6}}>
@@ -235,7 +240,7 @@ class RowBall extends React.Component {
   }
 }
 
-export default RowBall
+export default withNavigation(RowBall)
 
 const styles = StyleSheet.create({
   container: {
