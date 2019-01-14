@@ -90,7 +90,7 @@ const initialState = {
   userSecurityLevel: {}, // 账户安全等级
   userSecurityConfig: {}, // 解绑资金密码，GA密码，银行卡姓名开关
   userPlatformInfo: [],
-  serviceUrl: {}, //  客服地址
+  serviceUrl: {} //  客服地址
 }
 
 // 常规处理
