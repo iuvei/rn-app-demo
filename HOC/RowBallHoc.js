@@ -45,7 +45,7 @@ export default (Comp) => {
           content: '',
           multiple: 1,
           model: 1,
-          rebateMode: 1800,
+          rebateMode: 0,
           total: '0.000'
         },
 
@@ -55,13 +55,40 @@ export default (Comp) => {
 
         // 已选中的压缩号码
         LazmDataSel: '',
-        BetContent: ''
+        BetContent: '',
 
+        userRebate: 0,
+
+        curMaxMode: 1700,
+        lotterMinMode: 1700,
+
+        // testMode: 1802
+        isKlcYxyLot: false
       }
     }
 
+    componentDidMount() {
+      // setInterval(() => {
+      //   this.setState({
+      //     testMode: Number(this.state.testMode + 2)
+      //   }, () => {
+      //     console.log(this.state.testMode)
+      //   })
+      // }, 1000)
+      if (Object.keys(this.props.rebateInfo).length) {
+        this.setRebate(this.props.rebateInfo)
+      }
+      this.checkKlcXycLot()
+    }
+
+    checkKlcXycLot = () => {
+      this.setState({
+        isKlcYxyLot: ['lo6', 'lo7'].includes(this.props.navParams.lotType)
+      })
+    }
+
     componentWillReceiveProps(np) {
-      let {activePlay, gamesPlayStore, navParams} = this.props
+      let {activePlay, gamesPlayStore, navParams, rebateInfo} = this.props
       // 改变该种时，重新渲染视图
       if (!_.isEqual(navParams, np.navParams) && Object.keys(np.navParams).length) {
         this.initBetView(np.navParams)
@@ -76,11 +103,20 @@ export default (Comp) => {
       if (!_.isEqual(gamesPlayStore, np.gamesPlayStore) && np.gamesPlayStore.length) {
         this.updateGameRate(np)
       }
+
+      if (!_.isEqual(rebateInfo, np.rebateInfo) && Object.keys(np.rebateInfo).length) {
+        this.setRebate(np.rebateInfo)
+      }
     }
 
     initBetView = ({lotType}) => {
       let {viewData, codeMap} = JSON.parse(JSON.stringify(norLot[lotType]))
       this.setState({viewData, codeMap})
+    }
+
+    setRebate = ({userRebateVO}) => {
+      let selfRebate = userRebateVO.find(list => list.rebateType === 0) || {}
+      this.setState({userRebate: selfRebate.userRebate * 20 + 1700 || 0})
     }
 
     updateGameRate = ({activePlay}) => {
@@ -96,9 +132,7 @@ export default (Comp) => {
             num: 0,
             total: '0.000'
           }
-        }, () => {
-          this.changePlayRate()
-        }
+        }, () => this.changePlayRate()
       )
     }
 
@@ -143,10 +177,44 @@ export default (Comp) => {
     // 切换玩法时，更新赔率
     changePlayRate = () => {
       let {playOrgin} = this.state.activeViewData
+      let {rebateMode} = this.state.buyInfo
       let {gamesPlayStore} = this.props
       let gamesPlay = gamesPlayStore.find(item => item.ruleCode === playOrgin) || {}
+      let playLen = Object.keys(gamesPlay).length
       this.setState({
-        activeGamesPlay: Object.keys(gamesPlay).length ? gamesPlay : {}
+        activeGamesPlay: playLen ? gamesPlay : {}
+      }, () => {
+        this.setMaxMode()
+      })
+      if (playLen) {
+        if (rebateMode > gamesPlay.lotterMinMode &&
+          rebateMode < gamesPlay.maxRuleMode) {
+        } else {
+          // this.buyInfo.rebateMode = item.lotterMinMode
+          this.setState({
+            buyInfo: {
+              ...this.state.buyInfo,
+              rebateMode: gamesPlay.lotterMinMode
+            }
+          })
+        }
+      }
+    }
+
+    setMaxMode = () => {
+      let {maxRuleMode, lotterMaxMode, lotterMinMode} = this.state.activeGamesPlay
+      let arr = [this.state.userRebate, maxRuleMode, lotterMaxMode]
+      let tmpMode = arr.sort((a, b) => a - b)[0] || 1700
+      if (lotterMinMode < tmpMode) {
+        this.setState({
+          buyInfo: Object.assign({}, this.state.buyInfo, {
+            rebateMode: tmpMode
+          })
+        })
+      }
+      this.setState({
+        curMaxMode: tmpMode,
+        lotterMinMode: lotterMinMode
       })
     }
 
@@ -265,22 +333,16 @@ export default (Comp) => {
     addBuyCard = (toBuy) => {
       let {navParams, navParams: {lotType}, openIssue} = this.props
       let {activeGamesPlay} = this.state
+      let gamesPlayLen = Object.keys(activeGamesPlay).length
       if (!Object.keys(navParams).length || activeGamesPlay.isOuter) {
-        // NoticeTips({
-        //   content: '该彩种已关闭'
-        // })
+        Toast.fail('该彩种已关闭')
         return false
       }
-      // if (!this.isIncludeRule || this.activeGamesPlay.status === 2) {
-      //   NoticeTips({
-      //     content: '该玩法未开启投注'
-      //   })
-      // return false
-      // }
+      if (!gamesPlayLen || activeGamesPlay.status === 2) {
+        Toast.fail('该玩法未开启投注')
+        return false
+      }
       if (activeGamesPlay.status === 0) {
-        // NoticeTips({
-        //   content: '该玩法已禁用'
-        // })
         Toast.info('该玩法已禁用')
         return false
       }
@@ -290,22 +352,11 @@ export default (Comp) => {
       let {
         dataSel, activeViewData, buyInfo, bonusPrize
       } = this.state
-      // compress 这个不知道是什么？
       let {playOrgin, bit, checkbox} = activeViewData
       let {num, multiple, total, model, rebateMode} = buyInfo
       let {ruleName, title, singlePrice} = activeGamesPlay
-      // console.log('num', num)
       if (num === 0) {
-        // Alert.alert(
-        //   '温馨提示',
-        //   '您还没有选择号码或所选号码不全！',
-        //   [
-        //     // {text: '', onPress: () => console.log('Cancel Pressed')},
-        //     {text: '确定', onPress: () => console.log('OK Pressed')}
-        //   ],
-        //   {cancelable: false}
-        // )
-        Toast.info('您还没有选择号码或所选号码不全！')
+        Toast.info('您还没有选择号码或所选号码不全')
         return false
       }
       // 稍后补充 动画
@@ -347,7 +398,6 @@ export default (Comp) => {
         ruleName: ruleName || title,
         singlePrice: singlePrice
       }
-      // console.log(orderlist)
       // let methodInfo = this.gameMethod[playOrgin]
       // this.isKlcXycLot && _.isArray(content)
       if (false) {
@@ -368,14 +418,17 @@ export default (Comp) => {
           // localStorage.setItem('orderlist', JSON.stringify(orderlist))
           this.setState({
             buyCardData: [].concat(this.state.buyCardData, orderlist)
-          }, () => this.toBuy())
+          }, () => {
+            if (toBuy) this.toBuy()
+            this.clearAllData()
+          })
           // this.commitBuyCardAfter()
           // console.log(orderlist)
         } else {
           // NoticeTips({
           //   content:  ！`
           // })
-          Toast.info(`注数不能超过${this.activeGamesPlay.maxRecord}`)
+          Toast.info(`注数不能超过${this.state.activeGamesPlay.maxRecord}`)
           return
         }
       }
@@ -471,6 +524,26 @@ export default (Comp) => {
       })
     }
 
+    // myRuleMode = () => {
+    //   return this.maxRebate * 20 + 1700
+    // }
+    //
+    // maxRuleMode() {
+    //   return this.activeGamesPlay.maxRuleMode
+    // }
+    //
+    // minRuleMode() {
+    //   return this.activeGamesPlay.minRuleMode
+    // }
+    //
+    // lotterMinMode() {
+    //   return this.activeGamesPlay.lotterMinMode
+    // }
+    //
+    // lotterMaxMode() {
+    //   return this.activeGamesPlay.lotterMinMode
+    // }
+
     // 清除投注区数据
     clearAllData = () => {
       let {layout, textarea} = Object.assign({}, this.state.activeViewData)
@@ -523,11 +596,12 @@ export default (Comp) => {
   }
 
   const mapStateToProps = (state) => {
-    let {userId, balanceInfo} = state.common
+    let {userId, balanceInfo, rebateInfo} = state.common
     return ({
       ...state.classic,
       userId,
-      balanceInfo
+      balanceInfo,
+      rebateInfo
     })
   }
 

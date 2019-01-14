@@ -62,3 +62,14 @@ react-native源碼
 
 
 
+
+expo打包流程：
+账=develop@jsbconsultantsllc.com
+密=osMLkhE84RCkTQZAWQyN
+
+/Users/johnny/Documents/xcode/product_department_
+ios_distribution.cer
+/Users/johnny/Documents/xcode/devpushzycertificate.p12
+/Users/johnny/Documents/xcode/comziyunprivategoleteam.mobileprovision
+
+com.ziyunprivate.goleteam
