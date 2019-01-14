@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 import DownTime from './DownTime'
 import PlayNav from './PlayNav'
 import RowBall from './RowBall'
+import Trend from './Trend'
 // import BuyPrice from './BuyPrice'
 import LatelyList from './LatelyList'
 import { DownTimeHoc, RowBallHoc } from '../../HOC'
@@ -132,15 +133,10 @@ class BetScreen extends React.Component {
           <View style={styles.tabs}>
             <Text>Content of Third Tab</Text>
           </View>
-          <View style={styles.tabs}>
-            <Text>Content of Four Tab</Text>
-            <View style={{
-              backgroundColor: '#ededed',
-              height: 0.5,
-              width: '100%'
-            }}
-            />
-            <Text>Content of Four Tab</Text>
+          <View>
+            <ScrollView>
+              <Trend/>
+            </ScrollView>
           </View>
         </Tabs>
 
