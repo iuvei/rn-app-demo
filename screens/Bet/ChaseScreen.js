@@ -172,12 +172,11 @@ class ChaseScreen extends React.Component {
       total = total / multiple
       let lowIncomeTxt = lowIncome / 100
       // 获取选项
-      let total = chaseIssueTotal
       let sMultiple = startMultiple
       let maxMultiple = bigMultiple
       let minProfit = lowIncomeTxt
       let money = total
-      let result = this.calculation(total, sMultiple, maxMultiple, minProfit, money, prize, num)
+      let result = this.calculation(chaseIssueTotal, sMultiple, maxMultiple, minProfit, money, prize, num)
       if (result.length > 0) {
         for (let i = 0; i < result.length; i++) {
           if (i > chaseList.length - 1) {
@@ -416,6 +415,8 @@ class ChaseScreen extends React.Component {
           onChange={v => {
             this.setState({
               activeTab: v.value
+            }, () => {
+              this.beforeBuildOrder()
             })
           }}
           tabs={tabs}>
