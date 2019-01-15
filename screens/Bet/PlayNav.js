@@ -11,7 +11,7 @@ import {
   Ionicons
 } from '@expo/vector-icons'
 import { connect } from 'react-redux'
-import { setActivePlay } from '../../actions/classic'
+import { setActivePlay, setCustomPlayNav } from '../../actions/classic'
 
 class PlayNav extends React.Component {
   constructor(props) {
@@ -138,7 +138,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setActivePlay: params => dispatch(setActivePlay(params))
+    setActivePlay: params => dispatch(setActivePlay(params)),
+    setCustomPlayNav: (data) => dispatch(setCustomPlayNav(data))
   }
 }
 

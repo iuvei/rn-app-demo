@@ -135,7 +135,7 @@ class FloatBall extends Component {
         borderRadius: 20,
         width: 40,
         height: 40,
-        zIndex: 100,
+        zIndex: 1,
         position: 'absolute',
         left: this.state.marginLeft,
         top: this.state.marginTop,

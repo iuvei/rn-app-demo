@@ -4,7 +4,7 @@ const initialState = {
   latelyOpenList: [],
   navParams: {},
   activePlay: {},
-
+  newCusPlayNav: [],
   gamesPlayStore: [],
 
   openIssue: {}
@@ -34,9 +34,14 @@ const classic = handleActions({
   },
   SET_OPEN_ISSUE: (state, {payload}) => {
     return {
+      ...state, newCusPlayNav: payload
+    }
+  },
+  SET_CUSTOM_PLAY_NAV: (state, {payload}) => {
+    return {
       ...state, openIssue: payload
     }
-  }
+  },
 }, initialState)
 
 export default classic

@@ -47,3 +47,8 @@ export const getGamesPlay = createAction(
     }
   })
 )
+
+export const setCustomPlayNav = createAction(
+  'SET_CUSTOM_PLAY_NAV',
+  text => text
+)
