@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Text, View, StyleSheet, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image } from 'react-native'
 import { Toast, Flex, Modal, List, Radio } from '@ant-design/react-native'
 import FloatBall from './FloatBall'
 import { connect } from "react-redux";
@@ -7,7 +7,7 @@ import {
   setShowFloatBall,
   setCurrentApiUrl
 } from './../actions/common'
-
+import { lineDetection } from './../api/basic'
 const RadioItem = Radio.RadioItem;
 
 class LinesPanel extends Component {
@@ -15,31 +15,64 @@ class LinesPanel extends Component {
     super (props);
     this.state = {
       show: false,
-      close: props.showFloatBall,
+      open: true,
       activeId: 1,
-      list: [
-        {key: 1, speed: 23 },
-        {key: 2, speed: 153 },
-        {key: 4, speed: 13 },
-        {key: 5, speed: 8 }
-      ]
+      listTimes: [],
+      speedList: []
     }
   }
 
   showModal = (show = false) => {
+    if(show) {
+      this.setState({
+        speedList: [],
+        open: true,
+      }, () => this.updateLinesPannel())
+    }
     this.setState({show})
   }
 
   submit = () => {
+    let { activeId, listTimes, open} = this.state
     let show = false
-    this.props.setShowFloatBall(this.state.close)
+    let apiUrl = listTimes.filter(item => item.key === activeId)[0].url
+    this.props.setShowFloatBall(open)
+    this.props.setCurrentApiUrl(apiUrl)
     this.setState({show})
     Toast.success('设置成功！')
   }
 
+  updateLinesPannel = () => {
+    let arr = []
+    lineDetection().then(res => {
+      if (res.code === 0) {
+        for (let i = 0; i < res.data.lineList.length; i++) {
+          arr.push({
+            url: res.data.lineList[i],
+            key: i + 1
+          })
+        }
+        this.setState({
+          listTimes: arr
+        })
+      }
+    })
+  }
+
+  setLineSpeed = (key, times) => {
+    this.setState((prevState) => ({
+      speedList: [...prevState.speedList, {key, times}]
+    }))
+  }
+
+  getTimes = (key) => {
+    let rst = this.state.speedList.filter(item => item.key === key)
+    return rst.length ? rst[0].times : '测速中'
+  }
+
   render() {
     let { showFloatBall } = this.props
-    let { list, show, activeId, close } = this.state
+    let { listTimes, show, activeId, open } = this.state
     return (
       showFloatBall ?
         <View>
@@ -59,20 +92,20 @@ class LinesPanel extends Component {
               <View>
                 <Text>
                   <Text>当前路线：</Text>
-                  <Text>1</Text>
+                  <Text>{activeId}</Text>
                 </Text>
                 <Flex justify="space-between">
                   <View><Text style={styles.tips}>关闭悬浮球(设置中修改)</Text></View>
                   <View>
                     <Flex>
-                      <View style={[styles.defaultBt,!close ? styles.activeBtn : '']}>
+                      <View style={[styles.defaultBt,!open ? styles.activeBtn : '']}>
                         <Text
-                          onPress={() => this.setState({close: false})}
+                          onPress={() => this.setState({open: false})}
                           style={{color: 'white'}}>关</Text>
                       </View>
-                      <View style={[styles.defaultBt,close ? styles.activeBtn : '']}>
+                      <View style={[styles.defaultBt,open ? styles.activeBtn : '']}>
                         <Text
-                          onPress={() => this.setState({close: true})}
+                          onPress={() => this.setState({open: true})}
                           style={{color: 'white'}}>开</Text>
                       </View>
                     </Flex>
@@ -83,7 +116,8 @@ class LinesPanel extends Component {
                 <ScrollView>
                   <List style={{ marginTop: 12 }}>
                     {
-                      list.map(item => {
+                      listTimes.map(item => {
+                        let startTime = new Date().getTime()
                         return (
                           <RadioItem
                             key={item.key}
@@ -96,7 +130,12 @@ class LinesPanel extends Component {
                           >
                             <Flex justify="space-between">
                               <Text>路线{item.key}</Text>
-                              <Text style={{color: item.speed < 150 ? 'green' : 'red'}}>{item.speed}ms</Text>
+                              <Image
+                                source={{uri: item.url}}
+                                style={{width: 0, height: 0}}
+                                onError={() =>
+                                  this.setLineSpeed(item.key, new Date().getTime()-startTime)} />
+                              <Text style={{color: this.getTimes(item.key) < 150 ? 'green' : 'red'}}>{this.getTimes(item.key)}ms</Text>
                             </Flex>
                           </RadioItem>
                         )

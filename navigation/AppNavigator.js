@@ -10,6 +10,7 @@ import RechargeNavigator from '../screens/Recharge'
 import Personal from '../screens/Personal'
 import Found from '../screens/Found'
 import Bet from '../screens/Bet/BetScreen'
+import ChaseScreen from '../screens/Bet/ChaseScreen'
 
 const MainNavigator = createStackNavigator({
   Main: MainTabNavigator,
@@ -17,7 +18,8 @@ const MainNavigator = createStackNavigator({
   ...RechargeNavigator,
   ...Personal,
   ...Found,
-  Bet
+  Bet,
+  ChaseScreen
 }, {
   initialRouteName: 'Main',
   headerLayoutPreset: 'center',
