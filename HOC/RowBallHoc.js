@@ -63,7 +63,9 @@ export default (Comp) => {
         lotterMinMode: 1700,
 
         // testMode: 1802
-        isKlcYxyLot: false
+        isKlcYxyLot: false,
+
+        bonusPrize: {}
       }
     }
 
@@ -323,6 +325,12 @@ export default (Comp) => {
         }
       }, () => {
         // this.getZhuShu()
+      })
+    }
+
+    setBonusPrize = Obj => {
+      this.setState({
+        bonusPrize: Obj
       })
     }
 
@@ -588,6 +596,7 @@ export default (Comp) => {
           setBuyInfo={this.setBuyInfo}
           addBuyCard={this.addBuyCard}
           handleText={this.handleText}
+          setBonusPrize={this.setBonusPrize}
           {...this.state}
           {...this.props}
         />

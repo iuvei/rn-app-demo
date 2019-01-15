@@ -19,8 +19,7 @@ class RowBall extends React.Component {
     super(props)
     this.state = {
       sliderMode: '0.0',
-      checkboxItem1: true,
-      bonusPrize: {}
+      checkboxItem1: true
     }
     this.time = 1700
   }
@@ -55,11 +54,9 @@ class RowBall extends React.Component {
     let {minRuleMode, bonusPrize, maxRuleMode} = nextProps.activeGamesPlay
     let bonus = bonusPrize || {}
     if (!Object.keys(bonus).length) {
-      this.setState({
-        bonusPrize: Object.assign({}, this.state.bonusPrize, {
-          resmin: 0,
-          resmax: 0
-        })
+      this.props.setBonusPrize({
+        resmin: 0,
+        resmax: 0
       })
       return
     }
@@ -96,22 +93,18 @@ class RowBall extends React.Component {
     chaseMax = (rebateMode / (minRuleMode / endArr.min)).toFixed(4)
     let bonusLen = Object.keys(bonus).length > 1
     if (bonusLen) {
-      this.setState({
-        bonusPrize: Object.assign({}, this.state.bonusPrize, {
-          bonus: bonusLen,
-          resmin,
-          resmax,
-          chaseMin,
-          chaseMax
-        })
+      this.props.setBonusPrize({
+        bonus: bonusLen,
+        resmin,
+        resmax,
+        chaseMin,
+        chaseMax
       })
     } else {
-      this.setState({
-        bonusPrize: Object.assign({}, this.state.bonusPrize, {
-          bonus: bonusLen,
-          chaseMin,
-          resmin
-        })
+      this.props.setBonusPrize({
+        bonus: bonusLen,
+        chaseMin,
+        resmin
       })
     }
   }
@@ -135,9 +128,8 @@ class RowBall extends React.Component {
       clickBall, toolsCur, setBuyInfo, addBuyCard,
       balanceInfo, handleText,
       curMaxMode, lotterMinMode,
-      isKlcYxyLot
+      isKlcYxyLot, bonusPrize
     } = this.props
-    let {bonusPrize} = this.state
 
     let {currentBalance} = balanceInfo.ye || {}
 
