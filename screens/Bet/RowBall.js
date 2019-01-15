@@ -28,11 +28,16 @@ class RowBall extends React.Component {
     // 渲染视图
     // 计算数据
     // 改变数据时
-
   }
 
   componentWillReceiveProps(np) {
     let oldInfo = this.props.buyInfo
+
+    if (!_.isEqual(this.props.activeGamesPlay, np.activeGamesPlay)
+      && Object.keys(np.activeGamesPlay)) {
+      this.changeBonusPrize(np)
+    }
+
     if (!_.isEqual(this.props.buyInfo, np.buyInfo)) {
       if (!_.isEqual(oldInfo.model, np.buyInfo.model)) {
         this.changeBonusPrize(np)
@@ -46,7 +51,7 @@ class RowBall extends React.Component {
 
   changeBonusPrize = (nextProps) => {
     let {model, rebateMode} = nextProps.buyInfo
-    let {minRuleMode, bonusPrize, maxRuleMode} = this.props.activeGamesPlay
+    let {minRuleMode, bonusPrize, maxRuleMode} = nextProps.activeGamesPlay
     let bonus = bonusPrize || {}
     if (!Object.keys(bonus).length) {
       this.setState({
@@ -146,6 +151,7 @@ class RowBall extends React.Component {
     if (showBet && activeViewData.bit) showBit = true
 
     if (showBet && activeViewData.text) showText = true
+
     return (
       <View style={{flex: 1}}>
         {
@@ -287,7 +293,7 @@ class RowBall extends React.Component {
                   {/*<span>当前奖金 <em>{{ bonusPrize.resmin || '00000.0000' }}</em> 元</span>*/}
                   {/*</template>*/}
                   {/*</template>*/}
-                  {rebateMode}/{this.state.sliderMode}%
+                  {rebateMode}/{this.state.sliderMode}
                 </Text>
               </View>
             </View> : null
@@ -295,10 +301,9 @@ class RowBall extends React.Component {
           <Text>
             当前奖金：
             {
-              bonusPrize.resmax ? `${bonusPrize.resmin} ~ ${bonusPrize.resmax}` : ''
-            }
-            {
-              !bonusPrize.resmax && bonusPrize.resmin ? bonusPrize.resmin : '00000.0000'
+
+              bonusPrize.bonus ? `${bonusPrize.resmin} ~ ${bonusPrize.resmax}`
+                : (bonusPrize.resmin || '00000.0000')
             }
           </Text>
           <View style={{flexDirection: 'row'}}>
