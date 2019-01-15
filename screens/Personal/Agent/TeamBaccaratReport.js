@@ -1,60 +1,85 @@
 import React, {PureComponent} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
 import UIListView from '../../../components/UIListView'
-import {WingBlank, Flex, InputItem} from '@ant-design/react-native'
+import {Button, WingBlank, Flex, Modal} from '@ant-design/react-native'
 import QueryDate from '../../../components/QueryDate'
 import dayjs from 'dayjs'
-import {toFixed4, formatDate} from '../../../utils/MathUtils'
+import {connect} from "react-redux"
+import {toFixed4} from '../../../utils/MathUtils'
 
 class FlatListItem extends PureComponent {
+  constructor (props) {
+    super(props)
+  }
+
   render () {
+    let {item, onPress, highUser, index} = this.props
     let {
-      lotterName,
-      profitLoss,
-      purchaseAmount,
+      rechargeActualAmount,
+      withdrawActualAmount,
+      realConsumeAmount,
+      dgcastAmount,
+      bonusAmount,
       rebateAmount,
-      withdrawAmount,
-      bonus,
-      bettingAmount,
-      teamRebateAmount,
-    } = this.props.item
+      waterAmount,
+      activityAmount,
+      profitAmount,
+      userId, userName
+    } = item
+    let flag = userName !== '合计' && userName !== highUser && index !== 0
     return (
-      <View style={styles.table}>
-        <Flex><Text style={styles.capital}>{lotterName}</Text></Flex>
+      <View style={{padding: 10}}>
+        <Flex>
+          {
+            flag ? <Text style={styles.light} onPress={() => {
+              onPress(userId, userName)
+            }}>{userName}</Text> : <Text style={styles.dark}>{userName}</Text>
+          }
+        </Flex>
         <Flex direction={'row'} justify={'space-between'}>
           <View style={styles.column}>
-            <Text style={styles.title}>团队返点:</Text>
-            <Text style={styles.value}>{teamRebateAmount}</Text>
+            <Text style={styles.title}>充值:</Text>
+            <Text style={styles.value}>{toFixed4(rechargeActualAmount)}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={styles.title}>盈亏:</Text>
-            <Text style={styles.value}>{toFixed4(profitLoss)}</Text>
+            <Text style={styles.title}>提现:</Text>
+            <Text style={styles.value}>{toFixed4(withdrawActualAmount)}</Text>
           </View>
         </Flex>
         <Flex direction={'row'} justify={'space-between'}>
           <View style={styles.column}>
-            <Text style={styles.title}>代购额:</Text>
-            <Text style={styles.value}>{toFixed4(purchaseAmount)}</Text>
+            <Text style={styles.title}>消费量:</Text>
+            <Text style={styles.value}>{toFixed4(realConsumeAmount)}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={styles.title}>个人返点:</Text>
+            <Text style={styles.title}>代购额:</Text>
+            <Text style={styles.value}>{toFixed4(dgcastAmount)}</Text>
+          </View>
+        </Flex>
+        <Flex direction={'row'} justify={'space-between'}>
+          <View style={styles.column}>
+            <Text style={styles.title}>中奖:</Text>
+            <Text style={styles.value}>{toFixed4(bonusAmount)}</Text>
+          </View>
+          <View style={styles.column}>
+            <Text style={styles.title}>返点:</Text>
             <Text style={styles.value}>{toFixed4(rebateAmount)}</Text>
           </View>
         </Flex>
         <Flex direction={'row'} justify={'space-between'}>
           <View style={styles.column}>
-            <Text style={styles.title}>撤单:</Text>
-            <Text style={styles.value}>{toFixed4(withdrawAmount)}</Text>
+            <Text style={styles.title}>返水:</Text>
+            <Text style={styles.value}>{toFixed4(waterAmount)}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={styles.title}>奖金:</Text>
-            <Text style={styles.value}>{toFixed4(bonus)}</Text>
+            <Text style={styles.title}>活动:</Text>
+            <Text style={styles.value}>{toFixed4(activityAmount)}</Text>
           </View>
         </Flex>
         <Flex direction={'row'} justify={'space-between'}>
           <View style={styles.column}>
-            <Text style={styles.title}>投注:</Text>
-            <Text style={styles.value}>{toFixed4(bettingAmount)}</Text>
+            <Text style={styles.title}>盈亏:</Text>
+            <Text style={styles.value}>{toFixed4(profitAmount)}</Text>
           </View>
           <View style={styles.column}>
           </View>
@@ -64,41 +89,41 @@ class FlatListItem extends PureComponent {
   }
 }
 
-export default class TeamBaccaratReport extends React.Component {
+class TeamBaccaratReport extends React.Component {
   static navigationOptions = {
     title: '团队百家乐报表'
   }
 
   constructor (props) {
     super(props)
-    let end = formatDate()
-    let start = formatDate(dayjs().subtract(1, 'day'))
+    let end = dayjs().format('YYYY-MM-DD')
+    let start = dayjs().subtract(1, 'day').format('YYYY-MM-DD')
     this.state = {
       KeyName: 'TeamBaccaratReport',
-      api: '/frontReport/reportform/getUserLotteryReport',
       isShow: false,
+      previousId: [],
+      previousUser: [],
+      api: '/frontReport/count/bjlReport',
+      summary: {},
       params: {
-        lotterCode: '',
-        pageNumber: 1,
-        pageSize: 10,
-        reportType: 0,
+        userName: '',
+        currencyCode: 'CNY',
         startTime: start,
-        endTime: end
+        endTime: end,
+        formType: 0,
+        pageSize: 50,
+        pageNumber: 1
       }
     }
   }
 
-  renderItem = (item, index) => {
-    return (
-      <FlatListItem
-        item={item}
-        index={index}/>
-    )
-  }
-
-  onSearch = async () => {
+  // 返回上一级
+  goBack = async () => {
+    let {previousId, previousUser} = this.state
+    let userId = previousId.pop()
+    let userName = previousUser.pop()
     await this.setState({isShow: true}, () => {
-      this.setState({isShow: false})
+      this.setState({isShow: false, params: {...this.state.params, userId, userName}, previousId, previousUser})
     })
   }
 
@@ -109,23 +134,42 @@ export default class TeamBaccaratReport extends React.Component {
     this.onSearch()
   }
 
-  handlePickerBack = (val) => {
-    this.setState(prevState => ({
-      params: {...prevState.params, ...val}
-    }))
+  // renderItem
+  // item, index, separators
+  renderItem = (item, index) => {
+    let highUser = this.props.loginInfo?.acc?.user?.loginName
+    return (
+      <FlatListItem
+        item={item}
+        highUser={highUser}
+        index={index}
+        onPress={this.onPress}/>
+    )
+  }
+
+  // 查询下级团队报表信息，
+  onPress = async (userId, userName) => {
+    let {params, previousId, previousUser} = this.state
+    await this.setState({
+      params: {...params, userId, userName},
+      previousId: [...previousId, params.userId],
+      previousUser: [...previousUser, params.userName]
+    })
+    this.onSearch()
+  }
+
+  onSearch = async () => {
+    await this.setState({isShow: true}, () => {
+      this.setState({isShow: false})
+    })
   }
 
   render () {
-    let {api, params, KeyName, isShow} = this.state
+    let {api, params, KeyName, isShow, previousId} = this.state
     return (
       <View style={styles.container}>
         <WingBlank>
           <QueryDate handleDate={this.handleDate}/>
-          <Flex direction={'row'} style={{height: 30}}>
-            <InputItem style={{flex: 1}} placeholder={'请输入账号'}
-                       onChange={value => this.setState({params: {...params, userName: value}})}/>
-            <Flex.Item />
-          </Flex>
         </WingBlank>
         {isShow ? null :
           <UIListView
@@ -134,13 +178,19 @@ export default class TeamBaccaratReport extends React.Component {
             KeyName={`KeyName-${KeyName}`}
             params={params}
             renderItem={this.renderItem}
-            beforeUpdateList={({res}, fn) => {
+            beforeUpdateList={({res, params}, fn) => {
+              console.log(res)
               let dataList = res.data && res.data.pageColumns ? res.data.pageColumns : []
-              let {currentPage, total} = res.data.pageInfo
-              let NullData = Math.ceil(total / 10) < currentPage
+              let {total} = res.data.pageInfo
+              let NullData =  params.pageNumber > Math.ceil(total / 50)
+              // 或在这里增加 其他状态码的处理Alter
               fn(NullData ? [] : {dataList})
             }}
           />
+        }
+        {
+          previousId.length > 0 ?
+            <Button type={'primary'} style={{margin: 10}} onPress={this.goBack}>返回上级</Button> : null
         }
       </View>
     )
@@ -152,26 +202,49 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff'
   },
-  table: {
-    padding: 10
-  },
-  capital: {
-    fontSize: 20,
+  light: {
+    fontSize: 18,
     fontWeight: 'bold',
     color: 'gold'
   },
-  title: {
-    fontSize: 16,
-    color: '#999'
+  dark: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  value: {
-    fontSize: 16,
-    color: '#333'
+  title: {
+    fontSize: 18,
+    color: '#999',
+    flex: 2
   },
   column: {
+    flex: 1,
+    flexDirection:'row',
+    justifyContent: 'space-between'
+  },
+  value: {
+    fontSize: 18,
+    color: '#333',
+    flex: 3
+  },
+  popColumn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flex: 1,
-    marginRight: 8
+    padding: 5,
+    paddingRight: 20,
+    paddingLeft: 20,
+    borderColor: '#dedede',
+    borderBottomWidth: 0.5
   }
 })
+
+
+const mapStateToProps = (state) => {
+  let {loginInfo} = state.common
+  return ({
+    loginInfo
+  })
+}
+
+export default connect(
+  mapStateToProps
+)(TeamBaccaratReport)
