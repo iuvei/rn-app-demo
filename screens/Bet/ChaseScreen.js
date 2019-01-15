@@ -14,7 +14,8 @@ import {
   Checkbox,
   Toast
 } from '@ant-design/react-native'
-import {getChaseTime, toBuyLottery} from '../../api/lottery'
+import { getChaseTime, toBuyLottery } from '../../api/lottery'
+import { toCrypto } from '../../plugin/crypto'
 
 const tabs = [
   { title: '利润率追号', value: 'lilv' },
@@ -30,6 +31,7 @@ class ChaseScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isLoading: false,
       orderList: props.navigation.getParam('orderList', []),
       buyCardInfo: props.navigation.getParam('buyCardInfo', {}),
       activeTab: 'lilv',
@@ -50,7 +52,6 @@ class ChaseScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state)
   }
   
   getChaseList = ({size, showlen}) => {
@@ -82,7 +83,6 @@ class ChaseScreen extends React.Component {
       size: chaseIssueTotal,
       showlen: chaseIssueTotal
     }).then(res => {
-      console.log(res)
       this.buildChaseOrder()
     })
   }
@@ -154,6 +154,7 @@ class ChaseScreen extends React.Component {
   buildChaseOrder = () => {
     let showChaseList = []
     let {activeTab, buyCardInfo, orderList, startMultiple, bigMultiple, lowIncome, middleIssue, chaseIssueTotal, nextMultiple, nextType, chaseList} = this.state
+    let {total, num, multiple} = buyCardInfo
     if (activeTab === 'lilv') {
       let rulecodearr = ['']
       orderList.forEach((val) => {
@@ -168,16 +169,15 @@ class ChaseScreen extends React.Component {
       // 计算单倍奖金
       var prize = this.getPrize(orderList)
       // 计算单倍投注金额
-      var {moneyTotal, buyTotal, multiple} = buyCardInfo
-      moneyTotal = moneyTotal / multiple
+      total = total / multiple
       let lowIncomeTxt = lowIncome / 100
       // 获取选项
       let total = chaseIssueTotal
       let sMultiple = startMultiple
       let maxMultiple = bigMultiple
       let minProfit = lowIncomeTxt
-      let money = moneyTotal
-      let result = this.calculation(total, sMultiple, maxMultiple, minProfit, money, prize, buyTotal)
+      let money = total
+      let result = this.calculation(total, sMultiple, maxMultiple, minProfit, money, prize, num)
       if (result.length > 0) {
         for (let i = 0; i < result.length; i++) {
           if (i > chaseList.length - 1) {
@@ -188,7 +188,7 @@ class ChaseScreen extends React.Component {
           showChaseList.push({
             currentIssue: val.currentIssue,
             multiple: multiple,
-            money: moneyTotal * multiple,
+            money: total * multiple,
             showTime: String(val.nextTime).slice(5),
             nextTime: val.nextTime
           })
@@ -206,7 +206,7 @@ class ChaseScreen extends React.Component {
         showChaseList.push({
           currentIssue: val.currentIssue,
           multiple: startMultiple,
-          money: moneyTotal * startMultiple,
+          money: total * startMultiple,
           showTime: String(val.nextTime).slice(5),
           nextTime: val.nextTime
         })
@@ -231,7 +231,7 @@ class ChaseScreen extends React.Component {
         showChaseList.push({
           currentIssue: val.currentIssue,
           multiple: multiple,
-          money: moneyTotal * multiple,
+          money: total * multiple,
           showTime: String(val.nextTime).slice(5),
           nextTime: val.nextTime
         })
@@ -245,8 +245,77 @@ class ChaseScreen extends React.Component {
     // this.selectAllTochase = true
   }
 
+  submitFunc = () => {
+    let {winStop, showChaseList, orderList} = this.state
+    let planList = []
+    let [reqAmount] = [0, 0]
+    showChaseList.filter((sel, selIdx) => {
+      let {multiple, nextTime, currentIssue} = sel
+      orderList.filter(item => {
+        let {castCodes, ruleCode, rebateMode, model, singlePrice} = item
+        // let amount = (parseFloat(item.castAmount) / parseFloat(item.castMultiple)) * multiple
+        let amount = (parseFloat(singlePrice)) * multiple
+        reqAmount += parseFloat(Number(amount).toFixed(4))
+        if (!selIdx) {
+          // resNum += item.castNumber
+        }
+        let castMode = 0
+        if (model === 1) castMode = 0
+        if (model === 0.1) castMode = 1
+        if (model === 0.01) castMode = 2
+        if (model === 0.001) castMode = 3
+        planList.push({
+          castAmount: amount,
+          castCodes,
+          castMode,
+          castMultiple: Number(multiple),
+          rebateMode: rebateMode,
+          ruleCode,
+          orderIssue: currentIssue,
+          nextTime
+        })
+      })
+    })
+    let {loginInfo, navParams} = this.props
+    let {lotterCode, isOuter} = navParams
+    let rep = {
+      currencyCode: 'CNY',
+      amount: Number(reqAmount).toFixed(5),
+      // castNumber: resNum,
+      detailsList: planList,
+      isOuter,
+      lotterCode,
+      orderType: 0,
+      isAddition: 1,
+      haltAddition: winStop ? 0 : 1,
+      userId: loginInfo.acc.user.userId
+    }
+    let repZip = ''
+    if (!this.props.isTest) {
+      repZip = toCrypto(rep)
+    }
+    this.setState({
+      isLoading: true
+    })
+    toBuyLottery(repZip || rep).then((res) => {
+      this.setState({
+        isLoading: false
+      })
+      if (res.code === 0) {
+        Toast.success('追号成功')
+      } else {
+        Toast.fail(res.message || '追号失败')
+      }
+    }).catch(() => {
+      this.setState({
+        isLoading: false
+      })
+      Toast.fail('网络异常，请稍后重试')
+    })
+  }
+
   render() {
-    let { chaseIssueTotal, startMultiple, bigMultiple, lowIncome, middleIssue, nextType, nextMultiple, winStop, total, activeTab } = this.state
+    let { chaseIssueTotal, startMultiple, bigMultiple, lowIncome, middleIssue, nextType, nextMultiple, winStop, total, activeTab, showChaseList, isLoading } = this.state
     let topContent = <View>
       <Flex justify="around">
         <Flex.Item>
@@ -322,7 +391,22 @@ class ChaseScreen extends React.Component {
       }
     </View>
     let listContent = <View>
-      <Text>list</Text>
+      <Flex>
+        <Text style={{width: '30%'}}>期号</Text>
+        <Text style={{width: '15%'}}>倍数</Text>
+        <Text style={{width: '25%'}}>金额</Text>
+        <Text style={{width: '30%'}}>截至时间</Text>
+      </Flex>
+      {
+        showChaseList.map(item => {
+          return <Flex key={item.currentIssue + '_' + item.showTime}>
+            <Text style={{width: '30%'}}>{item.currentIssue}</Text>
+            <Text style={{width: '15%'}}>{item.multiple}</Text>
+            <Text style={{width: '25%'}}>{item.money}</Text>
+            <Text style={{width: '30%'}}>{item.showTime}</Text>
+          </Flex>
+        })
+      }
     </View>
 
     return (
@@ -338,7 +422,7 @@ class ChaseScreen extends React.Component {
           <ScrollView style={{ backgroundColor: 'orange', flex: 1 }}>{topContent}{listContent}</ScrollView>
         </Tabs>
         <View style={{height: 50, alignItems: 'center', backgroundColor: 'pink', justifyContent: 'center'}}>
-          <Button type="ghost" style={{width: '50%', height: 40}}>立即追号</Button>
+          <Button loading={isLoading} type="ghost" style={{width: '50%', height: 40}} onPress={this.submitFunc}>立即追号</Button>
         </View>
       </View>
     )
@@ -347,9 +431,11 @@ class ChaseScreen extends React.Component {
 
 const mapStateToProps = (state, props) => {
   let { openIssue, navParams } = state.classic
+  let { loginInfo } = state.common
   return {
     openIssue,
-    navParams
+    navParams,
+    loginInfo
   }
 }
 
