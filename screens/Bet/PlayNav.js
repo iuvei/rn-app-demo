@@ -1,12 +1,15 @@
 import React from 'react'
 import {
   View, Text,
-  StyleSheet, Image
+  StyleSheet
 } from 'react-native'
 import {
-  Tabs, Card, WhiteSpace,
-  Button, WingBlank
+  Tabs,
+  Button, Flex
 } from '@ant-design/react-native'
+import {
+  Ionicons
+} from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import { setActivePlay } from '../../actions/classic'
 
@@ -46,6 +49,10 @@ class PlayNav extends React.Component {
       gamesPlayStore: [],
       activeGamesPlay: {}
     }
+    this.onOpenChange = isOpen => {
+      /* tslint:disable: no-console */
+      console.log('是否打开了 Drawer', isOpen.toString());
+    };
   }
 
   componentDidMount() {
@@ -84,29 +91,40 @@ class PlayNav extends React.Component {
   // 根据获取到的彩种玩法 过滤关闭彩种
   // 当发生冲突时候，自动切换
   // 允许设置默认玩法
+
   render() {
     let {playTabs} = this.state
     let {activePlay} = this.props
     let {InitBetView} = this
+
     return (
-      <View style={styles.playNav}>
-        <Tabs
-          style={{height: 10, padding: 0, margin: 0}}
-          tabs={playTabs}
-          initialPage={0}
-          tabBarPosition="top"
-          onTabClick={(tab) => InitBetView(tab)}
-          tabBarUnderlineStyle={{height: 0}}
-          renderTab={(tab, index) => (
-            <Button
-              style={{padding: 0, margin: 0}}
-              size="small"
-              type={tab.code === activePlay.code ? 'primary' : 'ghost'}
-              onPress={() => InitBetView(tab)}>
-              {tab.name}
-            </Button>
-          )}
-        />
+      <View>
+        <Flex>
+          <View style={styles.playNav}>
+            <Tabs
+              style={{height: 10, padding: 0, margin: 0}}
+              tabs={playTabs}
+              initialPage={0}
+              tabBarPosition="top"
+              onTabClick={(tab) => InitBetView(tab)}
+              tabBarUnderlineStyle={{height: 0}}
+              renderTab={(tab, index) => (
+                <Button
+                  style={{padding: 0, margin: 0}}
+                  size="small"
+                  type={tab.code === activePlay.code ? 'primary' : 'ghost'}
+                  onPress={() => InitBetView(tab)}>
+                  {tab.name}
+                </Button>
+              )}
+            />
+          </View>
+          <View style={styles.setting}>
+            <Flex justify="center" align="center" onPress={() => this.props.openDrawer()}>
+              <Ionicons name="ios-add-circle" color="#0170cc" size={30}/>
+            </Flex>
+          </View>
+        </Flex>
       </View>
     )
   }
@@ -131,6 +149,14 @@ export default connect(
 
 const styles = StyleSheet.create({
   playNav: {
-    height: 50
+    height: 50,
+    width: '90%'
+  },
+  setting: {
+    width: '10%',
+    height: 40,
+    marginTop: -7,
+    paddingTop: 5,
+    backgroundColor: '#ffffff'
   }
 })

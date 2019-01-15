@@ -7,12 +7,14 @@ import {
   Tabs, Card, WhiteSpace,
   Button, WingBlank
 } from '@ant-design/react-native'
+import { Drawer } from 'native-base';
 import { connect } from 'react-redux'
 
 import DownTime from './DownTime'
 import PlayNav from './PlayNav'
 import RowBall from './RowBall'
 import Trend from './Trend'
+import FastPlayNav from './SetFastPlayEntry'
 // import BuyPrice from './BuyPrice'
 import LatelyList from './LatelyList'
 import { DownTimeHoc, RowBallHoc } from '../../HOC'
@@ -103,13 +105,25 @@ class BetScreen extends React.Component {
   _onChangeTabs = (tab, number) => {
   }
 
+  closeDrawer = () => {
+    this.drawer._root.close()
+  }
+
+  openDrawer = () => {
+    this.drawer._root.open()
+  }
+
   render() {
     let {ContentTabs, playTabs, actPlay} = this.state
     let {params} = this.props.navigation.state
     return (
       <View style={styles.container}>
+        <Drawer
+          ref={(ref) => { this.drawer = ref; }}
+          content={<FastPlayNav />}
+          onClose={() => this.closeDrawer()} >
         {/* playNav Container */}
-        <PlayNav/>
+        <PlayNav openDrawer={this.openDrawer}/>
 
         {/* down Container */}
         <DownTimeHocView
@@ -142,6 +156,7 @@ class BetScreen extends React.Component {
 
         {/*投注信息*/}
         {/*<BuyPriceHocView/>*/}
+        </Drawer>
       </View>
     )
   }
