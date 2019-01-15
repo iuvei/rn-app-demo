@@ -120,13 +120,13 @@ class Trend extends Component {
         codeList = codeList.map(item => item > 4 ? '大' : '小')
         break
       case 'single':
-        // codeList = codeList.map(item => )
+        codeList = codeList.map(item => item % 2 === 0 ? '双' : '单' )
         break
       case 'prime':
-        codeList = codeList.slice(len - 1, len)
+        codeList = codeList.map(item => [1,2,3,5,7].includes(parseInt(item)) ? '质' : '合')
         break
       case 'zero':
-        codeList = codeList.slice(len - 5, len - 4)
+        codeList = codeList.map(item => item % 3)
         break
     }
 
@@ -140,7 +140,7 @@ class Trend extends Component {
 
   render () {
     let {latelyOpenList} = this.props
-    let {currentList, curDataHead} = this.state
+    let {currentList, curDataHead, curLotteryType} = this.state
     let {dataHead} = currentList || []
     return (
       <View style={styles.container}>
@@ -171,15 +171,20 @@ class Trend extends Component {
                             <Text style={[styles.openNumber, styles.cell]}>{openCode}</Text>
                             <View style={[styles.numbers, styles.cell]}>
                               {
-                                curDataHead.map((number, x) => {
-                                  number = number.toString()
-                                  let flag = codelist?.includes(number)
-                                  return <View key={x} style={styles.number}>
-                                    <Text style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
-                                      ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
-                                  </View>
-
-                                })
+                                WORD_VALUE.includes(curLotteryType) ?
+                                  codelist.map((value, x) => {
+                                    return <View key={x} style={styles.number}>
+                                      <Text style={styles.open}>{value}</Text>
+                                    </View>
+                                  }) :
+                                  curDataHead.map((number, x) => {
+                                    number = number.toString()
+                                    let flag = codelist?.includes(number)
+                                    return <View key={x} style={styles.number}>
+                                      <Text style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
+                                        ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
+                                    </View>
+                                  })
                               }
                             </View>
                           </View>
@@ -250,7 +255,8 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     lineHeight: 16,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   open: {
     width: 16,
