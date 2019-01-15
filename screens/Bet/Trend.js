@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 import {connect} from 'react-redux'
-import {Container, Header, Tab, Tabs, ScrollableTab} from 'native-base'
+import {Tab, Tabs, ScrollableTab} from 'native-base'
 import {Toast} from '@ant-design/react-native'
 
 const SSC_LIST = {
@@ -27,16 +27,20 @@ const SSC_LIST = {
     name: '个位走势'
   }, {
     type: 'big',
-    name: '大小形态'
+    name: '大小形态',
+    dataHead: [1, 2, 3, 4, 5],
   }, {
     type: 'single',
-    name: '单双形态'
+    name: '单双形态',
+    dataHead: [1, 2, 3, 4, 5],
   }, {
     type: 'prime',
-    name: '质合形态'
+    name: '质合形态',
+    dataHead: [1, 2, 3, 4, 5],
   }, {
     type: 'zero',
-    name: '012形态'
+    name: '012形态',
+    dataHead: [1, 2, 3, 4, 5],
   }],
   sscType2: [
     {type: 'wq', name: '万千'},
@@ -52,33 +56,97 @@ const SSC_LIST = {
   ]
 }
 
+const WORD_VALUE = [
+  'big',
+  'single',
+  'prime',
+  'zero',
+]
+
 class Trend extends Component {
   state = {
     currentList: {},
     min: 0,
-    max: 9
+    max: 9,
+    showList: [],
+    curLotteryType: 'wan',
+    curDataHead: [],
   }
 
   componentDidMount () {
+    SSC_LIST.sscType = [].concat(SSC_LIST.sscType1)
     this.setState({
-      currentList: {...SSC_LIST}
+      currentList: {...SSC_LIST},
+      curLotteryType: 'distribute',
+      curDataHead: SSC_LIST.sscType[0].dataHead || SSC_LIST.dataHead
     })
   }
 
-  change = (item) => {
-    console.log(item)
-    Toast.info('change')
+  // item {from: 起始页签index, i: 到达页签index}
+  change = ({i}) => {
+    let {sscType, dataHead} = this.state.currentList
+    let type = sscType[i].type || 'wan'
+    let result = []
+    let curDataHead = sscType[i].dataHead || dataHead
+    this.setState({
+      showList: result,
+      curLotteryType: type,
+      curDataHead
+    })
+  }
+
+  buildCode = (codeList) => {
+    let {curLotteryType} = this.state
+    let len = codeList.length
+    switch (curLotteryType) {
+      case 'distribute':
+        break
+      case 'wan':
+        codeList = codeList.slice(len - 5, len - 4)
+        break
+      case 'qian':
+        codeList = codeList.slice(len - 4, len - 3)
+        break
+      case 'bai':
+        codeList = codeList.slice(len - 3, len - 2)
+        break
+      case 'shi':
+        codeList = codeList.slice(len - 2, len - 1)
+        break
+      case 'ge':
+        codeList = codeList.slice(len - 1, len)
+        break
+      case 'big':
+        codeList = codeList.map(item => item > 4 ? '大' : '小')
+        break
+      case 'single':
+        // codeList = codeList.map(item => )
+        break
+      case 'prime':
+        codeList = codeList.slice(len - 1, len)
+        break
+      case 'zero':
+        codeList = codeList.slice(len - 5, len - 4)
+        break
+    }
+
+    return codeList
+    // if (lottery.type === 6 || this.lottery.type === 7) {
+    //   codeList = [codeList[pksDic.indexOf(curLotteryType)]]
+    // } else if (['distribute', 'big', 'single', 'prime', 'zero', ...lhh].includes(this.curLotteryType)) {
+    //   codeList = this.buildCode(codeList, this.titleName)
+    // }
   }
 
   render () {
     let {latelyOpenList} = this.props
-    let {currentList} = this.state
+    let {currentList, curDataHead} = this.state
     let {dataHead} = currentList || []
     return (
       <View style={styles.container}>
-        <Tabs renderTabBar={() => <ScrollableTab/>}>
+        <Tabs onChangeTab={this.change} renderTabBar={() => <ScrollableTab/>}>
           {
-            currentList?.sscType1?.map((item, index) => {
+            currentList?.sscType?.map((item, index) => {
               return (
                 <Tab heading={item.name} key={index}>
                   <View style={styles.table}>
@@ -87,7 +155,7 @@ class Trend extends Component {
                       <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>
                       <View style={[styles.numbers, styles.cell]}>
                         {
-                          dataHead.map((number, x) => {
+                          curDataHead.map((number, x) => {
                             return <Text style={styles.number} key={x}>{number}</Text>
                           })
                         }
@@ -96,15 +164,21 @@ class Trend extends Component {
                     {
                       latelyOpenList.map((item, index) => {
                         let {openIssue, openCode, codelist} = item
+                        codelist = this.buildCode(codelist)
                         return (
                           <View style={styles.row} key={index}>
                             <Text style={[styles.issue, styles.cell]}>{openIssue.substring(6)}</Text>
                             <Text style={[styles.openNumber, styles.cell]}>{openCode}</Text>
                             <View style={[styles.numbers, styles.cell]}>
                               {
-                                dataHead.map((number, x) => {
-                                  let flag = codelist?.includes(number.toString())
-                                  return <View style={styles.number} key={x}><Text style={flag ? styles.open : {}}>{number}</Text></View>
+                                curDataHead.map((number, x) => {
+                                  number = number.toString()
+                                  let flag = codelist?.includes(number)
+                                  return <View key={x} style={styles.number}>
+                                    <Text style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
+                                      ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
+                                  </View>
+
                                 })
                               }
                             </View>
@@ -174,14 +248,23 @@ const styles = StyleSheet.create({
   },
   number: {
     flex: 1,
+    textAlign: 'center',
+    lineHeight: 16,
+    justifyContent: 'center'
   },
   open: {
     width: 16,
     height: 16,
     textAlign: 'center',
     lineHeight: 16,
-    backgroundColor: '#22ac38',
     borderRadius: 8,
+  },
+  multi: {
+    backgroundColor: '#dd127b',
+    color: '#fff'
+  },
+  single: {
+    backgroundColor: '#22ac38',
     color: '#fff'
   }
 })
