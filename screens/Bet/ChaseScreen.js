@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import {
   ScrollView,
   View,
-  Text
+  Text,
+  StyleSheet
 } from 'react-native'
 import {
   Tabs,
@@ -12,7 +13,8 @@ import {
   InputItem,
   Flex,
   Checkbox,
-  Toast
+  Toast,
+  List
 } from '@ant-design/react-native'
 import { getChaseTime, toBuyLottery } from '../../api/lottery'
 import { toCrypto } from '../../plugin/crypto'
@@ -153,6 +155,7 @@ class ChaseScreen extends React.Component {
 
   buildChaseOrder = () => {
     let showChaseList = []
+    let tmptotal = 0
     let {activeTab, buyCardInfo, orderList, startMultiple, bigMultiple, lowIncome, middleIssue, chaseIssueTotal, nextMultiple, nextType, chaseList} = this.state
     let {total, num, multiple} = buyCardInfo
     if (activeTab === 'lilv') {
@@ -191,6 +194,7 @@ class ChaseScreen extends React.Component {
             showTime: String(val.nextTime).slice(5),
             nextTime: val.nextTime
           })
+          tmptotal += total * multiple
         }
       } else {
         Toast.info('没有符合要求的方案，请调整参数重新计算！')
@@ -209,6 +213,7 @@ class ChaseScreen extends React.Component {
           showTime: String(val.nextTime).slice(5),
           nextTime: val.nextTime
         })
+        tmptotal += total * startMultiple
       }
     }
     if (activeTab === 'fanbei') {
@@ -222,7 +227,7 @@ class ChaseScreen extends React.Component {
           multiple = i < middleIssue ? startMultiple : (startMultiple * Math.pow(nextMultiple, Math.floor(i / middleIssue)))
         }
         if (nextType === 'add') {
-          multiple = i < middleIssue ? startMultiple : (startMultiple + nextMultiple * Math.floor(i / middleIssue))
+          multiple = i < middleIssue ? startMultiple : (Number(startMultiple) + nextMultiple * Math.floor(i / middleIssue))
         }
         if (multiple > 10000) {
           return
@@ -234,11 +239,13 @@ class ChaseScreen extends React.Component {
           showTime: String(val.nextTime).slice(5),
           nextTime: val.nextTime
         })
+        tmptotal += total * multiple
       }
     }
     console.log('showchaselist', showChaseList)
     this.setState({
-      showChaseList: showChaseList
+      showChaseList: showChaseList,
+      total: tmptotal
     })
     // 点击生成订单选中全部
     // this.selectAllTochase = true
@@ -315,97 +322,109 @@ class ChaseScreen extends React.Component {
 
   render() {
     let { chaseIssueTotal, startMultiple, bigMultiple, lowIncome, middleIssue, nextType, nextMultiple, winStop, total, activeTab, showChaseList, isLoading } = this.state
-    let topContent = <View>
-      <Flex justify="around">
-        <Flex.Item>
-          <InputItem labelNumber={5} value={chaseIssueTotal} onChange={v => {
-            this.setState({chaseIssueTotal: v})
-          }}>追号期数</InputItem>
-        </Flex.Item>
-        <Flex.Item>
-          <InputItem labelNumber={5} value={startMultiple} onChange={v => {
-            this.setState({startMultiple: v})
-          }}>起始倍数</InputItem>
-        </Flex.Item>
-      </Flex>
-      {
-        activeTab === 'lilv' &&
+    let topContent = <View style={{backgroundColor: '#cccede'}}>
+      <List>
         <Flex justify="around">
           <Flex.Item>
-            <InputItem labelNumber={5} value={bigMultiple} onChange={v => {
-              this.setState({bigMultiple: v})
-            }}>最大倍投</InputItem>
+            <InputItem labelNumber={5} value={chaseIssueTotal} onChange={v => {
+              this.setState({chaseIssueTotal: v})
+            }}>追号期数</InputItem>
           </Flex.Item>
           <Flex.Item>
-            <InputItem labelNumber={5} value={lowIncome} onChange={v => {
-              this.setState({lowIncome: v})
-            }}>最大收益率</InputItem>
+            <InputItem labelNumber={5} value={startMultiple} onChange={v => {
+              this.setState({startMultiple: v})
+            }}>起始倍数</InputItem>
           </Flex.Item>
         </Flex>
-      }
-      <Flex justify="around">
-        <Flex.Item alignItems="center">
-          <Checkbox checked={winStop} onChange={v => this.setState({winStop: v})}>中奖后停止追号</Checkbox>
-        </Flex.Item>
-        <Flex.Item alignItems="center">
-          <Button type="primary" size="small" onPress={this.beforeBuildOrder}>
-            生成追号单
-          </Button>
-        </Flex.Item>
-      </Flex>
-      {
-        activeTab === 'fanbei' &&
-        <Flex justify="around">
-          <Flex.Item>
-            <Flex justify="around">
-              <Flex.Item alignItems="center">
-                <Text>隔</Text>
-              </Flex.Item>
-              <Flex.Item alignItems="center">
-                <InputItem value={middleIssue} onChange={v => {
+        {
+          activeTab === 'lilv' &&
+          <Flex justify="around">
+            <Flex.Item>
+              <InputItem labelNumber={5} value={bigMultiple} onChange={v => {
+                this.setState({bigMultiple: v})
+              }}>最大倍投</InputItem>
+            </Flex.Item>
+            <Flex.Item>
+              <InputItem labelNumber={5} value={lowIncome} onChange={v => {
+                this.setState({lowIncome: v})
+              }}>最大收益率</InputItem>
+            </Flex.Item>
+          </Flex>
+        }
+        {
+          activeTab === 'fanbei' &&
+          <Flex justify="around">
+            <Flex.Item>
+              <InputItem
+                value={middleIssue}
+                type="number"
+                labelNumber={2}
+                onChange={v => {
                   this.setState({middleIssue: v})
-                }}></InputItem>
-              </Flex.Item>
-              <Flex.Item alignItems="center">
-                <Text>期</Text>
-              </Flex.Item>
-            </Flex>
-          </Flex.Item>
-          <Flex.Item>
-            <Flex>
-              <Flex.Item>
-                <Button size="small" type="ghost">+</Button>
-              </Flex.Item>
-              <Flex.Item>
-                <Button size="small" type="primary">x</Button>
-              </Flex.Item>
-            </Flex>
+                }}
+                extra={<Text>期</Text>}
+              >隔</InputItem>
+            </Flex.Item>
+            <Flex.Item>
+              <Flex justify="around">
+                <Flex.Item alignItems="center">
+                  <Button size="small" type={nextType==='add'?'primary':'ghost'} style={{width: 30}} onPress={() => {
+                    this.setState({nextType: 'add'})
+                  }}>+</Button>
+                </Flex.Item>
+                <Flex.Item alignItems="center">
+                  <Button size="small" type={nextType==='cheng'?'primary':'ghost'} style={{width: 30}} onPress={() => {
+                    this.setState({nextType: 'cheng'})
+                  }}>x</Button>
+                </Flex.Item>
+              </Flex>
+            </Flex.Item>
+            <Flex.Item alignItems="center">
+              <InputItem value={nextMultiple} onChange={v => {
+                this.setState({nextMultiple: v})
+              }} extra={<Text>倍</Text>}></InputItem>
+            </Flex.Item>
+          </Flex>
+        }
+        <Flex justify="around" style={{paddingVertical: 6}}>
+          <Flex.Item alignItems="center">
+            <Checkbox checked={winStop} onChange={v => this.setState({winStop: v})}>中奖后停止追号</Checkbox>
           </Flex.Item>
           <Flex.Item alignItems="center">
-            <InputItem value={nextMultiple} onChange={v => {
-              this.setState({nextMultiple: v})
-            }}></InputItem>
+            <Button type="primary" size="small" onPress={this.beforeBuildOrder}>
+              生成追号单
+            </Button>
           </Flex.Item>
         </Flex>
-      }
+        <Flex justify="around" style={{paddingVertical: 6}}>
+          <Flex.Item alignItems="center">
+            <View><Text style={{fontSize: 14, color: '#198ae7'}}>期数：{showChaseList.length}</Text></View>
+          </Flex.Item>
+          <Flex.Item alignItems="center">
+            <View><Text style={{fontSize: 14, color: '#198ae7'}}>总金额：{total}</Text></View>
+          </Flex.Item>
+        </Flex>
+      </List>
     </View>
     let listContent = <View>
-      <Flex>
-        <Text style={{width: '30%'}}>期号</Text>
-        <Text style={{width: '15%'}}>倍数</Text>
-        <Text style={{width: '25%'}}>金额</Text>
-        <Text style={{width: '30%'}}>截至时间</Text>
+      <Flex style={{height: 40, backgroundColor: '#198ae7'}}>
+        <Text style={{width: '30%', textAlign: 'center', fontSize: 14, color: '#fff'}}>期号</Text>
+        <Text style={{width: '15%', textAlign: 'center', fontSize: 14, color: '#fff'}}>倍数</Text>
+        <Text style={{width: '25%', textAlign: 'center', fontSize: 14, color: '#fff'}}>金额</Text>
+        <Text style={{width: '30%', textAlign: 'center', fontSize: 14, color: '#fff'}}>截至时间</Text>
       </Flex>
-      {
-        showChaseList.map(item => {
-          return <Flex key={item.currentIssue + '_' + item.showTime}>
-            <Text style={{width: '30%'}}>{item.currentIssue}</Text>
-            <Text style={{width: '15%'}}>{item.multiple}</Text>
-            <Text style={{width: '25%'}}>{item.money}</Text>
-            <Text style={{width: '30%'}}>{item.showTime}</Text>
-          </Flex>
-        })
-      }
+      <View style={{paddingVertical: 5}}>
+        {
+          showChaseList.map(item => {
+            return <Flex key={item.currentIssue + '_' + item.showTime} style={{backgroundColor: '#fff', height: 35}}>
+              <Text style={{width: '30%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.currentIssue}</Text>
+              <Text style={{width: '15%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.multiple}</Text>
+              <Text style={{width: '25%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.money}</Text>
+              <Text style={{width: '30%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.showTime}</Text>
+            </Flex>
+          })
+        }
+      </View>
     </View>
 
     return (
@@ -420,10 +439,12 @@ class ChaseScreen extends React.Component {
             })
           }}
           tabs={tabs}>
-          <ScrollView style={{ backgroundColor: 'orange', flex: 1 }}>{topContent}{listContent}</ScrollView>
+          <ScrollView style={{ backgroundColor: 'f0f0f0', flex: 1 }}>{topContent}{listContent}</ScrollView>
         </Tabs>
-        <View style={{height: 50, alignItems: 'center', backgroundColor: 'pink', justifyContent: 'center'}}>
-          <Button loading={isLoading} type="ghost" style={{width: '50%', height: 40}} onPress={this.submitFunc}>立即追号</Button>
+        <View style={{height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center'}}>
+          <Button loading={isLoading} type="ghost" style={{width: '50%', height: 40}} onPress={this.submitFunc}>
+            <Text style={{fontSize: 14}}>立即追号</Text>
+          </Button>
         </View>
       </View>
     )
@@ -445,3 +466,13 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChaseScreen)
+
+const styles = StyleSheet.create({
+  container: {
+
+  },
+  topInput: {
+    fontSize: 14,
+    color: '#333'
+  }
+})
