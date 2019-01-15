@@ -335,7 +335,14 @@ class RowBall extends React.Component {
               <Button
                 key={'Zhuihao'}
                 type="ghost" size="small"
-                onPress={() => addBuyCard()}
+                onPress={() => {
+                  addBuyCard(false, () => {
+                    this.props.navigation.navigate('ChaseScreen', {
+                      orderList: this.props.buyCardData,
+                      buyCardInfo: this.props.buyInfo
+                    })
+                  })
+                }}
                 style={{
                   height: 28,
                   borderRadius: 4

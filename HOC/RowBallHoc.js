@@ -330,7 +330,7 @@ export default (Comp) => {
 
     // onChangeStep = multiple => this.setBuyInfo({multiple})
     // 添加购物车
-    addBuyCard = (toBuy) => {
+    addBuyCard = (toBuy, callBack) => {
       let {navParams, navParams: {lotType}, openIssue} = this.props
       let {activeGamesPlay} = this.state
       let gamesPlayLen = Object.keys(activeGamesPlay).length
@@ -420,6 +420,7 @@ export default (Comp) => {
             buyCardData: [].concat(this.state.buyCardData, orderlist)
           }, () => {
             if (toBuy) this.toBuy()
+            if (callBack) callBack()
             this.clearAllData()
           })
           // this.commitBuyCardAfter()
