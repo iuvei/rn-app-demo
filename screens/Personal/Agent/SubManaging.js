@@ -2,10 +2,14 @@ import React, {Component} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 import {InputItem, Button, Toast, Flex} from '@ant-design/react-native'
 import {connect} from "react-redux"
-import {Tab, Tabs, Picker} from 'native-base'
+import {Tab, Tabs, Picker, ScrollableTab} from 'native-base'
 import {setRebate, downRecharge, updateBaijlWater, updateBaijlRebate, canSignContract} from '../../../api/member'
 import Contract from '../../../components/Contract'
 import Quota from '../../../components/Quota'
+
+const $TOAST = (message) => {
+  Toast.info(message, 1, undefined, false)
+}
 
 class SubManaging extends Component {
   static navigationOptions = {
@@ -38,7 +42,7 @@ class SubManaging extends Component {
         rebateType: 2,
         userId: subUserInfo.userId
       },
-      isCanSign: {}
+      isCanSign: {},
     }
   }
 
@@ -54,7 +58,7 @@ class SubManaging extends Component {
   // 设置返点
   setRebate = () => {
     setRebate(this.state.rebateForm).then(res => {
-      Toast.info(res.message)
+      $TOAST(res.message)
     })
   }
 
@@ -62,11 +66,11 @@ class SubManaging extends Component {
   downRecharge = () => {
     let {chargeData} = this.state
     if (!chargeData.money) {
-      Toast.info('请输入金额')
+      $TOAST('请输入金额')
       return false
     }
     if (!chargeData.tradePassword) {
-      Toast.info('请输入密码')
+      $TOAST('请输入密码')
       return false
     }
     downRecharge(this.state.chargeData).then(res => {
@@ -79,7 +83,7 @@ class SubManaging extends Component {
           }
         })
       }
-      Toast.info(res.message)
+      $TOAST(res.message)
     })
   }
 
@@ -98,12 +102,12 @@ class SubManaging extends Component {
   updateDownWater = () => {
     let {bjlWater} = this.state.updateWater
     if (!bjlWater) {
-      Toast.info('请输入返水！！！')
+      $TOAST('请输入返水！！！')
       return
     }
     updateBaijlWater(this.state.updateWater).then(res => {
       if (res.code === 0) {
-        Toast.info('修改成功')
+        $TOAST('修改成功')
         this.setState({
           updateWater: {
             ...this.state.updateWater,
@@ -111,9 +115,9 @@ class SubManaging extends Component {
           }
         })
       } else if ((res.code + '') === '-3001') {
-        Toast.info('暂未开通')
+        $TOAST('暂未开通')
       } else {
-        Toast.info(res.message || '修改失败')
+        $TOAST(res.message || '修改失败')
       }
     })
   }
@@ -122,7 +126,7 @@ class SubManaging extends Component {
   updateDownBjlRebate = () => {
     updateBaijlRebate(this.state.updateRebate).then(res => {
       if (res.code === 0) {
-        Toast.info('修改成功')
+        $TOAST('修改成功')
         this.setState({
           updateRebate: {
             ...this.state.updateRebate,
@@ -130,9 +134,9 @@ class SubManaging extends Component {
           }
         })
       } else if ((res.code + '') === '-3001') {
-        Toast.info('暂未开通')
+        $TOAST('暂未开通')
       } else {
-        Toast.info(res.message || '修改失败')
+        $TOAST(res.message || '修改失败')
       }
     })
   }
@@ -153,7 +157,8 @@ class SubManaging extends Component {
             真人/体育/电子/彩票返水:{`${userPlatform.peopleBackWater}/${userPlatform.sportBackWater}/${userPlatform.electronBackWater}/${userPlatform.lotterBackWater}`}</Text>
         </View>
         <View style={{height: 500}}>
-          <Tabs tabStyle={{color: '#0070cc'}} activeTabStyle={{backgroundColor: '#eff5fb'}}>
+          <Tabs tabStyle={{color: '#0070cc'}} renderTabBar={() => <ScrollableTab/>}
+                activeTabStyle={{backgroundColor: '#eff5fb'}}>
             <Tab heading={'升点'}>
               <View style={styles.tab}>
                 <View style={styles.textArea}>
