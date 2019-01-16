@@ -15,7 +15,8 @@ export default class SvgIcon extends Component {
 
     if (!svgXmlData) {
       let err_msg = `没有"${this.props.icon}"这个icon`
-      throw new Error(err_msg)
+      console.warn(err_msg)
+      // throw new Error(err_msg)
     }
     return (
       <SvgUri

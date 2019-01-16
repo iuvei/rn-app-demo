@@ -13,7 +13,8 @@ import {
   Icon,
   Text
 } from 'native-base'
-import {MyIconFont} from '../../components/MyIconFont'
+// import {MyIconFont} from '../../components/MyIconFont'
+import SvgIcon from '../../components/SvgIcon'
 import {minbankCodeMap} from '../../constants/glyphMapHex'
 import {
   AsetUserBankCards
@@ -85,7 +86,7 @@ class BankManager extends React.Component {
             <ImageBackground style={{width: '100%', height: 115}} source={bgimg}>
               <View style={{flexDirection: 'row'}}>
                 <View style={{marginLeft: 25, marginTop: 12, width: 40, height: 40, borderRadius: 40, backgroundColor: '#ffffff', alignItems: 'center'}}>
-                  <MyIconFont name={'icon_'+minbankCodeMap[item.bankCode]+'_min'} size={30} style={{lineHeight: 40}} />
+                  <SvgIcon icon={minbankCodeMap[String(item.bankCode).toUpperCase()]+'_min'} size={30} style={{marginTop: 5}} />
                 </View>
                 <Text style={{marginTop: 16, marginLeft: 16, color: '#ffffff'}}>{item.bankName}</Text>
               </View>

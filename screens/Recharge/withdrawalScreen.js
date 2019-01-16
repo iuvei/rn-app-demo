@@ -2,8 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {ScrollView, StyleSheet, ImageBackground, Text, View, Dimensions} from 'react-native'
 import {Picker, Button, List, InputItem, Modal, Toast } from '@ant-design/react-native'
-import {MyIconFont} from '../../components/MyIconFont'
-import {RechargeChannelIconMap} from '../../constants/glyphMapHex'
+// import {MyIconFont} from '../../components/MyIconFont'
+import SvgIcon from '../../components/SvgIcon'
+import {RechargeChannelIconMap, minbankCodeMap} from '../../constants/glyphMapHex'
 import {
   AsetAllBalance,
   AsetUserBankCards,
@@ -233,9 +234,10 @@ class Withdrawal extends React.Component {
               >
                 <List.Item
                   arrow="horizontal"
+                  style={{height: 40, borderBottomWidth: 0}}
                   thumb={
                     curBankItem.bankCode ?
-                      <MyIconFont name={'icon_' + RechargeChannelIconMap[curBankItem.bankCode]} size={30}/> : null
+                      <SvgIcon icon={minbankCodeMap[String(curBankItem.bankCode).toUpperCase()]} size={80}/> : null
                   }
                 ></List.Item>
               </Picker>
