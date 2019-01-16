@@ -29,12 +29,16 @@ class FastPlayNav extends React.Component {
     }
   }
 
+  componentDidMount() {
+
+  }
+
   initPlayNav = ({lotType}) => {
-    let { newCusNav } = this.props
+    let { newCusPlayNav } = this.props
     let {navBar} = JSON.parse(JSON.stringify(norLot[lotType]))
     this.setState({
       navBar,
-      newCusNav,
+      newCusNav: newCusPlayNav,
       activeTitle: navBar[0].name
     })
   }
