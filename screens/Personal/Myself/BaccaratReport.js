@@ -1,60 +1,70 @@
 import React, {PureComponent} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, TouchableHighlight} from 'react-native'
 import UIListView from '../../../components/UIListView'
 import {WingBlank, Flex, InputItem} from '@ant-design/react-native'
 import QueryDate from '../../../components/QueryDate'
 import dayjs from 'dayjs'
-import {toFixed4, formatDate} from '../../../utils/MathUtils'
+import {toFixed4} from '../../../utils/MathUtils'
 
 class FlatListItem extends PureComponent {
   render () {
     let {
-      lotterName,
-      profitLoss,
-      purchaseAmount,
+      dgcastAmount,
+      rechargeActualAmount,
+      withdrawActualAmount,
+      realConsumeAmount,
+      bonusAmount,
       rebateAmount,
-      withdrawAmount,
-      bonus,
-      bettingAmount,
-      teamRebateAmount,
+      waterAmount,
+      activityAmount,
+      profitAmount,
     } = this.props.item
     return (
       <View style={styles.table}>
-        <Flex><Text style={styles.capital}>{lotterName}</Text></Flex>
         <Flex direction={'row'} justify={'space-between'}>
           <View style={styles.column}>
-            <Text style={styles.title}>团队返点:</Text>
-            <Text style={styles.value}>{teamRebateAmount}</Text>
+            <Text style={styles.title}>代购额:</Text>
+            <Text style={styles.value}>{toFixed4(dgcastAmount)}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={styles.title}>盈亏:</Text>
-            <Text style={styles.value}>{toFixed4(profitLoss)}</Text>
+            <Text style={styles.title}>充值:</Text>
+            <Text style={styles.value}>{toFixed4(rechargeActualAmount)}</Text>
           </View>
         </Flex>
         <Flex direction={'row'} justify={'space-between'}>
           <View style={styles.column}>
-            <Text style={styles.title}>代购额:</Text>
-            <Text style={styles.value}>{toFixed4(purchaseAmount)}</Text>
+            <Text style={styles.title}>提现:</Text>
+            <Text style={styles.value}>{toFixed4(withdrawActualAmount)}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={styles.title}>个人返点:</Text>
+            <Text style={styles.title}>消费:</Text>
+            <Text style={styles.value}>{toFixed4(realConsumeAmount)}</Text>
+          </View>
+        </Flex>
+        <Flex direction={'row'} justify={'space-between'}>
+          <View style={styles.column}>
+            <Text style={styles.title}>中奖:</Text>
+            <Text style={styles.value}>{toFixed4(bonusAmount)}</Text>
+          </View>
+          <View style={styles.column}>
+            <Text style={styles.title}>返点:</Text>
             <Text style={styles.value}>{toFixed4(rebateAmount)}</Text>
           </View>
         </Flex>
         <Flex direction={'row'} justify={'space-between'}>
           <View style={styles.column}>
-            <Text style={styles.title}>撤单:</Text>
-            <Text style={styles.value}>{toFixed4(withdrawAmount)}</Text>
+            <Text style={styles.title}>返水:</Text>
+            <Text style={styles.value}>{toFixed4(waterAmount)}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={styles.title}>奖金:</Text>
-            <Text style={styles.value}>{toFixed4(bonus)}</Text>
+            <Text style={styles.title}>活动:</Text>
+            <Text style={styles.value}>{toFixed4(activityAmount)}</Text>
           </View>
         </Flex>
         <Flex direction={'row'} justify={'space-between'}>
           <View style={styles.column}>
-            <Text style={styles.title}>投注:</Text>
-            <Text style={styles.value}>{toFixed4(bettingAmount)}</Text>
+            <Text style={styles.title}>盈亏:</Text>
+            <Text style={styles.value}>{toFixed4(profitAmount)}</Text>
           </View>
           <View style={styles.column}>
           </View>
@@ -71,17 +81,16 @@ export default class BaccaratReport extends React.Component {
 
   constructor (props) {
     super(props)
-    let end = formatDate()
-    let start = formatDate(dayjs().subtract(1, 'day'))
+    let end = dayjs().format('YYYY-MM-DD')
+    let start = dayjs().subtract(1, 'day').format('YYYY-MM-DD')
     this.state = {
       KeyName: 'BaccaratReport',
-      api: '/frontReport/reportform/getUserLotteryReport',
+      api: '/frontReport/count/bjlMineReport',
       isShow: false,
       params: {
-        lotterCode: '',
+        orderType: 2, // 0彩票,1游戏，2 百家乐
         pageNumber: 1,
         pageSize: 10,
-        reportType: 0,
         startTime: start,
         endTime: end
       }
@@ -130,8 +139,8 @@ export default class BaccaratReport extends React.Component {
             params={params}
             renderItem={this.renderItem}
             beforeUpdateList={({res}, fn) => {
-              let dataList = res.data && res.data.pageColumns ? res.data.pageColumns : []
-              let {currentPage, total} = res.data.pageInfo
+              let dataList = res.data ? [res.data] : []
+              let {currentPage, total} = res.data
               let NullData = Math.ceil(total / 10) < currentPage
               fn(NullData ? [] : {dataList})
             }}

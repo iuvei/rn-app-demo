@@ -98,6 +98,7 @@ class BetScreen extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.navParams({})
     this.setState = () => () => {
     }
   }

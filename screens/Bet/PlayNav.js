@@ -12,6 +12,8 @@ import {
 } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import { setActivePlay, setCustomPlayNav } from '../../actions/classic'
+import norLot from "../../data/nor-lot";
+import _ from 'lodash'
 
 class PlayNav extends React.Component {
   constructor(props) {
@@ -68,10 +70,22 @@ class PlayNav extends React.Component {
   }
 
   componentWillReceiveProps(np) {
+    let {navParams} = this.props
+    if (!_.isEqual(navParams, np.navParams) && Object.keys(np.navParams).length) {
+      this.initPlayNav(np.navParams)
+    }
     // let {gamesPlayStore} = this.props
     // if (!_.isEqual(gamesPlayStore !== np.gamesPlayStore)) {
     // console.log('你的数据改变了', 'play')
     // }
+  }
+
+  initPlayNav = ({lotType}) => {
+    let { newCusPlayNav } = this.props
+    let {navBar} = JSON.parse(JSON.stringify(norLot[lotType]))
+    this.setState({
+      playTabs: newCusPlayNav.length ? newCusPlayNav : navBar[0].subnav[0].play
+    })
   }
 
   InitBetView = (item) => {

@@ -34,12 +34,12 @@ const classic = handleActions({
   },
   SET_OPEN_ISSUE: (state, {payload}) => {
     return {
-      ...state, newCusPlayNav: payload
+      ...state, openIssue: payload
     }
   },
   SET_CUSTOM_PLAY_NAV: (state, {payload}) => {
     return {
-      ...state, openIssue: payload
+      ...state, newCusPlayNav: payload
     }
   },
 }, initialState)
