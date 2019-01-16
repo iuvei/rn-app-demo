@@ -13,7 +13,6 @@ class AudioPlay extends React.PureComponent {
   }
 
   playAudio = async (soundType) => {
-    console.log(soundType)
     const soundObject = new Expo.Audio.Sound()
     if (soundType.type && this.props.audioSwitch) {
       try {

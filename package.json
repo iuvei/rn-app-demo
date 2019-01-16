@@ -15,6 +15,7 @@
     "@expo/samples": "2.1.1",
     "@expo/vector-icons": "^8.1.0",
     "axios": "^0.18.0",
+    "crypto-js": "^3.1.9-1",
     "dayjs": "^1.7.8",
     "expo": "^31.0.2",
     "lodash": "^4.17.11",
@@ -26,14 +27,14 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-collapsible": "^1.4.0",
     "react-native-render-html": "^3.10.0",
+    "react-native-svg-uri": "^1.2.3",
     "react-native-ultimate-listview": "^3.3.0",
     "react-navigation": "^2.18.2",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
     "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.3.0",
-    "crypto-js": "^3.1.9-1"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.11.0",
