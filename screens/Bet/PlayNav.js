@@ -72,11 +72,9 @@ class PlayNav extends React.Component {
       this.setState({
         playTabs: data
       }, () => this.InitBetView(data[0]))
-      if(!newCusPlayNav.length) { // 本地没有数据的情况
-        this.props.setCustomPlayNav(plays)
-        d[lotType] = plays
-        AsyncStorage.setItem('setLocalCustomPlays', JSON.stringify(d))
-      }
+      this.props.setCustomPlayNav(data)
+      d[lotType] = data
+      AsyncStorage.setItem('setLocalCustomPlays', JSON.stringify(d))
     })
   }
 
