@@ -150,7 +150,7 @@ class BetScreen extends React.Component {
           </View>
           <View>
             <ScrollView>
-              <Trend/>
+              <Trend activeLot={params}/>
             </ScrollView>
           </View>
         </Tabs>

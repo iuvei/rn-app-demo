@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native'
 import {connect} from 'react-redux'
 import {Tab, Tabs, ScrollableTab} from 'native-base'
 import {Toast} from '@ant-design/react-native'
-
+// 时时彩
 const SSC_LIST = {
   dataHead: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   sscType: [],
@@ -55,7 +55,145 @@ const SSC_LIST = {
     {type: 'sg', name: '十个'}
   ]
 }
+// 11选5
+const SYXW_LIST = {
+  dataHead: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11'],
+  sscType: [{
+    type: 'distribute',
+    name: '号码分布'
+  }, {
+    type: 'wan',
+    name: '万位走势'
+  }, {
+    type: 'qian',
+    name: '千位走势'
+  }, {
+    type: 'bai',
+    name: '百位走势'
+  }, {
+    type: 'shi',
+    name: '十位走势'
+  }, {
+    type: 'ge',
+    name: '个位走势'
+  }]
+}
+// pk10
+const PKS_LIST = {
+  dataHead: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  sscType: [{
+    type: 'first',
+    name: '冠军'
+  }, {
+    type: 'second',
+    name: '亚军'
+  }, {
+    type: 'third',
+    name: '季军'
+  }, {
+    type: 'forth',
+    name: '第四名'
+  }, {
+    type: 'fifth',
+    name: '第五名'
+  }, {
+    type: 'sixth',
+    name: '第六名'
+  }, {
+    type: 'seventh',
+    name: '第七名'
+  }, {
+    type: 'eighth',
+    name: '第八名'
+  }, {
+    type: 'ninth',
+    name: '第九名'
+  }, {
+    type: 'last',
+    name: '第十名'
+  }]
+}
+// 快3
+const K3_LIST = {
+  dataHead: [1, 2, 3, 4, 5, 6],
+  sscType: [{
+    type: 'distribute',
+    name: '号码分布'
+  }, {
+    type: 'bai',
+    name: '百位走势'
+  }, {
+    type: 'shi',
+    name: '十位走势'
+  }, {
+    type: 'ge',
+    name: '个位走势'
+  }]
+}
+// 低频彩、3d
+const DPC_LIST = {
+  dataHead: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  sscType: [{
+    type: 'distribute',
+    name: '号码分布'
+  }, {
+    type: 'bai',
+    name: '百位走势'
+  }, {
+    type: 'shi',
+    name: '十位走势'
+  }, {
+    type: 'ge',
+    name: '个位走势'
+  }]
+}
+// 基诺、快乐彩
+const KLC_LIST = {
+  dataHead: [],
+  sscType: [{
+    type: 'kaijiang',
+    name: '开奖走势'
+  }]
+}
+// 快乐十分
+const KLSF_LIST = {
+  dataHead: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  sscType: [{
+    type: 'first',
+    name: '第一位'
+  }, {
+    type: 'second',
+    name: '第二位'
+  }, {
+    type: 'third',
+    name: '第三位'
+  }, {
+    type: 'forth',
+    name: '第四位'
+  }, {
+    type: 'fifth',
+    name: '第五位'
+  }, {
+    type: 'sixth',
+    name: '第六位'
+  }, {
+    type: 'seventh',
+    name: '第七位'
+  }, {
+    type: 'eighth',
+    name: '第八位'
+  }]
+}
 
+const CATEGORIES_LIST = {
+  ssc: SSC_LIST,
+  kl8: KLC_LIST,
+  pk10: PKS_LIST,
+  syx5: SYXW_LIST,
+  k3: K3_LIST,
+  dpc: DPC_LIST
+}
+// 不使用原始值的类型，在这里添加例外
 const WORD_VALUE = [
   'big',
   'single',
@@ -69,16 +207,22 @@ class Trend extends Component {
     min: 0,
     max: 9,
     showList: [],
-    curLotteryType: 'wan',
-    curDataHead: [],
+    curLotteryType: 'wan',  // 当前标签页
+    curDataHead: [],  // 当前标签头部内容
+    curCategory: 'ssc', // 当前彩种类型
   }
 
   componentDidMount () {
-    SSC_LIST.sscType = [].concat(SSC_LIST.sscType1)
+    let {realCategory} = this.props.activeLot
+    let list = CATEGORIES_LIST[realCategory]
+    if (realCategory === 'ssc') {
+      list.sscType = [].concat(list.sscType1)
+    }
     this.setState({
-      currentList: {...SSC_LIST},
+      currentList: {...list},
       curLotteryType: 'distribute',
-      curDataHead: SSC_LIST.sscType[0].dataHead || SSC_LIST.dataHead
+      curDataHead: list.sscType[0].dataHead || list.dataHead,
+      curCategory: realCategory
     })
   }
 
@@ -95,6 +239,7 @@ class Trend extends Component {
     })
   }
 
+  // 不同彩种不同类型使用不同的处理方式 待完善
   buildCode = (codeList) => {
     let {curLotteryType} = this.state
     let len = codeList.length
@@ -120,10 +265,10 @@ class Trend extends Component {
         codeList = codeList.map(item => item > 4 ? '大' : '小')
         break
       case 'single':
-        codeList = codeList.map(item => item % 2 === 0 ? '双' : '单' )
+        codeList = codeList.map(item => item % 2 === 0 ? '双' : '单')
         break
       case 'prime':
-        codeList = codeList.map(item => [1,2,3,5,7].includes(parseInt(item)) ? '质' : '合')
+        codeList = codeList.map(item => [1, 2, 3, 5, 7].includes(parseInt(item)) ? '质' : '合')
         break
       case 'zero':
         codeList = codeList.map(item => item % 3)
@@ -215,14 +360,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#ededed'
-  },
-  listItem: {
-    backgroundColor: '#fff',
-    margin: 10,
-    marginBottom: 0,
-    borderRadius: 8,
-    padding: 10
+    backgroundColor: '#fff'
   },
   table: {},
   header: {
@@ -244,7 +382,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 0.5
   },
   openNumber: {
-    flex: 2,
+    flex: 4,
     borderRightWidth: 0.5
   },
   numbers: {
@@ -255,6 +393,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     lineHeight: 16,
+    fontSize: 12,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -262,6 +401,7 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     textAlign: 'center',
+    fontSize: 12,
     lineHeight: 16,
     borderRadius: 8,
   },
