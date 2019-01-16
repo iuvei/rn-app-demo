@@ -13,6 +13,7 @@ import {
 import { connect } from 'react-redux'
 import { setActivePlay, setCustomPlayNav } from '../../actions/classic'
 import norLot from "../../data/nor-lot";
+import _ from 'lodash'
 
 class PlayNav extends React.Component {
   constructor(props) {
