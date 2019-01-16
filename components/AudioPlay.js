@@ -2,10 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 // 播放属性 {type: ''}
-class AudioPlay extends React.Component {
+class AudioPlay extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.state = {}
   }
 
   componentWillReceiveProps(nextProps) {
@@ -14,6 +13,7 @@ class AudioPlay extends React.Component {
   }
 
   playAudio = async (soundType) => {
+    console.log(soundType)
     const soundObject = new Expo.Audio.Sound()
     if (soundType.type && this.props.audioSwitch) {
       try {
