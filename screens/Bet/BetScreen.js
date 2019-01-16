@@ -18,7 +18,7 @@ import FastPlayNav from './SetFastPlayEntry'
 // import BuyPrice from './BuyPrice'
 import LatelyList from './LatelyList'
 import { DownTimeHoc, RowBallHoc } from '../../HOC'
-import { setNavParams, getGamesPlay } from '../../actions/classic'
+import { setNavParams, getGamesPlay, setActivePlay } from '../../actions/classic'
 import { modeInfo } from '../../data/options'
 
 const DownTimeHocView = DownTimeHoc(DownTime)
@@ -99,6 +99,7 @@ class BetScreen extends React.Component {
 
   componentWillUnmount() {
     this.props.navParams({})
+    this.props.setActivePlay({})
     this.setState = () => () => {
     }
   }
@@ -172,6 +173,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navParams: params => dispatch(setNavParams(params)),
+    setActivePlay: params => dispatch(setActivePlay(params)),
     getGamesPlay: params => dispatch(getGamesPlay(params))
   }
 }
