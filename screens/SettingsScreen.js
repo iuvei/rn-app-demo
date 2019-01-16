@@ -15,11 +15,14 @@ import {
   AsetUserSecureLevel,
   AsetUserSecureConfig,
   setLoginStatus,
-  setShowFloatBall
+  setShowFloatBall,
+  AsetSoundType,
+  AsetAudioSwitch
 } from '../actions/common'
 import { loginOut } from '../api/basic'
 import { WebBrowser } from 'expo'
 import { host } from '../api.config'
+import AudioPlay from '../components/AudioPlay'
 
 class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -29,7 +32,8 @@ class SettingsScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      audioChecked: true
+      audioChecked: true,
+      soundType: {type: ''}
     }
     props.AsetUserSecureLevel()
     props.AsetUserSecureConfig()
@@ -137,9 +141,13 @@ class SettingsScreen extends React.Component {
             extra={
               <Switch
                 value={audioChecked}
-                onValueChange={(v) => this.setState({
-                  audioChecked: v
-                })}
+                onValueChange={(v) => {
+                  this.setState({
+                    audioChecked: v,
+                  })
+                  this.props.AsetAudioSwitch(v)
+                  this.props.AsetSoundType({type: ''})
+                }}
                 trackColor={{true: '#05bde1'}}
                 thumbColor={'#ffffff'}
               />
@@ -151,11 +159,13 @@ class SettingsScreen extends React.Component {
         <WhiteSpace size="sm" />
         <List>
           <List.Item
-            thumb={<Ionicons name="ios-musical-notes" color="#333333" size={20}/>}
+            thumb={<Ionicons name="ios-basketball" color="#333333" size={20}/>}
             extra={
               <Switch
                 value={this.props.showFloatBall}
-                onValueChange={(v) => this.props.setShowFloatBall(v)}
+                onValueChange={(v) => {
+                  this.props.setShowFloatBall(v)
+                }}
                 trackColor={{true: '#05bde1'}}
                 thumbColor={'#ffffff'}
               />
@@ -184,6 +194,7 @@ class SettingsScreen extends React.Component {
         <View style={{paddingHorizontal: 22, paddingVertical: 32}}>
           <Button type="warning" onPress={this.signOut}>退出登录</Button>
         </View>
+        <AudioPlay soundType={this.state.soundType}/>
       </ScrollView>
     )
   }
@@ -202,6 +213,8 @@ const mapDispatchToProps = (dispatch) => {
     AsetUserSecureConfig: (data) => { dispatch(AsetUserSecureConfig(data)) },
     setLoginStatus: (data) => { dispatch(setLoginStatus(data)) },
     setShowFloatBall: (data) => { dispatch(setShowFloatBall(data)) },
+    AsetAudioSwitch: (data) => { dispatch(AsetAudioSwitch(data)) },
+    AsetSoundType: (data) => { dispatch(AsetSoundType(data)) },
   }
 }
 

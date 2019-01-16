@@ -90,7 +90,9 @@ const initialState = {
   userSecurityLevel: {}, // 账户安全等级
   userSecurityConfig: {}, // 解绑资金密码，GA密码，银行卡姓名开关
   userPlatformInfo: [],
-  serviceUrl: {} //  客服地址
+  serviceUrl: {}, //  客服地址
+  audioSwitch: true, // 声音开关
+  soundType: {type: ''}, // 声音类型
 }
 
 // 常规处理
@@ -106,6 +108,18 @@ const common = handleActions({
       ...state,
       loginInfo: payload,
       userId: payload.userId
+    }
+  },
+  SET_AUDIO_SWITCH: (state, {payload}) => {
+    return {
+      ...state,
+      audioSwitch: payload
+    }
+  },
+  SET_SOUND_TYPE: (state, {payload}) => {
+    return {
+      ...state,
+      soundType: payload
     }
   },
   SET_CUSTOMIZE_LOTTERY: (state, {payload}) => {

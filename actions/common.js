@@ -72,6 +72,20 @@ export const setActiveAccount = (data) => {
   }
 }
 
+export const AsetAudioSwitch = (data) => {
+  return {
+    type: 'SET_AUDIO_SWITCH',
+    payload: data
+  }
+}
+
+export const AsetSoundType = (data) => {
+  return {
+    type: 'SET_SOUND_TYPE',
+    payload: data
+  }
+}
+
 export const setActiveUsualLot = createAction(
   'SET_ACTIVE_USUAL_LOT',
   async (data) => {
