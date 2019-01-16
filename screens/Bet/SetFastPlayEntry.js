@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   View, Text,
-  StyleSheet, ScrollView
+  StyleSheet, ScrollView, AsyncStorage
 } from 'react-native'
 import {
   Button, Flex, WhiteSpace, Toast
@@ -23,9 +23,14 @@ class FastPlayNav extends React.Component {
   }
 
   componentWillReceiveProps(np) {
-    let {navParams} = this.props
+    let {navParams, newCusPlayNav} = this.props
     if (!_.isEqual(navParams, np.navParams) && Object.keys(np.navParams).length) {
       this.initPlayNav(np.navParams)
+    }
+    if (!_.isEqual(newCusPlayNav, np.newCusPlayNav)) {
+      this.setState({
+        newCusNav: np.newCusPlayNav
+      })
     }
   }
 
@@ -59,20 +64,33 @@ class FastPlayNav extends React.Component {
         Toast.info(`最多设置${maxNum}个！`)
       }
     } else {
-      this.setState(prevState => ({
-        newCusNav: prevState.newCusNav.map(item => item.code !== code)
-      }))
+      this.setState(prevState => (
+        {
+          newCusNav: prevState.newCusNav.filter(item => item.code !== code)
+        }
+      ))
     }
   }
 
   submitCumSubs = () => {
     let { newCusNav } = this.state
     this.props.setCustomPlayNav(newCusNav)
+    this.setLocalCustomPlays(newCusNav)
+  }
+
+  setLocalCustomPlays = (data) => {
+    let { lotType } = this.props.navParams
+    AsyncStorage.getItem('setLocalCustomPlays').then(p => {
+      let d = JSON.parse(p) || {}
+      d[lotType] = data
+      AsyncStorage.setItem('setLocalCustomPlays', JSON.stringify(d))
+      this.props.onClose()
+    })
   }
 
   resetCumSubs = () => {
-    let { newCusNav } = this.props
-    this.setState({newCusNav})
+    let { newCusPlayNav } = this.props
+    this.setState({newCusPlayNav})
   }
 
   render() {

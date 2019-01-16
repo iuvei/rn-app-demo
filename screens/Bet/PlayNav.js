@@ -1,11 +1,10 @@
 import React from 'react'
 import {
   View, Text,
-  StyleSheet
+  StyleSheet, AsyncStorage, ScrollView
 } from 'react-native'
 import {
-  Tabs,
-  Button, Flex
+  Flex
 } from '@ant-design/react-native'
 import {
   Ionicons
@@ -20,25 +19,9 @@ class PlayNav extends React.Component {
     super(props)
     this.state = {
 
-      playTabs: [
-        {code: 'lo1_5x_fs', name: '五星复式'},
-        {code: 'lo1_5x_ds', name: '五星单式'},
-        {code: 'lo1_rx_r4fs', name: '任四复式'},
-        {code: 'lo1_rx_r4ds', name: '任四单式'},
-        {code: 'lo1_rx_r3fs', name: '任三复式'},
-        {code: 'lo1_rx_r3ds', name: '任三单式'},
-        {code: 'lo1_rx_r3z3', name: '任三组三'},
-        {code: 'lo1_rx_r3z6', name: '任三组六'},
-        {code: 'lo1_rx_r3hh', name: '任三混合'}
-      ],
+      playTabs: [],
 
-      localData: {
-        ssc: [
-          {code: 'lo1_5x_fs', name: '五星复式'},
-          {code: 'lo1_5x_ds', name: '五星单式'},
-          {code: 'lo1_5x_zh', name: '五星组合'}
-        ]
-      },
+      localData: {},
 
       // 五星+其子nav 和 选中的
       navList: [],
@@ -58,21 +41,18 @@ class PlayNav extends React.Component {
   }
 
   componentDidMount() {
-    // setTimeout(() => {
-    //   let data = [
-    //     {code: 'lo1_5x_zh', name: '五星组合'}
-    //   ]
-    //   this.setState({
-    //     playTabs: [].concat(this.state.playTabs, data)
-    //   })
-    // }, 3000)
-    this.InitBetView()
+
   }
 
   componentWillReceiveProps(np) {
-    let {navParams} = this.props
+    let {navParams, newCusPlayNav} = this.props
     if (!_.isEqual(navParams, np.navParams) && Object.keys(np.navParams).length) {
       this.initPlayNav(np.navParams)
+    }
+    if (!_.isEqual(newCusPlayNav, np.newCusPlayNav)) {
+      this.setState({
+        playTabs: np.newCusPlayNav
+      }, () => this.InitBetView(np.newCusPlayNav[0]))
     }
     // let {gamesPlayStore} = this.props
     // if (!_.isEqual(gamesPlayStore !== np.gamesPlayStore)) {
@@ -81,10 +61,22 @@ class PlayNav extends React.Component {
   }
 
   initPlayNav = ({lotType}) => {
-    let { newCusPlayNav } = this.props
-    let {navBar} = JSON.parse(JSON.stringify(norLot[lotType]))
-    this.setState({
-      playTabs: newCusPlayNav.length ? newCusPlayNav : navBar[0].subnav[0].play
+    AsyncStorage.getItem('setLocalCustomPlays').then(p => {
+      let d = JSON.parse(p) || {}
+      let newCusPlayNav = d[lotType] ? d[lotType] : []
+      let {navBar} = JSON.parse(JSON.stringify(norLot[lotType]))
+      let plays = navBar[0].subnav[0].play.map(item => {
+        return {...item, name: `${navBar[0].name}${navBar[0].subnav[0].title}${item.name}`}
+      })
+      let data = newCusPlayNav.length ? newCusPlayNav : plays
+      this.setState({
+        playTabs: data
+      }, () => this.InitBetView(data[0]))
+      if(!newCusPlayNav.length) { // 本地没有数据的情况
+        this.props.setCustomPlayNav(plays)
+        d[lotType] = plays
+        AsyncStorage.setItem('setLocalCustomPlays', JSON.stringify(d))
+      }
     })
   }
 
@@ -115,23 +107,24 @@ class PlayNav extends React.Component {
       <View>
         <Flex>
           <View style={styles.playNav}>
-            <Tabs
-              style={{height: 10, padding: 0, margin: 0}}
-              tabs={playTabs}
-              initialPage={0}
-              tabBarPosition="top"
-              onTabClick={(tab) => InitBetView(tab)}
-              tabBarUnderlineStyle={{height: 0}}
-              renderTab={(tab, index) => (
-                <Button
-                  style={{padding: 0, margin: 0}}
-                  size="small"
-                  type={tab.code === activePlay.code ? 'primary' : 'ghost'}
-                  onPress={() => InitBetView(tab)}>
-                  {tab.name}
-                </Button>
-              )}
-            />
+            <View style={{backgroundColor: '#ffffff',height: 42}}>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                {
+                  playTabs.map((tab, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={[styles.btnDefault, tab.code === activePlay.code ? styles.btnActive : '']}>
+                        <Text
+                          style={[styles.btnDefaultText, tab.code === activePlay.code ? styles.btnActiveText : '']}
+                          numberOfLines={1}
+                          onPress={() => InitBetView(tab)}>{tab.name}</Text>
+                      </View>
+                    )
+                  })
+                }
+              </ScrollView>
+            </View>
           </View>
           <View style={styles.setting}>
             <Flex justify="center" align="center" onPress={() => this.props.openDrawer()}>
@@ -165,7 +158,7 @@ export default connect(
 const styles = StyleSheet.create({
   playNav: {
     height: 50,
-    width: '90%'
+    width: '90%',
   },
   setting: {
     width: '10%',
@@ -173,5 +166,27 @@ const styles = StyleSheet.create({
     marginTop: -7,
     paddingTop: 5,
     backgroundColor: '#ffffff'
-  }
+  },
+  btnDefault: {
+    width: 100,
+    height: 26,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#f0f0f0',
+    borderRadius: 20,
+    marginRight: 4
+  },
+  btnActive: {
+    borderColor: '#016fca',
+  },
+  btnDefaultText: {
+    fontSize: 12,
+    paddingLeft: 2,
+    paddingRight: 2,
+    lineHeight:26,
+    textAlign: 'center'
+  },
+  btnActiveText: {
+    color: '#016fca',
+  },
 })

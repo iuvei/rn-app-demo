@@ -121,7 +121,7 @@ class BetScreen extends React.Component {
       <View style={styles.container}>
         <Drawer
           ref={(ref) => { this.drawer = ref; }}
-          content={<FastPlayNav />}
+          content={<FastPlayNav onClose={() => this.closeDrawer()} />}
           onClose={() => this.closeDrawer()} >
         {/* playNav Container */}
         <PlayNav openDrawer={this.openDrawer}/>
