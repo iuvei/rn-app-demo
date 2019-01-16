@@ -1,16 +1,17 @@
 import React from 'react'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import {ScrollView, StyleSheet, View, Text, Platform} from 'react-native'
-import { Accordion, Drawer, List, Button, WhiteSpace, Tabs, Radio, InputItem, Toast } from '@ant-design/react-native';
+import { Accordion, Drawer, List, Button, WhiteSpace, Tabs, Radio, InputItem, Toast } from '@ant-design/react-native'
 import {getRechargeChannels, commitRecharge} from '../../api/member'
 import {isObject} from 'lodash'
-import {MyIconFont} from '../../components/MyIconFont'
-import {RechargeChannelIconMap} from '../../constants/glyphMapHex'
+// import {MyIconFont} from '../../components/MyIconFont'
+import SvgIcon from '../../components/SvgIcon'
+import {RechargeChannelIconMap, minbankCodeMap} from '../../constants/glyphMapHex'
 import {setActiveAccount} from '../../actions/common'
 import Header from '../../components/Header'
 import {platformKey, prependUrl} from '../../api.config'
 
-const RadioItem = Radio.RadioItem;
+const RadioItem = Radio.RadioItem
 
 class RechargeScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -212,7 +213,7 @@ class RechargeScreen extends React.Component {
                     paddingLeft: 50
                   }}
                 >
-                  <MyIconFont name={'icon_'+RechargeChannelIconMap[item.bankCode]} size={30}/>
+                  <SvgIcon icon={minbankCodeMap[String(item.bankCode).toUpperCase()]} size={80}/>
                 </View>
               </RadioItem>
             })
@@ -285,7 +286,7 @@ class RechargeScreen extends React.Component {
                     paddingLeft: 10
                   }}
                 >
-                  <MyIconFont name={'icon_'+RechargeChannelIconMap[String(activeAccount.coinCode).toLowerCase()]} size={30}/>
+                  <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80} height={30}/>
                 </View>
               </RadioItem>
             })
@@ -378,8 +379,8 @@ class RechargeScreen extends React.Component {
             <Tabs tabs={tabs} onChange={this.channelTabsChange}>
               <View>
                 <List style={{width: '100%'}}>
-                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
-                    {activeAccount.bankCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[activeAccount.bankCode]} size={30}/> : null}
+                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()} style={{height: 50}}>
+                    {activeAccount.bankCode ? <SvgIcon icon={minbankCodeMap[String(activeAccount.bankCode).toUpperCase()]} size={80}/> : null}
                   </List.Item>
                 </List>
                 {infoDesc}
@@ -388,7 +389,7 @@ class RechargeScreen extends React.Component {
               <View>
                 <List style={{width: '100%'}}>
                   <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
-                    {activeAccount.coinCode ? <MyIconFont name={'icon_'+RechargeChannelIconMap[String(activeAccount.coinCode).toLowerCase()]} size={30}/> : null}
+                    {activeAccount.coinCode ? <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/> : null}
                   </List.Item>
                 </List>
                 {infoDesc}

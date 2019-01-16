@@ -216,7 +216,6 @@ export const minbankCodeMap = {
   ABC: 'nongyeyinhang',
   BOCOM: 'jiaotongyinhang',
   BHBC: 'bohaiyinhang',
-  BCCB: 'beijingyinhang', // 北京银行
   BOB: 'beijingyinhang', // 北京银行
   BOC: 'zhongguoyinhang',
   BJRCB: 'beijingnongcunshangyeyinhang',
@@ -237,15 +236,33 @@ export const minbankCodeMap = {
   PSBC: 'youchuyinhang',
   BOS: 'shanghaiyinhang',
   SPDB: 'pufayinhang',
-  SRCB: 'shanghainongshangyinhang'
+  SRCB: 'shanghainongshangyinhang',
+  UNIONPAY: 'zhongguoyinlian',
+
+  ALIPAY_QR: 'alipay',
+  AILPAY: 'alipay',
+  ALIPAY: 'alipay',
+  WECHAT_QR: 'weixinzhifu',
+  WXPAY_QR: 'weixinzhifu',
+  WECHAT: 'weixinzhifu',
+  WXPAY: 'weixinzhifu',
+  SXCCB: 'shaoxinyinhang',
+  JDPAY: 'jingdongzhifu',
+  JD: 'jingdongEqia',
+  
+  // 虚拟币
+  BCB: 'bcb',
+  DC: 'dc',
+  ETH: 'eth',
+  BTC: 'btc',
+  ETC: 'etc',
+  USDX: 'usdx',
+  LTC: 'ltc',
+  DNS: 'dns'
 }
 
 // 充值页面充值渠道图标map
 export const RechargeChannelIconMap = {
-  alipay: 'alipay',
-  ALIPAY_QR: 'alipay',
-  AILPAY: 'alipay',
-  ALIPAY: 'alipay',
   wechat: 'weixinzhifu',
   WECHAT_QR: 'weixinzhifu',
   WXPAY_QR: 'weixinzhifu',
@@ -260,7 +277,6 @@ export const RechargeChannelIconMap = {
   // 银行
   ICBC: 'zhongguogongshangyinhang',
   ABC: 'zhongguonongyeyinhang',
-  BCCB: 'beijingyinhang', // 北京银行
   BOB: 'beijingyinhang', // 北京银行
   CMBC: 'zhongguominshengyinhang',
   CITIC: 'zhongxinyinhang',
