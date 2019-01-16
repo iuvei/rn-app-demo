@@ -234,8 +234,7 @@ export default (Comp) => {
       let {layout} = JSON.parse(JSON.stringify(this.state.activeViewData))
       layout.map(lay =>
         lay.title === layItem.title ?
-          lay.balls.map(item => numItem.ball === item.ball ? fn(item) : item) :
-          '')
+          lay.balls.map(item => numItem.ball === item.ball ? fn(item) : item) : '')
       this.setState({
         activeViewData: {
           ...this.state.activeViewData,
@@ -266,16 +265,7 @@ export default (Comp) => {
               if (b.ball === numItem.ball && b.choose === true) {
                 clearTimeout(this.curBallTime)
                 this.curBallTime = setTimeout(() => {
-                  // message.warn('胆码拖码数字不能相同')
-                  Alert.alert(
-                    '温馨提示',
-                    '胆码拖码数字不能相同',
-                    [
-                      // {text: '', onPress: () => console.log('Cancel Pressed')},
-                      {text: '确定', onPress: () => console.log('OK Pressed')}
-                    ],
-                    {cancelable: false}
-                  )
+                  Toast('胆码拖码数字不能相同')
                 }, 100)
                 b.choose = false
                 this.setState(prevState => ({

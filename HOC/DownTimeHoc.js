@@ -90,10 +90,6 @@ export default (Comp) => {
             console.warn(`我要报警了: ${lotterCode}没返回当前期信息`)
           } else if (Object.keys(res.data).length) {
             res.data.latelyIssue = Number(res.data.currentIssue) - 1
-            // this.AsetOpenIssue(res.data)
-            // this.setState({
-            //   openIssue: res.data
-            // })
             this.props._setOpenIssue(res.data)
             // currentIssue
             setTimeout(() => {

@@ -154,8 +154,6 @@ class RowBall extends React.Component {
                 {
                   showBit ? <List style={{marginTop: 12}}>
                     <Text style={{marginTop: 12}}>Multiple options</Text>
-
-
                     {
                       activeViewData.bit.map((item, key) => {
                         return (
@@ -169,18 +167,30 @@ class RowBall extends React.Component {
                         )
                       })
                     }
-
                   </List> : null
                 }
                 {
                   showLayout ? activeViewData.layout.map((row, index) => {
                     return (
-                      <View key={index} style={styles.warp}>
-                        <Flex justify="start">
-                          <Text style={{fontSize: 16, marginLeft: 10}}>
-                            {row.title}
-                          </Text>
-                          <View style={styles.ballItem}>
+                      <View key={index} style={{
+                        flex: 1, fontSize: 16, padding: 4,
+                        margin: 10, marginBottom: 2,
+                        borderRadius: 6, backgroundColor: '#fff'
+                      }}>
+                        <Flex key={row.title} style={{}}>
+                          <View style={{
+                            width: 40, alignSelf: 'center',
+                            alignItems: 'center',
+                            // backgroundColor: 'red',
+                            justifyContent: 'center'
+                          }}>
+                            <Text>{row.title}</Text>
+                          </View>
+                          <View style={{
+                            flexWrap: 'wrap', flexDirection: 'row',
+                            // justifyContent: 'space-between',
+                            margin: 2, flex: 1
+                          }}>
                             {
                               row.balls.map((b, bIdx) =>
                                 <Button
@@ -190,30 +200,45 @@ class RowBall extends React.Component {
                                     clickBall(b, row, activeViewData.layout, index, activeViewData)
                                   }
                                   style={{
-                                    width: 30,
-                                    height: 30,
-                                    borderRadius: 15,
-                                    marginLeft: 0,
-                                    marginRight: 6
-                                  }}>{b.text || b.ball}</Button>
-                              )
-                            }
-                            {
-                              tools.map((t, tIdx) =>
-                                <Button
-                                  key={`${tIdx + '--' + t.code}`}
-                                  onPress={() => toolsCur(t, row)}
-                                  type="ghost" size="small" style={{
-                                  width: 30,
-                                  height: 30,
-                                  borderRadius: 15,
-                                  marginLeft: 0,
-                                  marginRight: 6
-                                }}>{t.name}</Button>
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: 20,
+                                    margin: 6
+                                  }}>
+                                  <Text style={{fontSize: 16}}>
+                                    {b.text || b.ball}
+                                  </Text>
+                                </Button>
                               )
                             }
                           </View>
                         </Flex>
+                        {
+                          <Flex style={{
+                            width: '100%',
+                            flexWrap: 'wrap', flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                          }}>
+                            {
+                              tools.map((t, tIdx) =>
+                                <Text
+                                  style={{
+                                    flex: 1, fontSize: 14,
+                                    height: 30,
+                                    lineHeight: 30,
+                                    color: '#666',
+                                    textAlign: 'center',
+                                    // backgroundColor: 'red',
+                                    justifyContent: 'center'
+                                  }}
+                                  key={`${tIdx + '--' + t.code}`}
+                                  onPress={() => toolsCur(t, row)}
+                                >{t.name}</Text>
+                              )
+                            }
+                          </Flex>
+                        }
                       </View>
                     )
                   }) : null
