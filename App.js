@@ -6,6 +6,7 @@ import { changeBtnText } from './actions/example'
 import Main from './main'
 import initReactFastClick from 'react-fastclick'
 import LinesPanel from './components/LinesPanel'
+import AudioPlay from './components/AudioPlay'
 
 initReactFastClick()
 
@@ -28,6 +29,7 @@ export default class App extends React.Component {
       <Provider store={store}>
         <Provider2>
           <LinesPanel />
+          <AudioPlay />
           <Main/>
         </Provider2>
       </Provider>

@@ -305,7 +305,10 @@ class ChaseScreen extends React.Component {
     })
     toBuyLottery(repZip || rep).then((res) => {
       this.setState({
-        isLoading: false
+        isLoading: false,
+        showChaseList: [],
+        chaseList: [],
+        total: '0'
       })
       if (res.code === 0) {
         Toast.success('追号成功')
@@ -314,7 +317,10 @@ class ChaseScreen extends React.Component {
       }
     }).catch(() => {
       this.setState({
-        isLoading: false
+        isLoading: false,
+        showChaseList: [],
+        chaseList: [],
+        total: '0'
       })
       Toast.fail('网络异常，请稍后重试')
     })
@@ -441,7 +447,7 @@ class ChaseScreen extends React.Component {
           tabs={tabs}>
           <ScrollView style={{ backgroundColor: 'f0f0f0', flex: 1 }}>{topContent}{listContent}</ScrollView>
         </Tabs>
-        <View style={{height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center'}}>
+        <View style={{height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center', borderTopWidth: 0.5, borderTopColor: '#198ae7'}}>
           <Button loading={isLoading} type="ghost" style={{width: '50%', height: 40}} onPress={this.submitFunc}>
             <Text style={{fontSize: 14}}>立即追号</Text>
           </Button>

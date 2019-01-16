@@ -7,6 +7,7 @@ import {
 } from '../api/lottery'
 
 import { getLatelyOpen, setOpenIssue } from '../actions/classic'
+import { AsetSoundType } from '../actions/common'
 
 export default (Comp) => {
   class DownTimeHoc extends Component {
@@ -115,7 +116,7 @@ export default (Comp) => {
       this.setLessTimes(timedown)
       this.excutedTime = (new Date()).getTime()
       if (this.timedown === 10) {
-        // this.AplayAudio(1)
+        this.props.AsetSoundType({type: 'stopOrder'})
       }
       if (this.timedown >= 0) {
         let second = this.timedown % 60
@@ -137,7 +138,7 @@ export default (Comp) => {
         })
         if (this.timedown === 0) {
           // 截止提示音
-          // this.AplayAudio(3)
+          this.props.AsetSoundType({type: 'message'})
           // MessageTips({
           //   content: `<em style="font-weight:700;font-size:15px">
           //               温馨提示：${this.activeLot.lotterName}
@@ -251,7 +252,7 @@ export default (Comp) => {
           // 保存开奖时间
           // this.AsetWinTime(new Date().getTime())
           if (!bonus) return
-          // this.AplayAudio(0)
+          this.props.AsetSoundType({type: 'income'})
           // NoticeTips({
           //   type: 'success',
           //   title: '中奖通知',
@@ -309,7 +310,8 @@ export default (Comp) => {
   const mapDispatchToProps = (dispatch) => {
     return {
       _getLatelyOpen: (params) => dispatch(getLatelyOpen(params)),
-      _setOpenIssue: params => dispatch(setOpenIssue(params))
+      _setOpenIssue: params => dispatch(setOpenIssue(params)),
+      AsetSoundType: (data) => { dispatch(AsetSoundType(data)) },
     }
   }
   return connect(mapStateToProps, mapDispatchToProps)(DownTimeHoc)
