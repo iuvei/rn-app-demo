@@ -121,7 +121,7 @@ class BetScreen extends React.Component {
 
       // 用户本地没有快捷玩法，默认设置filterNavBar[0].subnav[0].play
       let plays = filterNavBar[0].subnav[0].play.map(item => {
-        return {...item, name: `${filterNavBar[0].name}${filterNavBar[0].subnav[0].title}${item.name}`}
+        return {...item, name: `${filterNavBar[0].name}${item.name}`}
       })
 
       // 用户本地存储的玩法数据过滤
