@@ -45,47 +45,16 @@ class PlayNav extends React.Component {
   }
 
   componentWillReceiveProps(np) {
-    let {navParams, newCusPlayNav} = this.props
-    if (!_.isEqual(navParams, np.navParams) && Object.keys(np.navParams).length) {
-      this.initPlayNav(np.navParams)
-    }
+    let {newCusPlayNav} = this.props
     if (!_.isEqual(newCusPlayNav, np.newCusPlayNav)) {
       this.setState({
         playTabs: np.newCusPlayNav
       }, () => this.InitBetView(np.newCusPlayNav[0]))
     }
-    // let {gamesPlayStore} = this.props
-    // if (!_.isEqual(gamesPlayStore !== np.gamesPlayStore)) {
-    // console.log('你的数据改变了', 'play')
-    // }
-  }
-
-  initPlayNav = ({lotType}) => {
-    AsyncStorage.getItem('setLocalCustomPlays').then(p => {
-      let d = JSON.parse(p) || {}
-      let newCusPlayNav = d[lotType] ? d[lotType] : []
-      let {navBar} = JSON.parse(JSON.stringify(norLot[lotType]))
-      let plays = navBar[0].subnav[0].play.map(item => {
-        return {...item, name: `${navBar[0].name}${navBar[0].subnav[0].title}${item.name}`}
-      })
-      let data = newCusPlayNav.length ? newCusPlayNav : plays
-      this.setState({
-        playTabs: data
-      }, () => this.InitBetView(data[0]))
-      this.props.setCustomPlayNav(data)
-      d[lotType] = data
-      AsyncStorage.setItem('setLocalCustomPlays', JSON.stringify(d))
-    })
   }
 
   InitBetView = (item) => {
     this.props.setActivePlay(item || {code: 'lo1_5x_fs', name: '五星复式'})
-    // let {navParams: {realCategory}} = this.props
-    // let {codeMap, viewData} = JSON.parse(JSON.stringify(norLot[realCategory]))
-    // 知道某种玩法，然后渲染数据
-    // this.setState({codeMap, viewData}, () =>
-    //   this.activePlay(this.state.localData[realCategory][0])
-    // )
   }
 
   // let {navBar, viewData, codeMap} =

@@ -52,3 +52,8 @@ export const setCustomPlayNav = createAction(
   'SET_CUSTOM_PLAY_NAV',
   text => text
 )
+
+export const setGamesPlayToNull = createAction(
+  'SET_GAMES_PLAY_TO_NULL',
+  text => text
+)

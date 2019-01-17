@@ -16,36 +16,29 @@ class FastPlayNav extends React.Component {
     super(props)
     this.state = {
       navBar: [],
-      activeTitle: '',
+      activeTitle: "",
       newCusNav: [],
       maxNum: 10
     }
   }
 
   componentWillReceiveProps(np) {
-    let {navParams, newCusPlayNav} = this.props
-    if (!_.isEqual(navParams, np.navParams) && Object.keys(np.navParams).length) {
-      this.initPlayNav(np.navParams)
-    }
+    let {filterNavBar, newCusPlayNav} = this.props
     if (!_.isEqual(newCusPlayNav, np.newCusPlayNav)) {
       this.setState({
         newCusNav: np.newCusPlayNav
+      })
+    }
+    if (!_.isEqual(filterNavBar, np.filterNavBar)) {
+      this.setState({
+        navBar: np.filterNavBar,
+        activeTitle: np.filterNavBar[0].name
       })
     }
   }
 
   componentDidMount() {
 
-  }
-
-  initPlayNav = ({lotType}) => {
-    let { newCusPlayNav } = this.props
-    let {navBar} = JSON.parse(JSON.stringify(norLot[lotType]))
-    this.setState({
-      navBar,
-      newCusNav: newCusPlayNav,
-      activeTitle: navBar[0].name
-    })
   }
 
   changeSubs = (activeTitle) => {
@@ -79,10 +72,14 @@ class FastPlayNav extends React.Component {
   }
 
   setLocalCustomPlays = (data) => {
-    let { lotType } = this.props.navParams
+    let { lotType, lotterCode } = this.props.navParams
     AsyncStorage.getItem('setLocalCustomPlays').then(p => {
       let d = JSON.parse(p) || {}
-      d[lotType] = data
+      if (lotterCode.indexOf('ffc') > -1) {
+        d['ffc'] = data
+      } else {
+        d[lotType] = data
+      }
       AsyncStorage.setItem('setLocalCustomPlays', JSON.stringify(d))
       this.props.onClose()
     })

@@ -1,11 +1,10 @@
 import React from 'react'
 import {
   View, Text,
-  StyleSheet, Image, ScrollView
+  StyleSheet, ScrollView, AsyncStorage
 } from 'react-native'
 import {
-  Tabs, Card, WhiteSpace,
-  Button, WingBlank
+  Tabs,
 } from '@ant-design/react-native'
 import { Drawer } from 'native-base';
 import { connect } from 'react-redux'
@@ -15,15 +14,13 @@ import PlayNav from './PlayNav'
 import RowBall from './RowBall'
 import Trend from './Trend'
 import FastPlayNav from './SetFastPlayEntry'
-// import BuyPrice from './BuyPrice'
 import LatelyList from './LatelyList'
 import { DownTimeHoc, RowBallHoc } from '../../HOC'
-import { setNavParams, getGamesPlay, setActivePlay } from '../../actions/classic'
-import { modeInfo } from '../../data/options'
+import { setNavParams, getGamesPlay, setActivePlay, setCustomPlayNav, setGamesPlayToNull } from '../../actions/classic'
+import norLot from "../../data/nor-lot";
 
 const DownTimeHocView = DownTimeHoc(DownTime)
 const RowBallHocView = RowBallHoc(RowBall)
-// const BuyPriceHocView = BuyPriceHoc(BuyPrice)
 const selfRoute = [
   {name: '时时彩', code: 'lo1', mapCode: ['ssc']},
   {name: '11选5', code: 'lo2', mapCode: ['syx5']},
@@ -71,7 +68,8 @@ class BetScreen extends React.Component {
       changingValue: 1800,
       afterValue: 0,
       stepValue: 1,
-      modeItem: {}
+      modeItem: {},
+      filterNavBar: []
     }
     this.time = 1700
   }
@@ -94,12 +92,104 @@ class BetScreen extends React.Component {
       lotterCode,
       isOuter,
       userId: this.props.userId
+    }).then(data => {
+      this.getUsefulPlay(params, data["payload"])
     })
   }
 
+  getUsefulPlay = ({lotterCode, realCategory}, resData) => {
+    let {code} = selfRoute.find(lot => lot.mapCode.includes(realCategory))
+    // status 1 的玩法code
+    let usefulCode = []
+    resData.forEach(item => {
+      if (item.status === 1) {
+        usefulCode.push(item.ruleCode)
+      }
+    })
+    AsyncStorage.getItem('setLocalCustomPlays').then(p => {
+      let d = JSON.parse(p) || {}
+      let newCusPlayNav = []
+      if (lotterCode.indexOf('ffc') > -1) {
+        newCusPlayNav = d['ffc'] ? d['ffc'] : []
+      } else {
+        newCusPlayNav = d[code] ? d[code] : []
+      }
+
+      // 預渲染玩法数据过滤
+      let {navBar, codeMap} = JSON.parse(JSON.stringify(norLot[code]))
+      let filterNavBar = this.checkedNavBar(navBar, resData, codeMap)
+
+      // 用户本地没有快捷玩法，默认设置filterNavBar[0].subnav[0].play
+      let plays = filterNavBar[0].subnav[0].play.map(item => {
+        return {...item, name: `${filterNavBar[0].name}${filterNavBar[0].subnav[0].title}${item.name}`}
+      })
+
+      // 用户本地存储的玩法数据过滤
+      let data = []
+      if(newCusPlayNav.length) {
+        data = newCusPlayNav.filter(item => usefulCode.includes(codeMap[item.code]))
+      }else {
+        data = plays
+      }
+      if (lotterCode.indexOf('ffc') > -1) {
+        d['ffc'] = data
+      } else {
+        d[code] = data
+      }
+      this.props.setActivePlay(data[0])
+      this.props.setCustomPlayNav(data)
+      AsyncStorage.setItem('setLocalCustomPlays', JSON.stringify(d))
+      this.setState({filterNavBar})
+    })
+  }
+
+  checkedNavBar = (navBar, gamePlay, codeMap) => {
+    let newNavbar = []
+    let usefulCode = []
+    gamePlay.forEach(item => {
+      if (item.status === 1) {
+        usefulCode.push(item.ruleCode)
+      }
+    })
+    if (navBar.length && gamePlay.length) {
+      navBar.filter(nav => {
+        let ItemNavbar = Object.assign({}, nav, {
+          subnav: []
+        })
+        nav.subnav.filter(sub => {
+          let subplay = []
+          sub.play.filter(play => {
+            // 拿到當前的玩法
+            // 0禁止(默认),1正常,2可见(不能投注)
+            let thisPlay = codeMap[play.code]
+             if (usefulCode.includes(thisPlay)){
+               subplay.push(play)
+             }
+          })
+          if (subplay.length) {
+            ItemNavbar.subnav.push(
+              Object.assign({}, sub, {
+                play: subplay
+              })
+            )
+          }
+        })
+        if (ItemNavbar.subnav.length) {
+          newNavbar.push(ItemNavbar)
+        }
+      })
+      return newNavbar
+    } else {
+      return navBar
+    }
+  }
+
   componentWillUnmount() {
+    // 缺一不可
     this.props.navParams({})
     this.props.setActivePlay({})
+    this.props.setGamesPlayToNull([])
+    this.props.setCustomPlayNav([])
     this.setState = () => () => {
     }
   }
@@ -116,13 +206,13 @@ class BetScreen extends React.Component {
   }
 
   render() {
-    let {ContentTabs, playTabs, actPlay} = this.state
+    let {ContentTabs, filterNavBar} = this.state
     let {params} = this.props.navigation.state
     return (
       <View style={styles.container}>
         <Drawer
           ref={(ref) => { this.drawer = ref; }}
-          content={<FastPlayNav onClose={() => this.closeDrawer()} />}
+          content={<FastPlayNav onClose={() => this.closeDrawer()} filterNavBar={filterNavBar} />}
           onClose={() => this.closeDrawer()} >
         {/* playNav Container */}
         <PlayNav openDrawer={this.openDrawer}/>
@@ -166,15 +256,20 @@ class BetScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   let {userId} = state.common
+  let {navParams, gamesPlayStore} = state.classic
   return ({
-    userId
+    userId,
+    navParams,
+    gamesPlayStore
   })
 }
 const mapDispatchToProps = (dispatch) => {
   return {
     navParams: params => dispatch(setNavParams(params)),
     setActivePlay: params => dispatch(setActivePlay(params)),
-    getGamesPlay: params => dispatch(getGamesPlay(params))
+    getGamesPlay: params => dispatch(getGamesPlay(params)),
+    setCustomPlayNav: (data) => dispatch(setCustomPlayNav(data)),
+    setGamesPlayToNull: (data) => dispatch(setGamesPlayToNull(data))
   }
 }
 
