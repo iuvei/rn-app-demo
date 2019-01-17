@@ -42,6 +42,11 @@ const classic = handleActions({
       ...state, newCusPlayNav: payload
     }
   },
+  SET_GAMES_PLAY_TO_NULL: (state, {payload}) => {
+    return {
+      ...state, gamesPlayStore: payload
+    }
+  },
 }, initialState)
 
 export default classic
