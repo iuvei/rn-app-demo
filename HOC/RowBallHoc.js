@@ -400,8 +400,6 @@ export default (Comp) => {
       // let methodInfo = this.gameMethod[playOrgin]
       // this.isKlcXycLot && _.isArray(content)
       if (this.state.isKlcYxyLot && _.isArray(content)) {
-        console.log('content', content)
-        return
         let arrtmp = []
         content.filter(d => {
           let xyclist = Object.assign({}, orderlist, {
