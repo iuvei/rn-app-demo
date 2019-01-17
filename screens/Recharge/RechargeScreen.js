@@ -193,7 +193,7 @@ class RechargeScreen extends React.Component {
         {
           section.content.map((item, index) => {
             return (
-              <ListItem selected={false} key={section.title+item.bankCode+index}
+              <ListItem selected={this.props.activeAccount.local_id === item.local_id} key={section.title+item.bankCode+index}
                 style={{height: 44, lineHeight: 44}}
                 onPress={() => {
                   this.setState({
