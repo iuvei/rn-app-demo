@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import {
+  Text
+} from 'react-native'
 import SvgUri from 'react-native-svg-uri'
 import svgs from './svgs'
 
@@ -14,8 +17,9 @@ export default class SvgIcon extends Component {
     let svgXmlData = svgs[icon]
 
     if (!svgXmlData) {
-      let err_msg = `没有"${this.props.icon}"这个icon`
+      let err_msg = `没有"${icon}"这个icon`
       console.warn(err_msg)
+      return <Text>?{icon}?</Text>
       // throw new Error(err_msg)
     }
     return (

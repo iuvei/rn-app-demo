@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {ScrollView, StyleSheet, View, Text, Platform} from 'react-native'
-import { Accordion, Drawer, List, Button, WhiteSpace, Tabs, Radio, InputItem, Toast } from '@ant-design/react-native'
+import { Accordion, Drawer, List, Button, WhiteSpace, Tabs, InputItem, Toast } from '@ant-design/react-native' // , Radio
 import {getRechargeChannels, commitRecharge} from '../../api/member'
 import {isObject} from 'lodash'
 // import {MyIconFont} from '../../components/MyIconFont'
@@ -10,8 +10,9 @@ import {RechargeChannelIconMap, minbankCodeMap} from '../../constants/glyphMapHe
 import {setActiveAccount} from '../../actions/common'
 import Header from '../../components/Header'
 import {platformKey, prependUrl} from '../../api.config'
+import { ListItem, Radio, Right, Left } from 'native-base'
 
-const RadioItem = Radio.RadioItem
+// const RadioItem = Radio.RadioItem
 
 class RechargeScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -188,41 +189,64 @@ class RechargeScreen extends React.Component {
 
   _renderContent = section => {
     return (
-      <View>
-        <List>
-          {
-            section.content.map((item, index) => {
-              return <RadioItem
-                multipleLine
-                name="rechargeChannels"
-                checked={this.props.activeAccount.local_id === item.local_id}
-                key={item.payChannelAlias + index}
-                onChange={event => {
-                  if (event.target.checked) {
-                    this.setState({
-                      amount: '',
-                      orderAmount: '',
-                      rechargeFee: '0'
-                    });
-                    this.props.setActiveAccount(item);
-                  }
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    height: 30,
-                    paddingLeft: 50
-                  }}
-                >
+      <List key={section.title} renderHeader={section.title}>
+        {
+          section.content.map((item, index) => {
+            return (
+              <ListItem selected={false} key={section.title+item.bankCode+index}
+                style={{height: 44, lineHeight: 44}}
+                onPress={() => {
+                  this.setState({
+                    amount: '',
+                    orderAmount: '',
+                    rechargeFee: '0'
+                  })
+                  this.props.setActiveAccount(item)
+                }}
+              >
+                <Left>
                   <SvgIcon icon={minbankCodeMap[String(item.bankCode).toUpperCase()]} size={80}/>
-                </View>
-              </RadioItem>
-            })
-          }
-        </List>
-      </View>
+                </Left>
+                <Right>
+                  <Radio
+                    color={"#f0ad4e"}
+                    selectedColor={"#5cb85c"}
+                    selected={this.props.activeAccount.local_id === item.local_id}
+                  />
+                </Right>
+              </ListItem>
+            )
+            // return <RadioItem
+            //   multipleLine
+            //   name="rechargeChannels"
+            //   extra={<Text>{section.title}</Text>}
+            //   checked={this.props.activeAccount.local_id === item.local_id}
+            //   key={item.payChannelAlias + index}
+            //   onChange={event => {
+            //     if (event.target.checked) {
+            //       this.setState({
+            //         amount: '',
+            //         orderAmount: '',
+            //         rechargeFee: '0'
+            //       });
+            //       this.props.setActiveAccount(item);
+            //     }
+            //   }}>
+            //   <View
+            //     style={{
+            //       flexDirection: 'row',
+            //       justifyContent: 'space-between',
+            //       alignItems: 'center',
+            //       height: 30,
+            //       paddingLeft: 20
+            //     }}
+            //   >
+            //     <SvgIcon icon={minbankCodeMap[String(item.bankCode).toUpperCase()]} size={80}/>
+            //   </View>
+            // </RadioItem>
+          })
+        }
+      </List>
     );
   };
 
@@ -244,59 +268,63 @@ class RechargeScreen extends React.Component {
     const sidebar = (
       <ScrollView style={[styles.container]}>
         {
-          <Accordion
-            onChange={this.onAccordionChange}
-            activeSections={this.state.activeSections}
-            sections={
-              Object.keys(channelRealObj || {}).map((key) => {
-                return {title: key, content: channelRealObj[key]}
-              })
-            }
-            renderSectionTitle={this._renderSectionTitle}
-            renderHeader={this._renderHeader}
-            renderContent={this._renderContent}
-          >
-          </Accordion>
+          Object.keys(channelRealObj || {}).map((key) => {
+            // return {title: key, content: channelRealObj[key]}
+            return this._renderContent({title: key, content: channelRealObj[key]})
+          })
+          // <Accordion
+          //   onChange={this.onAccordionChange}
+          //   activeSections={this.state.activeSections}
+          //   sections={
+          //     Object.keys(channelRealObj || {}).map((key) => {
+          //       return {title: key, content: channelRealObj[key]}
+          //     })
+          //   }
+          //   renderSectionTitle={this._renderSectionTitle}
+          //   renderHeader={this._renderHeader}
+          //   renderContent={this._renderContent}
+          // >
+          // </Accordion>
         }
       </ScrollView>
     );
-    const sidebarVirtual = (
-      <ScrollView style={[styles.container]}>
-        <List>
-          {
-            virtualAccounts.map((item, index) => {
-              return <RadioItem
-                multipleLine
-                name="rechargeChannels"
-                checked={this.props.activeAccount.local_id === item.local_id}
-                key={item.payChannelAlias + index}
-                onChange={event => {
-                  if (event.target.checked) {
-                    this.setState({
-                      amount: '',
-                      orderAmount: '',
-                      rechargeFee: ''
-                    });
-                    this.props.setActiveAccount(item);
-                  }
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    height: 30,
-                    paddingLeft: 10
-                  }}
-                >
-                  <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/>
-                </View>
-              </RadioItem>
-            })
-          }
-        </List>
-      </ScrollView>
-    )
+    // const sidebarVirtual = (
+    //   <ScrollView style={[styles.container]}>
+    //     <List>
+    //       {
+    //         virtualAccounts.map((item, index) => {
+    //           return <RadioItem
+    //             multipleLine
+    //             name="rechargeChannels"
+    //             checked={this.props.activeAccount.local_id === item.local_id}
+    //             key={item.payChannelAlias + index}
+    //             onChange={event => {
+    //               if (event.target.checked) {
+    //                 this.setState({
+    //                   amount: '',
+    //                   orderAmount: '',
+    //                   rechargeFee: ''
+    //                 });
+    //                 this.props.setActiveAccount(item);
+    //               }
+    //             }}>
+    //             <View
+    //               style={{
+    //                 flexDirection: 'row',
+    //                 justifyContent: 'space-between',
+    //                 alignItems: 'center',
+    //                 height: 30,
+    //                 paddingLeft: 10
+    //               }}
+    //             >
+    //               <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/>
+    //             </View>
+    //           </RadioItem>
+    //         })
+    //       }
+    //     </List>
+    //   </ScrollView>
+    // )
     const tabs = [
       { title: '人民币支付' },
       { title: '币宝数字货币支付' }
@@ -371,7 +399,7 @@ class RechargeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Drawer
-          sidebar={activeTabIndex === 0 ? sidebar : sidebarVirtual}
+          sidebar={activeTabIndex === 0 ? sidebar : null}
           position="right"
           open={false}
           drawerRef={el => (this.drawer = el)}
