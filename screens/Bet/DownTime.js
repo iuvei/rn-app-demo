@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import {
   View, Text,
-  Image
+  Image, StyleSheet
 } from 'react-native'
 import { Button } from '@ant-design/react-native'
+import { getIconName } from '../../utils/getLotImg'
 
 class DownTime extends Component {
   constructor(props) {
@@ -28,7 +29,8 @@ class DownTime extends Component {
   render() {
     let {
       prevOpenResult, prevOpenResult: {openList}, openIssue,
-      downTime: {h1, h2, m1, m2, s1, s2}
+      downTime: {h1, h2, m1, m2, s1, s2},
+      navParams: {realCategory, lotterNumber}
     } = this.props
     return (
       <View style={{
@@ -36,34 +38,35 @@ class DownTime extends Component {
         margin: 6,
         borderRadius: 6,
         marginTop: 1,
-        height: 70,
         backgroundColor: '#fff'
       }}>
-        {/* backgroundColor: 'darkcyan' */}
-        <View style={{flex: 1, margin: 5}}>
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
           <Image
-            source={require('../../assets/images/hall/icon1.png')}
+            source={getIconName(realCategory)}
             style={{width: 60, height: 60}}
           />
         </View>
         {/*backgroundColor: 'darkcyan'*/}
-        <View style={{flex: 4, margin: 5}}>
+        <View style={{flex: 4, margin: 5, marginLeft: 0}}>
           <Text style={{fontSize: 12}}>
             <Text style={{color: 'blue'}}>{prevOpenResult.openIssue || '000000000'}</Text>
             期开奖结果
           </Text>
-          <View style={{flexDirection: 'row', justifyContent: 'flex-start', padding: 2}}>
+          <View style={{
+            flexDirection: 'row', justifyContent: 'flex-start',
+            padding: 2, flexWrap: 'wrap'
+          }}>
             {
               openList.length ? openList.map((b, bIdx) =>
                 <Button
                   key={`${bIdx}-${b}`}
-                  type="ghost" size="small" style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 15,
-                  marginLeft: 0,
-                  marginRight: 6
-                }}>{b}</Button>
+                  type="primary" size="small"
+                  style={styles['lotBall' + (lotterNumber || 5)]}>
+                  <Text style={styles['lotBallTxt' + (lotterNumber || 5)]}>{b}</Text>
+                </Button>
               ) : <Text>正在开奖中...</Text>
             }
           </View>
@@ -81,3 +84,37 @@ class DownTime extends Component {
 }
 
 export default DownTime
+
+const styles = StyleSheet.create({
+  lotBall3: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 0,
+    marginRight: 6
+  },
+  lotBall5: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 0,
+    marginRight: 6
+  },
+  lotBall10: {
+    padding: 0,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    marginRight: 2
+  },
+  lotBall20: {
+    padding: 0,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    marginRight: 2
+  },
+  lotBallTxt: {
+    fontSize: 12
+  }
+})
