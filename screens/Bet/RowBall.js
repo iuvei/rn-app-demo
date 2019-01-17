@@ -5,11 +5,11 @@ import {
 } from 'react-native'
 import {
   Flex, Tabs, Card, WhiteSpace,
-  Checkbox, List, Slider, Stepper,
+  List, Slider, Stepper,
   Button, WingBlank, TextareaItem
 } from '@ant-design/react-native'
 
-const CheckboxItem = Checkbox.CheckboxItem
+import CheckBox from 'react-native-check-box'
 
 import { modeInfo } from '../../data/options'
 import { withNavigation } from 'react-navigation'
@@ -152,22 +152,34 @@ class RowBall extends React.Component {
             <ScrollView>
               <View>
                 {
-                  showBit ? <List style={{marginTop: 12}}>
-                    <Text style={{marginTop: 12}}>Multiple options</Text>
+                  showBit ? <View style={{
+                    // marginTop: 12,
+                    flexDirection: 'row'
+                    // justifyContent: 'space-between',
+                    // justifyContent: 'center',
+                    // alignItems: 'center'
+                  }}>
                     {
                       activeViewData.bit.map((item, key) => {
                         return (
-                          <CheckboxItem
-                            key={key}
-                            checked={item.choose}
-                            onChange={() => {
-                              // console.log('稍后处理')
-                            }}
-                          >{item.name}</CheckboxItem>
+                          <View style={{flex: 1, padding: 6}} key={key}>
+                            <CheckBox
+                              onClick={() => {
+                                // this.setState({
+                                //   isChecked: !this.state.isChecked
+                                // })
+                                this.props.toHandCheckBox(item)
+                                // activeViewData.checkbox
+                                // item.position
+                              }}
+                              isChecked={item.choose}
+                              rightText={item.name}
+                            />
+                          </View>
                         )
                       })
                     }
-                  </List> : null
+                  </View> : null
                 }
                 {
                   showLayout ? activeViewData.layout.map((row, index) => {
@@ -177,14 +189,9 @@ class RowBall extends React.Component {
                         margin: 10, marginBottom: 2,
                         borderRadius: 6, backgroundColor: '#fff'
                       }}>
-                        <Flex key={row.title} style={{}}>
-                          <View style={{
-                            width: 40, alignSelf: 'center',
-                            alignItems: 'center',
-                            // backgroundColor: 'red',
-                            justifyContent: 'center'
-                          }}>
-                            <Text>{row.title}</Text>
+                        <Flex key={row.title}>
+                          <View style={{width: 40, justifyContent: 'center'}}>
+                            <Text style={{justifyContent: 'center', textAlign: 'center'}}>{row.title}</Text>
                           </View>
                           <View style={{
                             flexWrap: 'wrap', flexDirection: 'row',
@@ -245,7 +252,7 @@ class RowBall extends React.Component {
                 }
                 {
                   showText ? <View>
-                      <Text style={{padding: 8, paddingBottom: 0}}>
+                      <Text style={{padding: 10, paddingBottom: 0}}>
                         请在下方的输入框内输入或粘贴投注内容，每注请使用
                         <Text>逗号</Text>、
                         <Text>空格</Text>或'
@@ -256,7 +263,7 @@ class RowBall extends React.Component {
                         onChange={(val) => handleText(val)}
                         value={activeViewData.textarea}
                         placeholder="请输入投注号码"
-                        style={{margin: 6, padding: 10, borderRadius: 6}}
+                        style={{margin: 10, padding: 10, borderRadius: 6}}
                       />
                     </View>
                     : null

@@ -350,7 +350,6 @@ export const filterCurBall = ({activeViewData, lotType}) => {
     // })
     places.push(place)
   }
-  console.log(places)
   let dataSel = [].concat(places).concat(balls).concat(textareas)
   LazmDatasel = LazmDatasel.slice(0, LazmDatasel.length - 1)
   return Promise.resolve({dataSel, LazmDatasel})
