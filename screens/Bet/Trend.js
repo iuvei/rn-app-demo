@@ -201,7 +201,10 @@ const CATEGORIES_LIST = {
   pk10: PKS_LIST,
   syx5: SYXW_LIST,
   k3: K3_LIST,
-  dpc: DPC_LIST
+  dpc: DPC_LIST,
+  klsf: KLSF_LIST,
+  xy28: DPC_LIST,
+  xyc: DPC_LIST
 }
 // 不使用原始值的类型，在这里添加例外
 const WORD_VALUE = [
@@ -311,12 +314,6 @@ class Trend extends Component {
     }, 500)
   }
 
-  layout = (e, flag) => {
-    this.setState({
-      layout: e.layout
-    })
-  }
-
   print = async () => {
     let result = []
     let {curLotteryType} = this.state
@@ -331,7 +328,7 @@ class Trend extends Component {
 
   render () {
     let {latelyOpenList} = this.props
-    let {currentList, curDataHead, curLotteryType} = this.state
+    let {currentList, curDataHead, curLotteryType, curCategory} = this.state
     let {dataHead} = currentList || []
     return (
       <View style={styles.container}>
@@ -340,54 +337,76 @@ class Trend extends Component {
             currentList?.sscType?.map((item, index) => {
               return (
                 <Tab heading={item.name} key={index}>
-                  <View style={styles.table}>
-                    <View style={[styles.row, styles.header]} ref={'table'}>
-                      <Text style={[styles.issue, styles.cell]}>期数</Text>
-                      <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>
-                      <View style={[styles.numbers, styles.cell]}>
+                  {
+                    curCategory !== 'kl8' ? <View style={styles.table}>
+                      <View style={[styles.row, styles.header]} ref={'table'}>
+                        <Text style={[styles.issue, styles.cell]}>期数</Text>
+                        {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>}
+                        <View style={[styles.numbers, styles.cell]}>
+                          {
+                            curDataHead.map((number, x) => {
+                              return <Text style={styles.number} key={x}>{number}</Text>
+                            })
+                          }
+                        </View>
+                      </View>
+                      {
+                        latelyOpenList.map((item, index) => {
+                          let {openIssue, openCode, codelist} = item
+                          codelist = this.buildCode(codelist)
+                          let openRef = curLotteryType + index
+                          return (
+                            <View style={styles.row} key={index}>
+                              <Text style={[styles.issue, styles.cell]}>{openIssue.substring(6)}</Text>
+                              {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>{openCode}</Text>}
+                              <View style={[styles.numbers, styles.cell]}>
+                                {
+                                  WORD_VALUE.includes(curLotteryType) ?
+                                    codelist.map((value, x) => {
+                                      return <View key={x} style={styles.number}>
+                                        <Text style={styles.open}>{value}</Text>
+                                      </View>
+                                    }) :
+                                    curDataHead.map((number, x) => {
+                                      number = number.toString()
+                                      let flag = codelist?.includes(number)
+                                      return <View key={x} style={styles.number}>
+                                        <Text ref={flag ? openRef : ''}
+                                              style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
+                                                ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
+                                      </View>
+                                    })
+                                }
+                              </View>
+                            </View>
+                          )
+                        })
+                      }
+                      {
+                        // 走势图画线
+                        // ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ? <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
+                      }
+                    </View> :
+                      <View style={styles.table}>
+                        <View style={[styles.row, styles.header]}>
+                          <Text style={[styles.issue, styles.cell]}>期数</Text>
+                          <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>
+                        </View>
                         {
-                          curDataHead.map((number, x) => {
-                            return <Text style={styles.number} key={x}>{number}</Text>
+                          latelyOpenList.map((item, index) => {
+                            let {openIssue, openCode, codelist} = item
+                            return (
+                              <View style={styles.klcRow} key={index}>
+                                <Text style={[styles.issue, styles.cell]}>{openIssue}</Text>
+                                <View style={[styles.openNumber, styles.cell]}>
+                                  <Text style={{width: 200}}>{codelist.join(',')}</Text>
+                                </View>
+                              </View>
+                            )
                           })
                         }
                       </View>
-                    </View>
-                    {
-                      latelyOpenList.map((item, index) => {
-                        let {openIssue, openCode, codelist} = item
-                        codelist = this.buildCode(codelist)
-                        let openRef = curLotteryType + index
-                        return (
-                          <View style={styles.row} key={index}>
-                            <Text style={[styles.issue, styles.cell]}>{openIssue.substring(6)}</Text>
-                            <Text style={[styles.openNumber, styles.cell]}>{openCode}</Text>
-                            <View style={[styles.numbers, styles.cell]}>
-                              {
-                                WORD_VALUE.includes(curLotteryType) ?
-                                  codelist.map((value, x) => {
-                                    return <View key={x} style={styles.number}>
-                                      <Text style={styles.open}>{value}</Text>
-                                    </View>
-                                  }) :
-                                  curDataHead.map((number, x) => {
-                                    number = number.toString()
-                                    let flag = codelist?.includes(number)
-                                    return <View key={x} style={styles.number}>
-                                      <Text ref={flag ? openRef : ''}
-                                        style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
-                                          ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
-                                    </View>
-                                  })
-                              }
-                            </View>
-                          </View>
-                        )
-                      })
-                    }
-                    {
-                      ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ? <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
-                    }
-                  </View>
+                  }
                 </Tab>
               )
             }) ||
@@ -427,8 +446,18 @@ const styles = StyleSheet.create({
     borderRightWidth: 0.5,
     borderBottomWidth: 0.5
   },
+  klcRow: {
+    height: 52,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRightWidth: 0.5,
+    borderBottomWidth: 0.5
+  },
   cell: {
     textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   issue: {
     flex: 2,
