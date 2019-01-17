@@ -200,7 +200,7 @@ class RowBall extends React.Component {
                                     clickBall(b, row, activeViewData.layout, index, activeViewData)
                                   }
                                   style={{
-                                    width: 40,
+                                    minWidth: 40,
                                     height: 40,
                                     borderRadius: 20,
                                     margin: 6
