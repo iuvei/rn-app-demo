@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import {rulesNameMap} from './basic-info'
+import { rulesNameMap } from './basic-info'
 // 幸运彩
 export const navBar = [
   {
@@ -73,7 +73,8 @@ export const viewData = {
           }
         })
       }]
-    }
+    },
+    rectangle: true
   },
   'lo7_dw_dw': {
     ball_num: {
@@ -89,7 +90,8 @@ export const viewData = {
           }
         })
       }]
-    }
+    },
+    rectangle: true
   },
   'lo7_zh_zh': {
     ball_num: {
@@ -104,7 +106,8 @@ export const viewData = {
           }
         })
       }]
-    }
+    },
+    rectangle: true
   },
   'lo7_dxds_dxds': {
     ball_num: {
@@ -119,6 +122,7 @@ export const viewData = {
           }
         })
       }]
-    }
+    },
+    rectangle: true
   }
 }

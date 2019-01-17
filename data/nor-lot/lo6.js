@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import {rulesNameMap} from './basic-info'
+import { rulesNameMap } from './basic-info'
 
 // 基诺
 export const navBar = [
@@ -87,7 +87,8 @@ export const viewData = {
           })
         }
       ]
-    }
+    },
+    rectangle: true
   },
   'lo6_qw_hzdx': {
     'name': '趣味 和值大小',
@@ -106,7 +107,8 @@ export const viewData = {
           })
         }
       ]
-    }
+    },
+    rectangle: true
   },
   'lo6_qw_jop': {
     'name': '趣味 奇偶盘',
@@ -125,7 +127,8 @@ export const viewData = {
           })
         }
       ]
-    }
+    },
+    rectangle: true
   },
   'lo6_qw_sxp': {
     'name': '趣味 上下盘',
@@ -144,7 +147,8 @@ export const viewData = {
           })
         }
       ]
-    }
+    },
+    rectangle: true
   },
   'lo6_qw_hzdxp': {
     'name': '趣味 和值大小盘',
@@ -163,7 +167,8 @@ export const viewData = {
           })
         }
       ]
-    }
+    },
+    rectangle: true
   },
   //
   'lo6_rx_rx1': {
@@ -366,6 +371,7 @@ export const viewData = {
           })
         }
       ]
-    }
+    },
+    rectangle: true
   }
 }

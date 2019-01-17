@@ -124,7 +124,7 @@ class RowBall extends React.Component {
 
   render() {
     let {
-      tools, activeViewData,
+      tools, activeViewData: {rectangle}, activeViewData,
       clickBall, toolsCur, setBuyInfo, addBuyCard,
       balanceInfo, handleText,
       curMaxMode, lotterMinMode,
@@ -144,6 +144,8 @@ class RowBall extends React.Component {
     if (showBet && activeViewData.bit) showBit = true
 
     if (showBet && activeViewData.text) showText = true
+
+    // 当前渲染格式
 
     return (
       <View style={{flex: 1}}>
@@ -203,17 +205,19 @@ class RowBall extends React.Component {
                                 <Button
                                   key={`${bIdx + '--' + b.title}`}
                                   type={b.choose ? 'primary' : 'ghost'} size="small"
-                                  onPress={() =>
-                                    clickBall(b, row, activeViewData.layout, index, activeViewData)
-                                  }
-                                  style={{
-                                    minWidth: 40,
-                                    height: 40,
+                                  onPress={() => clickBall(b, row, activeViewData.layout, index, activeViewData)}
+                                  style={rectangle ? {
+                                    width: 120, height: 40, margin: 6,
+                                    // borderRadius: 20,
+                                    paddingLeft: 10, paddingRight: 10
+                                  } : {
+                                    minWidth: 40, height: 40,
                                     borderRadius: 20,
                                     margin: 6
                                   }}>
                                   <Text style={{fontSize: 16}}>
                                     {b.text || b.ball}
+                                    {b.rate ? '~' + b.rate : null}
                                   </Text>
                                 </Button>
                               )
@@ -269,18 +273,19 @@ class RowBall extends React.Component {
                     : null
                 }
               </View>
-            </ScrollView>
-            :
-            <View style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-              <Text style={{marginTop: 100, fontSize: 20}}>
-                Loading...
-              </Text>
-            </View>
-        }
+              <
+              /ScrollView>
+              :
+              <View style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <Text style={{marginTop: 100, fontSize: 20}}>
+                  Loading...
+                </Text>
+              </View>
+              }
 
         <View style={styles.priceWarp}>
           {

@@ -234,6 +234,7 @@ export const ruleBuilder = ({playCode, viewData, rulesDoc, codeMap}) => {
   // t.help = doc.help
   t.tools = !!data.ball_key
   t.playOrgin = codeMap[playCode]
+  t.rectangle = data.rectangle
   t.layout = []
   if (data.ball_num) {
     // 非单式

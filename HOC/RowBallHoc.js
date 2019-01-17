@@ -203,6 +203,62 @@ export default (Comp) => {
           })
         }
       }
+
+      // 处理玩法赔率信息
+      if (playOrgin) {
+        if (this.props.navParams.lotType === 'lo6') {
+          this.klcDeal(playOrgin)
+        }
+        if (this.props.navParams.lotType === 'lo7') {
+          this.xycDeal(playOrgin)
+        }
+      }
+    }
+
+    // klcDeal view
+    klcDeal = (playOrgin) => {
+      let gamesPlayStore = [].concat(this.props.gamesPlayStore)
+      let layout = []
+      gamesPlayStore.filter(lot => {
+        let {ruleCode, lotterRuleRateList} = lot
+        if (ruleCode === playOrgin && lotterRuleRateList && lotterRuleRateList.length > 0) {
+          lotterRuleRateList.filter(list => {
+            let a = Object.assign({}, {
+              rate: list.rate,
+              text: list.rateName,
+              ball: list.rateCode,
+              choose: false
+            })
+            layout.push(a)
+          })
+        }
+      })
+      if (playOrgin.indexOf('rx') === -1 && layout.length > 0) {
+        let activeViewData = Object.assign({}, this.state.activeViewData)
+        activeViewData.layout[0].balls = layout
+        this.setState({activeViewData})
+      }
+    }
+
+    // xycDeal view
+    xycDeal = (playOrgin) => {
+      let activeViewData = Object.assign({}, this.state.activeViewData)
+      let gamesPlayStore = [].concat(this.props.gamesPlayStore)
+      activeViewData.layout.forEach((item, index) => {
+        let {balls} = activeViewData.layout[index]
+        gamesPlayStore.filter(lot => {
+          if (lot.ruleCode === playOrgin) {
+            lot.lotterRuleRateList.filter(list => {
+              balls.forEach((value, idx2) => {
+                if (value.text.toString() === list.rateName) {
+                  balls[idx2].rate = list.rate
+                }
+              })
+            })
+          }
+        })
+      })
+      this.setState({activeViewData})
     }
 
     setMaxMode = () => {
