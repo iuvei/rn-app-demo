@@ -33,7 +33,8 @@ export default (Comp) => {
 
         // viewData生产的视图数据及相关信息
         activeViewData: {
-          layout: []
+          layout: [],
+          bit: []
         },
 
         // 当前选中的赔率
@@ -246,6 +247,27 @@ export default (Comp) => {
       })
     }
 
+    toHandCheckBox = (item) => {
+      let {bit, checkbox} = Object.assign({}, this.state.activeViewData)
+      if (checkbox.indexOf(item.position) > -1) {
+        checkbox.splice(checkbox.indexOf(item.position), 1)
+      } else {
+        checkbox.push(item.position)
+      }
+      bit.forEach(b => {
+        if (b.position === item.position) {
+          item.choose = !item.choose
+        }
+      })
+      this.setState({
+        activeViewData: {
+          ...this.state.activeViewData,
+          checkbox,
+          bit
+        }
+      }, () => this.getZhuShu())
+    }
+
     // 点击球
     clickBall = (numItem, layItem, layout, index) => {
       if (layItem.chooseOne) {
@@ -315,7 +337,7 @@ export default (Comp) => {
           layout: newLayout
         }
       }, () => {
-        // this.getZhuShu()
+        this.getZhuShu()
       })
     }
 
@@ -326,9 +348,9 @@ export default (Comp) => {
     }
 
     // price
-
     // onChangeStep = multiple => this.setBuyInfo({multiple})
     // 添加购物车
+
     addBuyCard = (toBuy, callBack) => {
       let {navParams, navParams: {lotType}, openIssue} = this.props
       let {activeGamesPlay} = this.state
@@ -531,26 +553,6 @@ export default (Comp) => {
       })
     }
 
-    // myRuleMode = () => {
-    //   return this.maxRebate * 20 + 1700
-    // }
-    //
-    // maxRuleMode() {
-    //   return this.activeGamesPlay.maxRuleMode
-    // }
-    //
-    // minRuleMode() {
-    //   return this.activeGamesPlay.minRuleMode
-    // }
-    //
-    // lotterMinMode() {
-    //   return this.activeGamesPlay.lotterMinMode
-    // }
-    //
-    // lotterMaxMode() {
-    //   return this.activeGamesPlay.lotterMinMode
-    // }
-
     // 清除投注区数据
     clearAllData = () => {
       let {layout, textarea} = Object.assign({}, this.state.activeViewData)
@@ -596,6 +598,7 @@ export default (Comp) => {
           addBuyCard={this.addBuyCard}
           handleText={this.handleText}
           setBonusPrize={this.setBonusPrize}
+          toHandCheckBox={this.toHandCheckBox}
           {...this.state}
           {...this.props}
         />
