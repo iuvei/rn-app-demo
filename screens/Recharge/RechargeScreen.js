@@ -125,38 +125,41 @@ class RechargeScreen extends React.Component {
       }
       this.setState({
         isLoading: true
-      })
-      let {bankCode, payChannelAlias, payChannelCode, coinCode} = activeAccount
-      commitRecharge({bankCode, channelType, isQuick, orderAmount, payChannelAlias, payChannelCode, rechargeFee, returnUrl, amount, coinCode}).then((res) => {
-        if (res.code === 0) {
-          this.setState({
-            isLoading: false
-          })
-          let tmprecinfo = Object.assign({}, res.data, {amount: amount})
-          // this.$store.commit('SET_REC_INFO', tmprecinfo)
-          this.setState({
-            amount: ''
-          })
-          // if (res.data.submitType === 'url') {
-          //   this.goThird(tmprecinfo.url + '?' + tmprecinfo.params)
-          //   return
-          // }
-          // this.splitParams(res.data.params || '')
-          let qrCodeSrc = prependUrl + '/capital/capitalBase/queryQrCode?platformKey=' + platformKey + '&payChannelCode=' + activeAccount.payChannelCode + '&bankCode=' + activeAccount.bankCode + '&time=' + new Date().getTime()
-          // this.$store.commit('SET_RECHARGE_QRCODE', this.qrCodeSrc)
-          // router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
-          this.props.navigation.navigate('RechargeSuccess', {recinfo: tmprecinfo, qrCodeSrc: qrCodeSrc, bankCode: activeAccount.bankCode})
-        } else {
-          if (res.message.indexOf('}') !== -1) {
-            Toast.info(JSON.parse(res.message).Message || '充值服务异常')
+      }, () => {
+        let {bankCode, payChannelAlias, payChannelCode, coinCode} = activeAccount
+        commitRecharge({bankCode, channelType, isQuick, orderAmount, payChannelAlias, payChannelCode, rechargeFee, returnUrl, amount, coinCode}).then((res) => {
+          if (res.code === 0) {
+            let tmprecinfo = Object.assign({}, res.data, {amount: amount})
+            // this.$store.commit('SET_REC_INFO', tmprecinfo)
+            this.setState({
+              amount: '',
+              isLoading: false,
+              orderAmount: '',
+              rechargeFee: ''
+            })
+            // if (res.data.submitType === 'url') {
+            //   this.goThird(tmprecinfo.url + '?' + tmprecinfo.params)
+            //   return
+            // }
+            // this.splitParams(res.data.params || '')
+            let qrCodeSrc = prependUrl + '/capital/capitalBase/queryQrCode?platformKey=' + platformKey + '&payChannelCode=' + activeAccount.payChannelCode + '&bankCode=' + activeAccount.bankCode + '&time=' + new Date().getTime()
+            // this.$store.commit('SET_RECHARGE_QRCODE', this.qrCodeSrc)
+            // router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
+            this.props.navigation.navigate('RechargeSuccess', {recinfo: tmprecinfo, qrCodeSrc: qrCodeSrc, bankCode: activeAccount.bankCode})
           } else {
-            Toast.info(res.message || '充值服务异常')
+            if (res.message.indexOf('}') !== -1) {
+              Toast.info(JSON.parse(res.message).Message || '充值服务异常')
+            } else {
+              Toast.info(res.message || '充值服务异常')
+            }
+            this.setState({
+              amount: '',
+              isLoading: false,
+              orderAmount: '',
+              rechargeFee: ''
+            })
           }
-          this.setState({
-            amount: '',
-            isLoading: false
-          })
-        }
+        })
       })
     }
   }

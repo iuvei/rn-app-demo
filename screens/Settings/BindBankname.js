@@ -38,17 +38,18 @@ class BindBankname extends React.Component {
     }
     this.setState({
       isLoading: true
-    })
-    bindBankName({bankName}).then((res) => {
-      if (res.code === 0) {
-        this.props.AsetUserSecureLevel()
-        Toast.success('绑定银行卡姓名成功')
-      } else {
-        Toast.fail(res.message || '网络异常，请稍后重试')
-      }
-      this.setState({
-        bankName: '',
-        isLoading: false
+    }, () => {
+      bindBankName({bankName}).then((res) => {
+        if (res.code === 0) {
+          this.props.AsetUserSecureLevel()
+          Toast.success('绑定银行卡姓名成功')
+        } else {
+          Toast.fail(res.message || '网络异常，请稍后重试')
+        }
+        this.setState({
+          bankName: '',
+          isLoading: false
+        })
       })
     })
   }

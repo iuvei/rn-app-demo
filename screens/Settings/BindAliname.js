@@ -40,19 +40,20 @@ class BindAliname extends React.Component {
     }
     this.setState({
       isLoading: true
-    })
-    bindAliName({ alipayName, alipayAccount }).then(res => {
-      if (res.code === 0) {
-        Toast.success(res.message)
-      } else {
-        Toast.fail(res.message)
-      }
-      this.props.AsetUserSecureLevel()
-      this.props.AsetUserSecureConfig()
-      this.setState({
-        alipayName: '',
-        alipayAccount: '',
-        isLoading: false
+    }, () => {
+      bindAliName({ alipayName, alipayAccount }).then(res => {
+        if (res.code === 0) {
+          Toast.success(res.message)
+        } else {
+          Toast.fail(res.message)
+        }
+        this.props.AsetUserSecureLevel()
+        this.props.AsetUserSecureConfig()
+        this.setState({
+          alipayName: '',
+          alipayAccount: '',
+          isLoading: false
+        })
       })
     })
   }

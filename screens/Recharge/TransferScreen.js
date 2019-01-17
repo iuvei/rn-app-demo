@@ -75,20 +75,21 @@ class Transfer extends React.Component {
     }
     this.setState({
       isLoading: true
-    })
-    bacTransfer({amount, toCode, outCode, userId: loginInfo.acc.user.userId}).then(res => {
-      this.setState({
-        isLoading: false
-      })
-      if (res.code === 0) {
-        Toast.success(res.message || '转账成功')
-      } else {
-        if (res.message === 'Customer not exist' || res.message === 'Platform not exist') {
-          Toast.fail('该百家乐平台暂未开通')
-          return
+    }, () => {
+      bacTransfer({amount, toCode, outCode, userId: loginInfo.acc.user.userId}).then(res => {
+        this.setState({
+          isLoading: false
+        })
+        if (res.code === 0) {
+          Toast.success(res.message || '转账成功')
+        } else {
+          if (res.message === 'Customer not exist' || res.message === 'Platform not exist') {
+            Toast.fail('该百家乐平台暂未开通')
+            return
+          }
+          Toast.fail(res.message || '网络异常，请稍后重试')
         }
-        Toast.fail(res.message || '网络异常，请稍后重试')
-      }
+      })
     })
   }
 

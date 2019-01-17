@@ -47,17 +47,18 @@ class BindSecurity extends React.Component {
     }
     this.setState({
       isLoading: true
-    })
-    bindSecurity({ questionOne, questionTwo, questionThree, answerOne, answerTwo, answerThree, tradePwd }).then((res) => {
-      this.setState({
-        isLoading: false
+    }, () => {
+      bindSecurity({ questionOne, questionTwo, questionThree, answerOne, answerTwo, answerThree, tradePwd }).then((res) => {
+        this.setState({
+          isLoading: false
+        })
+        if (res.code === 0) {
+          Toast.success(res.message || '已绑定密保成功')
+          this.props.AsetUserSecureLevel()
+        } else {
+          Toast.fail(res.message || '网络异常，请稍后重试')
+        }
       })
-      if (res.code === 0) {
-        Toast.success(res.message || '已绑定密保成功')
-        this.props.AsetUserSecureLevel()
-      } else {
-        Toast.fail(res.message || '网络异常，请稍后重试')
-      }
     })
   }
 

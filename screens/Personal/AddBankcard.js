@@ -66,22 +66,23 @@ class AddBankcard extends React.Component {
     }
     this.setState({
       isLoading: true
-    })
-    addUserBank({ bankAddress, bankWebsite, bankCard, regbankCardNumber, bankBranch,
-      pwd, bankCode, isDefault, userId: this.props.loginInfo.acc.user.userId }).then((res) => {
-      if (res.code === 0) {
-        Toast.success(res.message || '新增银行卡成功')
+    }, () => {
+      addUserBank({ bankAddress, bankWebsite, bankCard, regbankCardNumber, bankBranch,
+        pwd, bankCode, isDefault, userId: this.props.loginInfo.acc.user.userId }).then((res) => {
+        if (res.code === 0) {
+          Toast.success(res.message || '新增银行卡成功')
+          this.setState({
+            bankCard: '',
+            regbankCardNumber: ''
+          })
+          this.props.AsetUserBankCards(this.props.loginInfo.acc.user.userId)
+        } else {
+          Toast.fail(res.message || '网络异常，请重试')
+        }
         this.setState({
-          bankCard: '',
-          regbankCardNumber: ''
+          isLoading: false,
+          pwd: ''
         })
-        this.props.AsetUserBankCards(this.props.loginInfo.acc.user.userId)
-      } else {
-        Toast.fail(res.message || '网络异常，请重试')
-      }
-      this.setState({
-        isLoading: false,
-        pwd: ''
       })
     })
   }

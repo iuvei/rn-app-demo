@@ -52,22 +52,23 @@ class BindGoogleComp extends React.Component {
     }
     this.setState({
       isLoading: true
-    })
-    bindGoogleAuto({ gaCode, password, gaKey }).then((res) => {
-      if (res.code === 0) {
-        setTimeout(() => {
-          this.props.AsetUserSecureLevel()
-        }, 100)
-        Toast.success('绑定成功')
-      } else {
-        this.props.AsetGaKey()
-        Toast.fail(res.message + '，已刷新二维码，请重新扫码！')
-      }
-      this.setState({
-        isLoading: false,
-        gaCode: '',
-        password: '',
-        gaKey: ''
+    }, () => {
+      bindGoogleAuto({ gaCode, password, gaKey }).then((res) => {
+        if (res.code === 0) {
+          setTimeout(() => {
+            this.props.AsetUserSecureLevel()
+          }, 100)
+          Toast.success('绑定成功')
+        } else {
+          this.props.AsetGaKey()
+          Toast.fail(res.message + '，已刷新二维码，请重新扫码！')
+        }
+        this.setState({
+          isLoading: false,
+          gaCode: '',
+          password: '',
+          gaKey: ''
+        })
       })
     })
   }

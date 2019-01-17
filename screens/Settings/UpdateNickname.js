@@ -37,17 +37,18 @@ class UpdateNickname extends React.Component {
     }
     this.setState({
       isLoading: true
-    })
-    modifyNickName({nickName}).then(res => {
-      if (res.code === 0) {
-        Toast.success(res.message || '修改昵称成功')
-        // this.AgetUserInfo()
-      } else {
-        Toast.fail(res.message || '网络异常，请稍后重试')
-      }
-      this.setState({
-        isLoading: false,
-        nickName: ''
+    }, () => {
+      modifyNickName({nickName}).then(res => {
+        if (res.code === 0) {
+          Toast.success(res.message || '修改昵称成功')
+          // this.AgetUserInfo()
+        } else {
+          Toast.fail(res.message || '网络异常，请稍后重试')
+        }
+        this.setState({
+          isLoading: false,
+          nickName: ''
+        })
       })
     })
   }

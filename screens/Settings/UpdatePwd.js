@@ -61,60 +61,65 @@ class UpdatePwd extends React.Component {
       }
       this.setState({
         isLoading: true
-      })
-      switch (typeStr) {
-        case 'login':
-          // let pattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
-          updateLoginPwd({ oldPwd, newPwd, rePwd }).then(res => {
-            if (res.code === 0) {
-              Toast.success(res.message || '修改成功')
-              loginOut().then((res) => {
-                if (res.code === 0) {
-                  this.props.setLoginStatus(false)
-                  this.props.navigation.navigate('Login')
-                }
+      }, () => {
+        switch (typeStr) {
+          case 'login':
+            // let pattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
+            updateLoginPwd({ oldPwd, newPwd, rePwd }).then(res => {
+              if (res.code === 0) {
+                Toast.success(res.message || '修改成功')
+                loginOut().then((res) => {
+                  if (res.code === 0) {
+                    this.props.setLoginStatus(false)
+                    this.props.navigation.navigate('Login')
+                  }
+                })
+              } else {
+                Toast.fail(res.message || '网络异常，请稍后重试')
+              }
+              this.setState({
+                isLoading: false,
+                oldPwd: '',
+                newPwd: '',
+                rePwd: ''
               })
-            } else {
-              Toast.fail(res.message || '网络异常，请稍后重试')
-            }
-            this.setState({
-              isLoading: false,
-              oldPwd: '',
-              newPwd: '',
-              rePwd: ''
             })
-          })
-          break
-        case 'paypwd':
-          modifyPayPwd({ oldPwd, newPwd, rePwd }).then(res => {
-            if (res.code === 0) {
-              Toast.success(res.message || '修改成功')
-              this.props.AsetUserSecureLevel()
-            } else {
-              Toast.fail(res.message || '网络异常，请稍后重试')
-            }
-            this.setState({
-              isLoading: false,
-              oldPwd: '',
-              newPwd: '',
-              rePwd: ''
+            break
+          case 'paypwd':
+            modifyPayPwd({ oldPwd, newPwd, rePwd }).then(res => {
+              if (res.code === 0) {
+                Toast.success(res.message || '修改成功')
+                this.props.AsetUserSecureLevel()
+              } else {
+                Toast.fail(res.message || '网络异常，请稍后重试')
+              }
+              this.setState({
+                isLoading: false,
+                oldPwd: '',
+                newPwd: '',
+                rePwd: ''
+              })
             })
-          })
-          break
-      }
-    } else {
-      savePayPwd({newPwd, rePwd}).then(res => {
-        if (res.code === 0) {
-          Toast.success('绑定成功')
-          this.props.AsetUserSecureLevel()
-        } else {
-          Toast.fail(res.message || '网络异常，请稍后重试')
+            break
         }
-        this.setState({
-          isLoading: false,
-          oldPwd: '',
-          newPwd: '',
-          rePwd: ''
+      })
+    } else {
+      this.setState({
+        isLoading: true
+      }, () => {
+        savePayPwd({newPwd, rePwd}).then(res => {
+          if (res.code === 0) {
+            Toast.success('绑定成功')
+            this.props.AsetUserSecureLevel()
+          } else {
+            Toast.fail(res.message || '网络异常，请稍后重试')
+          }
+          this.setState({
+            isLoading: false,
+            oldPwd: '',
+            newPwd: '',
+            rePwd: ''
+          })
         })
       })
     }

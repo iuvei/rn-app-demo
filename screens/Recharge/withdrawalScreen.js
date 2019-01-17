@@ -159,26 +159,27 @@ class Withdrawal extends React.Component {
     console.log('北京时间小时 === ', hour)
     this.setState({
       isLoading: true
-    })
-    if (hour > 8 || hour < 3) {
-      commitWithdrawal({bankCard, currencyCode, payType, pwd, pwdType, sonOrderList}).then((res) => {
-        this.setState({
-          isLoading: false,
-          amount: '',
-          totalFee: '',
-          pwd: '',
-          actualWithdraw: '',
-          sonOrderList: []
+    }, () => {
+      if (hour > 8 || hour < 3) {
+        commitWithdrawal({bankCard, currencyCode, payType, pwd, pwdType, sonOrderList}).then((res) => {
+          this.setState({
+            isLoading: false,
+            amount: '',
+            totalFee: '',
+            pwd: '',
+            actualWithdraw: '',
+            sonOrderList: []
+          })
+          let error = res.code === 0
+          // this.AgetUserSecurityLevel()
+          error ? Toast.success('提现申请已提交') : Toast.fail(res.message)
+          // this.AgetUserBalance()
+          // this.AgetUserConsume()
         })
-        let error = res.code === 0
-        // this.AgetUserSecurityLevel()
-        error ? Toast.success('提现申请已提交') : Toast.fail(res.message)
-        // this.AgetUserBalance()
-        // this.AgetUserConsume()
-      })
-    } else {
-      Toast.info('提现时间：从北京时间 09:00:00 至 第二天 03:00:00 （24小时制）')
-    }
+      } else {
+        Toast.info('提现时间：从北京时间 09:00:00 至 第二天 03:00:00 （24小时制）')
+      }
+    })
   }
 
   render() {
