@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, findNodeHandle, UIManager} from 'react-native'
 import {connect} from 'react-redux'
 import {Tab, Tabs, ScrollableTab} from 'native-base'
-import {Toast} from '@ant-design/react-native'
+import Canvas from 'react-native-canvas'
+import {Button} from '@ant-design/react-native'
 // 时时彩
 const SSC_LIST = {
   dataHead: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -184,6 +185,15 @@ const KLSF_LIST = {
     name: '第八位'
   }]
 }
+// 获取组件宽高位置信息
+let getLayout = ref => {
+  const handle = findNodeHandle(ref)
+  return new Promise((resolve) => {
+    UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
+      resolve({x, y, width, height, pageX, pageY})
+    })
+  })
+}
 
 const CATEGORIES_LIST = {
   ssc: SSC_LIST,
@@ -210,6 +220,8 @@ class Trend extends Component {
     curLotteryType: 'wan',  // 当前标签页
     curDataHead: [],  // 当前标签头部内容
     curCategory: 'ssc', // 当前彩种类型
+    layout: {}, // canvas‘ layout
+    balls: []
   }
 
   componentDidMount () {
@@ -229,9 +241,9 @@ class Trend extends Component {
   // item {from: 起始页签index, i: 到达页签index}
   change = ({i}) => {
     let {sscType, dataHead} = this.state.currentList
-    let type = sscType[i].type || 'wan'
+    let type = sscType[i]?.type || 'wan'
     let result = []
-    let curDataHead = sscType[i].dataHead || dataHead
+    let curDataHead = sscType[i]?.dataHead || dataHead
     this.setState({
       showList: result,
       curLotteryType: type,
@@ -276,11 +288,45 @@ class Trend extends Component {
     }
 
     return codeList
-    // if (lottery.type === 6 || this.lottery.type === 7) {
-    //   codeList = [codeList[pksDic.indexOf(curLotteryType)]]
-    // } else if (['distribute', 'big', 'single', 'prime', 'zero', ...lhh].includes(this.curLotteryType)) {
-    //   codeList = this.buildCode(codeList, this.titleName)
-    // }
+  }
+
+  handleCanvas = (canvas) => {
+    canvas.height = 26 * 51
+    canvas.width = 580
+    const ctx = canvas.getContext('2d')
+    setTimeout(() => {
+      this.print()
+      getLayout(this.refs.table).then(res => {
+        ctx.lineWidth = 1
+        ctx.strokeStyle = 'purple'
+        this.state.balls.forEach(({pageX, pageY}, index) => {
+          if (index === 0) {
+            ctx.moveTo(pageX + 8, pageY - 300 + 8)
+          } else {
+            ctx.lineTo(pageX + 8, pageY - 300 + 8)
+          }
+        })
+        ctx.stroke()
+      })
+    }, 500)
+  }
+
+  layout = (e, flag) => {
+    this.setState({
+      layout: e.layout
+    })
+  }
+
+  print = async () => {
+    let result = []
+    let {curLotteryType} = this.state
+    for (let i = 0; i < 50; i++) {
+      result.push(getLayout(this.refs[curLotteryType + i]))
+    }
+    let temp = await Promise.all(result)
+    await this.setState({
+      balls: temp
+    })
   }
 
   render () {
@@ -295,7 +341,7 @@ class Trend extends Component {
               return (
                 <Tab heading={item.name} key={index}>
                   <View style={styles.table}>
-                    <View style={[styles.row, styles.header]}>
+                    <View style={[styles.row, styles.header]} ref={'table'}>
                       <Text style={[styles.issue, styles.cell]}>期数</Text>
                       <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>
                       <View style={[styles.numbers, styles.cell]}>
@@ -310,6 +356,7 @@ class Trend extends Component {
                       latelyOpenList.map((item, index) => {
                         let {openIssue, openCode, codelist} = item
                         codelist = this.buildCode(codelist)
+                        let openRef = curLotteryType + index
                         return (
                           <View style={styles.row} key={index}>
                             <Text style={[styles.issue, styles.cell]}>{openIssue.substring(6)}</Text>
@@ -326,8 +373,9 @@ class Trend extends Component {
                                     number = number.toString()
                                     let flag = codelist?.includes(number)
                                     return <View key={x} style={styles.number}>
-                                      <Text style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
-                                        ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
+                                      <Text ref={flag ? openRef : ''}
+                                        style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
+                                          ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
                                     </View>
                                   })
                               }
@@ -335,6 +383,9 @@ class Trend extends Component {
                           </View>
                         )
                       })
+                    }
+                    {
+                      ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ? <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
                     }
                   </View>
                 </Tab>
@@ -362,7 +413,9 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff'
   },
-  table: {},
+  table: {
+    // position: 'relative'
+  },
   header: {
     backgroundColor: '#efefef'
   },
@@ -412,5 +465,10 @@ const styles = StyleSheet.create({
   single: {
     backgroundColor: '#22ac38',
     color: '#fff'
+  },
+  canvas: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   }
 })
