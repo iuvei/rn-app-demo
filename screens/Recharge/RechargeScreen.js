@@ -288,43 +288,67 @@ class RechargeScreen extends React.Component {
         }
       </ScrollView>
     );
-    // const sidebarVirtual = (
-    //   <ScrollView style={[styles.container]}>
-    //     <List>
-    //       {
-    //         virtualAccounts.map((item, index) => {
-    //           return <RadioItem
-    //             multipleLine
-    //             name="rechargeChannels"
-    //             checked={this.props.activeAccount.local_id === item.local_id}
-    //             key={item.payChannelAlias + index}
-    //             onChange={event => {
-    //               if (event.target.checked) {
-    //                 this.setState({
-    //                   amount: '',
-    //                   orderAmount: '',
-    //                   rechargeFee: ''
-    //                 });
-    //                 this.props.setActiveAccount(item);
-    //               }
-    //             }}>
-    //             <View
-    //               style={{
-    //                 flexDirection: 'row',
-    //                 justifyContent: 'space-between',
-    //                 alignItems: 'center',
-    //                 height: 30,
-    //                 paddingLeft: 10
-    //               }}
-    //             >
-    //               <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/>
-    //             </View>
-    //           </RadioItem>
-    //         })
-    //       }
-    //     </List>
-    //   </ScrollView>
-    // )
+    const sidebarVirtual = (
+      <ScrollView style={[styles.container]}>
+        <List>
+          {
+            virtualAccounts.map((item, index) => {
+              return (
+                <ListItem selected={this.props.activeAccount.local_id === item.local_id} key={item.bankCode+index}
+                  style={{height: 44, lineHeight: 44}}
+                  onPress={() => {
+                    this.setState({
+                      amount: '',
+                      orderAmount: '',
+                      rechargeFee: '0'
+                    })
+                    this.props.setActiveAccount(item)
+                  }}
+                >
+                  <Left>
+                    <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/>
+                  </Left>
+                  <Right>
+                    <Radio
+                      color={"#f0ad4e"}
+                      selectedColor={"#5cb85c"}
+                      selected={this.props.activeAccount.local_id === item.local_id}
+                    />
+                  </Right>
+                </ListItem>
+              )
+              // return <RadioItem
+              //   multipleLine
+              //   name="rechargeChannels"
+              //   checked={this.props.activeAccount.local_id === item.local_id}
+              //   key={item.payChannelAlias + index}
+              //   onChange={event => {
+              //     if (event.target.checked) {
+              //       this.setState({
+              //         amount: '',
+              //         orderAmount: '',
+              //         rechargeFee: ''
+              //       });
+              //       this.props.setActiveAccount(item);
+              //     }
+              //   }}>
+              //   <View
+              //     style={{
+              //       flexDirection: 'row',
+              //       justifyContent: 'space-between',
+              //       alignItems: 'center',
+              //       height: 30,
+              //       paddingLeft: 10
+              //     }}
+              //   >
+              //     <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/>
+              //   </View>
+              // </RadioItem>
+            })
+          }
+        </List>
+      </ScrollView>
+    )
     const tabs = [
       { title: '人民币支付' },
       { title: '币宝数字货币支付' }
@@ -399,7 +423,7 @@ class RechargeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Drawer
-          sidebar={activeTabIndex === 0 ? sidebar : null}
+          sidebar={activeTabIndex === 0 ? sidebar : sidebarVirtual}
           position="right"
           open={false}
           drawerRef={el => (this.drawer = el)}
