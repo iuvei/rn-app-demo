@@ -214,7 +214,7 @@ class RowBall extends React.Component {
                           </View>
                         </Flex>
                         {
-                          <Flex style={{
+                          activeViewData.tools ? <Flex style={{
                             width: '100%',
                             flexWrap: 'wrap', flexDirection: 'row',
                             justifyContent: 'space-between',
@@ -237,7 +237,7 @@ class RowBall extends React.Component {
                                 >{t.name}</Text>
                               )
                             }
-                          </Flex>
+                          </Flex> : null
                         }
                       </View>
                     )

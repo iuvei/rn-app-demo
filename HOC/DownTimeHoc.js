@@ -287,28 +287,26 @@ export default (Comp) => {
           initTime={this.initTime}
           ref={ref => this.instance = ref}
         />
-        // <View>
-        //   <Button
-        //     onPress={() => {
-        //       console.log('you just clicked log fn')
-        //       this.instance.logFn()
-        //     }}>提交</Button>
-        // </View>
       )
     }
   }
 
   const mapStateToProps = (state, props) => {
-    let {common: {userId}, classic: {openIssue}} = state
-    return {userId, openIssue}
+    let {
+      common: {userId},
+      classic: {openIssue},
+      classic: {navParams}
+    } = state
+    return {userId, openIssue, navParams}
   }
 
   const mapDispatchToProps = (dispatch) => {
     return {
       _getLatelyOpen: (params) => dispatch(getLatelyOpen(params)),
       _setOpenIssue: params => dispatch(setOpenIssue(params)),
-      AsetSoundType: (data) => { dispatch(AsetSoundType(data)) },
+      AsetSoundType: (data) => dispatch(AsetSoundType(data))
     }
   }
+
   return connect(mapStateToProps, mapDispatchToProps)(DownTimeHoc)
 }
