@@ -109,6 +109,7 @@ export default (Comp) => {
       if (!_.isEqual(rebateInfo, np.rebateInfo) && Object.keys(np.rebateInfo).length) {
         this.setRebate(np.rebateInfo)
       }
+      this.checkKlcXycLot()
     }
 
     initBetView = ({lotType}) => {
@@ -398,18 +399,25 @@ export default (Comp) => {
       }
       // let methodInfo = this.gameMethod[playOrgin]
       // this.isKlcXycLot && _.isArray(content)
-      if (false) {
-        // content.filter(d => {
-        //   let xyclist = Object.assign({}, orderlist, {
-        //     // 投注号码 dan shuang
-        //     castCodes: d,
-        //     castNumber: 1,
-        //     num: 1,
-        //     castAmount: (total / num).toFixed(4)
-        //   })
-        //   this.buyCardData.push(xyclist)
-        //   this.commitBuyCardAfter()
-        // })
+      if (this.state.isKlcYxyLot) {
+        let arrtmp = []
+        content.filter(d => {
+          let xyclist = Object.assign({}, orderlist, {
+            // 投注号码 dan shuang
+            castCodes: d,
+            castNumber: 1,
+            num: 1,
+            castAmount: (total / num).toFixed(4)
+          })
+          arrtmp.push(xyclist)
+        })
+        this.setState({
+          buyCardData: [].concat(arrtmp)
+        }, () => {
+          if (toBuy) this.toBuy()
+          if (callBack) callBack()
+          this.clearAllData()
+        })
       } else {
         let {maxRecord} = activeGamesPlay
         if (maxRecord >= orderlist.castNumber || maxRecord === -1) {
@@ -478,7 +486,7 @@ export default (Comp) => {
           castMultiple,
           orderIssue: currentIssue,
           // this.isKlcXycLot ? '' : rebateMode
-          rebateMode: rebateMode,
+          rebateMode: this.state.isKlcYxyLot ? '' : rebateMode,
           ruleCode
         })
       })
@@ -491,7 +499,7 @@ export default (Comp) => {
       // currency.currencyCode
       // 这里要改成多币种的
       let rep = {
-        currencyCode: 'rmb',
+        currencyCode: 'CNY',
         amount: parseFloat(Number(reqAmount).toFixed(4)),
         // castNumber: resNum,
         detailsList: detailsList,

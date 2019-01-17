@@ -1,4 +1,4 @@
-//  getSvg.js
+//  parseSvg.js
 var fs = require('fs')
 var path = require('path')
 const svgDir = path.resolve(__dirname, './assets/svg')

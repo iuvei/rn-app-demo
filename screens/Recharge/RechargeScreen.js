@@ -286,7 +286,7 @@ class RechargeScreen extends React.Component {
                     paddingLeft: 10
                   }}
                 >
-                  <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80} height={30}/>
+                  <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/>
                 </View>
               </RadioItem>
             })
@@ -388,7 +388,7 @@ class RechargeScreen extends React.Component {
               </View>
               <View>
                 <List style={{width: '100%'}}>
-                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()}>
+                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()} style={{height: 50}}>
                     {activeAccount.coinCode ? <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/> : null}
                   </List.Item>
                 </List>
