@@ -353,23 +353,26 @@ class RowBall extends React.Component {
                 )
               }
             </View>
-            <View style={{width: 80}}>
-              <Button
-                key={'Zhuihao'}
-                type="ghost" size="small"
-                onPress={() => {
-                  addBuyCard(false, () => {
-                    this.props.navigation.navigate('ChaseScreen', {
-                      orderList: this.props.buyCardData,
-                      buyCardInfo: this.props.buyInfo
+            {
+              !isKlcYxyLot &&
+              <View style={{width: 80}}>
+                <Button
+                  key={'Zhuihao'}
+                  type="ghost" size="small"
+                  onPress={() => {
+                    addBuyCard(false, () => {
+                      this.props.navigation.navigate('ChaseScreen', {
+                        orderList: this.props.buyCardData,
+                        buyCardInfo: this.props.buyInfo
+                      })
                     })
-                  })
-                }}
-                style={{
-                  height: 28,
-                  borderRadius: 4
-                }}>追号</Button>
-            </View>
+                  }}
+                  style={{
+                    height: 28,
+                    borderRadius: 4
+                  }}>追号</Button>
+              </View>
+            }
           </View>
           <View style={{flexDirection: 'row', marginTop: 6}}>
             <View style={{flex: 1}}>
