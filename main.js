@@ -41,7 +41,7 @@ class Main extends React.Component {
       return (
         <View style={styles.container}>
           <StatusBar
-            backgroundColor={Platform.OS === 'ios' ? 'transparent' : 'rgba(0,0,0,0)'}
+            backgroundColor={'transparent'}
             translucent={true}
             barStyle="light-content"/>
           <AppNavigator/>
