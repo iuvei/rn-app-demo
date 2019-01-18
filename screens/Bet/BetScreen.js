@@ -79,7 +79,7 @@ class BetScreen extends React.Component {
         userId: '',
         orderId: '',
         proxyType: 0, // 0自己、1直接下级、2所有下级，默认0
-        orderType: 0, // 0彩票,1游戏
+        orderType: (props.navigation.state.params.realCategory === 'kl8' || props.navigation.state.params.realCategory === 'xyc') ? 1 : 0, // 0彩票,1游戏
         orderIssue: '', // 期号
         lotterCode: props.navigation.state.params.lotterCode || '', // 必传
         startTime: '',
@@ -92,6 +92,7 @@ class BetScreen extends React.Component {
       },
       refreshTime: 0
     }
+    console.log(props)
     this.time = 1700
   }
 
@@ -109,6 +110,7 @@ class BetScreen extends React.Component {
     this.props.navParams(
       Object.assign({}, params, {lotType: code})
     )
+    console.log(code)
     // 先渲染本地构造的玩法，getGamesPlay接口比较slow
     let {navBar} = JSON.parse(JSON.stringify(norLot[code]))
     let plays = navBar[0].subnav[0].play.map(item => {

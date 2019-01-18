@@ -214,10 +214,10 @@ class LoginComponent extends Component {
                   <Button activeStyle={false} style={styles.btn} loading={isLoading} type="primary" onPress={() => this._toLogin()}>登 录</Button>
                   <Flex style={{width: 280, marginTop: 25}}>
                     <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-                      <Text style={{color: '#ffffff'}} onPress={this._handleDownloadAsync}>移动端下载</Text>
+                      {/* <Text style={{color: '#ffffff'}}>线路检测</Text> */}
                     </Flex.Item>
                     <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-                      <Text style={{textAlign: 'right', color: '#ffffff'}}>线路检测</Text>
+                      <Text style={{textAlign: 'right', color: '#ffffff'}} onPress={this._handleDownloadAsync}>移动端下载</Text>
                     </Flex.Item>
                   </Flex>
                 </View>
