@@ -84,7 +84,7 @@ class LinesPanel extends Component {
             transparent
             visible={show}
             footer={[
-              { text: '取消', onPress: () => this.showModal() },
+              // { text: '取消', onPress: () => this.showModal() },
               { text: '确定', onPress: () => this.submit() }
               ]}
           >
