@@ -335,28 +335,42 @@ class ChaseScreen extends React.Component {
 
   checkAllChange = (event) => {
     let arr = [].concat(this.state.showChaseList)
+    let total = 0
     arr.forEach(function (item) {
       item.checked = event.target.checked
+      if (event.target.checked) {
+        total += Number(item.money)
+      } else {
+        total = 0
+      }
     })
     this.setState({
       checkedAll: event.target.checked,
-      showChaseList: arr
+      showChaseList: arr,
+      total: total
     })
   }
 
   chaseItemChange = (event, index) => {
     let arr = [].concat(this.state.showChaseList)
     arr[index].checked = event.target.checked
+    let { total } = this.state
+    if (event.target.checked) {
+      total = Number(total) + Number(arr[index].money)
+    } else {
+      total = Number(total) - Number(arr[index].money)
+    }
     this.setState({
-      showChaseList: arr
+      showChaseList: arr,
+      total: total
     })
   }
 
   render() {
     let { chaseIssueTotal, startMultiple, bigMultiple, lowIncome, middleIssue, nextType, nextMultiple, winStop, total, activeTab, showChaseList, isLoading, checkedAll } = this.state
-    let isDisabled = showChaseList.filter(t => {
-      return !t.checked
-    }).length === showChaseList.length
+    let checkedArr = showChaseList.filter(t => {
+      return t.checked
+    })
     let topContent = <View style={{backgroundColor: '#cccede'}}>
       <List>
         <Flex justify="around">
@@ -433,7 +447,7 @@ class ChaseScreen extends React.Component {
         </Flex>
         <Flex justify="around" style={{paddingVertical: 6}}>
           <Flex.Item alignItems="center">
-            <View><Text style={{fontSize: 14, color: '#198ae7'}}>期数：{showChaseList.length}</Text></View>
+            <View><Text style={{fontSize: 14, color: '#198ae7'}}>期数：{checkedArr.length}</Text></View>
           </Flex.Item>
           <Flex.Item alignItems="center">
             <View><Text style={{fontSize: 14, color: '#198ae7'}}>总金额：{total}</Text></View>
@@ -479,7 +493,7 @@ class ChaseScreen extends React.Component {
           <ScrollView style={{ backgroundColor: 'f0f0f0', flex: 1 }}>{topContent}{listContent}</ScrollView>
         </Tabs>
         <View style={{height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center', borderTopWidth: 0.5, borderTopColor: '#198ae7'}}>
-          <Button disabled={isDisabled} loading={isLoading} type="ghost" style={{width: '50%', height: 40}} onPress={this.submitFunc}>
+          <Button disabled={checkedArr.length === 0} loading={isLoading} type="ghost" style={{width: '50%', height: 40}} onPress={this.submitFunc}>
             <Text style={{fontSize: 14}}>立即追号</Text>
           </Button>
         </View>
