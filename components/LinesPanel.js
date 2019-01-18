@@ -39,7 +39,7 @@ class LinesPanel extends Component {
     this.props.setShowFloatBall(open)
     this.props.setCurrentApiUrl(apiUrl)
     this.setState({show})
-    Toast.success('设置成功！')
+    Toast.success('设置成功！', 0.5)
   }
 
   updateLinesPannel = () => {

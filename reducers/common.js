@@ -37,7 +37,7 @@ const sortArray = arr => {
 const initialState = {
   isLogin: false,
   showFloatBall: true,
-  currentApiUrl: 'http://tianxiang.qmuitest.com/qm',
+  currentApiUrl: 'http://tianxiang.qmuitest.com',
   count: 1,
   sysSortLottery: [],
   syswpSortLottery: [],
