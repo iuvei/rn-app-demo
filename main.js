@@ -40,9 +40,10 @@ class Main extends React.Component {
       // 登陆情况
       return (
         <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar
-            backgroundColor={'blue'}
-            barStyle="light-content"/>}
+          <StatusBar
+            backgroundColor={Platform.OS === 'ios' ? 'transparent' : 'rgba(0,0,0,0)'}
+            translucent={true}
+            barStyle="light-content"/>
           <AppNavigator/>
         </View>
       )
