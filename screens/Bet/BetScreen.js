@@ -19,6 +19,7 @@ import {
   setNullLatelyOpen, setGamesPlayToNull
 } from '../../actions/classic'
 import norLot from '../../data/nor-lot'
+import BetListComp from '../../components/BetListComp'
 
 const DownTimeHocView = DownTimeHoc(DownTime)
 const RowBallHocView = RowBallHoc(RowBall)
@@ -70,7 +71,26 @@ class BetScreen extends React.Component {
       afterValue: 0,
       stepValue: 1,
       modeItem: {},
-      filterNavBar: []
+      filterNavBar: [],
+
+      KeyName: 'BetHistory',
+      api: '/frontReport/getOrderStatistics',
+      paramsQuery: {
+        userId: '',
+        orderId: '',
+        proxyType: 0, // 0自己、1直接下级、2所有下级，默认0
+        orderType: 0, // 0彩票,1游戏
+        orderIssue: '', // 期号
+        lotterCode: props.navigation.state.params.lotterCode || '', // 必传
+        startTime: '',
+        endTime: '',
+        status: '',
+        pageNumber: 1,
+        isAddition: 0, // 是否追号：0 否、1 是
+        pageSize: 10,
+        isOuter: '' // 0 否 1 是
+      },
+      refreshTime: 0
     }
     this.time = 1700
   }
@@ -197,6 +217,21 @@ class BetScreen extends React.Component {
   }
 
   _onChangeTabs = (tab, number) => {
+    if (number === 2) {
+      this.setState({
+        refreshTime: new Date().getTime()
+      })
+    }
+  }
+
+  // 点击单元表格
+  onPressItem = (item) => { 
+    // 跳转详情页
+    this.props.navigation.navigate('OrderDetail', {detail: item})
+    // 点击一项改变数据重置数据
+    // let Row = this.BetHistory.listView.getRows().slice()
+    // Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
+    // this.BetHistory.listView.updateDataSource(Row)
   }
 
   closeDrawer = () => {
@@ -208,7 +243,7 @@ class BetScreen extends React.Component {
   }
 
   render() {
-    let {ContentTabs, filterNavBar} = this.state
+    let {ContentTabs, filterNavBar, api, paramsQuery, KeyName, refreshTime} = this.state
     let {params} = this.props.navigation.state
     return (
       <View style={styles.container}>
@@ -240,8 +275,8 @@ class BetScreen extends React.Component {
             <View style={{flex: 1}}>
               <RowBallHocView activeLot={params}/>
             </View>
-            <View style={styles.tabs}>
-              <Text>Content of Third Tab</Text>
+            <View style={{flex: 1}}>
+              <BetListComp api={api} params={paramsQuery} KeyName={KeyName} refreshTime={refreshTime} onPressItem={this.onPressItem}/>
             </View>
             <View>
               <ScrollView>

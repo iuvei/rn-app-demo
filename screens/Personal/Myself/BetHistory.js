@@ -10,6 +10,7 @@ import {
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
 import { orderTypes, orderStatus } from '../../../data/options'
+import BetListComp from '../../../components/BetListComp'
 
 const TableRow = 20
 
@@ -73,7 +74,8 @@ class BetHistory extends React.Component {
         pageSize: 10,
         isOuter: '' // 0 否 1 是
       },
-      lotterList: []
+      lotterList: [],
+      refreshTime: 0
     }
   }
 
@@ -107,7 +109,10 @@ class BetHistory extends React.Component {
   }
 
   onSearch = async () => {
-    this.BetHistory.listView.refresh()
+    // this.BetHistory.listView.refresh()
+    this.setState({
+      refreshTime: new Date().getTime()
+    })
   }
 
   handlePickerBack = (val) => {
@@ -133,7 +138,7 @@ class BetHistory extends React.Component {
   }
 
   render() {
-    let {api, params, KeyName, lotterList} = this.state
+    let {api, params, KeyName, lotterList, refreshTime} = this.state
 
     return (
       <View style={styles.container}>
@@ -165,7 +170,8 @@ class BetHistory extends React.Component {
               </Flex>
             </View>
         </View>
-        <UIListView
+        <BetListComp api={api} params={params} KeyName={KeyName} refreshTime={refreshTime} onPressItem={this.onPressItem}/>
+        {/* <UIListView
           ref={ref => this.BetHistory = ref}
           api={api}
           KeyName={`KeyName-${KeyName}`}
@@ -190,7 +196,7 @@ class BetHistory extends React.Component {
             // 或在这里增加 其他状态码的处理Alter
             fn(NullData ? [] : {dataList})
           }}
-        />
+        /> */}
       </View>
     )
   }
