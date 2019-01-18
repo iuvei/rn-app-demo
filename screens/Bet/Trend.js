@@ -81,7 +81,7 @@ const SYXW_LIST = {
 }
 // pk10
 const PKS_LIST = {
-  dataHead: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  dataHead: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10'],
   sscType: [{
     type: 'first',
     name: '冠军'
@@ -113,6 +113,19 @@ const PKS_LIST = {
     type: 'last',
     name: '第十名'
   }]
+}
+
+const PKS_MAP = {
+  first: 0,
+  second: 1,
+  third: 2,
+  forth: 3,
+  fifth: 4,
+  sixth: 5,
+  seventh: 6,
+  eighth: 7,
+  ninth: 8,
+  last: 9,
 }
 // 快3
 const K3_LIST = {
@@ -235,7 +248,7 @@ class Trend extends Component {
     }
     this.setState({
       currentList: {...list},
-      curLotteryType: 'distribute',
+      curLotteryType: list.sscType[0].type,
       curDataHead: list.sscType[0].dataHead || list.dataHead,
       curCategory: realCategory
     })
@@ -256,40 +269,45 @@ class Trend extends Component {
 
   // 不同彩种不同类型使用不同的处理方式 待完善
   buildCode = (codeList) => {
-    let {curLotteryType} = this.state
+    let {curLotteryType, curCategory} = this.state
     let len = codeList.length
-    switch (curLotteryType) {
-      case 'distribute':
-        break
-      case 'wan':
-        codeList = codeList.slice(len - 5, len - 4)
-        break
-      case 'qian':
-        codeList = codeList.slice(len - 4, len - 3)
-        break
-      case 'bai':
-        codeList = codeList.slice(len - 3, len - 2)
-        break
-      case 'shi':
-        codeList = codeList.slice(len - 2, len - 1)
-        break
-      case 'ge':
-        codeList = codeList.slice(len - 1, len)
-        break
-      case 'big':
-        codeList = codeList.map(item => item > 4 ? '大' : '小')
-        break
-      case 'single':
-        codeList = codeList.map(item => item % 2 === 0 ? '双' : '单')
-        break
-      case 'prime':
-        codeList = codeList.map(item => [1, 2, 3, 5, 7].includes(parseInt(item)) ? '质' : '合')
-        break
-      case 'zero':
-        codeList = codeList.map(item => item % 3)
-        break
-    }
+    if (curCategory === 'pk10'){
+      codeList = [codeList[PKS_MAP[curLotteryType]]]
+    } else {
+      switch (curLotteryType) {
+        case 'distribute':
+          break
+        case 'wan':
+          codeList = codeList.slice(len - 5, len - 4)
+          break
+        case 'qian':
+          codeList = codeList.slice(len - 4, len - 3)
+          break
+        case 'bai':
+          codeList = codeList.slice(len - 3, len - 2)
+          break
+        case 'shi':
+          codeList = codeList.slice(len - 2, len - 1)
+          break
+        case 'ge':
+          codeList = codeList.slice(len - 1, len)
+          break
+        case 'big':
+          codeList = codeList.map(item => item > 4 ? '大' : '小')
+          break
+        case 'single':
+          codeList = codeList.map(item => item % 2 === 0 ? '双' : '单')
+          break
+        case 'prime':
+          codeList = codeList.map(item => [1, 2, 3, 5, 7].includes(parseInt(item)) ? '质' : '合')
+          break
+        case 'zero':
+          codeList = codeList.map(item => item % 3)
+          break
 
+      }
+
+    }
     return codeList
   }
 
@@ -353,11 +371,12 @@ class Trend extends Component {
                       {
                         latelyOpenList.map((item, index) => {
                           let {openIssue, openCode, codelist} = item
+                          let issueLen = openIssue.length
                           codelist = this.buildCode(codelist)
                           let openRef = curLotteryType + index
                           return (
                             <View style={styles.row} key={index}>
-                              <Text style={[styles.issue, styles.cell]}>{openIssue.substring(6)}</Text>
+                              <Text style={[styles.issue, styles.cell]}>{openIssue.substring(issueLen - 4)}</Text>
                               {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>{openCode}</Text>}
                               <View style={[styles.numbers, styles.cell]}>
                                 {
@@ -369,7 +388,7 @@ class Trend extends Component {
                                     }) :
                                     curDataHead.map((number, x) => {
                                       number = number.toString()
-                                      let flag = codelist?.includes(number)
+                                      let flag = codelist.includes(number)
                                       return <View key={x} style={styles.number}>
                                         <Text ref={flag ? openRef : ''}
                                               style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
@@ -413,7 +432,6 @@ class Trend extends Component {
             <Tab heading={'empty'}></Tab>
           }
         </Tabs>
-
       </View>
     )
   }
