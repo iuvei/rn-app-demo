@@ -144,7 +144,7 @@ class PersonalScreen extends React.Component {
   componentDidMount () {
     let {userRebateVO} = this.props.rebateInfo || []
     let lotteryRebate = 0
-    userRebateVO?.forEach(item => {
+    userRebateVO.forEach(item => {
       if (item.rebateType === 0) {
         lotteryRebate = item.userRebate
       }
@@ -245,7 +245,7 @@ class PersonalScreen extends React.Component {
             </View>
           </View>
         </ImageBackground>
-        <View style={{height: 360}}>
+        <View style={{flex: 1}}>
           <Tabs tabStyle={{color: '#0070cc'}} activeTabStyle={{backgroundColor: '#eff5fb'}}>
             <Tab heading={'订单报表'}>
               <ScrollView style={styles.agent}>
@@ -283,7 +283,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   agent: {
-    height: 160,
     padding: 10
   }
 })

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "official-demo",
-    "slug": "official-demo",
+    "name": "天祥国际",
+    "slug": "tianxiang",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
@@ -26,11 +26,18 @@
         "resizeMode": "cover"
       }
     },
+    "android": {
+      "package": "com.taimei.tianxiang"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "translucent": true
+    }
   }
 }

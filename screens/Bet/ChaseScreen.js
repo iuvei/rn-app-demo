@@ -33,6 +33,7 @@ class ChaseScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      checkedAll: true,
       isLoading: false,
       orderList: props.navigation.getParam('orderList', []),
       buyCardInfo: props.navigation.getParam('buyCardInfo', {}),
@@ -192,7 +193,8 @@ class ChaseScreen extends React.Component {
             multiple: multiple,
             money: total * multiple,
             showTime: String(val.nextTime).slice(5),
-            nextTime: val.nextTime
+            nextTime: val.nextTime,
+            checked: true
           })
           tmptotal += total * multiple
         }
@@ -211,7 +213,8 @@ class ChaseScreen extends React.Component {
           multiple: startMultiple,
           money: total * startMultiple,
           showTime: String(val.nextTime).slice(5),
-          nextTime: val.nextTime
+          nextTime: val.nextTime,
+          checked: true
         })
         tmptotal += total * startMultiple
       }
@@ -237,12 +240,12 @@ class ChaseScreen extends React.Component {
           multiple: multiple,
           money: total * multiple,
           showTime: String(val.nextTime).slice(5),
-          nextTime: val.nextTime
+          nextTime: val.nextTime,
+          checked: true
         })
         tmptotal += total * multiple
       }
     }
-    console.log('showchaselist', showChaseList)
     this.setState({
       showChaseList: showChaseList,
       total: tmptotal
@@ -255,7 +258,10 @@ class ChaseScreen extends React.Component {
     let {winStop, showChaseList, orderList} = this.state
     let planList = []
     let [reqAmount] = [0, 0]
-    showChaseList.filter((sel, selIdx) => {
+    let tmparr = showChaseList.filter(c => {
+      return c.checked
+    })
+    tmparr.filter((sel, selIdx) => {
       let {multiple, nextTime, currentIssue} = sel
       orderList.filter(item => {
         let {castCodes, ruleCode, rebateMode, model, singlePrice} = item
@@ -302,32 +308,69 @@ class ChaseScreen extends React.Component {
     }
     this.setState({
       isLoading: true
+    }, () => {
+      toBuyLottery(repZip || rep).then((res) => {
+        this.setState({
+          isLoading: false,
+          showChaseList: [],
+          chaseList: [],
+          total: '0'
+        })
+        if (res.code === 0) {
+          Toast.success('追号成功')
+        } else {
+          Toast.fail(res.message || '追号失败')
+        }
+      }).catch(() => {
+        this.setState({
+          isLoading: false,
+          showChaseList: [],
+          chaseList: [],
+          total: '0'
+        })
+        Toast.fail('网络异常，请稍后重试')
+      })
     })
-    toBuyLottery(repZip || rep).then((res) => {
-      this.setState({
-        isLoading: false,
-        showChaseList: [],
-        chaseList: [],
-        total: '0'
-      })
-      if (res.code === 0) {
-        Toast.success('追号成功')
+  }
+
+  checkAllChange = (event) => {
+    let arr = [].concat(this.state.showChaseList)
+    let total = 0
+    arr.forEach(function (item) {
+      item.checked = event.target.checked
+      if (event.target.checked) {
+        total += Number(item.money)
       } else {
-        Toast.fail(res.message || '追号失败')
+        total = 0
       }
-    }).catch(() => {
-      this.setState({
-        isLoading: false,
-        showChaseList: [],
-        chaseList: [],
-        total: '0'
-      })
-      Toast.fail('网络异常，请稍后重试')
+    })
+    this.setState({
+      checkedAll: event.target.checked,
+      showChaseList: arr,
+      total: total
+    })
+  }
+
+  chaseItemChange = (event, index) => {
+    let arr = [].concat(this.state.showChaseList)
+    arr[index].checked = event.target.checked
+    let { total } = this.state
+    if (event.target.checked) {
+      total = Number(total) + Number(arr[index].money)
+    } else {
+      total = Number(total) - Number(arr[index].money)
+    }
+    this.setState({
+      showChaseList: arr,
+      total: total
     })
   }
 
   render() {
-    let { chaseIssueTotal, startMultiple, bigMultiple, lowIncome, middleIssue, nextType, nextMultiple, winStop, total, activeTab, showChaseList, isLoading } = this.state
+    let { chaseIssueTotal, startMultiple, bigMultiple, lowIncome, middleIssue, nextType, nextMultiple, winStop, total, activeTab, showChaseList, isLoading, checkedAll } = this.state
+    let checkedArr = showChaseList.filter(t => {
+      return t.checked
+    })
     let topContent = <View style={{backgroundColor: '#cccede'}}>
       <List>
         <Flex justify="around">
@@ -404,7 +447,7 @@ class ChaseScreen extends React.Component {
         </Flex>
         <Flex justify="around" style={{paddingVertical: 6}}>
           <Flex.Item alignItems="center">
-            <View><Text style={{fontSize: 14, color: '#198ae7'}}>期数：{showChaseList.length}</Text></View>
+            <View><Text style={{fontSize: 14, color: '#198ae7'}}>期数：{checkedArr.length}</Text></View>
           </Flex.Item>
           <Flex.Item alignItems="center">
             <View><Text style={{fontSize: 14, color: '#198ae7'}}>总金额：{total}</Text></View>
@@ -414,19 +457,21 @@ class ChaseScreen extends React.Component {
     </View>
     let listContent = <View>
       <Flex style={{height: 40, backgroundColor: '#198ae7'}}>
-        <Text style={{width: '30%', textAlign: 'center', fontSize: 14, color: '#fff'}}>期号</Text>
+        <View style={{width: '9%'}}><Checkbox checked={checkedAll} onChange={event => this.checkAllChange(event)} style={{color: '#fff'}}></Checkbox></View>
+        <Text style={{width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'}}>期号</Text>
         <Text style={{width: '15%', textAlign: 'center', fontSize: 14, color: '#fff'}}>倍数</Text>
-        <Text style={{width: '25%', textAlign: 'center', fontSize: 14, color: '#fff'}}>金额</Text>
-        <Text style={{width: '30%', textAlign: 'center', fontSize: 14, color: '#fff'}}>截至时间</Text>
+        <Text style={{width: '22%', textAlign: 'center', fontSize: 14, color: '#fff'}}>金额</Text>
+        <Text style={{width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'}}>截至时间</Text>
       </Flex>
       <View style={{paddingVertical: 5}}>
         {
-          showChaseList.map(item => {
-            return <Flex key={item.currentIssue + '_' + item.showTime} style={{backgroundColor: '#fff', height: 35}}>
-              <Text style={{width: '30%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.currentIssue}</Text>
+          showChaseList.map((item, index) => {
+            return <Flex key={item.currentIssue + '_' + item.showTime + index} style={{backgroundColor: '#fff', height: 35}}>
+              <View style={{width: '9%'}}><Checkbox checked={item.checked} onChange={event => this.chaseItemChange(event, index)}></Checkbox></View>
+              <Text style={{width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.currentIssue}</Text>
               <Text style={{width: '15%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.multiple}</Text>
-              <Text style={{width: '25%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.money}</Text>
-              <Text style={{width: '30%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.showTime}</Text>
+              <Text style={{width: '22%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.money}</Text>
+              <Text style={{width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.showTime}</Text>
             </Flex>
           })
         }
@@ -448,7 +493,7 @@ class ChaseScreen extends React.Component {
           <ScrollView style={{ backgroundColor: 'f0f0f0', flex: 1 }}>{topContent}{listContent}</ScrollView>
         </Tabs>
         <View style={{height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center', borderTopWidth: 0.5, borderTopColor: '#198ae7'}}>
-          <Button loading={isLoading} type="ghost" style={{width: '50%', height: 40}} onPress={this.submitFunc}>
+          <Button disabled={checkedArr.length === 0} loading={isLoading} type="ghost" style={{width: '50%', height: 40}} onPress={this.submitFunc}>
             <Text style={{fontSize: 14}}>立即追号</Text>
           </Button>
         </View>

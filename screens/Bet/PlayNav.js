@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   btnDefault: {
-    width: 100,
+    width: 80,
     height: 26,
     marginTop: 10,
     borderWidth: 1,
