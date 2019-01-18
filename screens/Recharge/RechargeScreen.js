@@ -209,8 +209,8 @@ class RechargeScreen extends React.Component {
                 </Left>
                 <Right>
                   <Radio
-                    color={"#f0ad4e"}
-                    selectedColor={"#5cb85c"}
+                    color={"#ccc"}
+                    selectedColor={"#198ae7"}
                     selected={this.props.activeAccount.local_id === item.local_id}
                   />
                 </Right>
@@ -310,8 +310,8 @@ class RechargeScreen extends React.Component {
                   </Left>
                   <Right>
                     <Radio
-                      color={"#f0ad4e"}
-                      selectedColor={"#5cb85c"}
+                      color={"#ccc"}
+                      selectedColor={"#198ae7"}
                       selected={this.props.activeAccount.local_id === item.local_id}
                     />
                   </Right>
