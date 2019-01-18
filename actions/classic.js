@@ -18,6 +18,11 @@ export const getLatelyOpen = createAction(
   })
 )
 
+export const setNullLatelyOpen = createAction(
+  'SET_LATELY_OPEN',
+  text => text
+)
+
 // 简约处理
 export const setNavParams = createAction(
   'UPDATE_NAV_PARAMS',

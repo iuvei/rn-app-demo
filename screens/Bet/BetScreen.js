@@ -3,10 +3,8 @@ import {
   View, Text,
   StyleSheet, ScrollView, AsyncStorage
 } from 'react-native'
-import {
-  Tabs,
-} from '@ant-design/react-native'
-import { Drawer } from 'native-base';
+import { Tabs } from '@ant-design/react-native'
+import { Drawer } from 'native-base'
 import { connect } from 'react-redux'
 
 import DownTime from './DownTime'
@@ -16,8 +14,11 @@ import Trend from './Trend'
 import FastPlayNav from './SetFastPlayEntry'
 import LatelyList from './LatelyList'
 import { DownTimeHoc, RowBallHoc } from '../../HOC'
-import { setNavParams, getGamesPlay, setActivePlay, setCustomPlayNav, setGamesPlayToNull } from '../../actions/classic'
-import norLot from "../../data/nor-lot";
+import {
+  setNavParams, getGamesPlay, setActivePlay, setCustomPlayNav,
+  setNullLatelyOpen, setGamesPlayToNull
+} from '../../actions/classic'
+import norLot from '../../data/nor-lot'
 
 const DownTimeHocView = DownTimeHoc(DownTime)
 const RowBallHocView = RowBallHoc(RowBall)
@@ -93,7 +94,7 @@ class BetScreen extends React.Component {
       isOuter,
       userId: this.props.userId
     }).then(data => {
-      this.getUsefulPlay(params, data["payload"])
+      this.getUsefulPlay(params, data['payload'])
     })
   }
 
@@ -126,9 +127,9 @@ class BetScreen extends React.Component {
 
       // 用户本地存储的玩法数据过滤
       let data = []
-      if(newCusPlayNav.length) {
+      if (newCusPlayNav.length) {
         data = newCusPlayNav.filter(item => usefulCode.includes(codeMap[item.code]))
-      }else {
+      } else {
         data = plays
       }
       if (lotterCode.indexOf('ffc') > -1) {
@@ -162,9 +163,9 @@ class BetScreen extends React.Component {
             // 拿到當前的玩法
             // 0禁止(默认),1正常,2可见(不能投注)
             let thisPlay = codeMap[play.code]
-             if (usefulCode.includes(thisPlay)){
-               subplay.push(play)
-             }
+            if (usefulCode.includes(thisPlay)) {
+              subplay.push(play)
+            }
           })
           if (subplay.length) {
             ItemNavbar.subnav.push(
@@ -190,6 +191,7 @@ class BetScreen extends React.Component {
     this.props.setActivePlay({})
     this.props.setGamesPlayToNull([])
     this.props.setCustomPlayNav([])
+    this.props.setLatelyOpen()
     this.setState = () => () => {
     }
   }
@@ -211,43 +213,45 @@ class BetScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Drawer
-          ref={(ref) => { this.drawer = ref; }}
-          content={<FastPlayNav onClose={() => this.closeDrawer()} filterNavBar={filterNavBar} />}
-          onClose={() => this.closeDrawer()} >
-        {/* playNav Container */}
-        <PlayNav openDrawer={this.openDrawer}/>
+          ref={(ref) => {
+            this.drawer = ref
+          }}
+          content={<FastPlayNav onClose={() => this.closeDrawer()} filterNavBar={filterNavBar}/>}
+          onClose={() => this.closeDrawer()}>
+          {/* playNav Container */}
+          <PlayNav openDrawer={this.openDrawer}/>
 
-        {/* down Container */}
-        <DownTimeHocView
-          ballOpen={this.state.ballOpen}
-          activeLot={params}
-        />
-        {/* Tabs Nav */}
-        <Tabs tabs={ContentTabs}
-              style={{background: '#ededed'}}
-              onChange={this._onChangeTabs}
-              initialPage={1}
-              animated={false}>
-          <View>
-            <ScrollView>
-              <LatelyList/>
-            </ScrollView>
-          </View>
-          <View style={{flex: 1}}>
-            <RowBallHocView activeLot={params}/>
-          </View>
-          <View style={styles.tabs}>
-            <Text>Content of Third Tab</Text>
-          </View>
-          <View>
-            <ScrollView>
-              <Trend activeLot={params}/>
-            </ScrollView>
-          </View>
-        </Tabs>
+          {/* down Container */}
+          <DownTimeHocView
+            ballOpen={this.state.ballOpen}
+            activeLot={params}
+          />
+          {/* Tabs Nav */}
+          <Tabs tabs={ContentTabs}
+                style={{background: '#ededed'}}
+                onChange={this._onChangeTabs}
+                initialPage={0}
+                animated={false}>
+            <View>
+              <ScrollView>
+                <LatelyList/>
+              </ScrollView>
+            </View>
+            <View style={{flex: 1}}>
+              <RowBallHocView activeLot={params}/>
+            </View>
+            <View style={styles.tabs}>
+              <Text>Content of Third Tab</Text>
+            </View>
+            <View>
+              <ScrollView>
+                <Trend activeLot={params}/>
+              </ScrollView>
+            </View>
+          </Tabs>
 
-        {/*投注信息*/}
-        {/*<BuyPriceHocView/>*/}
+          {/*投注信息*/}
+          {/*<BuyPriceHocView/>*/}
         </Drawer>
       </View>
     )
@@ -269,7 +273,8 @@ const mapDispatchToProps = (dispatch) => {
     setActivePlay: params => dispatch(setActivePlay(params)),
     getGamesPlay: params => dispatch(getGamesPlay(params)),
     setCustomPlayNav: (data) => dispatch(setCustomPlayNav(data)),
-    setGamesPlayToNull: (data) => dispatch(setGamesPlayToNull(data))
+    setGamesPlayToNull: (data) => dispatch(setGamesPlayToNull(data)),
+    setLatelyOpen: () => dispatch(setNullLatelyOpen([]))
   }
 }
 

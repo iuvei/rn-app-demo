@@ -18,14 +18,6 @@ export default (Comp) => {
         // 是不是外盘
         isOuter: 0,
 
-        // 最近开奖历史
-        latelyOpenList: [],
-
-        // 开奖期号数据
-        // openIssue: {
-        //   currentIssue: ''
-        // },
-
         // 上一期开奖结果
         prevOpenResult: {
           openIssue: '',
@@ -59,6 +51,7 @@ export default (Comp) => {
     }
 
     componentWillUnmount() {
+      // SET_LATELY_OPEN
       this.setState = () => () => {
       }
     }
