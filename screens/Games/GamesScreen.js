@@ -12,7 +12,37 @@ export default class GamesScreen extends React.Component {
     header: <Header hideLeft={true} title={'彩厅'}/>
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeTab: 0
+    }
+  }
+
+  componentWillMount() {
+    this.didFocusSubscription = this.props.navigation.addListener('didFocus', this.updateImmediateData)
+    this.didBlurSubscription = this.props.navigation.addListener('didBlur', this.removeParamsData)
+  }
+
+  componentWillUnmount() {
+    this.didBlurSubscription.remove();
+    this.didFocusSubscription.remove();
+  }
+
+  removeParamsData = () => {
+    let { activeTab } = this.state
+    this.props.navigation.setParams({activeTab})
+  }
+
+  updateImmediateData =() => {
+    let { params } = this.props.navigation.state
+    this.setState({
+      activeTab: params ? params.activeTab : 0
+    })
+  }
+
   render() {
+    let { activeTab } = this.state
     const tabs = [
       { title: '彩票大厅' },
       { title: '真人娱乐' },
@@ -27,7 +57,14 @@ export default class GamesScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <Tabs tabs={tabs} tabBarUnderlineStyle={{backgroundColor: 'orange'}} tabBarBackgroundColor={'#0066ba'} tabBarActiveTextColor={'orange'} tabBarInactiveTextColor={'#eff5fb'}>
+        <Tabs
+          tabs={tabs}
+          page={activeTab}
+          tabBarUnderlineStyle={{backgroundColor: 'orange'}}
+          tabBarBackgroundColor={'#0066ba'}
+          tabBarActiveTextColor={'orange'}
+          tabBarInactiveTextColor={'#eff5fb'}
+          onChange={(tab, index) => this.setState({activeTab: index})}>
           <LotteryHall navigation={this.props.navigation}></LotteryHall>
           <RealPeople></RealPeople>
           <Slot></Slot>
