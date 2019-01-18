@@ -109,6 +109,15 @@ class BetScreen extends React.Component {
     this.props.navParams(
       Object.assign({}, params, {lotType: code})
     )
+    // 先渲染本地构造的玩法，getGamesPlay接口比较slow
+    let {navBar} = JSON.parse(JSON.stringify(norLot[code]))
+    let plays = navBar[0].subnav[0].play.map(item => {
+      return {...item, name: `${navBar[0].name}${item.name}`}
+    })
+    this.props.setActivePlay(plays[0])
+    this.props.setCustomPlayNav(plays)
+
+    // 获取玩法数据
     this.props.getGamesPlay({
       lotterCode,
       isOuter,
@@ -225,7 +234,7 @@ class BetScreen extends React.Component {
   }
 
   // 点击单元表格
-  onPressItem = (item) => { 
+  onPressItem = (item) => {
     // 跳转详情页
     this.props.navigation.navigate('OrderDetail', {detail: item})
     // 点击一项改变数据重置数据
