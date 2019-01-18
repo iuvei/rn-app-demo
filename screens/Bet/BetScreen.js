@@ -13,16 +13,19 @@ import RowBall from './RowBall'
 import Trend from './Trend'
 import FastPlayNav from './SetFastPlayEntry'
 import LatelyList from './LatelyList'
+import BetSimpleHistory from './BetSimpleHistory'
+
 import { DownTimeHoc, RowBallHoc } from '../../HOC'
 import {
   setNavParams, getGamesPlay, setActivePlay, setCustomPlayNav,
   setNullLatelyOpen, setGamesPlayToNull
 } from '../../actions/classic'
 import norLot from '../../data/nor-lot'
-import BetListComp from '../../components/BetListComp'
+// import BetListComp from '../../components/BetListComp'
 
 const DownTimeHocView = DownTimeHoc(DownTime)
 const RowBallHocView = RowBallHoc(RowBall)
+
 const selfRoute = [
   {name: '时时彩', code: 'lo1', mapCode: ['ssc']},
   {name: '11选5', code: 'lo2', mapCode: ['syx5']},
@@ -61,10 +64,10 @@ class BetScreen extends React.Component {
     super(props)
     this.state = {
       ContentTabs: [
-        {title: '开奖'},
+        {title: '开奖', code: 'openBall'},
         {title: '投注'},
-        {title: '记录'},
-        {title: '趋势'}
+        {title: '记录', code: 'betHistory'},
+        {title: '趋势', code: 'trend'}
       ],
       ballOpen: ['5', '9', '3', '2', '1'],
       changingValue: 1800,
@@ -90,9 +93,10 @@ class BetScreen extends React.Component {
         pageSize: 10,
         isOuter: '' // 0 否 1 是
       },
-      refreshTime: 0
+      refreshTime: 0,
+
+      intoHistory: 0
     }
-    console.log(props)
     this.time = 1700
   }
 
@@ -129,6 +133,13 @@ class BetScreen extends React.Component {
     })
   }
 
+  _onChangeTabs = (tabs) => {
+    if (tabs.code === 'betHistory') {
+      this.setState({
+        intoHistory: new Date().getTime()
+      })
+    }
+  }
   getUsefulPlay = ({lotterCode, realCategory}, resData) => {
     let {code} = selfRoute.find(lot => lot.mapCode.includes(realCategory))
     // status 1 的玩法code
@@ -227,13 +238,13 @@ class BetScreen extends React.Component {
     }
   }
 
-  _onChangeTabs = (tab, number) => {
-    if (number === 2) {
-      this.setState({
-        refreshTime: new Date().getTime()
-      })
-    }
-  }
+  // _onChangeTabs = (tab, number) => {
+  //   if (number === 2) {
+  //     this.setState({
+  //       refreshTime: new Date().getTime()
+  //     })
+  //   }
+  // }
 
   // 点击单元表格
   onPressItem = (item) => {
@@ -254,7 +265,8 @@ class BetScreen extends React.Component {
   }
 
   render() {
-    let {ContentTabs, filterNavBar, api, paramsQuery, KeyName, refreshTime} = this.state
+    // let {ContentTabs, filterNavBar, api, paramsQuery, KeyName, refreshTime} = this.state
+    let {ContentTabs, filterNavBar, intoHistory, refreshTime} = this.state
     let {params} = this.props.navigation.state
     return (
       <View style={styles.container}>
@@ -276,7 +288,7 @@ class BetScreen extends React.Component {
           <Tabs tabs={ContentTabs}
                 style={{background: '#ededed'}}
                 onChange={this._onChangeTabs}
-                initialPage={0}
+                initialPage={1}
                 animated={false}>
             <View>
               <ScrollView>
@@ -287,9 +299,15 @@ class BetScreen extends React.Component {
               <RowBallHocView activeLot={params}/>
             </View>
             <View style={{flex: 1}}>
-              <BetListComp api={api} params={paramsQuery} KeyName={KeyName} refreshTime={refreshTime} onPressItem={this.onPressItem}/>
+              <BetSimpleHistory
+                navParams={this.props.navParams}
+                intoHistory={intoHistory}/>
             </View>
-            <View>
+            {/*<View style={{flex: 1}}>*/}
+            {/*<BetListComp api={api} params={paramsQuery} KeyName={KeyName} refreshTime={refreshTime}*/}
+            {/*onPressItem={this.onPressItem}/>*/}
+            {/*</View>*/}
+            <View style={{flex: 1}}>
               <ScrollView>
                 <Trend activeLot={params}/>
               </ScrollView>

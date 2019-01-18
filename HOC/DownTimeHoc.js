@@ -99,7 +99,6 @@ export default (Comp) => {
 
     // 计算倒计时
     setStopTime({timedown}, standTime) {
-      console.log('timedown', timedown, standTime)
       clearTimeout(this.timeDown_Time)
       // let costStart = Date.now()
       this.setLessTimes(timedown)
@@ -268,16 +267,11 @@ export default (Comp) => {
       })
     }
 
-    initTime = () => {
-      console.log('来自在这里执行一堆的方法')
-    }
-
     render() {
       return (
         <Comp
           {...this.props}
           {...this.state}
-          initTime={this.initTime}
           ref={ref => this.instance = ref}
         />
       )

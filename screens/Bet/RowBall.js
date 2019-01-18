@@ -273,19 +273,18 @@ class RowBall extends React.Component {
                     : null
                 }
               </View>
-              <
-              /ScrollView>
-              :
-              <View style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-                <Text style={{marginTop: 100, fontSize: 20}}>
-                  Loading...
-                </Text>
-              </View>
-              }
+            </ScrollView>
+            :
+            <View style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <Text style={{marginTop: 100, fontSize: 20}}>
+                Loading...
+              </Text>
+            </View>
+        }
 
         <View style={styles.priceWarp}>
           {
@@ -328,14 +327,16 @@ class RowBall extends React.Component {
               </View>
             </View> : null
           }
-          <Text>
-            当前奖金：
-            {
+          {
+            !isKlcYxyLot ? <Text>
+              当前奖金：
+              {
 
-              bonusPrize.bonus ? `${bonusPrize.resmin} ~ ${bonusPrize.resmax}`
-                : (bonusPrize.resmin || '00000.0000')
-            }
-          </Text>
+                bonusPrize.bonus ? `${bonusPrize.resmin} ~ ${bonusPrize.resmax}`
+                  : (bonusPrize.resmin || '00000.0000')
+              }
+            </Text> : null
+          }
           <View style={{flexDirection: 'row'}}>
             <View style={{width: 100}}>
               <Stepper
@@ -347,7 +348,7 @@ class RowBall extends React.Component {
             </View>
             <View style={{
               flex: 1, flexDirection: 'row', justifyContent: 'space-evenly',
-              marginLeft: 10, marginRight: 10
+              margin: 10, marginBottom: 0
             }}>
               {
                 modeInfo.map(m =>

@@ -16,7 +16,6 @@ class DownTime extends Component {
   }
 
   componentDidMount() {
-    this.props.initTime()
   }
 
   componentWillUnmount() {
