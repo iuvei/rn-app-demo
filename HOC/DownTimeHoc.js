@@ -38,9 +38,6 @@ export default (Comp) => {
       }
     }
 
-    componentWillMount() {
-    }
-
     componentDidMount() {
       // 根据导航导航进来的数据获取当前的数据
       // 然后复制显示
@@ -51,7 +48,9 @@ export default (Comp) => {
     }
 
     componentWillUnmount() {
-      // SET_LATELY_OPEN
+      clearTimeout(this.timeDown_Time)
+      clearTimeout(this.queryPrevTime)
+      clearTimeout(this.queryPrevHistory)
       this.setState = () => () => {
       }
     }
@@ -100,6 +99,7 @@ export default (Comp) => {
 
     // 计算倒计时
     setStopTime({timedown}, standTime) {
+      console.log('timedown', timedown, standTime)
       clearTimeout(this.timeDown_Time)
       // let costStart = Date.now()
       this.setLessTimes(timedown)

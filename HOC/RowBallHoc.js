@@ -84,6 +84,10 @@ export default (Comp) => {
       this.checkKlcXycLot()
     }
 
+    componentWillUnmount() {
+      clearTimeout(this.curBallTime)
+    }
+
     checkKlcXycLot = () => {
       this.setState({
         isKlcYxyLot: ['lo6', 'lo7'].includes(this.props.navParams.lotType)
