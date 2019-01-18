@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, StyleSheet, findNodeHandle, UIManager} from 'react-native'
 import {connect} from 'react-redux'
-import {Tab, Tabs, ScrollableTab} from 'native-base'
+import {Tab, Tabs, ScrollableTab, Spinner} from 'native-base'
 import Canvas from 'react-native-canvas'
 import {Button} from '@ant-design/react-native'
 // 时时彩
@@ -114,7 +114,7 @@ const PKS_LIST = {
     name: '第十名'
   }]
 }
-
+// pk拾名次映射
 const PKS_MAP = {
   first: 0,
   second: 1,
@@ -237,7 +237,9 @@ class Trend extends Component {
     curDataHead: [],  // 当前标签头部内容
     curCategory: 'ssc', // 当前彩种类型
     layout: {}, // canvas‘ layout
-    balls: []
+    balls: [],
+    isReady: false,
+    tabIsReady: false, // tab页面加载
   }
 
   componentDidMount () {
@@ -252,6 +254,12 @@ class Trend extends Component {
       curDataHead: list.sscType[0].dataHead || list.dataHead,
       curCategory: realCategory
     })
+    setTimeout(() => {
+      this.setState({
+        isReady: true,
+        tabIsReady: true
+      })
+    }, 200)
   }
 
   // item {from: 起始页签index, i: 到达页签index}
@@ -263,8 +271,14 @@ class Trend extends Component {
     this.setState({
       showList: result,
       curLotteryType: type,
-      curDataHead
+      curDataHead,
+      tabIsReady: false
     })
+    setTimeout(() => {
+      this.setState({
+        tabIsReady: true
+      })
+    }, 200)
   }
 
   // 不同彩种不同类型使用不同的处理方式 待完善
@@ -346,94 +360,97 @@ class Trend extends Component {
 
   render () {
     let {latelyOpenList} = this.props
-    let {currentList, curDataHead, curLotteryType, curCategory} = this.state
-    let {dataHead} = currentList || []
-    return (
-      <View style={styles.container}>
-        <Tabs onChangeTab={this.change} renderTabBar={() => <ScrollableTab/>}>
-          {
-            currentList?.sscType?.map((item, index) => {
-              return (
-                <Tab heading={item.name} key={index}>
-                  {
-                    curCategory !== 'kl8' ? <View style={styles.table}>
-                      <View style={[styles.row, styles.header]} ref={'table'}>
-                        <Text style={[styles.issue, styles.cell]}>期数</Text>
-                        {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>}
-                        <View style={[styles.numbers, styles.cell]}>
+    let {currentList, curDataHead, curLotteryType, curCategory, isReady, tabIsReady} = this.state
+    if (isReady) {
+      return (
+        <View style={styles.container}>
+          <Tabs onChangeTab={this.change} renderTabBar={() => <ScrollableTab/>}>
+            {
+              currentList?.sscType?.map((item, index) => {
+                return (
+                  <Tab heading={item.name} key={index}>
+                    {
+                      tabIsReady ? (curCategory !== 'kl8' ? <View style={styles.table}>
+                          <View style={[styles.row, styles.header]} ref={'table'}>
+                            <Text style={[styles.issue, styles.cell]}>期数</Text>
+                            {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>}
+                            <View style={[styles.numbers, styles.cell]}>
+                              {
+                                curDataHead.map((number, x) => {
+                                  return <Text style={styles.number} key={x}>{number}</Text>
+                                })
+                              }
+                            </View>
+                          </View>
                           {
-                            curDataHead.map((number, x) => {
-                              return <Text style={styles.number} key={x}>{number}</Text>
+                            latelyOpenList.map((item, index) => {
+                              let {openIssue, openCode, codelist} = item
+                              let issueLen = openIssue.length
+                              codelist = this.buildCode(codelist)
+                              let openRef = curLotteryType + index
+                              return (
+                                <View style={styles.row} key={index}>
+                                  <Text style={[styles.issue, styles.cell]}>{openIssue.substring(issueLen - 4)}</Text>
+                                  {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>{openCode}</Text>}
+                                  <View style={[styles.numbers, styles.cell]}>
+                                    {
+                                      WORD_VALUE.includes(curLotteryType) ?
+                                        codelist.map((value, x) => {
+                                          return <View key={x} style={styles.number}>
+                                            <Text style={styles.open}>{value}</Text>
+                                          </View>
+                                        }) :
+                                        curDataHead.map((number, x) => {
+                                          number = number.toString()
+                                          let flag = codelist.includes(number)
+                                          return <View key={x} style={styles.number}>
+                                            <Text ref={flag ? openRef : ''}
+                                                  style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
+                                                    ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
+                                          </View>
+                                        })
+                                    }
+                                  </View>
+                                </View>
+                              )
                             })
                           }
-                        </View>
-                      </View>
-                      {
-                        latelyOpenList.map((item, index) => {
-                          let {openIssue, openCode, codelist} = item
-                          let issueLen = openIssue.length
-                          codelist = this.buildCode(codelist)
-                          let openRef = curLotteryType + index
-                          return (
-                            <View style={styles.row} key={index}>
-                              <Text style={[styles.issue, styles.cell]}>{openIssue.substring(issueLen - 4)}</Text>
-                              {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>{openCode}</Text>}
-                              <View style={[styles.numbers, styles.cell]}>
-                                {
-                                  WORD_VALUE.includes(curLotteryType) ?
-                                    codelist.map((value, x) => {
-                                      return <View key={x} style={styles.number}>
-                                        <Text style={styles.open}>{value}</Text>
-                                      </View>
-                                    }) :
-                                    curDataHead.map((number, x) => {
-                                      number = number.toString()
-                                      let flag = codelist.includes(number)
-                                      return <View key={x} style={styles.number}>
-                                        <Text ref={flag ? openRef : ''}
-                                              style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
-                                                ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
-                                      </View>
-                                    })
-                                }
-                              </View>
-                            </View>
-                          )
-                        })
-                      }
-                      {
-                        // 走势图画线
-                        // ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ? <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
-                      }
-                    </View> :
-                      <View style={styles.table}>
-                        <View style={[styles.row, styles.header]}>
-                          <Text style={[styles.issue, styles.cell]}>期数</Text>
-                          <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>
-                        </View>
-                        {
-                          latelyOpenList.map((item, index) => {
-                            let {openIssue, openCode, codelist} = item
-                            return (
-                              <View style={styles.klcRow} key={index}>
-                                <Text style={[styles.issue, styles.cell]}>{openIssue}</Text>
-                                <View style={[styles.openNumber, styles.cell]}>
-                                  <Text style={{width: 200}}>{codelist.join(',')}</Text>
+                          {
+                            // 走势图画线
+                            // ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ? <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
+                          }
+                        </View> :
+                        <View style={styles.table}>
+                          <View style={[styles.row, styles.header]}>
+                            <Text style={[styles.issue, styles.cell]}>期数</Text>
+                            <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>
+                          </View>
+                          {
+                            latelyOpenList.map((item, index) => {
+                              let {openIssue, openCode, codelist} = item
+                              return (
+                                <View style={styles.klcRow} key={index}>
+                                  <Text style={[styles.issue, styles.cell]}>{openIssue}</Text>
+                                  <View style={[styles.openNumber, styles.cell]}>
+                                    <Text style={{width: 200}}>{codelist.join(',')}</Text>
+                                  </View>
                                 </View>
-                              </View>
-                            )
-                          })
-                        }
-                      </View>
-                  }
-                </Tab>
-              )
-            }) ||
-            <Tab heading={'empty'}></Tab>
-          }
-        </Tabs>
-      </View>
-    )
+                              )
+                            })
+                          }
+                        </View>) : <Spinner></Spinner>
+                    }
+                  </Tab>
+                )
+              }) ||
+              <Tab heading={'empty'}></Tab>
+            }
+          </Tabs>
+        </View>
+      )
+    } else {
+      return <Spinner color={'red'}></Spinner>
+    }
   }
 }
 
