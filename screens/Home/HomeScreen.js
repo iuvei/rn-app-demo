@@ -8,7 +8,8 @@ import {
   View,
   RefreshControl,
   BackHandler,
-  ToastAndroid
+  ToastAndroid,
+  ImageBackground
 } from 'react-native'
 import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native';
 import {connect} from 'react-redux'
@@ -205,7 +206,7 @@ class HomeScreen extends React.Component {
           afterChange={this.onHorizontalSelectedIndexChange}
         >
           {
-            hotLoList.map((item, index) =>{
+            hotLoList.length > 0 && hotLoList.map((item, index) =>{
               let codeList = item.openCode.split(',')
               return (
                 <View style={styles.hotItem} key={index}>
@@ -254,7 +255,7 @@ class HomeScreen extends React.Component {
           }>
           <Flex wrap="wrap">
             {
-              usualLottery.map((item, index) =>
+              usualLottery.length > 0 && usualLottery.map((item, index) =>
                 <View style={styles.favoriteItem} key={index}>
                   <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
                     <View>
@@ -271,16 +272,40 @@ class HomeScreen extends React.Component {
         </ScrollView>
         <Flex>
           <View style={styles.gameItem}>
-            <Image source={require('./../../assets/images/home/ag.png')} resizeMode={'contain'} style={{width: 50}} />
+            <ImageBackground
+              source={require('./../../assets/images/home/ag.png')}
+              resizeMode={'contain'} style={{width: 50}}>
+              <Text
+                style={{width: '100%',height: '100%'}}
+                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})} />
+            </ImageBackground>
           </View>
           <View style={styles.gameItem}>
-            <Image source={require('./../../assets/images/home/og.png')} resizeMode={'contain'} style={{width: 50}} />
+            <ImageBackground
+              source={require('./../../assets/images/home/og.png')}
+              resizeMode={'contain'} style={{width: 50}} >
+              <Text
+                style={{width: '100%',height: '100%'}}
+                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})} />
+            </ImageBackground>
           </View>
           <View style={styles.gameItem}>
-            <Image source={require('./../../assets/images/home/eb.png')} resizeMode={'contain'} style={{width: 50}} />
+            <ImageBackground
+              source={require('./../../assets/images/home/eb.png')}
+              resizeMode={'contain'} style={{width: 50}} >
+              <Text
+                style={{width: '100%',height: '100%'}}
+                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})} />
+            </ImageBackground>
           </View>
           <View style={styles.gameItem}>
-            <Image source={require('./../../assets/images/home/ob.png')} resizeMode={'contain'} style={{width: 50}} />
+            <ImageBackground
+              source={require('./../../assets/images/home/ob.png')}
+              resizeMode={'contain'} style={{width: 50}} >
+              <Text
+                style={{width: '100%',height: '100%'}}
+                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})} />
+            </ImageBackground>
           </View>
         </Flex>
       </View>

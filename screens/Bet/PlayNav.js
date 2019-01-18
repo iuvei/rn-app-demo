@@ -77,7 +77,7 @@ class PlayNav extends React.Component {
             <View style={{backgroundColor: '#ffffff',height: 42}}>
               <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 {
-                  playTabs.map((tab, index) => {
+                  playTabs.length > 0 ? playTabs.map((tab, index) => {
                     return (
                       <View
                         key={index}
@@ -88,7 +88,7 @@ class PlayNav extends React.Component {
                           onPress={() => InitBetView(tab)}>{tab.name}</Text>
                       </View>
                     )
-                  })
+                  }) : <Text style={{textAlign: 'center', lineHeight: 40}}>正在加载中···</Text>
                 }
               </ScrollView>
             </View>
