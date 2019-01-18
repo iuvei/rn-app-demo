@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 import UIListView from '../../components/UIListView'
 import {
-  Button,
-  Flex
+  Button, Toast, Flex
 } from '@ant-design/react-native'
 import { orderStatus } from '../../data/options'
 import { withNavigation } from 'react-navigation'
@@ -66,7 +65,13 @@ class BetSimpleHistory extends React.Component {
         pageSize: 10,
         isOuter: '' // 0 否 1 是
       },
-      lotterList: []
+      lotterList: [],
+      fastGet: [
+        {value: 0, name: '今天'},
+        {value: 3, name: '最近三天'},
+        {value: 7, name: '最近七天'}
+      ],
+      activeFast: {value: 0, name: '今天'}
     }
   }
 
@@ -113,12 +118,28 @@ class BetSimpleHistory extends React.Component {
   }
 
   render() {
-    let {api, params, KeyName, lotterList} = this.state
+    let {api, params, KeyName, lotterList, fastGet} = this.state
 
     return (
       <View style={styles.container}>
-        <view>
-        </view>
+        <View style={{flexDirection: 'row'}}>
+          <Text>快速查询：</Text>
+          {
+            fastGet.map(item =>
+              <Button key={item.value}
+                      type={this.state.activeFast.value === item.value ? 'primary' : 'ghost'}
+                      style={{width: 80}} size="small"
+                      onPress={() => {
+                        Toast.info('正在开发中')
+                        this.setState({
+                          activeFast: item
+                        })
+                      }}>
+                <Text style={{fontSize: 14}}>{item.name}</Text>
+              </Button>
+            )
+          }
+        </View>
         <UIListView
           ref={ref => this.BetSimpleHistory = ref}
           api={api}

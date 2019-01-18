@@ -114,7 +114,6 @@ class BetScreen extends React.Component {
     this.props.navParams(
       Object.assign({}, params, {lotType: code})
     )
-    console.log(code)
     // 先渲染本地构造的玩法，getGamesPlay接口比较slow
     let {navBar} = JSON.parse(JSON.stringify(norLot[code]))
     let plays = navBar[0].subnav[0].play.map(item => {
