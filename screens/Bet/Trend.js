@@ -326,19 +326,19 @@ class Trend extends Component {
   }
 
   handleCanvas = (canvas) => {
-    canvas.height = 26 * 51
-    canvas.width = 580
-    const ctx = canvas.getContext('2d')
-    setTimeout(() => {
+    canvas && setTimeout(() => {
+      canvas.height = 26 * 51
+      canvas.width = 580
+      const ctx = canvas.getContext('2d')
       this.print()
       getLayout(this.refs.table).then(res => {
         ctx.lineWidth = 1
-        ctx.strokeStyle = 'purple'
+        ctx.strokeStyle = '#22ac38'
         this.state.balls.forEach(({pageX, pageY}, index) => {
           if (index === 0) {
-            ctx.moveTo(pageX + 8, pageY - 300 + 8)
+            ctx.moveTo(pageX + 8, 26 + 13)
           } else {
-            ctx.lineTo(pageX + 8, pageY - 300 + 8)
+            ctx.lineTo(pageX + 8, 26 * (index + 1) + 13)
           }
         })
         ctx.stroke()
@@ -349,7 +349,7 @@ class Trend extends Component {
   print = async () => {
     let result = []
     let {curLotteryType} = this.state
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 30; i++) {
       result.push(getLayout(this.refs[curLotteryType + i]))
     }
     let temp = await Promise.all(result)
@@ -370,7 +370,7 @@ class Trend extends Component {
                 return (
                   <Tab heading={item.name} key={index}>
                     {
-                      tabIsReady ? (curCategory !== 'kl8' ? <View style={styles.table}>
+                      !tabIsReady ? <Spinner /> : (curCategory !== 'kl8' ? <View style={styles.table}>
                           <View style={[styles.row, styles.header]} ref={'table'}>
                             <Text style={[styles.issue, styles.cell]}>期数</Text>
                             {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>}
@@ -417,7 +417,7 @@ class Trend extends Component {
                           }
                           {
                             // 走势图画线
-                            // ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ? <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
+                            ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ? <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
                           }
                         </View> :
                         <View style={styles.table}>
@@ -438,7 +438,7 @@ class Trend extends Component {
                               )
                             })
                           }
-                        </View>) : <Spinner></Spinner>
+                        </View>)
                     }
                   </Tab>
                 )

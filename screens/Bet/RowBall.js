@@ -1,11 +1,11 @@
 import React from 'react'
 import _ from 'lodash'
 import {
-  View, Text, StyleSheet, ScrollView, KeyboardAvoidingView
+  View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Slider
 } from 'react-native'
 import {
   Flex, Tabs, Card, WhiteSpace,
-  List, Slider, Stepper,
+  List, Stepper,
   Button, WingBlank, TextareaItem
 } from '@ant-design/react-native'
 
@@ -289,21 +289,22 @@ class RowBall extends React.Component {
         <View style={styles.priceWarp}>
           {
             !isKlcYxyLot ? <View style={styles.bonusWarp}>
-              <Text>
+              <Text style={{color: '#333'}}>
                 奖金调节
               </Text>
               <View style={{width: 200}}>
                 <Slider
                   // disabled
-                  defaultValue={rebateMode}
+                  // defaultValue={rebateMode}
                   value={rebateMode}
-                  min={lotterMinMode}
-                  max={curMaxMode}
+                  minimumValue={lotterMinMode}
+                  maximumValue={curMaxMode}
                   step={2}
                   disabled={curMaxMode === 1700 || curMaxMode === lotterMinMode}
-                  minimumTrackTintColor="blue"
-                  maximumTrackTintColor="#ededed"
-                  onAfterChange={rebateMode => setBuyInfo({rebateMode})}
+                  minimumTrackTintColor="#1c8de9"
+                  maximumTrackTintColor="#1e8fea"
+                  thumbTintColor="#1c8de9"
+                  onValueChange={rebateMode => setBuyInfo({rebateMode})}
                 />
               </View>
               {/*num,multiple,model,rebateMode,total*/}
@@ -328,7 +329,7 @@ class RowBall extends React.Component {
             </View> : null
           }
           {
-            !isKlcYxyLot ? <Text>
+            !isKlcYxyLot ? <Text style={{color: '#333', paddingHorizontal: 10}}>
               当前奖金：
               {
 
@@ -337,13 +338,14 @@ class RowBall extends React.Component {
               }
             </Text> : null
           }
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', paddingHorizontal: 10}}>
             <View style={{width: 100}}>
               <Stepper
                 min={1}
                 style={styles.stepper}
                 defaultValue={multiple}
                 onChange={multiple => setBuyInfo({multiple})}
+                inputStyle={{color: '#0a7cda'}}
               />
             </View>
             <View style={{
@@ -387,13 +389,13 @@ class RowBall extends React.Component {
               </View>
             }
           </View>
-          <View style={{flexDirection: 'row', marginTop: 6}}>
+          <View style={{flexDirection: 'row', marginTop: 6, borderTopWidth: 1, borderColor: '#dfdfdf', padding: 10}}>
             <View style={{flex: 1}}>
-              <Text>人民币余额：<Text style={{color: 'blue'}}>{currentBalance}</Text></Text>
-              <Text>注数：
-                <Text style={{color: 'blue', marginRight: 5}}>{num}</Text>
+              <Text style={{color: '#333'}}>人民币余额：<Text style={{color: '#0a7cda'}}>{currentBalance}</Text></Text>
+              <Text style={{color: '#333'}}>注数：
+                <Text style={{color: '#0a7cda', marginRight: 5}}>{num}</Text>
                 <Text style={{paddingLeft: 5}}>{'\t'}投注金额：</Text>
-                <Text style={{color: 'blue'}}>{total}</Text>
+                <Text style={{color: '#0a7cda'}}>{total}</Text>
               </Text>
             </View>
             <View style={{width: 80, justifyContent: 'center'}}>
@@ -453,8 +455,6 @@ const styles = StyleSheet.create({
   },
 
   priceWarp: {
-    padding: 10,
-    paddingTop: 0,
     backgroundColor: '#fff',
     borderColor: '#dfdfdf',
     borderTopWidth: 1
@@ -462,7 +462,8 @@ const styles = StyleSheet.create({
   bonusWarp: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: 10
   },
   stepper: {
     borderRadius: 5
