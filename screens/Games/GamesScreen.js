@@ -66,9 +66,9 @@ export default class GamesScreen extends React.Component {
           tabBarInactiveTextColor={'#eff5fb'}
           onChange={(tab, index) => this.setState({activeTab: index})}>
           <LotteryHall navigation={this.props.navigation}></LotteryHall>
-          <RealPeople></RealPeople>
-          <Slot></Slot>
-          <Chess></Chess>
+          <RealPeople navigation={this.props.navigation}></RealPeople>
+          <Slot navigation={this.props.navigation}></Slot>
+          <Chess navigation={this.props.navigation}></Chess>
         </Tabs>
       </View>
     )
