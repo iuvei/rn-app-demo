@@ -68,15 +68,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#016fca',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 55,
-    paddingTop: 25,
+    height: 70,
+    paddingTop: 20,
   },
   headerLeftImg: {
     width:25,
     height:25,
   },
   logo: {
-    width: 35
+    width: 40
   },
   headerCenterContainer: {
     flexDirection: 'row',
@@ -86,13 +86,14 @@ const styles = StyleSheet.create({
     flex: 4,
   },
   headerCenterText: {
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: 'bold',
     color: '#f8f8f8',
   },
   rightContainer: {
     position: 'absolute',
     right: 10,
     zIndex: 10,
-    bottom: 5,
+    bottom: 15,
   }
 })
