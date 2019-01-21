@@ -4,7 +4,7 @@ import {ScrollView, StyleSheet, ImageBackground, Text, View, Dimensions} from 'r
 import {Picker, Button, List, InputItem, Modal, Toast } from '@ant-design/react-native'
 // import {MyIconFont} from '../../components/MyIconFont'
 import SvgIcon from '../../components/SvgIcon'
-import {RechargeChannelIconMap, minbankCodeMap} from '../../constants/glyphMapHex'
+import {minbankCodeMap} from '../../constants/glyphMapHex'
 import {
   AsetAllBalance,
   AsetUserBankCards,
@@ -49,7 +49,10 @@ class Withdrawal extends React.Component {
   componentWillReceiveProps(nextProps) {
     let { userBankInfo } = nextProps
     let curBankItem = {}
-    let arr = userBankInfo.userBankCards.map((item, idx) => {
+    let useableCards = userBankInfo.userBankCards.filter(item => {
+      return item.status === 0
+    })
+    let arr = useableCards.map((item, idx) => {
       if (idx === 0) {
         curBankItem = Object.assign({}, item, {value: 0, label: item.bankName + '  ' + String(item.bankCard).slice(-5, -1)})
       }
