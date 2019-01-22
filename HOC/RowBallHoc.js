@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Alert } from 'react-native'
 import { connect } from 'react-redux'
 import norLot from '../data/nor-lot'
 import { ruleBuilder, handlerBall } from '../data/nor-lot/basic-info'
@@ -9,8 +8,7 @@ import utilLot from '../filiter/classic'
 import { toBuyLottery } from '../api/lottery'
 import { Toast } from '@ant-design/react-native'
 import { AsetAllBalance } from '../actions/member'
-// import { modeInfo } from '../data/options'
-// import { navParams } from '../actions/classic'
+import { toCrypto } from '../utils/crypto'
 
 export default (Comp) => {
   class RowBallHoc extends Component {
@@ -567,20 +565,19 @@ export default (Comp) => {
           castMode,
           castMultiple,
           orderIssue: currentIssue,
-          // this.isKlcXycLot ? '' : rebateMode
           rebateMode: this.state.isKlcYxyLot ? '' : rebateMode,
           ruleCode
         })
       })
       // currency
-      let {userId, navParams: {lotterCode, isOuter}} = this.props
-      let limitRedId
-      // if (activeLot.lotRoute === 'lo7') {
-      //   limitRedId = 1
-      // }
+      let {userId, navParams: {lotterCode, isOuter, lotType}} = this.props
+      let limitRedId = ''
+      if (lotType === 'lo7') {
+        limitRedId = 1
+      }
       // currency.currencyCode
       // 这里要改成多币种的
-      let rep = {
+      let rep = Object.assign({
         currencyCode: 'CNY',
         amount: parseFloat(Number(reqAmount).toFixed(4)),
         // castNumber: resNum,
@@ -590,15 +587,12 @@ export default (Comp) => {
         lotterCode,
         orderType: 0,
         userId
+      })
+      let repZip = ''
+      if (!this.props.Environment) {
+        repZip = toCrypto(rep)
       }
-      // console.log(rep)
-      // let repZip = ''
-      // if (!this.isTest) {
-      //   repZip = toCrypto(rep)
-      // }
-      // AESKey
-      // repZip ||
-      toBuyLottery(rep).then(res => {
+      toBuyLottery(repZip || rep).then(res => {
         if (res.code === 0) {
           Toast.success('购买成功')
           this.clearAllData()
@@ -668,11 +662,13 @@ export default (Comp) => {
 
   const mapStateToProps = (state) => {
     let {userId, balanceInfo, rebateInfo} = state.common
+    let {Environment} = state.classic
     return ({
       ...state.classic,
       userId,
       balanceInfo,
-      rebateInfo
+      rebateInfo,
+      Environment
     })
   }
 

@@ -1,5 +1,8 @@
 import { createAction } from 'redux-actions'
-import { loadGamesPlay, loadLatelyOpenHistory } from '../api/lottery'
+import {
+  loadGamesPlay, loadLatelyOpenHistory,
+  isTestEnvironment
+} from '../api/lottery'
 
 // 回掉回调处理
 export const getLatelyOpen = createAction(
@@ -61,4 +64,11 @@ export const setCustomPlayNav = createAction(
 export const setGamesPlayToNull = createAction(
   'SET_GAMES_PLAY_TO_NULL',
   text => text
+)
+
+export const checkEnvironment = createAction(
+  'SET_ENVIRONMENT',
+  () => isTestEnvironment().then(res => {
+    if (res.code === 0) return res.data.isTest
+  })
 )
