@@ -423,7 +423,7 @@ class Trend extends Component {
                                             <View ref={flag ? openRef : ''}
                                                   style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
                                                     ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}><Text
-                                              style={{color: '#ddd'}}>{number}</Text></View>
+                                              style={{color: '#ddd', fontSize: 12}}>{number}</Text></View>
                                           </View>
                                         })
                                     }
