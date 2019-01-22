@@ -133,10 +133,20 @@ export default class FoundScreen extends React.Component {
     )]).start();
   }
 
+  componentWillMount() {
+    this.didBlurSubscription = this.props.navigation.addListener('didFocus', this._getPlatformReward)
+  }
+
   componentDidMount() {
-    this._getPlatformReward();
+    // this._getPlatformReward();
     this._animateFun()
   }
+
+  componentWillUnmount() {
+    this.didBlurSubscription.remove();
+    this.setState = () => () =>{}
+  }
+
 
   render() {
     let { list } = this.state
