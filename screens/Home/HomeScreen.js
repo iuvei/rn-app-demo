@@ -109,10 +109,7 @@ class HomeScreen extends React.Component {
       BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
     }
     this.didBlurSubscription.remove();
-  }
-
-  componentWillReceiveProps(nextProps) {
-
+    this.setState = () => () =>{}
   }
 
   onBackAndroid = () => {

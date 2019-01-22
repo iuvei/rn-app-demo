@@ -7,8 +7,7 @@ import {Button} from '@ant-design/react-native'
 // 时时彩
 const SSC_LIST = {
   dataHead: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-  sscType: [],
-  sscType1: [{
+  sscType: [{
     type: 'distribute',
     name: '号码分布'
   }, {
@@ -245,9 +244,9 @@ class Trend extends Component {
   componentDidMount () {
     let {realCategory} = this.props.activeLot
     let list = CATEGORIES_LIST[realCategory]
-    if (realCategory === 'ssc') {
-      list.sscType = [].concat(list.sscType1)
-    }
+    // if (realCategory === 'ssc') {
+    //   list.sscType = [].concat(list.sscType1)
+    // }
     this.setState({
       currentList: {...list},
       curLotteryType: list.sscType[0].type,
@@ -260,6 +259,20 @@ class Trend extends Component {
         tabIsReady: true
       })
     }, 200)
+  }
+
+  componentWillReceiveProps (nextProps, lastProps) {
+    let {latelyOpenList} = nextProps
+    if (latelyOpenList[0]?.openIssue !== this.props.latelyOpenList[0]?.openIssue) {
+      this.setState({
+        tabIsReady: false
+      })
+      setTimeout(() => {
+        this.setState({
+          tabIsReady: true
+        })
+      }, 200)
+    }
   }
 
   // item {from: 起始页签index, i: 到达页签index}
@@ -285,7 +298,7 @@ class Trend extends Component {
   buildCode = (codeList) => {
     let {curLotteryType, curCategory} = this.state
     let len = codeList.length
-    if (curCategory === 'pk10'){
+    if (curCategory === 'pk10') {
       codeList = [codeList[PKS_MAP[curLotteryType]]]
     } else {
       switch (curLotteryType) {
@@ -327,14 +340,15 @@ class Trend extends Component {
 
   handleCanvas = (canvas) => {
     canvas && setTimeout(() => {
+      this.print()
       canvas.height = 26 * 51
       canvas.width = 580
       const ctx = canvas.getContext('2d')
-      this.print()
       getLayout(this.refs.table).then(res => {
         ctx.lineWidth = 1
         ctx.strokeStyle = '#22ac38'
         this.state.balls.forEach(({pageX, pageY}, index) => {
+          // 球位置： 球所在行 * 行高 + 行高 / 2
           if (index === 0) {
             ctx.moveTo(pageX + 8, 26 + 13)
           } else {
@@ -349,7 +363,8 @@ class Trend extends Component {
   print = async () => {
     let result = []
     let {curLotteryType} = this.state
-    for (let i = 0; i < 30; i++) {
+    let len = this.props.latelyOpenList.length || 0
+    for (let i = 0; i < len; i++) {
       result.push(getLayout(this.refs[curLotteryType + i]))
     }
     let temp = await Promise.all(result)
@@ -364,13 +379,13 @@ class Trend extends Component {
     if (isReady) {
       return (
         <View style={styles.container}>
-          <Tabs onChangeTab={this.change} renderTabBar={() => <ScrollableTab/>}>
+          <Tabs onChangeTab={this.change} locked={true} renderTabBar={() => <ScrollableTab/>}>
             {
               currentList?.sscType?.map((item, index) => {
                 return (
                   <Tab heading={item.name} key={index}>
                     {
-                      !tabIsReady ? <Spinner /> : (curCategory !== 'kl8' ? <View style={styles.table}>
+                      !tabIsReady ? <Spinner/> : (curCategory !== 'kl8' ? <View style={styles.table}>
                           <View style={[styles.row, styles.header]} ref={'table'}>
                             <Text style={[styles.issue, styles.cell]}>期数</Text>
                             {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>}
@@ -391,7 +406,8 @@ class Trend extends Component {
                               return (
                                 <View style={styles.row} key={index}>
                                   <Text style={[styles.issue, styles.cell]}>{openIssue.substring(issueLen - 4)}</Text>
-                                  {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>{openCode}</Text>}
+                                  {curCategory !== 'pk10' &&
+                                  <Text style={[styles.openNumber, styles.cell]}>{openCode}</Text>}
                                   <View style={[styles.numbers, styles.cell]}>
                                     {
                                       WORD_VALUE.includes(curLotteryType) ?
@@ -404,9 +420,10 @@ class Trend extends Component {
                                           number = number.toString()
                                           let flag = codelist.includes(number)
                                           return <View key={x} style={styles.number}>
-                                            <Text ref={flag ? openRef : ''}
+                                            <View ref={flag ? openRef : ''}
                                                   style={flag ? (codelist.indexOf(number) === codelist.lastIndexOf(number)
-                                                    ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}>{number}</Text>
+                                                    ? [styles.open, styles.single] : [styles.open, styles.multi]) : styles.open}><Text
+                                              style={{color: '#ddd'}}>{number}</Text></View>
                                           </View>
                                         })
                                     }
@@ -417,7 +434,8 @@ class Trend extends Component {
                           }
                           {
                             // 走势图画线
-                            ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ? <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
+                            ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ?
+                              <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
                           }
                         </View> :
                         <View style={styles.table}>
@@ -521,14 +539,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
     borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   multi: {
     backgroundColor: '#dd127b',
-    color: '#fff'
+    color: '#fff',
+    position: 'absolute',
+    zIndex: 9
   },
   single: {
     backgroundColor: '#22ac38',
-    color: '#fff'
+    color: '#fff',
+    position: 'absolute',
+    zIndex: 9
   },
   canvas: {
     position: 'absolute',
