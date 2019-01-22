@@ -142,9 +142,9 @@ class PersonalScreen extends React.Component {
   }
 
   componentDidMount () {
-    let {userRebateVO} = this.props.rebateInfo || []
+    let {userRebateVO} = this.props.rebateInfo
     let lotteryRebate = 0
-    userRebateVO.forEach(item => {
+    userRebateVO?.forEach(item => {
       if (item.rebateType === 0) {
         lotteryRebate = item.userRebate
       }
