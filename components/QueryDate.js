@@ -28,11 +28,14 @@ export default class QueryDate extends React.Component {
         },
         buttonIndex => {
           if (buttonIndex < 3) {
+            let startTime = dayjs(shortcutsDays[buttonIndex].value().startTime).format('YYYY-MM-DD')
+            let endTime = dayjs(shortcutsDays[buttonIndex].value().endTime).format('YYYY-MM-DD')
             this.setState({
               buttonIndex: buttonIndex,
-              startTime: dayjs(shortcutsDays[buttonIndex].value().startTime).format('YYYY-MM-DD'),
-              endTime: dayjs(shortcutsDays[buttonIndex].value().endTime).format('YYYY-MM-DD')
+              startTime: startTime,
+              endTime: endTime
             })
+            props.handleDate({startTime, endTime})
           }
         }
       )
