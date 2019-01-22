@@ -13,7 +13,7 @@ class LatelyList extends Component {
           latelyOpenList.length ?
             latelyOpenList.map(list =>
               <View key={list.openIssue} style={styles.listItem}>
-                <Text>期号：{list.openIssue}</Text>
+                <Text>第 {list.openIssue} 期</Text>
                 <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
                   {
                     list.codelist.map((b, bIdx) =>

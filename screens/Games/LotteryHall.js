@@ -3,6 +3,7 @@ import {ScrollView, View, Text, ImageBackground, Image, StyleSheet, TouchableHig
 import Accordion from 'react-native-collapsible/Accordion'
 import { getHotLotter } from './../../api/lottery'
 import { connect } from "react-redux";
+import { getIconName } from '../../utils/getLotImg'
 
 class LotteryHall extends React.Component {
   constructor(props) {
@@ -76,36 +77,6 @@ class LotteryHall extends React.Component {
           suffix: []
         }]
     };
-    this.getIconName = value => {
-      switch (value) {
-        case 'ssc':
-          return require('./../../assets/images/home/ssc_icon.png')
-          break
-        case 'syx5':
-          return require('./../../assets/images/home/syxw_icon.png')
-          break
-        case 'kl8':
-          return require('./../../assets/images/home/klc_icon.png')
-          break
-        case 'pk10':
-          return require('./../../assets/images/home/pks_icon.png')
-          break
-        case 'k3':
-          return require('./../../assets/images/home/ks_icon.png')
-          break
-        case 'kl10':
-          return require('./../../assets/images/home/kls_icon.png')
-          break
-        case 'xyc':
-          return require('./../../assets/images/home/xyc_icon.png')
-          break
-        case 'dpc':
-          return require('./../../assets/images/home/dpc_icon.png')
-          break
-        default:
-          return require('./../../assets/images/home/ssc_icon.png')
-      }
-    };
   }
 
   componentDidMount() {
@@ -150,7 +121,7 @@ class LotteryHall extends React.Component {
                     underlayColor="#f0f0f0"
                     onPress={() => this.props.navigation.navigate('Bet', list)}>
                     <View>
-                      <Image source={this.getIconName(list.realCategory || list.categoryCode)} style={{width: 80, height: 80}}></Image>
+                      <Image source={getIconName(list.realCategory || list.categoryCode)} style={{width: 80, height: 80}}></Image>
                       <Text style={{fontSize: 10, textAlign: 'center'}} numberOfLines={1}>{list.lotterName}</Text>
                     </View>
                   </TouchableHighlight>
