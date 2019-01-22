@@ -109,12 +109,11 @@ class BetSimpleHistory extends React.Component {
   // 点击单元表格
   onPressItem = (item) => {
     // 跳转详情页
-    // this.props.navigation.navigate('OrderDetail', {detail: item})
+    this.props.navigation.navigate('OrderDetail', {detail: item})
     // 点击一项改变数据重置数据
   }
 
   onSearch = async () => {
-    console.log(this.state.params)
     this.BetSimpleHistory.listView.refresh()
   }
 
