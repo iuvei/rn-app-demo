@@ -7,7 +7,10 @@ const initialState = {
   newCusPlayNav: [],
   gamesPlayStore: [],
 
-  openIssue: {}
+  openIssue: {},
+
+  // 1测试环境 0正式区环境
+  Environment: 1
 }
 
 const classic = handleActions({
@@ -47,6 +50,11 @@ const classic = handleActions({
       ...state, gamesPlayStore: payload
     }
   },
+  SET_ENVIRONMENT: (state, {payload}) => {
+    return {
+      ...state, Environment: payload
+    }
+  }
 }, initialState)
 
 export default classic

@@ -111,7 +111,7 @@ class BetScreen extends React.Component {
     // 获取当前彩种的赔率
     let {params, params: {lotterCode, realCategory, isOuter}} = this.props.navigation.state
     let {code} = selfRoute.find(lot => lot.mapCode.includes(realCategory))
-    this.props.navParams(
+    this.props.setNavParams(
       Object.assign({}, params, {lotType: code})
     )
     // 先渲染本地构造的玩法，getGamesPlay接口比较slow
@@ -228,7 +228,7 @@ class BetScreen extends React.Component {
 
   componentWillUnmount() {
     // 缺一不可
-    this.props.navParams({})
+    this.props.setNavParams({})
     this.props.setActivePlay({})
     this.props.setGamesPlayToNull([])
     this.props.setCustomPlayNav([])
@@ -332,7 +332,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    navParams: params => dispatch(setNavParams(params)),
+    setNavParams: params => dispatch(setNavParams(params)),
     setActivePlay: params => dispatch(setActivePlay(params)),
     getGamesPlay: params => dispatch(getGamesPlay(params)),
     setCustomPlayNav: (data) => dispatch(setCustomPlayNav(data)),

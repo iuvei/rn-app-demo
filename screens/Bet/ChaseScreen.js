@@ -56,7 +56,7 @@ class ChaseScreen extends React.Component {
 
   componentDidMount() {
   }
-  
+
   getChaseList = ({size, showlen}) => {
     let {lotterCode} = this.props.navParams
     return getChaseTime({
@@ -303,7 +303,7 @@ class ChaseScreen extends React.Component {
       userId: loginInfo.acc.user.userId
     }
     let repZip = ''
-    if (!this.props.isTest) {
+    if (!this.props.Environment) {
       repZip = toCrypto(rep)
     }
     this.setState({
@@ -503,12 +503,13 @@ class ChaseScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  let { openIssue, navParams } = state.classic
+  let { openIssue, navParams, Environment} = state.classic
   let { loginInfo } = state.common
   return {
     openIssue,
     navParams,
-    loginInfo
+    loginInfo,
+    Environment
   }
 }
 
