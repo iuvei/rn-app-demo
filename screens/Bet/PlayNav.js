@@ -142,22 +142,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   btnDefault: {
-    width: 100,
     height: 26,
     marginTop: 10,
     borderWidth: 1,
+    paddingLeft: 3,
+    paddingRight: 3,
     borderColor: '#f0f0f0',
     borderRadius: 20,
-    marginRight: 4
+    marginRight: 6
   },
   btnActive: {
     borderColor: '#016fca',
   },
   btnDefaultText: {
     fontSize: 12,
-    paddingLeft: 2,
-    paddingRight: 2,
-    lineHeight:26,
+    lineHeight:24,
+    paddingLeft: 3,
+    paddingRight: 3,
     textAlign: 'center'
   },
   btnActiveText: {
