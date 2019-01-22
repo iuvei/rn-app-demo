@@ -1,6 +1,7 @@
 import React from 'react'
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation'
 // Switch 二选1导航
+import AuthLoadingScreen from '../screens/AppLoading/AppLoading'
 import LoginScreen from '../screens/Login/LoginScreen'
 import MainTabNavigator from './MainTabNavigator'
 
@@ -30,7 +31,7 @@ const MainNavigator = createStackNavigator({
   navigationOptions: {
     headerStyle: {
       elevation: 0, // 去阴影
-      backgroundColor: '#016fca',
+      backgroundColor: '#016fca'
     },
     headerTintColor: '#fff'
   }
@@ -40,10 +41,11 @@ const RootNavigation = createSwitchNavigator(
   {
     // You could add another route here for authentication.
     // Read more at https://reactnavigation.org/docs/en/auth-flow.html
+    AppLoading: AuthLoadingScreen,
     Login: LoginScreen,
     Main: MainNavigator
   }, {
-    initialRouteName: 'Login'
+    initialRouteName: 'AppLoading'
   }
 )
 
