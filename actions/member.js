@@ -96,7 +96,7 @@ export const AsetSubUserInfo = (data) => {
   }
 }
 
-export const AsetAllBalance = (userId) => {
+export const AsetAllBalance = ({userId, cb}) => {
   return (dispatch, getState) => {
     getUserBalance({userId}).then(res => {
       if (res.code === 0) {
@@ -120,6 +120,9 @@ export const AsetAllBalance = (userId) => {
         dispatch(AgetUserBalance_FH({}))
         dispatch(AgetUserBalance_HD({}))
         dispatch(AgetUserBalance_HB({}))
+      }
+      if (cb) {
+        cb(res)
       }
     })
   }

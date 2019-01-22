@@ -37,7 +37,7 @@ class Withdrawal extends React.Component {
       pwdType: 0, // 密码类型（0交易密码 1谷歌验证码）
       sonOrderList: [] // 拆单-子订单集合
     }
-    props.AsetAllBalance(props.loginInfo.acc.user.userId)
+    props.AsetAllBalance({userId: props.loginInfo.acc.user.userId})
     props.AsetUserBankCards(props.loginInfo.acc.user.userId)
     props.AsetIsAllowWithdraw()
     props.AsetUserConsume()
