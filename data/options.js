@@ -86,7 +86,8 @@ export const shortcutsDays = [
       const endTime = new Date()
       const startTime = new Date()
       return {startTime, endTime}
-    }
+    },
+    id: 1
   }, {
     text: '三天',
     value() {
@@ -95,7 +96,8 @@ export const shortcutsDays = [
       startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 2)
       endTime.setTime(endTime.getTime())
       return {startTime, endTime}
-    }
+    },
+    id: 3
   }, {
     text: '七天',
     value() {
@@ -104,7 +106,8 @@ export const shortcutsDays = [
       startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 6)
       endTime.setTime(endTime.getTime())
       return {startTime, endTime}
-    }
+    },
+    id: 7
   }
 ]
 
