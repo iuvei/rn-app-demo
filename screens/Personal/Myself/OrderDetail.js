@@ -74,7 +74,7 @@ class OrderDetail extends React.Component {
             }))
             // this.AsetCancelOrder({time: new Date().getTime(), index: index})
             setTimeout(() => {
-              // this.props.AsetAllBalance(this.props.loginInfo.acc.user.userId)
+              // this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
             }, 50)
           } else {
             Toast.fail(res.message || '网络异常')

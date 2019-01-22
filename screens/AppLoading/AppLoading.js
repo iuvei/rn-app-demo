@@ -9,8 +9,13 @@ import {
   getLoginUser, getUserRebateInfo,
   getUserBalance, _getImageSetCookie
 } from '../../api/basic'
+import { AsetAllBalance } from '../../actions/member'
 
 class AppLoadingScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.loopTimer = null
+  }
 
   render() {
     // 经过我的处理在完成之后跳转到navigation
@@ -60,6 +65,9 @@ class AppLoadingScreen extends React.Component {
         if (res.code === 0) {
           this.props.setLoginStatus(res.code === 0)
           this.props.setLoginInfo(res.data)
+          this.loopTimer = setTimeout(() => {
+            this.loopCheckLogin()
+          }, 3 * 1000)
         }
       })
     ])
@@ -85,6 +93,33 @@ class AppLoadingScreen extends React.Component {
     this.props.navigation.navigate(this.props.isLogin ? 'Main' : 'Login')
     Expo.SplashScreen.hide()
   }
+
+  // 登录状态检测
+  loopCheckLogin () {
+    clearTimeout(this.loopTimer)
+    // 增加： 当切非当前页面，不再轮询，储存监听
+    // if (!this.visibility) {
+    //   // this.isHasCheck = true
+    //   return
+    // }
+    // 预防 渲染视图后，频繁切换
+    // if (type === 'visibility' && !this.isHasCheck) {
+    //   return
+    // }
+    // 初始化
+    // this.isHasCheck = false
+    this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId, cb: (res) => {
+      if (res.code === 0) {
+        this.loopTimer = setTimeout(() => {
+          this.loopCheckLogin()
+        }, 30 * 1000)
+      }
+      if (res.code === -200012 || res.code === -200010 || res.code === -200011 || res.code === -200014 || res.code === -20000) {
+        this.props.setLoginStatus(false)
+        this.props.navigation.navigate('Login')
+      }
+    }})
+  }
 }
 
 const mapStateToProps = (state) => {
@@ -109,6 +144,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setUserBalance: (data) => {
       dispatch(setUserBalance(data))
+    },
+    AsetAllBalance: (data) => {
+      dispatch(AsetAllBalance(data))
     }
   }
 }
