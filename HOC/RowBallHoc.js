@@ -597,7 +597,7 @@ export default (Comp) => {
           Toast.success('购买成功')
           this.clearAllData()
           // 刷新余额
-          this.props.updateBalance()
+          this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
         } else {
           Toast.success(res.message)
         }
@@ -674,7 +674,7 @@ export default (Comp) => {
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      updateBalance: data => dispatch(AsetAllBalance(data))
+      AsetAllBalance: data => dispatch(AsetAllBalance(data))
     }
   }
 

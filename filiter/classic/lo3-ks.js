@@ -13,12 +13,10 @@ export default {
     datasel = ArrayUtil.unique(datasel) // 去除重复
     let regex = new RegExp('^[0-6]{' + l + '}$')
     _.each(datasel, (n, i) => {
-      console.log('isOk', fun(n, l))
       if (regex.test(n) && fun(n, l)) {
         newsel.push(n)
       }
     })
-    console.log('inputCheck_Num result', newsel)
     return newsel
   },
   /**
@@ -183,7 +181,6 @@ export default {
       default:
         break
     }
-    console.log('formatTextarea_Num result: ', datasel)
     return datasel.toString().replace(/,/g, ' ')
   },
   inputFormat (type, datasel) {

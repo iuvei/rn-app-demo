@@ -179,7 +179,6 @@ class TeamBaccaratReport extends React.Component {
             params={params}
             renderItem={this.renderItem}
             beforeUpdateList={({res, params}, fn) => {
-              console.log(res)
               let dataList = res.data && res.data.pageColumns ? res.data.pageColumns : []
               let {total} = res.data.pageInfo
               let NullData =  params.pageNumber > Math.ceil(total / 50)

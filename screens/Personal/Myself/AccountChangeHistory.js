@@ -47,7 +47,6 @@ class PersonalScreen extends React.Component {
 
   constructor(props) {
     super(props)
-    console.log(props.userBalanceInfo)
     this.state = {
       KeyName: 'AccountChangeHistory',
       api: '/frontReport/capitalBase/queryBalanceLogRecords',

@@ -110,7 +110,6 @@ class BetHistory extends React.Component {
 
   onSearch = async () => {
     // this.BetHistory.listView.refresh()
-    console.log(this.state.params)
     this.setState({
       refreshTime: new Date().getTime()
     })

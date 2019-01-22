@@ -56,7 +56,6 @@ export default {
         nums = this.checkexzuxNums({len0})
         break
     }
-    console.log(types, datasel, nums)
     return nums
   },
   checkdtNums ({len0, len1, mincode}) {

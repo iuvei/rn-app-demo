@@ -248,7 +248,6 @@ export default {
         nums = this.checkdtNums({len0, len1, mincode: 2})
         break
       case 'lo2_dt_4z4':
-        console.log('into')
         nums = this.checkdtNums({len0, len1, mincode: 3})
         break
       case 'lo2_dt_5z5':

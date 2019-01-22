@@ -49,7 +49,6 @@ class UnbindSet extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
   }
 
   submitFunc = () => {
