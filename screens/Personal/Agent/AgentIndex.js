@@ -179,51 +179,53 @@ class AgentIndex extends React.Component {
             </View>
           </View>
         </ImageBackground>
-        <ImageBackground resizeMode={'contain'} source={require('../../../assets/images/personal/agent/chartBg.png')}
-                         style={styles.chartBg}>
-          <View style={styles.balanceInfo}>
-            <View style={styles.pics}>
-              <Text style={styles.text}>充值量</Text>
-              <Text style={styles.text}>{teamStatistics.dayDownRechargeMoney}</Text>
+        <View style={styles.bottomPart}>
+          <ImageBackground resizeMode={'cover'} source={require('../../../assets/images/personal/agent/chartBg.png')}
+                           style={styles.chartBg}>
+            <View style={styles.balanceInfo}>
+              <View style={styles.pics}>
+                <Text style={styles.text}>充值量</Text>
+                <Text style={styles.text}>{teamStatistics.dayDownRechargeMoney}</Text>
+              </View>
+              <View style={styles.pics}>
+                <Text style={styles.text}>提现量</Text>
+                <Text style={styles.text}>{teamStatistics.dayDownDrawMoney}</Text>
+              </View>
+              <View style={styles.pics}>
+                <Text style={styles.text}>代购量</Text>
+                <Text style={styles.text}>{teamStatistics.dayDownEnsureConsumpMoney}</Text>
+              </View>
+              <View style={styles.pics}>
+                <Text style={styles.text}>派奖</Text>
+                <Text style={styles.text}>{teamStatistics.dayDownIncomeMoney}</Text>
+              </View>
+              <View style={styles.pics}>
+                <Text style={styles.text}>返点</Text>
+                <Text style={styles.text}>{teamStatistics.dayDownCommMoney}</Text>
+              </View>
+              <View style={styles.pics}>
+                <Picker selectedValue={this.state.timeLength} onValueChange={this.onTimeChange}
+                        mode="dialog" style={styles.picker}>
+                  <Picker.Item label="今天" value={1}/>
+                  <Picker.Item label="最近一周" value={7}/>
+                  <Picker.Item label="最近一个月" value={30}/>
+                </Picker>
+                <Picker selectedValue={this.state.formData.type}
+                        onValueChange={this.onTypeChange}
+                        mode="dialog" style={styles.picker}>
+                  <Picker.Item label="投注" value={'tz'}/>
+                  <Picker.Item label="充值" value={'cz'}/>
+                  <Picker.Item label="提现" value={'tx'}/>
+                  <Picker.Item label="返点" value={'fd'}/>
+                  <Picker.Item label="返水" value={'fs'}/>
+                  <Picker.Item label="派奖" value={'pj'}/>
+                  <Picker.Item label="注册" value={'xz'}/>
+                </Picker>
+              </View>
             </View>
-            <View style={styles.pics}>
-              <Text style={styles.text}>提现量</Text>
-              <Text style={styles.text}>{teamStatistics.dayDownDrawMoney}</Text>
-            </View>
-            <View style={styles.pics}>
-              <Text style={styles.text}>代购量</Text>
-              <Text style={styles.text}>{teamStatistics.dayDownEnsureConsumpMoney}</Text>
-            </View>
-            <View style={styles.pics}>
-              <Text style={styles.text}>派奖</Text>
-              <Text style={styles.text}>{teamStatistics.dayDownIncomeMoney}</Text>
-            </View>
-            <View style={styles.pics}>
-              <Text style={styles.text}>返点</Text>
-              <Text style={styles.text}>{teamStatistics.dayDownCommMoney}</Text>
-            </View>
-            <View style={styles.pics}>
-              <Picker selectedValue={this.state.timeLength} onValueChange={this.onTimeChange}
-                      mode="dialog" style={styles.picker}>
-                <Picker.Item label="今天" value={1}/>
-                <Picker.Item label="最近一周" value={7}/>
-                <Picker.Item label="最近一个月" value={30}/>
-              </Picker>
-              <Picker selectedValue={this.state.formData.type}
-                      onValueChange={this.onTypeChange}
-                      mode="dialog" style={styles.picker}>
-                <Picker.Item label="投注" value={'tz'}/>
-                <Picker.Item label="充值" value={'cz'}/>
-                <Picker.Item label="提现" value={'tx'}/>
-                <Picker.Item label="返点" value={'fd'}/>
-                <Picker.Item label="返水" value={'fs'}/>
-                <Picker.Item label="派奖" value={'pj'}/>
-                <Picker.Item label="注册" value={'xz'}/>
-              </Picker>
-            </View>
-          </View>
-          <Echarts option={option} height={300}/>
-        </ImageBackground>
+            <Echarts option={option} height={300}/>
+          </ImageBackground>
+        </View>
       </View>
     )
   }
@@ -276,13 +278,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 5
   },
-  chartBg: {
-    width: '98%',
+  bottomPart: {
     flex: 4,
     marginTop: 20,
     marginLeft: 8,
     marginRight: 8,
     paddingTop: 24
+  },
+  chartBg: {
+    // width: '98%',
   },
   text: {
     color: 'white'
