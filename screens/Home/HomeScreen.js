@@ -21,6 +21,7 @@ import {
   queryActivity
 } from './../../actions/common'
 import { getHotLotter } from './../../api/lottery'
+import { getIconName } from '../../utils/getLotImg'
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -37,36 +38,6 @@ class HomeScreen extends React.Component {
         }
       ],
     }
-    this.getIconName = value => {
-        switch (value) {
-          case 'ssc':
-            return require('./../../assets/images/home/ssc_icon.png')
-            break
-          case 'syx5':
-            return require('./../../assets/images/home/syxw_icon.png')
-            break
-          case 'kl8':
-            return require('./../../assets/images/home/klc_icon.png')
-            break
-          case 'pk10':
-            return require('./../../assets/images/home/pks_icon.png')
-            break
-          case 'k3':
-            return require('./../../assets/images/home/ks_icon.png')
-            break
-          case 'kl10':
-            return require('./../../assets/images/home/kls_icon.png')
-            break
-          case 'xyc':
-            return require('./../../assets/images/home/xyc_icon.png')
-            break
-          case 'dpc':
-            return require('./../../assets/images/home/dpc_icon.png')
-            break
-          default:
-            return require('./../../assets/images/home/ssc_icon.png')
-        }
-      };
   }
 
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -209,7 +180,7 @@ class HomeScreen extends React.Component {
                 <View style={styles.hotItem} key={index}>
                   <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
                     <View>
-                      <Image source={this.getIconName(item.categoryCode)} resizeMode={'contain'} style={styles.hotItemImg} />
+                      <Image source={getIconName(item.categoryCode)} resizeMode={'contain'} style={styles.hotItemImg} />
                     </View>
                     <View style={styles.hotItemCenter}>
                       <Text style={styles.hotItemTitle}>{item.lotterName}</Text>
@@ -256,7 +227,7 @@ class HomeScreen extends React.Component {
                 <View style={styles.favoriteItem} key={index}>
                   <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
                     <View>
-                      <Image source={this.getIconName(item.realCategory)} resizeMode={'cover'} style={styles.favoriteItemImg} />
+                      <Image source={getIconName(item.realCategory)} resizeMode={'cover'} style={styles.favoriteItemImg} />
                     </View>
                     <View style={styles.favoriteItemCenter}>
                       <Text numberOfLines={1} style={styles.favoriteItemTitle}>{item.lotterName}</Text>
