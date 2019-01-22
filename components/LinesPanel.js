@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Text, View, StyleSheet, ScrollView, Image } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, NetInfo } from 'react-native'
 import { Toast, Flex, Modal, List, Radio } from '@ant-design/react-native'
 import FloatBall from './FloatBall'
 import { connect } from "react-redux";
@@ -35,9 +35,9 @@ class LinesPanel extends Component {
   submit = () => {
     let { activeId, listTimes, open} = this.state
     let show = false
-    let apiUrl = listTimes.filter(item => item.key === activeId)[0].url
+    let apiUrl = listTimes.filter(item => item.key === activeId)
     this.props.setShowFloatBall(open)
-    this.props.setCurrentApiUrl(apiUrl)
+    this.props.setCurrentApiUrl(apiUrl.length ? [0].url : '')
     this.setState({show})
     Toast.success('设置成功！', 0.5)
   }
@@ -68,6 +68,27 @@ class LinesPanel extends Component {
   getTimes = (key) => {
     let rst = this.state.speedList.filter(item => item.key === key)
     return rst.length ? rst[0].times : '测速中'
+  }
+
+  //页面的组件渲染完毕（render）之后执行
+  componentDidMount() {
+    //检测网络是否连接
+    NetInfo.isConnected.fetch().then((isConnected) => {
+      if(!isConnected) {
+        Toast.fail('无网络服务！', 0.5)
+      }
+    });
+
+    //监听网络变化事件
+    NetInfo.isConnected.addEventListener('connectionChange', (isConnected) => {
+      if(!isConnected) {
+        Toast.fail('无网络服务！', 0.5)
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange');
   }
 
   render() {

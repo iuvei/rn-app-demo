@@ -1,5 +1,5 @@
 import React from 'react'
-import {StyleSheet, View, Text} from 'react-native'
+import {StyleSheet, View, Platform} from 'react-native'
 import { Button, Tabs } from '@ant-design/react-native'
 import LotteryHall from './LotteryHall'
 import RealPeople from './RealPeople'
@@ -57,19 +57,35 @@ export default class GamesScreen extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <Tabs
-          tabs={tabs}
-          page={activeTab}
-          tabBarUnderlineStyle={{backgroundColor: 'orange'}}
-          tabBarBackgroundColor={'#0066ba'}
-          tabBarActiveTextColor={'orange'}
-          tabBarInactiveTextColor={'#eff5fb'}
-          onChange={(tab, index) => this.setState({activeTab: index})}>
-          <LotteryHall navigation={this.props.navigation}></LotteryHall>
-          <RealPeople navigation={this.props.navigation}></RealPeople>
-          <Slot navigation={this.props.navigation}></Slot>
-          <Chess navigation={this.props.navigation}></Chess>
-        </Tabs>
+        {
+          Platform.OS === 'ios' ?
+            <Tabs
+              tabs={tabs}
+              tabBarUnderlineStyle={{backgroundColor: 'orange'}}
+              tabBarBackgroundColor={'#0066ba'}
+              tabBarActiveTextColor={'orange'}
+              tabBarInactiveTextColor={'#eff5fb'}>
+              <LotteryHall navigation={this.props.navigation}></LotteryHall>
+              <RealPeople navigation={this.props.navigation}></RealPeople>
+              <Slot navigation={this.props.navigation}></Slot>
+              <Chess navigation={this.props.navigation}></Chess>
+            </Tabs>
+            :
+            <Tabs
+              tabs={tabs}
+              page={activeTab}
+              tabBarUnderlineStyle={{backgroundColor: 'orange'}}
+              tabBarBackgroundColor={'#0066ba'}
+              tabBarActiveTextColor={'orange'}
+              tabBarInactiveTextColor={'#eff5fb'}
+              onChange={(tab, index) => this.setState({activeTab: index})}>
+              <LotteryHall navigation={this.props.navigation}></LotteryHall>
+              <RealPeople navigation={this.props.navigation}></RealPeople>
+              <Slot navigation={this.props.navigation}></Slot>
+              <Chess navigation={this.props.navigation}></Chess>
+            </Tabs>
+        }
+
       </View>
     )
   }
