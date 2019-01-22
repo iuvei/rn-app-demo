@@ -194,6 +194,7 @@ class LoginComponent extends Component {
                     </Flex.Item>
                     <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
                       <Switch
+                          style={Platform.OS === 'ios' ? { transform: [{ scaleX: .7 }, { scaleY: .7 }] } : {}}
                           value={rememberPwd}
                           onValueChange={(v) => {
                             this.setState({
@@ -267,9 +268,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setLoginStatus: status => dispatch(setLoginStatus(status)),
     setLoginInfo: data => dispatch(setLoginInfo(data)),
-    AsetAllBalance: (data) => {
-      dispatch(AsetAllBalance(data))
-    },
+    AsetAllBalance: (data) => dispatch(AsetAllBalance(data)),
     AsetUserBankCards: data => dispatch(AsetUserBankCards(data)),
     AsetUserSecureLevel: data => dispatch(AsetUserSecureLevel(data)),
     AsetServiceUrl: data => dispatch(AsetServiceUrl(data))

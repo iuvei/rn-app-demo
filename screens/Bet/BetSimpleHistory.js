@@ -5,7 +5,7 @@ import UIListView from '../../components/UIListView'
 import {
   Button, Toast, Flex
 } from '@ant-design/react-native'
-import { orderStatus } from '../../data/options'
+import { orderStatus, shortcutsDays } from '../../data/options'
 import { withNavigation } from 'react-navigation'
 
 const TableRow = 20
@@ -71,7 +71,7 @@ class BetSimpleHistory extends React.Component {
         {value: 3, name: '最近三天'},
         {value: 7, name: '最近七天'}
       ],
-      activeFast: {value: 0, name: '今天'}
+      activeFast: {text: '今天', id: 1}
     }
   }
 
@@ -109,7 +109,7 @@ class BetSimpleHistory extends React.Component {
   // 点击单元表格
   onPressItem = (item) => {
     // 跳转详情页
-    // this.props.navigation.navigate('OrderDetail', {detail: item})
+    this.props.navigation.navigate('OrderDetail', {detail: item})
     // 点击一项改变数据重置数据
   }
 
@@ -122,20 +122,21 @@ class BetSimpleHistory extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={{flexDirection: 'row'}}>
-          <Text>快速查询：</Text>
+        <View style={{flexDirection: 'row', backgroundColor: '#ccc', paddingHorizontal: 6, paddingVertical: 4, borderRadius: 10, justifyContent: 'space-around'}}>
           {
-            fastGet.map(item =>
-              <Button key={item.value}
-                      type={this.state.activeFast.value === item.value ? 'primary' : 'ghost'}
+            shortcutsDays.map(item =>
+              <Button key={item.id}
+                      type={this.state.activeFast.id === item.id ? 'primary' : 'default'}
                       style={{width: 80}} size="small"
                       onPress={() => {
-                        Toast.info('正在开发中')
                         this.setState({
-                          activeFast: item
+                          activeFast: item,
+                          params: Object.assign({}, this.state.params, item.value())
+                        }, () => {
+                          this.onSearch()
                         })
                       }}>
-                <Text style={{fontSize: 14}}>{item.name}</Text>
+                <Text style={{fontSize: 14}}>{item.text}</Text>
               </Button>
             )
           }
