@@ -9,6 +9,7 @@ import HomeNavigator from '../screens/Home'
 import RechargeNavigator from '../screens/Recharge'
 import Personal from '../screens/Personal'
 import Found from '../screens/Found'
+import Games from '../screens/Games'
 import Bet from '../screens/Bet/BetScreen'
 import ChaseScreen from '../screens/Bet/ChaseScreen'
 
@@ -18,6 +19,7 @@ const MainNavigator = createStackNavigator({
   ...RechargeNavigator,
   ...Personal,
   ...Found,
+  ...Games,
   Bet,
   ChaseScreen
 }, {

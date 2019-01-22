@@ -45,11 +45,13 @@ class PlayNav extends React.Component {
   }
 
   componentWillReceiveProps(np) {
-    let {newCusPlayNav} = this.props
+    let {newCusPlayNav, activePlay} = this.props
+    let { code } = activePlay
     if (!_.isEqual(newCusPlayNav, np.newCusPlayNav)) {
+      let d = np.newCusPlayNav.filter(item => item.code === code).length
       this.setState({
         playTabs: np.newCusPlayNav
-      }, () => this.InitBetView(np.newCusPlayNav[0]))
+      }, () => !d ? this.InitBetView(np.newCusPlayNav[0]) : '')
     }
   }
 
@@ -75,7 +77,12 @@ class PlayNav extends React.Component {
         <Flex>
           <View style={styles.playNav}>
             <View style={{backgroundColor: '#ffffff',height: 42}}>
-              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+              <ScrollView
+                ref={(ref) => {
+                  this.scrollPlayNav = ref
+                }}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
                 {
                   playTabs.length > 0 ? playTabs.map((tab, index) => {
                     return (
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   btnDefault: {
-    width: 80,
+    width: 100,
     height: 26,
     marginTop: 10,
     borderWidth: 1,

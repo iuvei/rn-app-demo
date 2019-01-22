@@ -126,7 +126,7 @@ class LotteryHall extends React.Component {
         <ImageBackground source={item.bgImg}
                          style={styles.card}>
           <View>
-            <Text style={styles.title}>{item.lotterName}</Text>
+            <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.desc}>{item.desc}</Text>
           </View>
           <Image source={item.img} style={{width: 100, height: 100}}></Image>

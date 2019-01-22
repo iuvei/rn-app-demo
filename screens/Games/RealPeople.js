@@ -1,53 +1,85 @@
 import React from 'react'
-import {ScrollView, View, Text, ImageBackground, Image, StyleSheet} from 'react-native'
-import {Button} from '@ant-design/react-native'
+import {ScrollView, View, Text, ImageBackground, Image, StyleSheet, Dimensions} from 'react-native'
+import {Button, Flex, Toast} from '@ant-design/react-native'
+import { connect } from "react-redux";
+import { AsetUserPlatfrom } from "../../actions/common"
+import { toLiveGame } from "./../../api/member"
 
-export default class RealPeople extends React.Component {
-  render () {
-    let list = [
-      {
-        name: 'AG平台',
-        status: true,
-        icon: require('../../assets/images/realPeople/ag-ico.png'),
-        bgImgL: require('../../assets/images/realPeople/ag.png')
-      },{
-        name: 'OG平台',
-        status: true,
-        icon: require('../../assets/images/realPeople/og-ico.png'),
-        bgImgL: require('../../assets/images/realPeople/og.jpg')
-      },{
-        name: '欧博平台',
-        status: true,
-        icon: require('../../assets/images/realPeople/allbet-ico.png'),
-        bgImgL: require('../../assets/images/realPeople/allbet.png')
-      },{
-        name: 'eBET平台',
-        status: true,
-        icon: require('../../assets/images/realPeople/ebet-ico.png'),
-        bgImgL: require('../../assets/images/realPeople/ebet.png')
+class RealPeople extends React.Component {
+  constructor (props) {
+    super (props)
+    this.state = {
+      list: {
+        AG:{
+          name: 'AG平台',
+          status: true,
+          icon: require('../../assets/images/realPeople/ag-ico.png'),
+          bgImgL: require('../../assets/images/realPeople/ag.png')
+        },OG:{
+          name: 'OG平台',
+          status: true,
+          icon: require('../../assets/images/realPeople/og-ico.png'),
+          bgImgL: require('../../assets/images/realPeople/og.jpg')
+        },PT:{
+          name: 'PT平台',
+          status: true,
+          icon: require('../../assets/images/realPeople/allbet-ico.png'),
+          bgImgL: require('../../assets/images/realPeople/allbet.png')
+        },eBET:{
+          name: 'eBET平台',
+          status: true,
+          icon: require('../../assets/images/realPeople/ebet-ico.png'),
+          bgImgL: require('../../assets/images/realPeople/ebet.png')
+        }
       },
-    ]
+      baccaratPlatform: ['AG', 'OG', 'PT', 'eBET']
+    }
+    props.AsetUserPlatfrom()
+  }
+
+  _toLiveGame = (item) => {
+    if (item.partnerStatus) return
+    toLiveGame({partnerCode: item.partnerCode}).then(res => {
+      if (res.code === 0) {
+        this.props.navigation.navigate('ThirdGameScreen', {uri: res.data.url})
+      } else {
+        Toast.fail(res.message)
+      }
+    })
+  }
+
+  render () {
+    let {list, baccaratPlatform} = this.state
+    let w = Dimensions.get('window').width/2
+    let {userPlatformInfo} = this.props
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={{paddingLeft: 5, paddingRight: 5}}>
+        <Flex wrap="wrap" justify="space-between">
         {
-          list.map((item, index) => {
+          userPlatformInfo.map((item, index) => {
+            let d = baccaratPlatform.includes(item.partnerName)
             return (
-              <View style={{margin: 8, flex: 1}} key={index}>
-                <ImageBackground source={item.bgImgL} resizeMode= 'contain' style={{width: '100%', height: '100%'}}>
+              d ? <View style={{width: '49%',}} key={index}>
+                <ImageBackground source={list[item.partnerName].bgImgL} resizeMode= 'contain' style={{width: '100%', height:w/0.7 }}>
                   <View style={styles.card}>
                     <View style={styles.footer}>
-                      <Image source={item.icon} resizeMode= 'contain' style={{width: 120, height: 60}}></Image>
-                      <View style={{width: 120, alignItems: 'center'}}>
-                        <Text style={{color: 'white', fontSize: 18}}>{item.name}</Text>
-                        <Button style={{width: 120, height: 30}}>{item.status ? '进入游戏' : '请等待'}</Button>
+                      <Image source={list[item.partnerName].icon} resizeMode= 'contain' style={{width: 60, height: 30}}></Image>
+                      <View style={{width: 100, alignItems: 'center'}}>
+                        <Text style={{color: 'white', fontSize: 14}}>{item.partnerDesc}</Text>
+                        <Button
+                          onPress={()=> this._toLiveGame(item)}
+                          style={{width: 80, height: 25}}>
+                          <Text style={{fontSize: 12}}>{item.partnerStatus === 0 ? '进入游戏' : '请等待'}</Text>
+                        </Button>
                       </View>
                     </View>
                   </View>
                 </ImageBackground>
-              </View>
-            )
+              </View> : null
+              )
           })
         }
+        </Flex>
       </ScrollView>
     )
   }
@@ -56,23 +88,38 @@ export default class RealPeople extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // flexDirection: 'row',
-    // alignItems: 'flex-start',
-    // flexWrap: 'wrap'
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap'
   },
   card: {
     flex: 1,
     margin: 8,
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    width: 400,
-    height: 450
+    width: '100%'
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    width: 350,
-    height: 80
+    width: '100%',
+    height: 50,
+    paddingRight: 10
   }
 })
+
+const mapStateToProps = (state, props) => {
+  let { userPlatformInfo } = state.common
+  return {
+    userPlatformInfo
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    AsetUserPlatfrom: (data) => { dispatch(AsetUserPlatfrom(data)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RealPeople)
