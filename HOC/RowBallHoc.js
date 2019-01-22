@@ -597,7 +597,7 @@ export default (Comp) => {
           Toast.success('购买成功')
           this.clearAllData()
           // 刷新余额
-          this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
+          this.props.AsetAllBalance({userId: userId})
         } else {
           Toast.success(res.message)
         }
