@@ -80,8 +80,8 @@ class BetSimpleHistory extends React.Component {
   // }
 
   componentWillReceiveProps(np) {
-    let {intoHistory} = np
-    if (this.props.intoHistory !== intoHistory) {
+    let {intoHistory, revokeInfo} = np
+    if (this.props.intoHistory !== intoHistory || this.props.revokeInfo.orderId !== revokeInfo.orderId) {
       this.setState({
         params: {
           ...this.state.params,
@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, props) => {
   let {navParams} = state.classic
-  return {navParams}
+  let {revokeInfo} = state.common
+  return {navParams, revokeInfo}
 }
 
 export default withNavigation(

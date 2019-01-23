@@ -1,12 +1,14 @@
 import React from 'react'
-import Header from '../../components/Header'
-import { Text, Image, ScrollView, View, WebView, Dimensions, Clipboard } from 'react-native';
-import { List, WhiteSpace, Toast, Button } from '@ant-design/react-native';
+import { connect } from 'react-redux'
+import { Text, Image, ScrollView, View, WebView, Dimensions, Clipboard } from 'react-native'
+import { List, WhiteSpace, Toast, Button } from '@ant-design/react-native'
 import { Card, Left, Body, CardItem } from 'native-base'
+import { WebBrowser } from 'expo'
+import { AsetServiceUrl } from '../../actions/common'
 
 const height = Dimensions.get('window').height
 
-export default class RechargeSuccess extends React.Component {
+class RechargeSuccess extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       // header: null
@@ -19,6 +21,13 @@ export default class RechargeSuccess extends React.Component {
   }
 
   componentDidMount() {
+    this.props.AsetServiceUrl()
+  }
+
+  _handleServiceAsync = async () => {
+    let { serviceUrl } = this.props
+    let result = await WebBrowser.openBrowserAsync(serviceUrl.url)
+    console.log(result)
   }
 
   render() {
@@ -113,13 +122,13 @@ export default class RechargeSuccess extends React.Component {
           </View>
         }
         <List>
-          <List.Item arrow="horizontal" onPress={() => {}}>
+          <List.Item arrow="horizontal" onPress={() => {this.props.navigation.navigate('WithdrawHistory')}}>
             充值记录
           </List.Item>
-          <List.Item arrow="horizontal" onPress={() => {}}>
+          <List.Item arrow="horizontal" onPress={() => {this.props.navigation.navigate('Home')}}>
             进入游戏
           </List.Item>
-          <List.Item arrow="horizontal" onPress={() => {}}>
+          <List.Item arrow="horizontal" onPress={this._handleServiceAsync}>
             联系客服
           </List.Item>
           {
@@ -140,3 +149,21 @@ export default class RechargeSuccess extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  let {serviceUrl} = state.common
+  return ({
+    serviceUrl
+  })
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    AsetServiceUrl: data => dispatch(AsetServiceUrl(data))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RechargeSuccess)

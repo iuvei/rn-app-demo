@@ -140,7 +140,7 @@ class ExampleScroll extends Component {
           item={this.props.renderItem}
 
           // to use grid layout, simply set gridColumn > 1
-          numColumns={1}
+          numColumns={this.props.numColumns || 1}
           // spinnerColor={'red'}
           waitingSpinnerText={'加载中...'}
           allLoadedText={'已为您加载所有数据'}

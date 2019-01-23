@@ -15,6 +15,7 @@ import {
 } from '@ant-design/react-native'
 import { orderStatus } from '../../../data/options'
 import { queryOrderDetails, doCancelOrder } from '../../../api/member'
+import { AsetRevokeInfo } from '../../../actions/common'
 
 class OrderDetail extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -72,6 +73,10 @@ class OrderDetail extends React.Component {
             this.setState(prevState => ({
               detailInfo: {...prevState.detailInfo, status: -2, isRevoked: false}
             }))
+            this.props.AsetRevokeInfo({
+              time: new Date().getTime(),
+              orderId: orderId
+            })
             // this.AsetCancelOrder({time: new Date().getTime(), index: index})
             setTimeout(() => {
               // this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
@@ -132,7 +137,9 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    AsetRevokeInfo: data => dispatch(AsetRevokeInfo(data))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderDetail)
