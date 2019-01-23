@@ -16,37 +16,42 @@ export default class FoundScreen extends React.Component {
       top: new Animated.Value(0),
       list: [
         {
-          title: '开奖公告',
-          text: '实时公布开奖号',
-          route: '',
-          src: require('./../../assets/images/found/open.png'),
-          rotation: new Animated.Value(0),
-        },
-        {
           title: '优惠活动',
           text: '回馈新老客户',
           route: 'Activity',
+          params:{},
           src: require('./../../assets/images/found/activity.png'),
           rotation: new Animated.Value(0),
         },
         {
           title: '趣味游戏',
           text: '趣味休闲小游戏',
-          route: '',
+          route: 'Links',
+          params: {activeTab: 2},
           src: require('./../../assets/images/found/game.png'),
           rotation: new Animated.Value(0),
         },
         {
-          title: '积分商城',
-          text: '小惊喜大回报',
+          title: '开奖公告',
+          text: '实时公布开奖号',
           route: '',
-          src: require('./../../assets/images/found/shop.png'),
+          params:{},
+          src: require('./../../assets/images/found/open.png'),
           rotation: new Animated.Value(0),
         },
+        // {
+        //   title: '积分商城',
+        //   text: '小惊喜大回报',
+        //   route: '',
+        //   params:{},
+        //   src: require('./../../assets/images/found/shop.png'),
+        //   rotation: new Animated.Value(0),
+        // },
         {
           title: '幸运选号',
           text: '狠狠提高中奖率',
           route: '',
+          params:{},
           src: require('./../../assets/images/found/lucky.png'),
           rotation: new Animated.Value(0),
         },
@@ -54,6 +59,7 @@ export default class FoundScreen extends React.Component {
           title: '应用分享',
           text: '与朋友分享娱乐',
           route: '',
+          params:{},
           src: require('./../../assets/images/found/share.png'),
           rotation: new Animated.Value(0),
         },
@@ -61,6 +67,7 @@ export default class FoundScreen extends React.Component {
           title: '抢红包',
           text: '手气旺抢红包',
           route: '',
+          params:{},
           src: require('./../../assets/images/found/packet.png'),
           rotation: new Animated.Value(0),
         }
@@ -108,9 +115,9 @@ export default class FoundScreen extends React.Component {
 
   _actionFun = (item) =>{
     if (item.route) {
-      this.props.navigation.push(item.route)
+      this.props.navigation.navigate(item.route, item.params)
     } else {
-      Toast.info(item.title + '正在开发中！')
+      Toast.info(item.title + '~敬请期待！', 0.3)
     }
   }
 

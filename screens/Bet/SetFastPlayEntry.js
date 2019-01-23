@@ -7,7 +7,6 @@ import {
   Button, Flex, WhiteSpace, Toast
 } from '@ant-design/react-native'
 import { connect } from "react-redux";
-import norLot from './../../data/nor-lot'
 import { setCustomPlayNav } from '../../actions/classic'
 import _ from 'lodash'
 

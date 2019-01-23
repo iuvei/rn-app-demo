@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   View, Text,
-  StyleSheet, AsyncStorage, ScrollView
+  StyleSheet, ScrollView
 } from 'react-native'
 import {
   Flex
@@ -11,7 +11,6 @@ import {
 } from '@expo/vector-icons'
 import { connect } from 'react-redux'
 import { setActivePlay, setCustomPlayNav } from '../../actions/classic'
-import norLot from "../../data/nor-lot";
 import _ from 'lodash'
 
 class PlayNav extends React.Component {
