@@ -11,8 +11,8 @@ import {
   ToastAndroid,
   ImageBackground
 } from 'react-native'
-import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native';
-import {connect} from 'react-redux'
+import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native'
+import { connect } from 'react-redux'
 import Header from './../../components/Header'
 import {
   setCustomizeLottery,
@@ -30,24 +30,24 @@ class HomeScreen extends React.Component {
       refreshing: false,
       hotLoList: [
         {
-          categoryCode: "ssc",
-          lotterCode: "cqssc",
-          lotterName: "重庆时时彩",
-          openCode: "9,4,1,2,9",
-          openIssue: "20190103070"
+          categoryCode: 'ssc',
+          lotterCode: 'cqssc',
+          lotterName: '重庆时时彩',
+          openCode: '9,4,1,2,9',
+          openIssue: '20190103070'
         }
-      ],
+      ]
     }
   }
 
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state
     return {
       header: <Header
         hideLeft={true}
         rightContent={
-          <Text style={{fontSize: 16, color: "#fff"}}>
-            <Text onPress={() => params.changeTextFun('Broadcast')}>公告  </Text>
+          <Text style={{fontSize: 16, color: '#fff'}}>
+            <Text onPress={() => params.changeTextFun('Broadcast')}>公告 </Text>
             <Text onPress={() => params.changeTextFun('Mailbox')}>信箱</Text>
           </Text>
         }/>
@@ -64,33 +64,35 @@ class HomeScreen extends React.Component {
     this.props.getSystemNews()
     this.props.setActiveUsualLot({custom: 0, data: []})
     this._initHotLottery()
-    this.props.navigation.setParams({ changeTextFun: this.changeTextFun })
+    this.props.navigation.setParams({changeTextFun: this.changeTextFun})
     this.props.queryActivity()
     // this.props.navigation.push('Bet')
   }
 
   componentWillMount() {
     if (Platform.OS === 'android') {
-      BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
+      BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     }
     this.didBlurSubscription = this.props.navigation.addListener('didFocus', this.updateImmediateData)
   }
+
   componentWillUnmount() {
     if (Platform.OS === 'android') {
-      BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+      BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
     }
-    this.didBlurSubscription.remove();
-    this.setState = () => () =>{}
+    this.didBlurSubscription.remove()
+    this.setState = () => () => {
+    }
   }
 
   onBackAndroid = () => {
     if (this.props.navigation.isFocused()) {
       if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
-        return false;
+        return false
       }
-      this.lastBackPressed = Date.now();
-      ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
-      return true;
+      this.lastBackPressed = Date.now()
+      ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT)
+      return true
     }
   }
 
@@ -117,16 +119,16 @@ class HomeScreen extends React.Component {
   }
 
   _onRefresh = () => {
-    this.setState({refreshing: true});
+    this.setState({refreshing: true})
     setTimeout(() => {
       Toast.success('刷新成功！')
-      this.setState({refreshing: false});
-    }, 1000);
+      this.setState({refreshing: false})
+    }, 1000)
   }
 
   render() {
-    let { usualLottery, systemNews } = this.props
-    let { hotLoList } = this.state
+    let {usualLottery, systemNews} = this.props
+    let {hotLoList} = this.state
     let str = ''
     if (systemNews.length > 0) {
       let reg = /<[^>]+>|[&nbsp;]+/g
@@ -147,24 +149,26 @@ class HomeScreen extends React.Component {
           <View
             style={styles.containerHorizontal}
           >
-            <Image source={require('./../../assets/images/home/banner_01.png')} resizeMode={'contain'} style={styles.carouselImg} />
+            <Image source={require('./../../assets/images/home/banner_01.png')} resizeMode={'contain'}
+                   style={styles.carouselImg}/>
           </View>
           <View
             style={styles.containerHorizontal}
           >
-            <Image source={require('./../../assets/images/home/banner_01.png')} resizeMode={'contain'} style={styles.carouselImg} />
+            <Image source={require('./../../assets/images/home/banner_01.png')} resizeMode={'contain'}
+                   style={styles.carouselImg}/>
           </View>
         </Carousel>
 
         <View>
-          <WhiteSpace size="sm" />
+          <WhiteSpace size="sm"/>
           <NoticeBar
             onPress={() => this.props.navigation.navigate('Broadcast')}
-            marqueeProps={{ loop: true, style: { fontSize: 12, color: '#000' } }}
+            marqueeProps={{loop: true, style: {fontSize: 12, color: '#000'}}}
           >
             {str}
           </NoticeBar>
-          <WhiteSpace size="sm" />
+          <WhiteSpace size="sm"/>
         </View>
 
         <Carousel
@@ -174,38 +178,41 @@ class HomeScreen extends React.Component {
           afterChange={this.onHorizontalSelectedIndexChange}
         >
           {
-            hotLoList.length > 0 && hotLoList.map((item, index) =>{
-              let codeList = item.openCode.split(',')
-              return (
-                <View style={styles.hotItem} key={index}>
-                  <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
-                    <View>
-                      <Image source={getIconName(item.categoryCode)} resizeMode={'contain'} style={styles.hotItemImg} />
-                    </View>
-                    <View style={styles.hotItemCenter}>
-                      <Text style={styles.hotItemTitle}>{item.lotterName}</Text>
-                      <Text style={styles.hotItemText}>{item.openIssue}期</Text>
-                    </View>
-                    <View style={styles.hotItemRight}>
-                      <Flex wrap="wrap">
-                        {
-                          codeList.map((v, i) =>
-                            codeList.length < 6 ?
-                              <View key={i} style={styles.hotItemBall}><Text style={styles.hotItemLgText}>{v}</Text></View>
-                              : codeList.length < 11 ?
-                              <View key={i} style={styles.hotItemMidBall}><Text style={styles.hotItemMidText}>{v}</Text></View>
-                              : <View key={i} style={styles.hotItemSmallBall}><Text style={styles.hotItemSmallText}>{v}</Text></View>)
-                        }
-                      </Flex>
-                    </View>
-                  </Flex>
-                </View>
-              )}
+            hotLoList.length > 0 && hotLoList.map((item, index) => {
+                let codeList = item.openCode.split(',')
+                return (
+                  <View style={styles.hotItem} key={index}>
+                    <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
+                      <View>
+                        <Image source={getIconName(item.categoryCode)} resizeMode={'contain'} style={styles.hotItemImg}/>
+                      </View>
+                      <View style={styles.hotItemCenter}>
+                        <Text style={styles.hotItemTitle}>{item.lotterName}</Text>
+                        <Text style={styles.hotItemText}>{item.openIssue}期</Text>
+                      </View>
+                      <View style={styles.hotItemRight}>
+                        <Flex wrap="wrap">
+                          {
+                            codeList.map((v, i) =>
+                              codeList.length < 6 ?
+                                <View key={i} style={styles.hotItemBall}><Text
+                                  style={styles.hotItemLgText}>{v}</Text></View>
+                                : codeList.length < 11 ?
+                                <View key={i} style={styles.hotItemMidBall}><Text style={styles.hotItemMidText}>{v}</Text></View>
+                                : <View key={i} style={styles.hotItemSmallBall}><Text
+                                  style={styles.hotItemSmallText}>{v}</Text></View>)
+                          }
+                        </Flex>
+                      </View>
+                    </Flex>
+                  </View>
+                )
+              }
             )
           }
         </Carousel>
 
-        <WhiteSpace size="sm" />
+        <WhiteSpace size="sm"/>
 
         <View style={styles.favoriteHead}>
           <Flex justify="between" style={{fontSize: 13}}>
@@ -227,7 +234,8 @@ class HomeScreen extends React.Component {
                 <View style={styles.favoriteItem} key={index}>
                   <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
                     <View>
-                      <Image source={getIconName(item.realCategory)} resizeMode={'cover'} style={styles.favoriteItemImg} />
+                      <Image source={getIconName(item.realCategory)} resizeMode={'cover'}
+                             style={styles.favoriteItemImg}/>
                     </View>
                     <View style={styles.favoriteItemCenter}>
                       <Text numberOfLines={1} style={styles.favoriteItemTitle}>{item.lotterName}</Text>
@@ -244,35 +252,35 @@ class HomeScreen extends React.Component {
               source={require('./../../assets/images/home/ag.png')}
               resizeMode={'contain'} style={{width: 50}}>
               <Text
-                style={{width: '100%',height: '100%'}}
-                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})} />
+                style={{width: '100%', height: '100%'}}
+                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})}/>
             </ImageBackground>
           </View>
           <View style={styles.gameItem}>
             <ImageBackground
               source={require('./../../assets/images/home/og.png')}
-              resizeMode={'contain'} style={{width: 50}} >
+              resizeMode={'contain'} style={{width: 50}}>
               <Text
-                style={{width: '100%',height: '100%'}}
-                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})} />
+                style={{width: '100%', height: '100%'}}
+                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})}/>
             </ImageBackground>
           </View>
           <View style={styles.gameItem}>
             <ImageBackground
               source={require('./../../assets/images/home/eb.png')}
-              resizeMode={'contain'} style={{width: 50}} >
+              resizeMode={'contain'} style={{width: 50}}>
               <Text
-                style={{width: '100%',height: '100%'}}
-                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})} />
+                style={{width: '100%', height: '100%'}}
+                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})}/>
             </ImageBackground>
           </View>
           <View style={styles.gameItem}>
             <ImageBackground
               source={require('./../../assets/images/home/ob.png')}
-              resizeMode={'contain'} style={{width: 50}} >
+              resizeMode={'contain'} style={{width: 50}}>
               <Text
-                style={{width: '100%',height: '100%'}}
-                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})} />
+                style={{width: '100%', height: '100%'}}
+                onPress={() => this.props.navigation.navigate('Links', {activeTab: 1})}/>
             </ImageBackground>
           </View>
         </Flex>
@@ -289,7 +297,7 @@ const styles = StyleSheet.create({
     paddingRight: 10
   },
   wrapper: {
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   containerHorizontal: {
     flexGrow: 1,
@@ -303,7 +311,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#eaeaea',
     paddingLeft: 10,
-    borderRadius: 2,
+    borderRadius: 2
   },
   hotItemImg: {
     width: 70,
@@ -354,19 +362,19 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     fontSize: 14,
     textAlign: 'center',
-    color: 'white',
+    color: 'white'
   },
   hotItemMidText: {
     lineHeight: 18,
     fontSize: 12,
     textAlign: 'center',
-    color: 'white',
+    color: 'white'
   },
   hotItemSmallText: {
     lineHeight: 14,
     fontSize: 10,
     textAlign: 'center',
-    color: 'white',
+    color: 'white'
   },
   carouselImg: {
     width: '100%'
@@ -378,7 +386,7 @@ const styles = StyleSheet.create({
   },
   favoriteHeadText: {
     height: 30,
-    lineHeight:30
+    lineHeight: 30
   },
   favoriteItem: {
     width: '50%',
@@ -386,7 +394,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
     borderLeftWidth: 1,
-    borderLeftColor: '#f0f0f0',
+    borderLeftColor: '#f0f0f0'
   },
   favoriteItemImg: {
     width: 60,
@@ -395,9 +403,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     backgroundColor: '#fff'
   },
-  favoriteItemCenter: {
-
-  },
+  favoriteItemCenter: {},
   favoriteItemTitle: {
     width: 90,
     fontSize: 14
@@ -417,7 +423,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  let { usualLottery, systemNews } = state.common
+  let {usualLottery, systemNews} = state.common
   return ({
     systemNews,
     usualLottery
@@ -437,7 +443,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     queryActivity: () => {
       dispatch(queryActivity())
-    },
+    }
   }
 }
 
