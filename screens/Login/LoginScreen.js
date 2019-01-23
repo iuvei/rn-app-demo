@@ -173,6 +173,7 @@ class LoginComponent extends Component {
                     </Flex.Item>
                     <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
                       <Switch
+                          style={Platform.OS === 'ios' ? { transform: [{ scaleX: .7 }, { scaleY: .7 }] } : {}}
                           value={rememberUser}
                           onValueChange={(v) => {
                             this.setState({
