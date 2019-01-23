@@ -47,7 +47,7 @@ export default class GamesScreen extends React.Component {
       { title: '彩票大厅' },
       { title: '真人娱乐' },
       { title: '电子亿游' },
-      { title: '棋牌娱乐' },
+      // { title: '棋牌娱乐' },
     ]
     const style = {
       alignItems: 'center',
