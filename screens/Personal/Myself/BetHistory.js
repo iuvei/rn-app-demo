@@ -137,6 +137,13 @@ class BetHistory extends React.Component {
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    let { revokeInfo } = nextProps
+    if (revokeInfo.orderId !== this.props.revokeInfo.orderId) {
+      this.onSearch()
+    }
+  }
+
   render() {
     let {api, params, KeyName, lotterList, refreshTime} = this.state
 
@@ -217,8 +224,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, props) => {
-  let {sysSortLottery} = state.common
-  return {sysSortLottery}
+  let {sysSortLottery, revokeInfo} = state.common
+  return {sysSortLottery, revokeInfo}
 }
 
 const mapDispatchToProps = (dispatch) => {

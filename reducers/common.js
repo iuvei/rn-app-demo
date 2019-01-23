@@ -93,6 +93,10 @@ const initialState = {
   serviceUrl: {}, //  客服地址
   audioSwitch: true, // 声音开关
   soundType: {type: ''}, // 声音类型
+  revokeInfo: {
+    time: 0,
+    orderId: ''
+  }, // 保存撤单时间和撤单订单号
 }
 
 // 常规处理
@@ -252,6 +256,12 @@ const common = handleActions({
       currentApiUrl: payload
     }
   },
+  SET_REVOKE_INFO: (state, {payload}) => {
+    return {
+      ...state,
+      revokeInfo: payload
+    }
+  }
 }, initialState)
 
 export default common

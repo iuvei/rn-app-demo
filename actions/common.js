@@ -209,3 +209,10 @@ export const setCurrentApiUrl = (url) => {
     payload: url
   }
 }
+
+export const AsetRevokeInfo = (data) => {
+  return {
+    type: 'SET_REVOKE_INFO',
+    payload: data
+  }
+}
