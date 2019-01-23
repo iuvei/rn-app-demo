@@ -6,6 +6,10 @@ import {
 import { Constants } from 'expo'
 
 class VersionInfo extends React.Component {
+  static navigationOptions = {
+    title: '版本信息'
+  }
+
   render() {
     const { manifest } = Constants
 

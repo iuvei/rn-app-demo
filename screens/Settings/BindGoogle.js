@@ -23,9 +23,9 @@ import ThirdView from '../../components/ThirdView'
 import { createStackNavigator } from 'react-navigation'
 
 class BindGoogleComp extends React.Component {
-  static navigationOptions = {
-    title: '绑定谷歌验证码'
-  }
+  // static navigationOptions = {
+  //   title: '谷歌验证'
+  // }
 
   constructor(props) {
     super(props)

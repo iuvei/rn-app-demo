@@ -20,7 +20,7 @@ import {
 
 class BindBankname extends React.Component {
   static navigationOptions = {
-    title: '绑定银行卡姓名'
+    title: '银行卡姓名'
   }
 
   constructor(props) {

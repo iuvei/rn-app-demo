@@ -168,10 +168,10 @@ class LoginComponent extends Component {
                     <Icon name="lock" size={32} color="#1789e6" style={{paddingLeft: 6}} />
                   </InputItem>
                   <Flex style={{height: 38}}>
-                    <Flex.Item style={{ paddingRight: 4 }}>
+                    <Flex.Item style={{ paddingRight: 0 }}>
                       <Text style={{textAlign: 'right', color: '#ffffff'}}>记住账号</Text>
                     </Flex.Item>
-                    <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
+                    <View style={{ paddingLeft: 4, paddingRight: 14, width: 68 }}>
                       <Switch
                           style={Platform.OS === 'ios' ? { transform: [{ scaleX: .7 }, { scaleY: .7 }] } : {}}
                           value={rememberUser}
@@ -190,10 +190,10 @@ class LoginComponent extends Component {
                           thumbColor={'#ffffff'}
                         />
                     </View>
-                    <Flex.Item style={{ paddingRight: 4 }}>
+                    <Flex.Item style={{ paddingRight: 0 }}>
                       <Text style={{textAlign: 'right', color: '#ffffff'}}>记住密码</Text>
                     </Flex.Item>
-                    <View style={{ paddingLeft: 4, paddingRight: 4, width: 60 }}>
+                    <View style={{ paddingLeft: 4, paddingRight: 14, width: 68 }}>
                       <Switch
                           style={Platform.OS === 'ios' ? { transform: [{ scaleX: .7 }, { scaleY: .7 }] } : {}}
                           value={rememberPwd}
