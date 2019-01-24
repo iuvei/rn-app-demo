@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  View,
+  View, SafeAreaView,
   StyleSheet, ScrollView, AsyncStorage
 } from 'react-native'
 import { Tabs, Drawer } from '@ant-design/react-native'
@@ -241,48 +241,50 @@ class BetScreen extends React.Component {
     let {ContentTabs, filterNavBar, intoHistory} = this.state
     let {params} = this.props.navigation.state
     return (
-      <View style={styles.container}>
-        <Drawer
-          drawerRef={el => (this.drawer = el)}
-          open={this.state.open}
-          position={'right'}
-          sidebar={<FastPlayNav onClose={() => this.closeDrawer()} filterNavBar={filterNavBar}/>}
-          onClose={() => this.closeDrawer()}>
-          {/* playNav Container */}
-          <PlayNav openDrawer={this.openDrawer}/>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
+        <View style={styles.container}>
+          <Drawer
+            drawerRef={el => (this.drawer = el)}
+            open={this.state.open}
+            position={'right'}
+            sidebar={<FastPlayNav onClose={() => this.closeDrawer()} filterNavBar={filterNavBar}/>}
+            onClose={() => this.closeDrawer()}>
+            {/* playNav Container */}
+            <PlayNav openDrawer={this.openDrawer}/>
 
-          {/* down Container */}
-          <DownTimeHocView
-            ballOpen={this.state.ballOpen}
-            activeLot={params}
-          />
-          {/* Tabs Nav */}
-          <Tabs tabs={ContentTabs}
-                style={{background: '#ededed'}}
-                onChange={this._onChangeTabs}
-                initialPage={1}
-                animated={false}>
-            <View>
-              <ScrollView>
-                <LatelyList/>
-              </ScrollView>
-            </View>
-            <View style={{flex: 1}}>
-              <RowBallHocView activeLot={params}/>
-            </View>
-            <View style={{flex: 1}}>
-              <BetSimpleHistory
-                navParams={this.props.navParams}
-                intoHistory={intoHistory}/>
-            </View>
-            <View style={{flex: 1}}>
-              <ScrollView>
-                <Trend activeLot={params}/>
-              </ScrollView>
-            </View>
-          </Tabs>
-        </Drawer>
-      </View>
+            {/* down Container */}
+            <DownTimeHocView
+              ballOpen={this.state.ballOpen}
+              activeLot={params}
+            />
+            {/* Tabs Nav */}
+            <Tabs tabs={ContentTabs}
+                  style={{background: '#ededed'}}
+                  onChange={this._onChangeTabs}
+                  initialPage={1}
+                  animated={false}>
+              <View>
+                <ScrollView>
+                  <LatelyList/>
+                </ScrollView>
+              </View>
+              <View style={{flex: 1}}>
+                <RowBallHocView activeLot={params}/>
+              </View>
+              <View style={{flex: 1}}>
+                <BetSimpleHistory
+                  navParams={this.props.navParams}
+                  intoHistory={intoHistory}/>
+              </View>
+              <View style={{flex: 1}}>
+                <ScrollView>
+                  <Trend activeLot={params}/>
+                </ScrollView>
+              </View>
+            </Tabs>
+          </Drawer>
+        </View>
+      </SafeAreaView>
     )
   }
 }
