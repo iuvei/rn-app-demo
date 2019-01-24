@@ -103,9 +103,11 @@ class HomeScreen extends React.Component {
 
   _initHotLottery() {
     getHotLotter().then((res) => {
-      this.setState({
-        hotLoList: res.data
-      })
+      if(res.code === 0) {
+        this.setState({
+          hotLoList: res.data
+        })
+      }
     })
   }
 
