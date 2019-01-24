@@ -189,7 +189,7 @@ class PersonalScreen extends React.Component {
       }
     ]
     let {agent, order, lotteryRebate} = this.state
-    let {loginInfo, balanceInfo} = this.props
+    let {loginInfo, balanceInfo, userBalanceInfoFD, userBalanceInfoYE} = this.props
     let {canWithdrawBalance, currentBalance} = balanceInfo.ye || {}
     let {currentBalance: fdBalance} = balanceInfo.fd || {}
     return (
@@ -202,7 +202,7 @@ class PersonalScreen extends React.Component {
                      style={{width: 80, height: 80}}></Image>
               <View>
                 <Text>{loginInfo.acc.user.loginName}</Text>
-                <Text>余额： {currentBalance}元</Text>
+                <Text>余额： {userBalanceInfoYE.currentBalance}元</Text>
               </View>
               <View style={{alignItems: 'flex-end'}}>
                 <Button style={{height: 32, backgroundColor: '#0f81de', borderRadius: 15}}
@@ -221,11 +221,11 @@ class PersonalScreen extends React.Component {
               borderBottomColor: '#0c7edb'
             }}>
               <View style={{width: 200, borderRightWidth: 1, borderRightColor: '#0c7edb', alignItems: 'center'}}>
-                <Text>{canWithdrawBalance}元</Text>
+                <Text>{userBalanceInfoYE.canWithdrawBalance}元</Text>
                 <Text>可提金额</Text>
               </View>
               <View style={{width: 200, alignItems: 'center'}}>
-                <Text>{fdBalance}元</Text>
+                <Text>{userBalanceInfoFD.currentBalance}元</Text>
                 <Text>返点金额</Text>
               </View>
             </View>
@@ -289,10 +289,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   let {rebateInfo, loginInfo, balanceInfo} = state.common
+  let {userBalanceInfoYE, userBalanceInfoFD} = state.member
   return ({
     rebateInfo,
     loginInfo,
-    balanceInfo
+    balanceInfo,
+    userBalanceInfoYE,
+    userBalanceInfoFD
   })
 }
 
