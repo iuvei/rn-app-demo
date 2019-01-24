@@ -85,9 +85,11 @@ class LotteryHall extends React.Component {
 
   _initHotLottery() {
     getHotLotter().then((res) => {
-      this.setState({
-        hotLoList: res.data
-      })
+      if(res.code === 0) {
+        this.setState({
+          hotLoList: res.data
+        })
+      }
     })
   }
 
@@ -109,7 +111,8 @@ class LotteryHall extends React.Component {
   _renderContent = item => {
     let { sysSortLottery } = this.props
     let data = sysSortLottery.filter(v => v.realCategory === item.categoryCode)
-    let list = item.categoryCode === 'hot' ? this.state.hotLoList : [...data[0].originLot, ...data[0].gpLot]
+    let filterData = data.length ? [...data[0].originLot, ...data[0].gpLot] : []
+    let list = item.categoryCode === 'hot' ? this.state.hotLoList : filterData
     return (
       list.length !== 0 ? (
         <View style={styles.suffix}>
