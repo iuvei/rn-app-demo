@@ -1,10 +1,9 @@
 import React from 'react'
 import {
-  View, Text,
+  View,
   StyleSheet, ScrollView, AsyncStorage
 } from 'react-native'
-import { Tabs } from '@ant-design/react-native'
-import { Drawer } from 'native-base'
+import { Tabs, Drawer } from '@ant-design/react-native'
 import { connect } from 'react-redux'
 
 import DownTime from './DownTime'
@@ -21,7 +20,6 @@ import {
   setNullLatelyOpen, setGamesPlayToNull
 } from '../../actions/classic'
 import norLot from '../../data/nor-lot'
-// import BetListComp from '../../components/BetListComp'
 
 const DownTimeHocView = DownTimeHoc(DownTime)
 const RowBallHocView = RowBallHoc(RowBall)
@@ -75,25 +73,7 @@ class BetScreen extends React.Component {
       stepValue: 1,
       modeItem: {},
       filterNavBar: [],
-
-      KeyName: 'BetHistory',
-      api: '/frontReport/getOrderStatistics',
-      paramsQuery: {
-        userId: '',
-        orderId: '',
-        proxyType: 0, // 0自己、1直接下级、2所有下级，默认0
-        orderType: (props.navigation.state.params.realCategory === 'kl8' || props.navigation.state.params.realCategory === 'xyc') ? 1 : 0, // 0彩票,1游戏
-        orderIssue: '', // 期号
-        lotterCode: props.navigation.state.params.lotterCode || '', // 必传
-        startTime: '',
-        endTime: '',
-        status: '',
-        pageNumber: 1,
-        isAddition: 0, // 是否追号：0 否、1 是
-        pageSize: 10,
-        isOuter: '' // 0 否 1 是
-      },
-      refreshTime: 0,
+      open: false,
 
       intoHistory: 0
     }
@@ -237,14 +217,6 @@ class BetScreen extends React.Component {
     }
   }
 
-  // _onChangeTabs = (tab, number) => {
-  //   if (number === 2) {
-  //     this.setState({
-  //       refreshTime: new Date().getTime()
-  //     })
-  //   }
-  // }
-
   // 点击单元表格
   onPressItem = (item) => {
     // 跳转详情页
@@ -256,24 +228,23 @@ class BetScreen extends React.Component {
   }
 
   closeDrawer = () => {
-    this.drawer._root.close()
+    this.drawer.closeDrawer()
   }
 
   openDrawer = () => {
-    this.drawer._root.open()
+    this.drawer.openDrawer()
   }
 
   render() {
-    // let {ContentTabs, filterNavBar, api, paramsQuery, KeyName, refreshTime} = this.state
-    let {ContentTabs, filterNavBar, intoHistory, refreshTime} = this.state
+    let {ContentTabs, filterNavBar, intoHistory} = this.state
     let {params} = this.props.navigation.state
     return (
       <View style={styles.container}>
         <Drawer
-          ref={(ref) => {
-            this.drawer = ref
-          }}
-          content={<FastPlayNav onClose={() => this.closeDrawer()} filterNavBar={filterNavBar}/>}
+          drawerRef={el => (this.drawer = el)}
+          open={this.state.open}
+          position={'right'}
+          sidebar={<FastPlayNav onClose={() => this.closeDrawer()} filterNavBar={filterNavBar}/>}
           onClose={() => this.closeDrawer()}>
           {/* playNav Container */}
           <PlayNav openDrawer={this.openDrawer}/>
@@ -302,19 +273,12 @@ class BetScreen extends React.Component {
                 navParams={this.props.navParams}
                 intoHistory={intoHistory}/>
             </View>
-            {/*<View style={{flex: 1}}>*/}
-            {/*<BetListComp api={api} params={paramsQuery} KeyName={KeyName} refreshTime={refreshTime}*/}
-            {/*onPressItem={this.onPressItem}/>*/}
-            {/*</View>*/}
             <View style={{flex: 1}}>
               <ScrollView>
                 <Trend activeLot={params}/>
               </ScrollView>
             </View>
           </Tabs>
-
-          {/*投注信息*/}
-          {/*<BuyPriceHocView/>*/}
         </Drawer>
       </View>
     )

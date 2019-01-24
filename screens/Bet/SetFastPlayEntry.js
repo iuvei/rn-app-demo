@@ -86,7 +86,7 @@ class FastPlayNav extends React.Component {
 
   resetCumSubs = () => {
     let { newCusPlayNav } = this.props
-    this.setState({newCusPlayNav})
+    this.setState({newCusNav: newCusPlayNav})
   }
 
   render() {
