@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { Text, View, StyleSheet, ImageBackground } from 'react-native'
-import { Modal, Button } from '@ant-design/react-native'
+import { Modal, Button, Toast } from '@ant-design/react-native'
 import { getRedEnvelopeTimeConfig, grabRedEnvelope } from './../api/member'
 import { connect } from "react-redux";
 
@@ -8,10 +8,8 @@ class HbPacket extends Component {
   constructor(props) {
     super (props);
     this.state = {
-      visible: true,
+      visible: false,
       hb: {},
-      // 是否显示有红包tip
-      showTips: true,
       // 有没有红包
       hasValuePacket: false,
       // 倒计时
@@ -29,6 +27,7 @@ class HbPacket extends Component {
       redEnvelopeAmount: '',
     }
     this.onClose = () => {
+      this.getRedPacketList()
       this.setState({
         visible: false,
       });
@@ -100,11 +99,46 @@ class HbPacket extends Component {
         this.setStopTime(timedown, standTime)
       }, 1000)
     }
+    if (t === 0 && this.state.hasValuePacket) {
+      this.setState({
+        visible: true
+      })
+    }
+  }
+
+  getSendRedPacket = () => {
+    grabRedEnvelope({openIssue: this.state.hb.openIssue}).then((res) => {
+      if (res.code === 0) {
+        this.setState({
+          redEnvelopeAmount: res.data['redEnvelopeAmount'],
+          timedown: 0
+        })
+        setTimeout(() => {
+          this.setState({
+            hasValuePacket: false,
+            redEnvelopeAmount: '',
+            visible: false,
+            hb: {}
+          })
+          this.getRedPacketList()
+        }, 2500)
+      } else {
+        this.setState({
+          hasValuePacket: false,
+          redEnvelopeAmount: '',
+          visible: false,
+          hb: {}
+        })
+        this.getRedPacketList()
+      }
+      if(res.code !== 0) Toast.fail(res.message, 0.2)
+    })
   }
 
   render() {
     let {downTime, timedown, hasValuePacket, redEnvelopeAmount} = this.state
     let showTimeDown = timedown > 0 && hasValuePacket && !redEnvelopeAmount
+    let showBtn = !redEnvelopeAmount
     return (
       <View style={{position: 'absolute'}}>
         <Modal
@@ -123,16 +157,18 @@ class HbPacket extends Component {
               <Text style={styles.packetText}>恭喜发财，大吉大利</Text>
             </View>
             <View style={{ paddingVertical: 30 }}>
-              <Text>{redEnvelopeAmount}</Text>
+              <Text style={styles.packetText}>{redEnvelopeAmount}</Text>
               {
                 showTimeDown ?
                 <Text style={styles.timeDown}>
                   <Text>{ downTime.hour1 }{ downTime.hour2 } : {downTime.min1 }{ downTime.min2 } : { downTime.sec1 }{ downTime.sec2 }</Text>
                 </Text> :
                 <View style={{ paddingHorizontal: 10 }}>
-                  <Button type="warning" onPress={this.onClose}>
-                    立即领取
-                  </Button>
+                  {
+                    showBtn && <Button type="warning" onPress={() => this.getSendRedPacket()}>
+                      立即领取
+                    </Button>
+                  }
                 </View>
               }
             </View>

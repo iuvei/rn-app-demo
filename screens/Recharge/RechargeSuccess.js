@@ -5,6 +5,7 @@ import { List, WhiteSpace, Toast, Button } from '@ant-design/react-native'
 import { Card, Left, Body, CardItem } from 'native-base'
 import { WebBrowser } from 'expo'
 import { AsetServiceUrl } from '../../actions/common'
+import { stylesUtil } from '../../utils/ScreenUtil'
 
 const height = Dimensions.get('window').height
 
@@ -49,7 +50,7 @@ class RechargeSuccess extends React.Component {
                 </Left>
               </CardItem>
               <CardItem cardBody>
-                <Image source={{uri: qrCodeSrc}} style={{height: 200, width: null, flex: 1}}/>
+                <Image source={{uri: qrCodeSrc}} style={stylesUtil({height: 200, width: null, flex: 1})}/>
               </CardItem>
             </Card>
           </View>)
@@ -77,7 +78,7 @@ class RechargeSuccess extends React.Component {
                 <Button
                   type="primary"
                   size="small"
-                  style={{width: 60}}
+                  style={stylesUtil({width: 60})}
                   onPress={() => {
                     Clipboard.setString(bankCard)
                     Toast.info('复制成功')
@@ -92,7 +93,7 @@ class RechargeSuccess extends React.Component {
                 <Button
                   type="primary"
                   size="small"
-                  style={{width: 60}}
+                  style={stylesUtil({width: 60})}
                   onPress={() => {
                     Clipboard.setString(postScript)
                     Toast.info('复制成功')
@@ -116,7 +117,7 @@ class RechargeSuccess extends React.Component {
                 </Left>
               </CardItem>
               <CardItem cardBody>
-                <Image source={{uri: 'data:image/png;base64,'+qrCode}} style={{height: 200, width: null, flex: 1}}/>
+                <Image source={{uri: 'data:image/png;base64,'+qrCode}} style={stylesUtil({height: 200, width: null, flex: 1})}/>
               </CardItem>
             </Card>
           </View>
@@ -139,11 +140,11 @@ class RechargeSuccess extends React.Component {
             </List.Item>
           }
         </List>
-        <View style={{padding: 12, lineHeight: 24}}>
-          <Text style={{color: '#a4a4a4', fontSize: 14}}>充值注意事项：</Text>
-          <Text style={{color: '#a4a4a4', fontSize: 14, paddingLeft: 20}}>1.充值时务必填写银行收款人姓名、卡号或邮箱、附言缺一不可。如果是支付宝充值，务必填写支付宝实名认证的真实姓名，填写错误或未填写将不会自动到账。</Text>
-          <Text style={{color: '#a4a4a4', fontSize: 14, paddingLeft: 20}}>2.工行充值平台只支持“网银同行汇款”，不支持任何“跨行转账”“ATM机转账”“手机银行”“工行E支付转账”等此类充值一律不给到账处理。</Text>
-          <Text style={{color: '#a4a4a4', fontSize: 14, paddingLeft: 20}}>3.平台收款卡“不定时”更换，请每次转账前在本页面查看银行账号。如充值过期卡号，损失有客户自行承担。</Text>
+        <View style={stylesUtil({padding: 12, lineHeight: 24})}>
+          <Text style={stylesUtil({color: '#a4a4a4', fontSize: 14})}>充值注意事项：</Text>
+          <Text style={stylesUtil({color: '#a4a4a4', fontSize: 14, paddingLeft: 20})}>1.充值时务必填写银行收款人姓名、卡号或邮箱、附言缺一不可。如果是支付宝充值，务必填写支付宝实名认证的真实姓名，填写错误或未填写将不会自动到账。</Text>
+          <Text style={stylesUtil({color: '#a4a4a4', fontSize: 14, paddingLeft: 20})}>2.工行充值平台只支持“网银同行汇款”，不支持任何“跨行转账”“ATM机转账”“手机银行”“工行E支付转账”等此类充值一律不给到账处理。</Text>
+          <Text style={stylesUtil({color: '#a4a4a4', fontSize: 14, paddingLeft: 20})}>3.平台收款卡“不定时”更换，请每次转账前在本页面查看银行账号。如充值过期卡号，损失有客户自行承担。</Text>
         </View>
       </ScrollView>
     )
