@@ -62,7 +62,7 @@ class HbPacket extends Component {
           hasValuePacket: !!res.data['openIssue']
         })
         if (!!res.data['openIssue']) {
-          // this.setStopTime(res.data['countdown'], Date.now())
+          this.setStopTime(res.data['countdown'], Date.now())
         }
       } else {
         this.setState({
@@ -103,11 +103,15 @@ class HbPacket extends Component {
   }
 
   render() {
+    let {downTime, timedown, hasValuePacket, redEnvelopeAmount} = this.state
+    let showTimeDown = timedown > 0 && hasValuePacket && !redEnvelopeAmount
     return (
       <View style={{position: 'absolute'}}>
         <Modal
           transparent
           visible={this.state.visible}
+          closable
+          maskClosable
           onClose={this.onClose}
           style={{backgroundColor: 'none'}}
         >
@@ -119,14 +123,18 @@ class HbPacket extends Component {
               <Text style={styles.packetText}>恭喜发财，大吉大利</Text>
             </View>
             <View style={{ paddingVertical: 30 }}>
-              <Text style={styles.timeDown}>
-                <Text>{'01'}: {'10'}: {12}</Text>
-              </Text>
-            </View>
-            <View style={{ paddingHorizontal: 10 }}>
-              <Button type="warning" onPress={this.onClose}>
-                立即领取
-              </Button>
+              <Text>{redEnvelopeAmount}</Text>
+              {
+                showTimeDown ?
+                <Text style={styles.timeDown}>
+                  <Text>{ downTime.hour1 }{ downTime.hour2 } : {downTime.min1 }{ downTime.min2 } : { downTime.sec1 }{ downTime.sec2 }</Text>
+                </Text> :
+                <View style={{ paddingHorizontal: 10 }}>
+                  <Button type="warning" onPress={this.onClose}>
+                    立即领取
+                  </Button>
+                </View>
+              }
             </View>
           </ImageBackground>
         </Modal>

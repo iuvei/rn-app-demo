@@ -11,6 +11,7 @@ import AppNavigator from './navigation/AppNavigator'
 import NavigationService from './navigation/NavigationService'
 import initReactFastClick from 'react-fastclick'
 import LinesPanel from './components/LinesPanel'
+import HbPacket from './components/HbPacket'
 import AudioPlay from './components/AudioPlay'
 
 initReactFastClick()
@@ -35,6 +36,7 @@ export default class App extends React.Component {
         <Provider2>
           <LinesPanel/>
           <AudioPlay/>
+          <HbPacket/>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar
               backgroundColor={'blue'}
