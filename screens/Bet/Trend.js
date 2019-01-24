@@ -391,6 +391,11 @@ class Trend extends Component {
           </Tabs>
           {
             !tabIsReady ? <Spinner/> : (curCategory !== 'kl8' ? <View style={styles.table}>
+                {
+                  // 走势图画线
+                  ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ?
+                    <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
+                }
                 <View style={[styles.row, styles.header]} ref={'table'}>
                   <Text style={[styles.issue, styles.cell]}>期数</Text>
                   {curCategory !== 'pk10' && <Text style={[styles.openNumber, styles.cell]}>开奖号码</Text>}
@@ -436,11 +441,6 @@ class Trend extends Component {
                       </View>
                     )
                   })
-                }
-                {
-                  // 走势图画线
-                  ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ?
-                    <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
                 }
               </View> :
               <View style={styles.table}>
@@ -551,10 +551,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#22ac38',
     color: '#fff',
     position: 'absolute',
-    zIndex: 9
+    zIndex: 9,
   },
   canvas: {
     position: 'absolute',
+    zIndex: -1,
     top: 0,
     left: 0,
   }
