@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Text, View, StyleSheet, ScrollView, Image, NetInfo, AsyncStorage } from 'react-native'
 import { Toast, Flex, Modal, List, Radio } from '@ant-design/react-native'
-import { NavigationActions } from 'react-navigation';
+import NavigationService from './../navigation/NavigationService'
 import FloatBall from './FloatBall'
 import { connect } from "react-redux";
 import {
@@ -61,8 +61,7 @@ class LinesPanel extends Component {
       if(res.code === 0) {
         Toast.success('设置成功！', 0.3)
       } else if(res.code === -1) {
-        // NavigationActions.navigate('Login')
-        // this.props.navigation.navigate('Login')
+        NavigationService.navigate('Login')
         this.props.setLoginStatus(false)
         Toast.info('设置成功！需要重新登录', 0.3)
       }
