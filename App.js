@@ -33,9 +33,9 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <Provider2>
+          <LinesPanel/>
+          <AudioPlay/>
           <View style={styles.container}>
-            <LinesPanel/>
-            <AudioPlay/>
             {Platform.OS === 'ios' && <StatusBar
               backgroundColor={'blue'}
               barStyle="light-content"/>}
