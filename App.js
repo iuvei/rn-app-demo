@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  Platform, StyleSheet, StatusBar, View
+  Platform, StyleSheet, StatusBar, View, Button
 } from 'react-native'
 
 import { Provider } from 'react-redux'
@@ -8,9 +8,9 @@ import { Provider as Provider2 } from '@ant-design/react-native'
 import store from './store'
 // import { changeBtnText } from './actions/example'
 import AppNavigator from './navigation/AppNavigator'
+import NavigationService from './navigation/NavigationService'
 import initReactFastClick from 'react-fastclick'
 import LinesPanel from './components/LinesPanel'
-import HbPacket from './components/hbPacket'
 import AudioPlay from './components/AudioPlay'
 
 initReactFastClick()
@@ -33,14 +33,17 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <Provider2>
-          <LinesPanel/>
-          <HbPacket />
-          <AudioPlay/>
           <View style={styles.container}>
+            <LinesPanel/>
+            <AudioPlay/>
             {Platform.OS === 'ios' && <StatusBar
               backgroundColor={'blue'}
               barStyle="light-content"/>}
-            <AppNavigator/>
+            <AppNavigator
+              ref={navigatorRef => {
+                NavigationService.setTopLevelNavigator(navigatorRef)
+              }}
+            />
           </View>
         </Provider2>
       </Provider>
