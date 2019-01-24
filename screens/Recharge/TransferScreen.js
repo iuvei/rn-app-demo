@@ -22,7 +22,7 @@ import {
   activityTransfer,
   envelopeTransfer
 } from '../../api/member'
-import { stylesUtil } from '../../utils/ScreenUtil'
+import { styleUtil } from '../../utils/ScreenUtil'
 
 class Transfer extends React.Component {
   static navigationOptions = {
@@ -248,7 +248,7 @@ class Transfer extends React.Component {
           }
         </List>
         <List
-          renderHeader={<Text style={stylesUtil({lineHeight: 36, color: '#a0a0a0', paddingLeft: 16})}>百家乐转账</Text>}
+          renderHeader={<Text style={styleUtil({lineHeight: 36, color: '#a0a0a0', paddingLeft: 16})}>百家乐转账</Text>}
         >
           {
             allAccs.length > 0 &&
@@ -256,7 +256,7 @@ class Transfer extends React.Component {
               data={allAccs}
               cols={1}
               value={[outObj.value,]}
-              itemStyle={stylesUtil({color: '#333333', fontSize: 14, lineHeight: 32})}
+              itemStyle={styleUtil({color: '#333333', fontSize: 14, lineHeight: 32})}
               onChange={(val) => {
                 let tmp = allAccs.filter(item => {
                   return item.value === val[0]
@@ -278,7 +278,7 @@ class Transfer extends React.Component {
               data={allAccs}
               cols={1}
               value={[toObj.value,]}
-              itemStyle={stylesUtil({color: '#333333', fontSize: 14, lineHeight: 32})}
+              itemStyle={styleUtil({color: '#333333', fontSize: 14, lineHeight: 32})}
               onChange={(val) => {
                 let tmp = allAccs.filter(item => {
                   return item.value === val[0]
@@ -306,7 +306,7 @@ class Transfer extends React.Component {
             金额
           </InputItem>
         </List>
-        <View style={stylesUtil({paddingHorizontal: 30, paddingVertical: 15, alignItems: 'center'})}>
+        <View style={styleUtil({paddingHorizontal: 30, paddingVertical: 15, alignItems: 'center'})}>
           <Button type="primary" loading={isLoading} onPress={this.submitFunc} style={{width: '100%'}}>
             确认
           </Button>

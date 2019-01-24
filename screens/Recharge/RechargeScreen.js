@@ -11,7 +11,7 @@ import {setActiveAccount} from '../../actions/common'
 import Header from '../../components/Header'
 import {platformKey, prependUrl} from '../../api.config'
 import { ListItem, Radio, Right, Left } from 'native-base'
-import { stylesUtil } from '../../utils/ScreenUtil'
+import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
 
 // const RadioItem = Radio.RadioItem
 
@@ -195,7 +195,7 @@ class RechargeScreen extends React.Component {
           section.content.map((item, index) => {
             return (
               <ListItem selected={this.props.activeAccount.local_id === item.local_id} key={section.title+item.bankCode+index}
-                style={stylesUtil({height: 44, lineHeight: 44})}
+                style={styleUtil({height: 44, lineHeight: 44})}
                 onPress={() => {
                   this.setState({
                     amount: '',
@@ -296,7 +296,7 @@ class RechargeScreen extends React.Component {
             virtualAccounts.map((item, index) => {
               return (
                 <ListItem selected={this.props.activeAccount.local_id === item.local_id} key={item.bankCode+index}
-                  style={stylesUtil({height: 44, lineHeight: 44})}
+                  style={styleUtil({height: 44, lineHeight: 44})}
                   onPress={() => {
                     this.setState({
                       amount: '',
@@ -355,11 +355,11 @@ class RechargeScreen extends React.Component {
       { title: '币宝数字货币支付' }
     ];
     const infoDesc = (
-      <View style={stylesUtil({padding: 12, backgroundColor: '#f0f0f0'})}>
-        <Text style={stylesUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单笔最低充值金额为 <Text style={{color: '#f15a23'}}>{minRechargeMoney}</Text> 元{activeAccount.signleLimit > 0 ? <Text>, 最高 <Text style={{color: '#f15a23'}}>{activeAccount.signleLimit}</Text> 元</Text> : null}</Text>
-        {activeAccount.feeRate > 0 ? <Text style={stylesUtil({color: '#a4a4a4', lineHeight: 25})}>充值手续费费率 <Text style={{color: '#f15a23'}}>{ activeAccount.feeRate || 0 }%</Text></Text> : null}
-        {activeAccount.dayLimit > 0 ? <Text style={stylesUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单日最高 <Text style={{color: '#f15a23'}}>{ activeAccount.dayLimit }</Text> 元</Text> : null}
-        <Text style={stylesUtil({color: '#a4a4a4', lineHeight: 25})}>充值限时：请在 <Text style={{color: '#f15a23'}}>30</Text> 分钟内完成充值</Text>
+      <View style={styleUtil({padding: 12, backgroundColor: '#f0f0f0'})}>
+        <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单笔最低充值金额为 <Text style={{color: '#f15a23'}}>{minRechargeMoney}</Text> 元{activeAccount.signleLimit > 0 ? <Text>, 最高 <Text style={{color: '#f15a23'}}>{activeAccount.signleLimit}</Text> 元</Text> : null}</Text>
+        {activeAccount.feeRate > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值手续费费率 <Text style={{color: '#f15a23'}}>{ activeAccount.feeRate || 0 }%</Text></Text> : null}
+        {activeAccount.dayLimit > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单日最高 <Text style={{color: '#f15a23'}}>{ activeAccount.dayLimit }</Text> 元</Text> : null}
+        <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值限时：请在 <Text style={{color: '#f15a23'}}>30</Text> 分钟内完成充值</Text>
       </View>
     )
 
@@ -391,7 +391,7 @@ class RechargeScreen extends React.Component {
             充值金额
           </InputItem>
         </List>
-        <View style={stylesUtil({height: 22, backgroundColor: '#f0f0f0'})}></View>
+        <View style={styleUtil({height: 22, backgroundColor: '#f0f0f0'})}></View>
         <List>
           <List.Item
             extra={orderAmount}
@@ -399,7 +399,7 @@ class RechargeScreen extends React.Component {
             实际到账
           </List.Item>
         </List>
-        <View style={stylesUtil({height: 22, backgroundColor: '#f0f0f0'})}></View>
+        <View style={styleUtil({height: 22, backgroundColor: '#f0f0f0'})}></View>
         <List>
           <List.Item
             extra={rechargeFee}
@@ -407,7 +407,7 @@ class RechargeScreen extends React.Component {
             手续费
           </List.Item>
         </List>
-        <View style={stylesUtil({paddingLeft: 15, paddingTop: 30, paddingRight: 15})}>
+        <View style={styleUtil({paddingLeft: 15, paddingTop: 30, paddingRight: 15})}>
           <Button type="primary" loading={isLoading} onPress={this.submitFunc}>下一步</Button>
         </View>
       </View>
@@ -427,7 +427,7 @@ class RechargeScreen extends React.Component {
             <Tabs tabs={tabs} onChange={this.channelTabsChange}>
               <View>
                 <List style={{width: '100%'}}>
-                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()} style={stylesUtil({height: 50})}>
+                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()} style={styleUtil({height: 50})}>
                     {activeAccount.bankCode ? <SvgIcon icon={minbankCodeMap[String(activeAccount.bankCode).toUpperCase()]} size={80}/> : null}
                   </List.Item>
                 </List>
@@ -436,7 +436,7 @@ class RechargeScreen extends React.Component {
               </View>
               <View>
                 <List style={{width: '100%'}}>
-                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()} style={stylesUtil({height: 50})}>
+                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()} style={styleUtil({height: 50})}>
                     {activeAccount.coinCode ? <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/> : null}
                   </List.Item>
                 </List>
