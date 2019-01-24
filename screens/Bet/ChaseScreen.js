@@ -18,6 +18,7 @@ import {
 } from '@ant-design/react-native'
 import { getChaseTime, toBuyLottery } from '../../api/lottery'
 import { toCrypto } from '../../plugin/crypto'
+import { stylesUtil } from '../../utils/ScreenUtil'
 
 const tabs = [
   { title: '利润率追号', value: 'lilv' },
@@ -309,7 +310,6 @@ class ChaseScreen extends React.Component {
     this.setState({
       isLoading: true
     }, () => {
-      console.log('rep', rep)
       toBuyLottery(repZip || rep).then((res) => {
         this.setState({
           isLoading: false,
@@ -418,12 +418,12 @@ class ChaseScreen extends React.Component {
             <Flex.Item>
               <Flex justify="around">
                 <Flex.Item alignItems="center">
-                  <Button size="small" type={nextType==='add'?'primary':'ghost'} style={{width: 30}} onPress={() => {
+                  <Button size="small" type={nextType==='add'?'primary':'ghost'} style={stylesUtil({width: 30})} onPress={() => {
                     this.setState({nextType: 'add'})
                   }}>+</Button>
                 </Flex.Item>
                 <Flex.Item alignItems="center">
-                  <Button size="small" type={nextType==='cheng'?'primary':'ghost'} style={{width: 30}} onPress={() => {
+                  <Button size="small" type={nextType==='cheng'?'primary':'ghost'} style={stylesUtil({width: 30})} onPress={() => {
                     this.setState({nextType: 'cheng'})
                   }}>x</Button>
                 </Flex.Item>
@@ -436,7 +436,7 @@ class ChaseScreen extends React.Component {
             </Flex.Item>
           </Flex>
         }
-        <Flex justify="around" style={{paddingVertical: 6}}>
+        <Flex justify="around" style={stylesUtil({paddingVertical: 6})}>
           <Flex.Item alignItems="center">
             <Checkbox checked={winStop} onChange={v => this.setState({winStop: v})}>中奖后停止追号</Checkbox>
           </Flex.Item>
@@ -446,33 +446,33 @@ class ChaseScreen extends React.Component {
             </Button>
           </Flex.Item>
         </Flex>
-        <Flex justify="around" style={{paddingVertical: 6}}>
+        <Flex justify="around" style={stylesUtil({paddingVertical: 6})}>
           <Flex.Item alignItems="center">
-            <View><Text style={{fontSize: 14, color: '#198ae7'}}>期数：{checkedArr.length}</Text></View>
+            <View><Text style={stylesUtil({fontSize: 14, color: '#198ae7'})}>期数：{checkedArr.length}</Text></View>
           </Flex.Item>
           <Flex.Item alignItems="center">
-            <View><Text style={{fontSize: 14, color: '#198ae7'}}>总金额：{total}</Text></View>
+            <View><Text style={stylesUtil({fontSize: 14, color: '#198ae7'})}>总金额：{total}</Text></View>
           </Flex.Item>
         </Flex>
       </List>
     </View>
     let listContent = <View>
-      <Flex style={{height: 40, backgroundColor: '#198ae7'}}>
+      <Flex style={stylesUtil({height: 40, backgroundColor: '#198ae7'})}>
         <View style={{width: '9%'}}><Checkbox checked={checkedAll} onChange={event => this.checkAllChange(event)} style={{color: '#fff'}}></Checkbox></View>
-        <Text style={{width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'}}>期号</Text>
-        <Text style={{width: '15%', textAlign: 'center', fontSize: 14, color: '#fff'}}>倍数</Text>
-        <Text style={{width: '22%', textAlign: 'center', fontSize: 14, color: '#fff'}}>金额</Text>
-        <Text style={{width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'}}>截至时间</Text>
+        <Text style={stylesUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'})}>期号</Text>
+        <Text style={stylesUtil({width: '15%', textAlign: 'center', fontSize: 14, color: '#fff'})}>倍数</Text>
+        <Text style={stylesUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#fff'})}>金额</Text>
+        <Text style={stylesUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'})}>截至时间</Text>
       </Flex>
-      <View style={{paddingVertical: 5}}>
+      <View style={stylesUtil({paddingVertical: 5})}>
         {
           showChaseList.map((item, index) => {
-            return <Flex key={item.currentIssue + '_' + item.showTime + index} style={{backgroundColor: '#fff', height: 35}}>
+            return <Flex key={item.currentIssue + '_' + item.showTime + index} style={stylesUtil({backgroundColor: '#fff', height: 35})}>
               <View style={{width: '9%'}}><Checkbox checked={item.checked} onChange={event => this.chaseItemChange(event, index)}></Checkbox></View>
-              <Text style={{width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.currentIssue}</Text>
-              <Text style={{width: '15%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.multiple}</Text>
-              <Text style={{width: '22%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.money}</Text>
-              <Text style={{width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'}}>{item.showTime}</Text>
+              <Text style={stylesUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.currentIssue}</Text>
+              <Text style={stylesUtil({width: '15%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.multiple}</Text>
+              <Text style={stylesUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.money}</Text>
+              <Text style={stylesUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.showTime}</Text>
             </Flex>
           })
         }
@@ -493,9 +493,9 @@ class ChaseScreen extends React.Component {
           tabs={tabs}>
           <ScrollView style={{ backgroundColor: 'f0f0f0', flex: 1 }}>{topContent}{listContent}</ScrollView>
         </Tabs>
-        <View style={{height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center', borderTopWidth: 0.5, borderTopColor: '#198ae7'}}>
-          <Button disabled={checkedArr.length === 0} loading={isLoading} type="ghost" style={{width: '50%', height: 40}} onPress={this.submitFunc}>
-            <Text style={{fontSize: 14}}>立即追号</Text>
+        <View style={stylesUtil({height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center', borderTopWidth: 0.5, borderTopColor: '#198ae7'})}>
+          <Button disabled={checkedArr.length === 0} loading={isLoading} type="ghost" style={stylesUtil({width: '50%', height: 40})} onPress={this.submitFunc}>
+            <Text style={stylesUtil({fontSize: 14})}>立即追号</Text>
           </Button>
         </View>
       </View>
@@ -520,7 +520,7 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChaseScreen)
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(stylesUtil({
   container: {
 
   },
@@ -528,4 +528,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333'
   }
-})
+}))
