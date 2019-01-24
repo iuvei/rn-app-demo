@@ -11,6 +11,7 @@ import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
 import { orderTypes, orderStatus } from '../../../data/options'
 import BetListComp from '../../../components/BetListComp'
+import { rulesNameMap } from '../../../data/nor-lot/basic-info'
 
 const TableRow = 20
 
@@ -34,7 +35,7 @@ class FlatListItem extends PureComponent {
             <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22}}>{ruleName}</Text>
           </Flex>
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>投注金额: <Text style={{color: '#1689e6'}}>{castAmount}</Text></Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>投注号码: <Text style={{color: '#1689e6'}}>{castCodes}</Text></Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>投注号码: <Text style={{color: '#1689e6'}}>{rulesNameMap[castCodes] || castCodes}</Text></Text>
           <Button type="ghost" size="small"
             style={{position: 'absolute', top: 6, right: 8, borderColor: statusarr[0].color}}><Text style={{color: statusarr[0].color}}>{statusarr[0].label}</Text></Button>
         </View>

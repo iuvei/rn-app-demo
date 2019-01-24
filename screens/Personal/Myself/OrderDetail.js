@@ -14,6 +14,7 @@ import {
   Toast
 } from '@ant-design/react-native'
 import { orderStatus } from '../../../data/options'
+import { rulesNameMap } from '../../../data/nor-lot/basic-info'
 import { queryOrderDetails, doCancelOrder } from '../../../api/member'
 import { AsetRevokeInfo } from '../../../actions/common'
 
@@ -43,7 +44,9 @@ class OrderDetail extends React.Component {
         // {key: 'stopTime', title: '截止时间'},
         {key: 'bonus', title: '中奖金额'},
         {key: 'openCode', title: '开奖号码'},
-        {key: 'castCodes', title: '投注号码'},
+        {key: 'castCodes', title: '投注号码', formatter (v) {
+          return rulesNameMap[v] || v
+        }},
       ],
       detailInfo: props.navigation.getParam('detail', {})
     }
