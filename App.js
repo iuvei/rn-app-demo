@@ -10,6 +10,7 @@ import store from './store'
 import AppNavigator from './navigation/AppNavigator'
 import initReactFastClick from 'react-fastclick'
 import LinesPanel from './components/LinesPanel'
+import HbPacket from './components/hbPacket'
 import AudioPlay from './components/AudioPlay'
 
 initReactFastClick()
@@ -33,6 +34,7 @@ export default class App extends React.Component {
       <Provider store={store}>
         <Provider2>
           <LinesPanel/>
+          <HbPacket />
           <AudioPlay/>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar
