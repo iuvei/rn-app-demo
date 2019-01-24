@@ -22,6 +22,7 @@ import {
 } from './../../actions/common'
 import { getHotLotter } from './../../api/lottery'
 import { getIconName } from '../../utils/getLotImg'
+import { stylesUtil } from '../../utils/ScreenUtil'
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -165,7 +166,7 @@ class HomeScreen extends React.Component {
 
   _initHotLottery() {
     getHotLotter().then((res) => {
-      if(res.code === 0) {
+      if (res.code === 0) {
         this.setState({
           hotLoList: res.data
         })
@@ -228,7 +229,7 @@ class HomeScreen extends React.Component {
           <WhiteSpace size="sm"/>
           <NoticeBar
             onPress={() => this.props.navigation.navigate('Broadcast')}
-            marqueeProps={{loop: true, style: {fontSize: 12, color: '#000'}}}
+            marqueeProps={{loop: true, style: styles.NoticeBar}}
           >
             {str}
           </NoticeBar>
@@ -279,7 +280,7 @@ class HomeScreen extends React.Component {
         <WhiteSpace size="sm"/>
 
         <View style={styles.favoriteHead}>
-          <Flex justify="between" style={{fontSize: 13}}>
+          <Flex justify="between">
             <View><Text style={styles.favoriteHeadText}>我的喜爱</Text></View>
             <View><Text style={styles.favoriteHeadText} onPress={() => this.setLot()}>自定义</Text></View>
           </Flex>
@@ -353,7 +354,7 @@ class HomeScreen extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(stylesUtil({
   container: {
     flex: 1,
     backgroundColor: '#f0f0f0',
@@ -443,6 +444,7 @@ const styles = StyleSheet.create({
   carouselImg: {
     width: '100%'
   },
+  NoticeBar: {fontSize: 12, color: '#000'},
   favoriteHead: {
     paddingLeft: 10,
     paddingRight: 10,
@@ -484,7 +486,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#ffffff'
   }
-})
+}))
 
 const mapStateToProps = (state) => {
   let {usualLottery, systemNews} = state.common
