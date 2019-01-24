@@ -233,3 +233,20 @@ export const getPlatformReward = () => {
     type: 'get'
   })
 }
+
+// 获取转线参数
+export const getLineSwitchParam = () => {
+  return fetch({
+    api: '/user/getLineSwitchParam',
+    type: 'get'
+  })
+}
+
+// 换线操作,判断是否需要重新登录
+export const checkLineSwitchParam = (data) => {
+  return fetch({
+    api: '/user/checkLineSwitchParam',
+    type: 'post',
+    params: data
+  })
+}

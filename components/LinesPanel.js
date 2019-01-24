@@ -1,13 +1,16 @@
 import React, {Component} from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, NetInfo } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, NetInfo, AsyncStorage } from 'react-native'
 import { Toast, Flex, Modal, List, Radio } from '@ant-design/react-native'
+import { NavigationActions } from 'react-navigation';
 import FloatBall from './FloatBall'
 import { connect } from "react-redux";
 import {
   setShowFloatBall,
-  setCurrentApiUrl
+  setCurrentApiUrl,
+  setLoginStatus
 } from './../actions/common'
-import { lineDetection } from './../api/basic'
+import { lineDetection, getLineSwitchParam, checkLineSwitchParam } from './../api/basic'
+import {prependUrl} from './../api.config'
 const RadioItem = Radio.RadioItem;
 
 class LinesPanel extends Component {
@@ -16,7 +19,8 @@ class LinesPanel extends Component {
     this.state = {
       show: false,
       open: true,
-      activeId: 1,
+      activeId: '',
+      activeUrl: '',
       listTimes: [],
       speedList: []
     }
@@ -32,17 +36,43 @@ class LinesPanel extends Component {
     this.setState({show})
   }
 
-  submit = () => {
+  submit = async () => {
     let { activeId, listTimes, open} = this.state
+    let { currentApiUrl } = this.props
     let show = false
     let apiUrl = listTimes.filter(item => item.key === activeId)
+    let u = apiUrl.length ? apiUrl[0].url : ''
     this.props.setShowFloatBall(open)
-    this.props.setCurrentApiUrl(apiUrl.length ? [0].url : '')
+    if (currentApiUrl !== u) {
+      let res = await getLineSwitchParam()
+      if (res.code === 0) {
+        let {lineSwitchParam} = res.data
+        this.props.setCurrentApiUrl(u)
+        let rst = await AsyncStorage.setItem('url', u)
+        this.checkLine(lineSwitchParam)
+      }
+    }
     this.setState({show})
-    Toast.success('设置成功！', 0.5)
+  }
+
+  checkLine = (lineSwitchParam) => {
+    checkLineSwitchParam({lineSwitchParam}).then(res => {
+      console.log(res)
+      if(res.code === 0) {
+        Toast.success('设置成功！', 0.3)
+      } else if(res.code === -1) {
+        // NavigationActions.navigate('Login')
+        // this.props.navigation.navigate('Login')
+        this.props.setLoginStatus(false)
+        Toast.info('设置成功！需要重新登录', 0.3)
+      }
+    })
+
   }
 
   updateLinesPannel = () => {
+    let {activeUrl} = this.state
+    let u = ''
     let arr = []
     lineDetection().then(res => {
       if (res.code === 0) {
@@ -51,9 +81,13 @@ class LinesPanel extends Component {
             url: res.data.lineList[i],
             key: i + 1
           })
+          if (activeUrl === res.data.lineList[i]) {
+            u = i + 1
+          }
         }
         this.setState({
-          listTimes: arr
+          listTimes: arr,
+          activeId: u
         })
       }
     })
@@ -72,6 +106,9 @@ class LinesPanel extends Component {
 
   //页面的组件渲染完毕（render）之后执行
   componentDidMount() {
+    AsyncStorage.getItem('url').then(res => {
+      this.setState({activeUrl:res || prependUrl})
+    })
     //检测网络是否连接
     NetInfo.isConnected.fetch().then((isConnected) => {
       if(!isConnected) {
@@ -145,7 +182,7 @@ class LinesPanel extends Component {
                             checked={activeId === item.key}
                             onChange={event => {
                               if (event.target.checked) {
-                                this.setState({ activeId: item.key });
+                                this.setState({ activeId: item.key,activeUrl: item.url });
                               }
                             }}
                           >
@@ -197,7 +234,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     setCurrentApiUrl: (data) => {
       dispatch(setCurrentApiUrl(data))
-    }
+    },
+    setLoginStatus: (data) => {
+      dispatch(setLoginStatus(data))
+    },
   }
 }
 

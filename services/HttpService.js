@@ -1,5 +1,7 @@
 import axios from 'axios'
-// import {NoticeTips} from 'util/pop-tool'
+import {
+  AsyncStorage
+} from 'react-native'
 const {prependUrl, platformKey} = require('./../api.config')
 // axios 配置
 axios.defaults.timeout = 30000
@@ -93,7 +95,8 @@ axios.interceptors.response.use((response) => {
  * @param selfProxy   是否自己请求（不使用代理）
  * @returns {Promise<any>}
  */
-export const fetch = ({api, params, type, selfProxy, hasKey}) => {
+export const fetch = async ({api, params, type, selfProxy, hasKey}) => {
+  let url = await AsyncStorage.getItem('url')
   return new Promise((resolve, reject) => {
     type = type ? type.toLowerCase() : 'post'
     if (!hasKey) {
@@ -101,7 +104,8 @@ export const fetch = ({api, params, type, selfProxy, hasKey}) => {
         platformKey
       })
     }
-    api = selfProxy ? api : prependUrl + api
+    let d = url ? url : prependUrl
+    api = selfProxy ? api : d +'/qm'+ api
     if (type !== 'post') {
       params.timeStamp = new Date().getTime()
       axios[type](api, !selfProxy ? {params} : '').then(response => {

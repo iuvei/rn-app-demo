@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions'
+const {prependUrl} = require('./../api.config')
 
 const lotteries = [
   {
@@ -37,7 +38,7 @@ const sortArray = arr => {
 const initialState = {
   isLogin: false,
   showFloatBall: true,
-  currentApiUrl: 'http://tianxiang.qmuitest.com',
+  currentApiUrl: prependUrl,
   count: 1,
   sysSortLottery: [],
   syswpSortLottery: [],

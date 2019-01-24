@@ -10,7 +10,7 @@ module.exports = {
 
   // 请求地址前缀
   host: 'http://tianxiang.qmuitest.com',
-  prependUrl: 'http://tianxiang.qmuitest.com/qm',
+  prependUrl: 'http://tianxiang.qmuitest.com',
 
   // 平台key
   platformKey: '3LK0V/qWsjnMe935IUgNzw=='
