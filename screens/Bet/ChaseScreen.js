@@ -265,8 +265,8 @@ class ChaseScreen extends React.Component {
       let {multiple, nextTime, currentIssue} = sel
       orderList.filter(item => {
         let {castCodes, ruleCode, rebateMode, model, singlePrice} = item
-        // let amount = (parseFloat(item.castAmount) / parseFloat(item.castMultiple)) * multiple
-        let amount = (parseFloat(singlePrice)) * multiple
+        let amount = (parseFloat(item.castAmount) / parseFloat(item.castMultiple)) * multiple
+        // let amount = (parseFloat(singlePrice)) * multiple
         reqAmount += parseFloat(Number(amount).toFixed(4))
         if (!selIdx) {
           // resNum += item.castNumber
@@ -309,6 +309,7 @@ class ChaseScreen extends React.Component {
     this.setState({
       isLoading: true
     }, () => {
+      console.log('rep', rep)
       toBuyLottery(repZip || rep).then((res) => {
         this.setState({
           isLoading: false,

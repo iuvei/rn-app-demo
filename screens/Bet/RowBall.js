@@ -129,7 +129,8 @@ class RowBall extends React.Component {
       clickBall, toolsCur, setBuyInfo, addBuyCard,
       balanceInfo, handleText,
       curMaxMode, lotterMinMode,
-      isKlcYxyLot, bonusPrize
+      isKlcYxyLot, bonusPrize,
+      userBalanceInfoYE
     } = this.props
 
     let {currentBalance} = balanceInfo.ye || {}
@@ -340,7 +341,7 @@ class RowBall extends React.Component {
             <View style={{flex: 1}}>
               <Text style={styles.BuyInfoDefaultText}>
                 人民币余额：
-                <Text style={styles.BuyInfoActiveText}>{currentBalance}</Text>
+                <Text style={styles.BuyInfoActiveText}>{userBalanceInfoYE.currentBalance}</Text>
               </Text>
               <Text style={styles.BuyInfoDefaultText}>注数：
                 <Text style={styles.BuyInfoDefaultText}>{num}</Text>

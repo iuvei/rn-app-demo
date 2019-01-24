@@ -663,12 +663,14 @@ export default (Comp) => {
   const mapStateToProps = (state) => {
     let {userId, balanceInfo, rebateInfo} = state.common
     let {Environment} = state.classic
+    let { userBalanceInfoYE } = state.member
     return ({
       ...state.classic,
       userId,
       balanceInfo,
       rebateInfo,
-      Environment
+      Environment,
+      userBalanceInfoYE
     })
   }
 
