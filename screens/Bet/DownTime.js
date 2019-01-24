@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import { Button } from '@ant-design/react-native'
 import { getIconName } from '../../utils/getLotImg'
+import { stylesUtil } from '../../utils/ScreenUtil'
 
 class DownTime extends Component {
   constructor(props) {
@@ -32,32 +33,19 @@ class DownTime extends Component {
       navParams: {realCategory, lotterNumber}
     } = this.props
     return (
-      <View style={{
-        flexDirection: 'row',
-        margin: 6,
-        borderRadius: 6,
-        marginTop: 1,
-        backgroundColor: '#fff'
-      }}>
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
+      <View style={styles.container}>
+        <View style={styles.lotImageView}>
           <Image
             source={getIconName(realCategory)}
-            style={{width: 60, height: 60}}
+            style={styles.lotImage}
           />
         </View>
-        {/*backgroundColor: 'darkcyan'*/}
-        <View style={{flex: 4, margin: 5, marginLeft: 0}}>
-          <Text style={{fontSize: 12}}>
+        <View style={styles.openResultView}>
+          <Text style={styles.openResultText}>
             <Text style={{color: 'blue'}}>{prevOpenResult.openIssue || '000000000'}</Text>
-            期开奖结果
+            <Text>期开奖结果</Text>
           </Text>
-          <View style={{
-            flexDirection: 'row', justifyContent: 'flex-start',
-            padding: 2, flexWrap: 'wrap'
-          }}>
+          <View style={styles.openListView}>
             {
               openList.length ? openList.map((b, bIdx) =>
                 <Button
@@ -69,7 +57,7 @@ class DownTime extends Component {
               ) : <Text>正在开奖中...</Text>
             }
           </View>
-          <Text style={{fontSize: 12}}>
+          <Text style={styles.stopTimeText}>
             <Text style={{color: 'blue'}}>{openIssue.currentIssue}</Text>
             距离封单
             <Text style={{color: 'red'}}>
@@ -84,8 +72,26 @@ class DownTime extends Component {
 
 export default DownTime
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(stylesUtil({
+  container: {
+    flexDirection: 'row',
+    margin: 6,
+    borderRadius: 6,
+    backgroundColor: '#fff'
+  },
+  lotImageView: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  lotImage: {width: 60, height: 60},
+  openResultView: {flex: 4, margin: 5, marginLeft: 0},
+  openResultText: {fontSize: 12},
+  openListView: {
+    flexDirection: 'row', justifyContent: 'flex-start',
+    padding: 2, flexWrap: 'wrap', paddingLeft: 2
+  },
   lotBall3: {
+    padding: 0,
     width: 30,
     height: 30,
     borderRadius: 15,
@@ -93,6 +99,7 @@ const styles = StyleSheet.create({
     marginRight: 6
   },
   lotBall5: {
+    padding: 0,
     width: 30,
     height: 30,
     borderRadius: 15,
@@ -101,19 +108,24 @@ const styles = StyleSheet.create({
   },
   lotBall10: {
     padding: 0,
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    marginRight: 2
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    marginRight: 1
   },
   lotBall20: {
     padding: 0,
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    marginRight: 2
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    marginRight: 1,
+    marginBottom: 1
   },
-  lotBallTxt: {
+  lotBallTxt10: {
     fontSize: 12
-  }
-})
+  },
+  lotBallTxt20: {
+    fontSize: 12
+  },
+  stopTimeText: {fontSize: 12}
+}))

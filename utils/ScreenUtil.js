@@ -18,7 +18,7 @@
 import {
   PixelRatio,
   Dimensions,
-  Platform
+  Platform, StyleSheet
 } from 'react-native'
 
 export let screenW = Dimensions.get('window').width
@@ -43,6 +43,10 @@ const _scaleHeight = screenH / defaultHeight
 const X_WIDTH = 375
 const X_HEIGHT = 812
 
+// iPhoneXR XsMax
+const XR_WIDTH = 414
+const XR_HEIGHT = 896
+
 /**
  * 屏幕适配,缩放size , 默认根据宽度适配，纵向也可以使用此方法
  * 横向的尺寸直接使用此方法
@@ -56,7 +60,7 @@ export function scaleSize(size) {
 
 /**
  * 屏幕适配 , 纵向的尺寸使用此方法应该会更趋近于设计稿
- * 如：height ,paddingVertical ,paddingTop ,paddingBottom ,marginVertical ,marginTop ,marginBottom
+ * 如：height ,paddingVertical ,paddingTop, paddingBottom ,marginVertical ,marginTop ,marginBottom
  * @param size 设计图的尺寸
  * @returns {number}
  */
@@ -84,14 +88,14 @@ export function setSpText(size, allowFontScaling = false) {
   return size * scale / fontSize
 }
 
-export function setSpText2(size) {
-  let scaleWidth = screenW / w2
-  let scaleHeight = screenH / h2
-  let scale = Math.min(scaleWidth, scaleHeight)
-  size = Math.round((size * scale + 0.5))
-
-  return size / DEFAULT_DENSITY * fontScale
-}
+// export function setSpText2(size) {
+//   let scaleWidth = screenW / w2
+//   let scaleHeight = screenH / h2
+//   let scale = Math.min(scaleWidth, scaleHeight)
+//   size = Math.round((size * scale + 0.5))
+//
+//   return size / DEFAULT_DENSITY * fontScale
+// }
 
 /**
  * 判断是否为iphoneX
@@ -105,6 +109,15 @@ export function isIphoneX() {
   )
 }
 
+//判断是否为iphoneXR或XsMAX
+function isIphoneXR() {
+  return (
+    Platform.OS === 'ios' &&
+    ((screenH === XR_HEIGHT && screenW === XR_WIDTH) ||
+      (screenH === XR_WIDTH && screenW === XR_HEIGHT))
+  )
+}
+
 /**
  * 根据是否是iPhoneX返回不同的样式
  * @param iphoneXStyle
@@ -113,7 +126,7 @@ export function isIphoneX() {
  * @returns {*}
  */
 export function ifIphoneX(iphoneXStyle, iosStyle = {}, androidStyle = {}) {
-  if (isIphoneX()) {
+  if (isIphoneX() || isIphoneXR()) {
     return iphoneXStyle
   } else if (Platform.OS === 'ios') {
     return iosStyle
@@ -121,4 +134,48 @@ export function ifIphoneX(iphoneXStyle, iosStyle = {}, androidStyle = {}) {
     if (androidStyle) return androidStyle
     return iosStyle
   }
+}
+
+// 单个 Style
+export const styleUtil = (StyleObj = {}) => {
+  let WIDTH_NAME = ['width', 'paddingHorizontal', 'paddingLeft', 'paddingRight',
+    'marginHorizontal', 'marginLeft', 'marginRight']
+  let HEIGHT_NAME = ['height', 'paddingVertical', 'paddingTop', 'paddingBottom',
+    'marginVertical', 'marginTop', 'marginBottom', 'lineHeight']
+
+  // 是否为球 圆
+  let circle = StyleObj.width === StyleObj.height && StyleObj.height > 0
+  let circleRadius = StyleObj.borderRadius === StyleObj.width / 2
+  Object.keys(StyleObj).forEach(styleItem => {
+    if (typeof StyleObj[styleItem] === 'string') {
+      return
+    }
+    if (WIDTH_NAME.includes(styleItem)) {
+      StyleObj[styleItem] = scaleSize(StyleObj[styleItem])
+    }
+    if (HEIGHT_NAME.includes(styleItem)) {
+      StyleObj[styleItem] = scaleHeight(StyleObj[styleItem])
+    }
+
+    if (['fontSize'].includes(styleItem)) {
+      StyleObj[styleItem] = setSpText(StyleObj[styleItem])
+    }
+  })
+
+  if (circle) {
+    StyleObj['height'] = StyleObj['width']
+    if (circleRadius) {
+      StyleObj['borderRadius'] = StyleObj['width'] / 2
+    }
+  }
+
+  return StyleObj
+}
+
+// 整个 StyleSheet
+export const stylesUtil = (stylesObj = {}) => {
+  Object.keys(stylesObj).forEach(stylesItem => {
+    stylesObj[stylesItem] = styleUtil(stylesObj[stylesItem])
+  })
+  return stylesObj
 }

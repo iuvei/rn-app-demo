@@ -90,7 +90,7 @@ export default class TeamLotteryReport extends React.Component {
     let start = dayjs().subtract(1, 'day').format('YYYY-MM-DD')
     this.state = {
       KeyName: 'TeamLotteryReport',
-      api: '/report/reportform/getTeamLotteryReport',
+      api: '/frontReport/reportform/getTeamLotteryReport',
       isShow: false,
       params: {
         userName: '',

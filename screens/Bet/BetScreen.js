@@ -20,6 +20,8 @@ import {
   setNullLatelyOpen, setGamesPlayToNull
 } from '../../actions/classic'
 import norLot from '../../data/nor-lot'
+import { stylesUtil } from '../../utils/ScreenUtil'
+// import BetListComp from '../../components/BetListComp'
 
 const DownTimeHocView = DownTimeHoc(DownTime)
 const RowBallHocView = RowBallHoc(RowBall)
@@ -310,16 +312,19 @@ export default connect(
   mapDispatchToProps
 )(BetScreen)
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ededed'
-  },
-  tabs: {
-    marginTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    paddingRight: 20
-  }
-})
+const styles = StyleSheet.create(
+  stylesUtil({
+    container: {
+      flex: 1,
+      backgroundColor: '#ededed'
+    },
+    tabs: {
+      marginTop: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+      paddingRight: 20,
+      paddingLeft: 10
+    }
+  })
+)

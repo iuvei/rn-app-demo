@@ -13,6 +13,8 @@ import Found from '../screens/Found'
 import Games from '../screens/Games'
 import Bet from '../screens/Bet/BetScreen'
 import ChaseScreen from '../screens/Bet/ChaseScreen'
+import SizeScreen from '../screens/SizeScreen'
+import BallScreen from '../screens/BallScreen'
 
 const MainNavigator = createStackNavigator({
   Main: MainTabNavigator,
@@ -22,7 +24,9 @@ const MainNavigator = createStackNavigator({
   ...Found,
   ...Games,
   Bet,
-  ChaseScreen
+  ChaseScreen,
+  BallScreen,
+  SizeScreen
 }, {
   initialRouteName: 'Main',
   headerLayoutPreset: 'center',

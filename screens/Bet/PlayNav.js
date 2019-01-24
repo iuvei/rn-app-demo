@@ -12,6 +12,7 @@ import {
 import { connect } from 'react-redux'
 import { setActivePlay, setCustomPlayNav } from '../../actions/classic'
 import _ from 'lodash'
+import { stylesUtil, setSpText } from '../../utils/ScreenUtil'
 
 class PlayNav extends React.Component {
   constructor(props) {
@@ -35,8 +36,8 @@ class PlayNav extends React.Component {
     }
     this.onOpenChange = isOpen => {
       /* tslint:disable: no-console */
-      console.log('是否打开了 Drawer', isOpen.toString());
-    };
+      console.log('是否打开了 Drawer', isOpen.toString())
+    }
   }
 
   componentDidMount() {
@@ -45,7 +46,7 @@ class PlayNav extends React.Component {
 
   componentWillReceiveProps(np) {
     let {newCusPlayNav, activePlay} = this.props
-    let { code } = activePlay
+    let {code} = activePlay
     if (!_.isEqual(newCusPlayNav, np.newCusPlayNav)) {
       let d = np.newCusPlayNav.filter(item => item.code === code).length
       this.setState({
@@ -72,10 +73,10 @@ class PlayNav extends React.Component {
     let {InitBetView} = this
 
     return (
-      <View>
+      <View style={styles.warp}>
         <Flex>
           <View style={styles.playNav}>
-            <View style={{backgroundColor: '#ffffff',height: 42}}>
+            <View>
               <ScrollView
                 ref={(ref) => {
                   this.scrollPlayNav = ref
@@ -101,7 +102,7 @@ class PlayNav extends React.Component {
           </View>
           <View style={styles.setting}>
             <Flex justify="center" align="center" onPress={() => this.props.openDrawer()}>
-              <Ionicons name="ios-add-circle" color="#0170cc" size={30}/>
+              <Ionicons name="ios-add-circle" color="#0170cc" size={setSpText(30)}/>
             </Flex>
           </View>
         </Flex>
@@ -128,39 +129,44 @@ export default connect(
   mapDispatchToProps
 )(PlayNav)
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(stylesUtil({
+  warp: {
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    height: 34,
+    paddingLeft: 2
+  },
   playNav: {
-    height: 50,
     width: '90%',
+    marginTop: 2,
+    marginBottom: 2
   },
   setting: {
-    width: '10%',
-    height: 40,
-    marginTop: -7,
-    paddingTop: 5,
-    backgroundColor: '#ffffff'
+    width: '10%'
+    // marginTop: -7,
+    // paddingTop: 5,
+    // paddingTop: 1,
+    // paddingBottom: 1,
   },
   btnDefault: {
     height: 26,
-    marginTop: 10,
     borderWidth: 1,
-    paddingLeft: 3,
-    paddingRight: 3,
-    borderColor: '#f0f0f0',
+    paddingLeft: 4,
+    paddingRight: 4,
     borderRadius: 20,
-    marginRight: 6
+    marginRight: 5
   },
   btnActive: {
-    borderColor: '#016fca',
+    borderColor: '#016fca'
   },
   btnDefaultText: {
     fontSize: 12,
-    lineHeight:24,
-    paddingLeft: 3,
-    paddingRight: 3,
+    lineHeight: 26,
+    paddingLeft: 4,
+    paddingRight: 4,
     textAlign: 'center'
   },
   btnActiveText: {
-    color: '#016fca',
-  },
-})
+    color: '#016fca'
+  }
+}))

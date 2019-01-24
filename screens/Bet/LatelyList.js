@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { Button } from '@ant-design/react-native'
+import { stylesUtil } from '../../utils/ScreenUtil'
 
 class LatelyList extends Component {
 
@@ -20,11 +21,7 @@ class LatelyList extends Component {
                       <Button
                         key={`${list.openIssue}-${bIdx}-${b}`}
                         type='primary' size="small"
-                        style={{
-                          width: 30, height: 30,
-                          marginBottom: 2, borderRadius: 14,
-                          marginLeft: 3
-                        }}>
+                        style={styles.ballItem}>
                         <Text style={{fontSize: 13}}>{b}</Text>
                       </Button>
                     )
@@ -40,8 +37,7 @@ class LatelyList extends Component {
               <Text style={{
                 textAlign: 'center',
                 alignItems: 'center',
-                justifyContent: 'center',
-                padding: 40
+                justifyContent: 'center'
               }}>正在获取中</Text>
             </View>
         }
@@ -58,7 +54,7 @@ export default connect(
   mapStateToProps
 )(LatelyList)
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(stylesUtil({
   container: {
     flex: 1,
     width: '100%',
@@ -71,5 +67,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#ededed'
+  },
+  ballItem: {
+    width: 30, height: 30,
+    marginBottom: 2,
+    borderRadius: 15,
+    marginLeft: 3
   }
-})
+}))
