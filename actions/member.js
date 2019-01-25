@@ -96,7 +96,7 @@ export const AsetSubUserInfo = (data) => {
   }
 }
 
-export const AsetAllBalance = ({cb}) => {
+export const AsetAllBalance = (cb) => {
   return (dispatch, getState) => {
     let {common: {userId}} = getState()
     getUserBalance({userId}).then(res => {

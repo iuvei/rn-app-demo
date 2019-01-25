@@ -40,16 +40,13 @@ class GlobalComp extends React.Component {
     // 初始化
     // this.isHasCheck = false
     // console.log('loop global', new Date().getTime())
-    this.props.AsetAllBalance({cb: (res) => {
+    this.props.AsetAllBalance((res) => {
       if (res.code === 0) {
         this.loopTimer = setTimeout(() => {
           this.loopCheckLogin()
         }, 30 * 1000)
       }
-      if (res.code === -200012 || res.code === -200010 || res.code === -200011 || res.code === -200014 || res.code === -20000) {
-        this.props.setLoginStatus(false)
-      }
-    }})
+    })
   }
 
   render() {
