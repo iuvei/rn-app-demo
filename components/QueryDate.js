@@ -56,7 +56,7 @@ export default class QueryDate extends React.Component {
         <Flex style={styles.wrapper} justify={'around'} align="center">
           <Flex.Item>
             <DatePicker
-              value={''}
+              value={new Date(startTime)}
               mode="date"
               minDate={new Date(2015, 7, 6)}
               maxDate={new Date(2026, 11, 3)}
@@ -83,7 +83,7 @@ export default class QueryDate extends React.Component {
           </Flex.Item>
           <Flex.Item>
             <DatePicker
-              value={''}
+              value={new Date(endTime)}
               mode="date"
               minDate={new Date(2015, 7, 6)}
               maxDate={new Date(2026, 11, 3)}
