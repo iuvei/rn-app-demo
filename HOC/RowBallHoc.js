@@ -58,8 +58,7 @@ export default (Comp) => {
 
         userRebate: 0,
 
-        curMaxMode: 1700,
-        lotterMinMode: 1700,
+        curMaxMode: 0,
 
         // testMode: 1802
         isKlcYxyLot: false,
@@ -84,6 +83,8 @@ export default (Comp) => {
 
     componentWillUnmount() {
       clearTimeout(this.curBallTime)
+      this.setState = () => () => {
+      }
     }
 
     checkKlcXycLot = () => {
@@ -122,7 +123,9 @@ export default (Comp) => {
 
     setRebate = ({userRebateVO}) => {
       let selfRebate = userRebateVO.find(list => list.rebateType === 0) || {}
-      this.setState({userRebate: selfRebate.userRebate * 20 + 1700 || 0})
+      this.setState({userRebate: selfRebate.userRebate * 20 + 1700 || 0}, () => {
+        this.setMaxMode()
+      })
     }
 
     updateGameRate = ({activePlay}) => {
@@ -275,8 +278,7 @@ export default (Comp) => {
         })
       }
       this.setState({
-        curMaxMode: tmpMode,
-        lotterMinMode: lotterMinMode
+        curMaxMode: tmpMode
       })
     }
 
@@ -663,7 +665,7 @@ export default (Comp) => {
   const mapStateToProps = (state) => {
     let {userId, balanceInfo, rebateInfo} = state.common
     let {Environment} = state.classic
-    let { userBalanceInfoYE } = state.member
+    let {userBalanceInfoYE} = state.member
     return ({
       ...state.classic,
       userId,

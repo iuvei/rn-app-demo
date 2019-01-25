@@ -31,6 +31,11 @@ class RowBall extends React.Component {
     // 改变数据时
   }
 
+  componentWillUnmount() {
+    this.setState = () => () => {
+    }
+  }
+
   componentWillReceiveProps(np) {
     let oldInfo = this.props.buyInfo
 
@@ -50,6 +55,7 @@ class RowBall extends React.Component {
     }
   }
 
+  // 计算返点
   changeBonusPrize = (nextProps) => {
     let {model, rebateMode} = nextProps.buyInfo
     let {minRuleMode, bonusPrize, maxRuleMode} = nextProps.activeGamesPlay
@@ -110,6 +116,7 @@ class RowBall extends React.Component {
     }
   }
 
+  // 改变模式
   changeModePoint = (np) => {
     let {userRebate, buyInfo} = np
     // let maxRebate = (curMaxMode - 1700) / 20
@@ -128,9 +135,10 @@ class RowBall extends React.Component {
       tools, activeViewData: {rectangle, moreTitle}, activeViewData,
       clickBall, toolsCur, setBuyInfo, addBuyCard,
       balanceInfo, handleText,
-      curMaxMode, lotterMinMode,
+      curMaxMode,
       isKlcYxyLot, bonusPrize,
-      userBalanceInfoYE
+      userBalanceInfoYE,
+      activeGamesPlay: {lotterMinMode}
     } = this.props
 
     let {currentBalance} = balanceInfo.ye || {}
