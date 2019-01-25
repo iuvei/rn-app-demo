@@ -202,7 +202,7 @@ class ChaseDetail extends React.Component {
                     <View style={{backgroundColor: '#fff', width: '98%'}} key={item.title}>
                       <Flex>
                         <Text style={{width: 100, paddingLeft: 20, color: '#a4a4a4', lineHeight: 32, fontSize: 14}}>{item.title}</Text>
-                        <Text style={{flex: 1, textAlign: 'right', color: '#585858', paddingRight: 16, lineHeight: 32, fontSize: 14}}>{item.formatter ? item.formatter(detailInfo[item.key]) : detailInfo[item.key]}</Text>
+                        <Text style={{flex: 1, textAlign: 'right', color: '#585858', paddingRight: 16, lineHeight: 32, fontSize: 14}} ellipsizeMode={'tail'} numberOfLines={1}>{item.formatter ? item.formatter(detailInfo[item.key]) : detailInfo[item.key]}</Text>
                       </Flex>
                       <Image source={require('../../../assets/images/detail_dashed.png')} style={{width: '100%', height: 0.5}} />
                     </View>

@@ -33,7 +33,7 @@ class FlatListItem extends PureComponent {
           </Flex>
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>投注金额: <Text
             style={{color: '#1689e6'}}>{castAmount}</Text></Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>投注号码: <Text
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note ellipsizeMode={'tail'} numberOfLines={1}>投注号码: <Text
             style={{color: '#1689e6'}}>{rulesNameMap[castCodes] || castCodes}</Text></Text>
           <Button type="ghost" size="small"
                   style={{position: 'absolute', top: 6, right: 8, borderColor: statusarr[0].color}}><Text

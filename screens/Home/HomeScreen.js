@@ -123,7 +123,7 @@ class HomeScreen extends React.Component {
     this._initHotLottery()
     this.props.navigation.setParams({changeTextFun: this.changeTextFun})
     this.props.queryActivity()
-    this.props.navigation.push('Bet', this.state.LotArray[0])
+    // this.props.navigation.push('Bet', this.state.LotArray[0])
   }
 
   componentWillMount() {
