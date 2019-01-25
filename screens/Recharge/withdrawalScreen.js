@@ -38,7 +38,7 @@ class Withdrawal extends React.Component {
       pwdType: 0, // 密码类型（0交易密码 1谷歌验证码）
       sonOrderList: [] // 拆单-子订单集合
     }
-    props.AsetAllBalance({userId: props.loginInfo.acc.user.userId})
+    props.AsetAllBalance()
     props.AsetUserBankCards(props.loginInfo.acc.user.userId)
     props.AsetIsAllowWithdraw()
     props.AsetUserConsume()
@@ -178,7 +178,7 @@ class Withdrawal extends React.Component {
           // this.AgetUserSecurityLevel()
           this.props.AsetIsAllowWithdraw()
           error ? Toast.success('提现申请已提交') : Toast.fail(res.message)
-          this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
+          this.props.AsetAllBalance()
           this.props.AsetUserConsume()
         })
       } else {

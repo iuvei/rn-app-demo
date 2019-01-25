@@ -84,7 +84,7 @@ class LoginComponent extends Component {
             this.props.setLoginInfo(res2.data)
           }
         })
-        this.props.AsetAllBalance({userId: res.data.user.userId})
+        this.props.AsetAllBalance()
         this.props.AsetUserBankCards(res.data.user.userId)
         this.props.AsetUserSecureLevel()
         this.props.navigation.navigate('Main')

@@ -40,7 +40,7 @@ class Transfer extends React.Component {
       outObj: {},
       allAccs: []
     }
-    props.AsetAllBalance({userId: props.loginInfo.acc.user.userId})
+    props.AsetAllBalance()
     props.AsetUserPlatfrom()
   }
 
@@ -106,7 +106,7 @@ class Transfer extends React.Component {
           if (res.code === 0) {
             Toast.success('转出成功')
             setTimeout(() => {
-              this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
+              this.props.AsetAllBalance()
             }, 50)
           } else {
             Toast.fail(res.message || '网络异常')
@@ -128,7 +128,7 @@ class Transfer extends React.Component {
           if (res.code === 0) {
             Toast.success('转出成功')
             setTimeout(() => {
-              this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
+              this.props.AsetAllBalance()
             }, 50)
           } else {
             Toast.fail(res.message || '网络异常')
@@ -150,7 +150,7 @@ class Transfer extends React.Component {
           if (res.code === 0) {
             Toast.success('转出成功')
             setTimeout(() => {
-              this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
+              this.props.AsetAllBalance()
             }, 50)
           } else {
             Toast.fail(res.message || '网络异常')
@@ -173,7 +173,7 @@ class Transfer extends React.Component {
             if (res.code === 0) {
               Toast.success('转出成功')
               setTimeout(() => {
-                this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
+                this.props.AsetAllBalance()
               }, 50)
             } else {
               Toast.fail(res.message || '网络异常')
