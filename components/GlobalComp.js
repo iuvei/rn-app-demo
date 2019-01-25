@@ -16,7 +16,9 @@ class GlobalComp extends React.Component {
   componentWillReceiveProps(nextProps) {
     // console.log('nextprops ===', nextProps)
     if (nextProps.loginInfo.acc) {
-      this.loopCheckLogin(nextProps.loginInfo.acc.user.userId)
+      this.loopTimer = setTimeout(() => {
+        this.loopCheckLogin(nextProps.loginInfo.acc.user.userId)
+      }, 3 * 1000)
     }
     if (!nextProps.isLogin && this.props.isLogin) {
       NavigationService.navigate('Login')
