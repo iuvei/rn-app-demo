@@ -40,6 +40,11 @@ class FastPlayNav extends React.Component {
 
   }
 
+  componentWillUnmount() {
+    this.setState = () => () => {
+    }
+  }
+
   changeSubs = (activeTitle) => {
     this.setState({activeTitle})
   }

@@ -79,6 +79,11 @@ class BetSimpleHistory extends React.Component {
   //   this.onSearch()
   // }
 
+  componentWillUnmount() {
+    this.setState = () => () => {
+    }
+  }
+
   componentWillReceiveProps(np) {
     let {intoHistory, revokeInfo} = np
     if (this.props.intoHistory !== intoHistory || this.props.revokeInfo.orderId !== revokeInfo.orderId) {

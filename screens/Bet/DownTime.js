@@ -20,6 +20,8 @@ class DownTime extends Component {
   }
 
   componentWillUnmount() {
+    this.setState = () => () => {
+    }
   }
 
   logFn = () => {

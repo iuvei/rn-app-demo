@@ -44,6 +44,11 @@ class PlayNav extends React.Component {
 
   }
 
+  componentWillUnmount() {
+    this.setState = () => () => {
+    }
+  }
+
   componentWillReceiveProps(np) {
     let {newCusPlayNav, activePlay} = this.props
     let {code} = activePlay

@@ -261,6 +261,11 @@ class Trend extends Component {
     }, 200)
   }
 
+  componentWillUnmount() {
+    this.setState = () => () => {
+    }
+  }
+
   componentWillReceiveProps (nextProps, lastProps) {
     let {latelyOpenList} = nextProps
     if (latelyOpenList[0]?.openIssue !== this.props.latelyOpenList[0]?.openIssue) {
