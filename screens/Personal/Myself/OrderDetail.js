@@ -32,11 +32,36 @@ class OrderDetail extends React.Component {
         {key: 'orderId', title: '订单编号'},
         {key: 'lotterName', title: '彩种'},
         {key: 'ruleName', title: '玩法'},
-        {key: 'castMode', title: '资金模式'},
+        {key: 'castMode', title: '资金模式', formatter(v) {
+          let txt = ''
+          switch (v) {
+            case 0:
+              txt = '元'
+              break
+            case 1:
+              txt = '角'
+              break
+            case 2:
+              txt = '分'
+              break
+            case 3:
+              txt = '厘'
+              break
+          }
+          return txt
+        }},
         // {key: 'rewardLevel', title: '奖级'},
         {key: 'castAmount', title: '投注金额'},
         {key: 'rewardAndRebate', title: '奖金/返点'},
-        {key: 'profit', title: '盈亏金额'},
+        {key: 'profit', title: '盈亏金额', formatter (v, data) {
+          if (data['status'] === 2) {
+            return (data.bonus - data.castAmount).toFixed(4)
+          } else if (data['status'] === 3) {
+            return '-' + (data.castAmount.toFixed(4))
+          } else {
+            return '0.0000'
+          }
+        }},
         {key: 'orderTime', title: '加入时间'},
         {key: 'orderIssue', title: '期号'},
         // {key: 'nums', title: '注数', desc: '注'},
@@ -112,7 +137,7 @@ class OrderDetail extends React.Component {
                 <View style={{backgroundColor: '#fff', width: '98%'}} key={item.title}>
                   <Flex>
                     <Text style={{width: 100, paddingLeft: 20, color: '#a4a4a4', lineHeight: 32, fontSize: 14}}>{item.title}</Text>
-                    <Text style={{flex: 1, textAlign: 'right', color: '#585858', paddingRight: 16, lineHeight: 32, fontSize: 14}}>{item.formatter ? item.formatter(detailInfo[item.key]) : detailInfo[item.key]}</Text>
+                    <Text style={{flex: 1, textAlign: 'right', color: '#585858', paddingRight: 16, lineHeight: 32, fontSize: 14}}>{item.formatter ? item.formatter(detailInfo[item.key], detailInfo) : detailInfo[item.key]}</Text>
                   </Flex>
                   <Image source={require('../../../assets/images/detail_dashed.png')} style={{width: '100%', height: 0.5}} />
                 </View>

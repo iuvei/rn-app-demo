@@ -176,9 +176,10 @@ class Withdrawal extends React.Component {
           })
           let error = res.code === 0
           // this.AgetUserSecurityLevel()
+          this.props.AsetIsAllowWithdraw()
           error ? Toast.success('提现申请已提交') : Toast.fail(res.message)
-          // this.AgetUserBalance()
-          // this.AgetUserConsume()
+          this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
+          this.props.AsetUserConsume()
         })
       } else {
         Toast.info('提现时间：从北京时间 09:00:00 至 第二天 03:00:00 （24小时制）')
