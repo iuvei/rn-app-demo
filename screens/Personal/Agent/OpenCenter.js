@@ -5,6 +5,7 @@ import {SegmentedControl, InputItem, Flex, Button, Toast} from '@ant-design/reac
 import {Picker} from 'native-base'
 import {addDown, addSignup, delSignup} from '../../../api/member'
 import UIListView from '../../../components/UIListView'
+import Base64 from '../../../utils/Base64'
 import dayjs from 'dayjs'
 
 const TableRow = 20
@@ -24,14 +25,17 @@ class FlatListItem extends PureComponent {
   }
 
   render () {
-    let {item, index} = this.props
+    let {item, index, loginInfo} = this.props
     let {balanceHours, createTime, id, isProxy, times, useTimes, validDays, rebate} = item
     validDays = validDays * 1000 * 3600
     let text = validDays ? dayjs(validDays + createTime).format('YYYY-MM-DD HH:mm:ss') : '长期有效'
     return (
       <View style={{padding: 10}}>
         <Text onPress={() => {
-          Clipboard.setString(id)
+          let {userId} = loginInfo
+          let highUser = Base64.btoa(loginInfo.acc?.user?.loginName)
+          let url = 'http://tianxiang.qmuitest.com/app/#/regist/' + userId + '/' + highUser + '/' + id
+          Clipboard.setString(url)
           Toast.info('复制成功！')
         }}>注册码: {id}</Text>
         <Text>用户类别: {isProxy === 0 ? '玩家' : '代理'}</Text>
@@ -319,9 +323,11 @@ class OpenCenter extends React.Component {
   }
 
   renderItem = (item, index) => {
+    let loginInfo = this.props.loginInfo
     return (
       <FlatListItem
         item={item}
+        loginInfo={loginInfo}
         index={index}
         refresh={this.onSearch}
       />
