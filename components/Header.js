@@ -26,16 +26,16 @@ export default class Header extends PureComponent {
      * @param rightContent optional 右侧内容
      * @param navigation 必传
      */
-    const { hideLeft, title, bg, color, rightContent } = this.props
+    const { hideLeft, title, bg, color, rightContent, leftContent } = this.props
     return(
       <View style={[styles.headerContainer, bg || null]}>
         {
-          !hideLeft && <TouchableOpacity activeOpacity={0.8} style={{flexDirection: 'row', alignItems:'center', flex: 1}} onPress={() => this.props.navigation.goBack()} >
-            <Image source={require('./../assets/images/i_goback.png')} resizeMode={'contain'} style={styles.headerLeftImg} />
-            <Text style={{color: 'white', fontSize: 16}}>{this.props.leftText}</Text>
-          </TouchableOpacity>
+          leftContent ? leftContent :
+            (!hideLeft && <TouchableOpacity activeOpacity={0.8} style={{flexDirection: 'row', alignItems:'center', flex: 1}} onPress={() => this.props.navigation.goBack()} >
+              <Image source={require('./../assets/images/i_goback.png')} resizeMode={'contain'} style={styles.headerLeftImg} />
+              <Text style={{color: 'white', fontSize: 16}}>{this.props.leftText}</Text>
+            </TouchableOpacity>)
         }
-
         {title ?
         <View style={styles.headerCenterContainer}>
           <Text style={[styles.headerCenterText, color || null]}>{title || this.props.centerText}</Text>

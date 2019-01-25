@@ -2,12 +2,13 @@ import React from 'react'
 import {Image, ScrollView, View, Text, StyleSheet, ImageBackground, TouchableHighlight} from 'react-native'
 import {Button, Flex, Modal, Toast, Grid} from '@ant-design/react-native'
 import {Tab, Tabs, Header} from 'native-base'
-import BetHistory from "./Myself/BetHistory"
 import {connect} from 'react-redux'
-import RebateDetails from './RebateDetails'
-import {setLoginStatus} from "../../actions/common"
+// import RebateDetails from './RebateDetails'
+// import {setLoginStatus} from "../../actions/common"
 import Headers from './../../components/Header'
-import { AsetAllBalance } from "../../actions/member";
+import { AsetAllBalance } from "../../actions/member"
+import { WebBrowser } from 'expo'
+import { AsetServiceUrl } from '../../actions/common'
 
 const REBATE_TYPE = {
   0: '彩票返点', 1: '快乐彩返点', 2: '百家乐彩票返点'
@@ -24,9 +25,25 @@ const WATER_TYPE = {
 
 class PersonalScreen extends React.Component {
 
-  static navigationOptions = {
 
-    header: <Headers hideLeft={true} title={'个人中心'}/>
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state
+    return {
+      header: <Headers
+      title={'个人中心'}
+      leftContent={
+        <Text style={{fontSize: 16, color: '#fff'}}>
+          <Text onPress={() => params.openKefu()}>  客服   </Text>
+        </Text>
+      }
+      rightContent={
+        <Text style={{fontSize: 16, color: '#fff'}}>
+          <Text onPress={() => params.changeTextFun('Broadcast')} style={{paddingHorizontal: 16}}>公告  </Text>
+          <Text onPress={() => params.changeTextFun('Mailbox')} style={{paddingHorizontal: 16}}>信箱</Text>
+        </Text>
+      }
+    />
+    }
   }
 
   constructor (props) {
@@ -68,11 +85,11 @@ class PersonalScreen extends React.Component {
           path: 'TeamBetHistory',
           src: require('../../assets/images/personal/tbl7.png')
         },
-        {
-          name: '追号记录',
-          path: 'TeamChaseHistory',
-          src: require('../../assets/images/personal/tbl10.png')
-        },
+        // {
+        //   name: '追号记录',
+        //   path: 'TeamChaseHistory',
+        //   src: require('../../assets/images/personal/tbl10.png')
+        // },
         {
           name: '存取款记录',
           path: 'TeamWithdrawHistory',
@@ -141,7 +158,19 @@ class PersonalScreen extends React.Component {
     props.AsetAllBalance()
   }
 
+  changeTextFun = (val) => {
+    this.props.navigation.navigate(val)
+  }
+
+  openKefu = async () => {
+    let { serviceUrl } = this.props
+    let result = await WebBrowser.openBrowserAsync(serviceUrl.url)
+    console.log(result)
+  }
+
   componentDidMount () {
+    this.props.AsetServiceUrl()
+    this.props.navigation.setParams({changeTextFun: this.changeTextFun, openKefu: this.openKefu})
     let {userRebateVO} = this.props.rebateInfo
     let lotteryRebate = 0
     userRebateVO?.forEach(item => {
@@ -288,20 +317,22 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  let {rebateInfo, loginInfo, balanceInfo} = state.common
+  let {rebateInfo, loginInfo, balanceInfo, serviceUrl} = state.common
   let {userBalanceInfoYE, userBalanceInfoFD} = state.member
   return ({
     rebateInfo,
     loginInfo,
     balanceInfo,
     userBalanceInfoYE,
-    userBalanceInfoFD
+    userBalanceInfoFD,
+    serviceUrl
   })
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     AsetAllBalance: data => dispatch(AsetAllBalance(data)),
+    AsetServiceUrl: data => dispatch(AsetServiceUrl(data))
   }
 }
 

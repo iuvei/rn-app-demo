@@ -18,7 +18,7 @@ import OpenCenter from './Agent/OpenCenter'
 import TeamAccountHistory from './Agent/TeamAccountHistory'
 import TeamBaccaratReport from './Agent/TeamBaccaratReport'
 import TeamBetHistory from './Agent/TeamBetHistory'
-import TeamChaseHistory from './Agent/TeamChaseHistory'
+// import TeamChaseHistory from './Agent/TeamChaseHistory'
 import TeamLotteryReport from './Agent/TeamLotteryReport'
 import TeamReport from './Agent/TeamReport'
 import TeamWithdrawHistory from './Agent/TeamWithdrawHistory'
@@ -53,7 +53,7 @@ export default {
   TeamAccountHistory,
   TeamBaccaratReport,
   TeamBetHistory,
-  TeamChaseHistory,
+  // TeamChaseHistory,
   TeamLotteryReport,
   TeamReport,
   TeamWithdrawHistory,

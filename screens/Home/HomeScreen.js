@@ -107,13 +107,7 @@ class HomeScreen extends React.Component {
     const {params} = navigation.state
     return {
       header: <Header
-        hideLeft={true}
-        rightContent={
-          <Text style={{fontSize: 16, color: '#fff'}}>
-            <Text onPress={() => params.changeTextFun('Broadcast')}>公告 </Text>
-            <Text onPress={() => params.changeTextFun('Mailbox')}>信箱</Text>
-          </Text>
-        }/>
+        hideLeft={true}/>
     }
   }
 
