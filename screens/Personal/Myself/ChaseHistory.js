@@ -142,15 +142,9 @@ class ChaseHistory extends React.Component {
   render() {
     let {api, params, KeyName, lotterList} = this.state
     let tmmlotterlist  = []
-    if (params.orderType === 1) {
-      tmmlotterlist = lotterList.filter(item => {
-        return item.realCategory === 'kl8' || item.realCategory === 'xyc'
-      })
-    } else if (params.orderType === 0) {
-      tmmlotterlist = lotterList.filter(item => {
-        return item.realCategory !== 'kl8' && item.realCategory !== 'xyc'
-      })
-    }
+    tmmlotterlist = lotterList.filter(item => {
+      return item.realCategory !== 'kl8' && item.realCategory !== 'xyc'
+    })
 
     return (
       <View style={styles.container}>
