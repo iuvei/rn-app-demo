@@ -6,10 +6,10 @@ const svgDir = path.resolve(__dirname, './assets/svg')
 // 读取单个文件
 function readfile(filename) {
   return new Promise((resolve, reject) => {
-    fs.readFile(path.join(svgDir, filename), 'utf8', function(err, data) {
+    fs.readFile(path.join(svgDir, filename), 'utf8', function (err, data) {
       if (err) reject(err)
       resolve({
-        [filename.slice(0, filename.lastIndexOf('.'))]: data,
+        [filename.slice(0, filename.lastIndexOf('.'))]: data
       })
     })
   })
@@ -18,11 +18,11 @@ function readfile(filename) {
 // 读取SVG文件夹下所有svg
 function readSvgs() {
   return new Promise((resolve, reject) => {
-   fs.readdir(svgDir, function(err, files) {
-     if (err) reject(err)
-     Promise.all(files.map(filename => readfile(filename)))
-      .then(data => resolve(data))
-      .catch(err => reject(err))
+    fs.readdir(svgDir, function (err, files) {
+      if (err) reject(err)
+      Promise.all(files.map(filename => readfile(filename)))
+        .then(data => resolve(data))
+        .catch(err => reject(err))
     })
   })
 }
@@ -31,9 +31,13 @@ function readSvgs() {
 readSvgs()
   .then(data => {
     let svgFile = 'export default ' + JSON.stringify(Object.assign.apply(this, data))
-    fs.writeFile(path.resolve(__dirname, './components/svgs.js'), svgFile, function(err) {
-      if(err) throw new Error(err)
+    fs.writeFile(path.resolve(__dirname, './components/svgs.js'), svgFile, function (err) {
+      if (err) {
+        // throw new Error(err)
+        console.warn(err)
+      }
     })
   }).catch(err => {
-    throw new Error(err)
-  })
+  // throw new Error(err)
+  console.warn(err)
+})
