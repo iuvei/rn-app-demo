@@ -2,6 +2,7 @@ import axios from 'axios'
 import {
   AsyncStorage
 } from 'react-native'
+import store from '../store'
 const {prependUrl, platformKey} = require('./../api.config')
 // axios 配置
 axios.defaults.timeout = 30000
@@ -54,6 +55,12 @@ axios.interceptors.response.use((response) => {
   // }
   if (response.status === 200 && response.data.code !== 0) {
     console.log('接口 = ' + response.config.url + ', code = ' + response.data.code, ', message = ' + response.data.message)
+  }
+  if (response.data.code === -200012 || response.data.code === -200010 || response.data.code === -200011 || response.data.code === -200014 || response.data.code === -20000) {
+    store.dispatch({
+      type: 'SET_LOGIN_STATUS',
+      payload: false
+    })
   }
   return response
 }, (err) => {
