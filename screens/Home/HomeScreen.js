@@ -400,9 +400,9 @@ const styles = StyleSheet.create(stylesUtil({
     marginLeft: 10
   },
   hotItemBall: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     marginRight: 3,
     marginBottom: 3,
     backgroundColor: '#097bd9'
@@ -424,7 +424,7 @@ const styles = StyleSheet.create(stylesUtil({
     backgroundColor: '#097bd9'
   },
   hotItemLgText: {
-    lineHeight: 26,
+    lineHeight: 24,
     fontSize: 14,
     textAlign: 'center',
     color: 'white'
