@@ -14,7 +14,7 @@ import UIListView from '../../../components/UIListView'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
 import { ReWiTrStatus } from '../../../data/options'
-
+import {toFixed4, formatTime} from '../../../utils/MathUtils'
 const TableRow = 20
 
 class FlatListItem extends React.PureComponent {
@@ -33,13 +33,13 @@ class FlatListItem extends React.PureComponent {
       <TouchableHighlight onPress={() => this.props.onPressFunc(item)}>
         <View style={{padding: 10, backgroundColor: '#fff', position: 'relative'}}>
           <Text style={{fontSize: 15, lineHeight: 24}}>{remark}</Text>
-          <Flex>
-            <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22}}>操作金额: <Text style={{color: '#1689e6'}}>{amount}</Text></Text>
-            <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22}}>{statusobj.label}</Text>
+          <Flex justify="space-between">
+            <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作金额: <Text style={{color: '#1689e6'}}>{toFixed4(amount)}</Text></Text>
+            <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{statusobj.label}</Text>
           </Flex>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>实际手续费: <Text style={{color: '#1689e6'}}>{actualFee}</Text></Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>手续费: <Text style={{color: '#1689e6'}}>{fee}</Text></Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>时间: <Text style={{color: '#1689e6'}}>{time}</Text></Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>实际手续费: <Text style={{color: '#1689e6'}}>{toFixed4(actualFee)}</Text></Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>手续费: <Text style={{color: '#1689e6'}}>{toFixed4(fee)}</Text></Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>时间: <Text style={{color: '#1689e6'}}>{formatTime(time)}</Text></Text>
         </View>
       </TouchableHighlight>
     )
@@ -125,7 +125,7 @@ class TransferHistory extends React.Component {
   }
 
   // 点击单元表格
-  onPressItem = (item) => { 
+  onPressItem = (item) => {
     // 点击一项改变数据重置数据
     // let Row = this.BetHistory.listView.getRows().slice()
     // Row.find(rows => rows.orderId === item.orderId).ruleName = '自定义'
