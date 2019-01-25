@@ -32,7 +32,24 @@ class OrderDetail extends React.Component {
         {key: 'orderId', title: '订单编号'},
         {key: 'lotterName', title: '彩种'},
         {key: 'ruleName', title: '玩法'},
-        {key: 'castMode', title: '资金模式'},
+        {key: 'castMode', title: '资金模式', formatter(v) {
+          let txt = ''
+          switch (v) {
+            case 0:
+              txt = '元'
+              break
+            case 1:
+              txt = '角'
+              break
+            case 2:
+              txt = '分'
+              break
+            case 3:
+              txt = '厘'
+              break
+          }
+          return txt
+        }},
         // {key: 'rewardLevel', title: '奖级'},
         {key: 'castAmount', title: '投注金额'},
         {key: 'rewardAndRebate', title: '奖金/返点'},

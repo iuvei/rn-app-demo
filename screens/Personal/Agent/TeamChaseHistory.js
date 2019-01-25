@@ -211,6 +211,16 @@ class TeamChaseHistory extends React.Component {
 
   render() {
     let {api, params, KeyName, lotterList, keyList, detailInfo} = this.state
+    let tmmlotterlist  = []
+    if (params.orderType === 1) {
+      tmmlotterlist = lotterList.filter(item => {
+        return item.realCategory === 'kl8' || item.realCategory === 'xyc'
+      })
+    } else if (params.orderType === 0) {
+      tmmlotterlist = lotterList.filter(item => {
+        return item.realCategory !== 'kl8' && item.realCategory !== 'xyc'
+      })
+    }
 
     return (
       <View style={styles.container}>
@@ -232,9 +242,9 @@ class TeamChaseHistory extends React.Component {
                 </Flex.Item>
                 <Flex.Item>
                   {
-                    lotterList.length > 0 &&
+                    tmmlotterlist.length > 0 &&
                     <QueryPickerOne
-                      data={lotterList}
+                      data={tmmlotterlist}
                       queryName={'lotterCode'}
                       handlePickerBack={this.handlePickerBack}/>
                   }
