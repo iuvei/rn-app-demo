@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native'
 import { connect } from 'react-redux'
+import { Video } from 'expo'
 import Header from './../../components/Header'
 import {
   setCustomizeLottery,
@@ -201,19 +202,27 @@ class HomeScreen extends React.Component {
       <View style={styles.container}>
         <Carousel
           style={styles.wrapper}
-          autoplay
+          // autoplay
           infinite
           afterChange={this.onHorizontalSelectedIndexChange}
         >
-          <View
-            style={styles.containerHorizontal}
-          >
+          <View style={styles.containerHorizontal}>
+            <Video
+              source={{uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'}}
+              rate={1.0}
+              volume={1.0}
+              isMuted={false}
+              resizeMode="cover"
+              shouldPlay
+              isLooping
+              style={{width: '100%', height: '100%'}}
+            />
+          </View>
+          <View style={styles.containerHorizontal}>
             <Image source={require('./../../assets/images/home/banner_01.png')} resizeMode={'contain'}
                    style={styles.carouselImg}/>
           </View>
-          <View
-            style={styles.containerHorizontal}
-          >
+          <View style={styles.containerHorizontal}>
             <Image source={require('./../../assets/images/home/banner_01.png')} resizeMode={'contain'}
                    style={styles.carouselImg}/>
           </View>
