@@ -4,12 +4,16 @@ import {
   setLoginStatus,
   setLoginInfo
 } from '../actions/common'
+import { AppState } from 'react-native'
 import { AsetAllBalance } from '../actions/member'
 import NavigationService from '../navigation/NavigationService'
 
 class GlobalComp extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      appState: AppState.currentState
+    }
     this.loopTimer = null
   }
 
@@ -21,7 +25,7 @@ class GlobalComp extends React.Component {
       }, 3 * 1000)
     }
     if (!nextProps.isLogin && this.props.isLogin) {
-      NavigationService.navigate('Login')
+      NavigationService.navigate('AppLoading')
     }
   }
 
@@ -33,12 +37,6 @@ class GlobalComp extends React.Component {
     //   // this.isHasCheck = true
     //   return
     // }
-    // 预防 渲染视图后，频繁切换
-    // if (type === 'visibility' && !this.isHasCheck) {
-    //   return
-    // }
-    // 初始化
-    // this.isHasCheck = false
     // console.log('loop global', new Date().getTime())
     this.props.AsetAllBalance((res) => {
       if (res.code === 0) {
@@ -47,6 +45,22 @@ class GlobalComp extends React.Component {
         }, 30 * 1000)
       }
     })
+  }
+  
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange)
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange)
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    console.log(nextAppState)
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground!')
+    }
+    this.setState({appState: nextAppState})
   }
 
   render() {

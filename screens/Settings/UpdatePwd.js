@@ -71,7 +71,7 @@ class UpdatePwd extends React.Component {
                 loginOut().then((res) => {
                   if (res.code === 0) {
                     this.props.setLoginStatus(false)
-                    // this.props.navigation.navigate('Login')
+                    // this.props.navigation.navigate('AppLoading')
                   }
                 })
               } else {
