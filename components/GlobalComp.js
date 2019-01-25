@@ -17,7 +17,7 @@ class GlobalComp extends React.Component {
     // console.log('nextprops ===', nextProps)
     if (nextProps.loginInfo.acc) {
       this.loopTimer = setTimeout(() => {
-        this.loopCheckLogin(nextProps.loginInfo.acc.user.userId)
+        this.loopCheckLogin()
       }, 3 * 1000)
     }
     if (!nextProps.isLogin && this.props.isLogin) {
@@ -26,7 +26,7 @@ class GlobalComp extends React.Component {
   }
 
   // 登录状态检测
-  loopCheckLogin = (userId) => {
+  loopCheckLogin = () => {
     clearTimeout(this.loopTimer)
     // 增加： 当切非当前页面，不再轮询，储存监听
     // if (!this.visibility) {
