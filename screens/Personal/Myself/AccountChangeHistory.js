@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import UIListView from '../../../components/UIListView'
-import { Flex, Button } from '@ant-design/react-native';
-import { connect } from "react-redux";
-import {toFixed4, formatTime} from '../../../utils/MathUtils'
+import { Flex, Button } from '@ant-design/react-native'
+import { connect } from 'react-redux'
+import { toFixed4, formatTime } from '../../../utils/MathUtils'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
 
@@ -19,29 +19,36 @@ class FlatListItem extends PureComponent {
         <Flex justify="space-between">
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>
             <Text>操作金额：</Text>
-            <Text style={{color: item["changeAmount"] > 0 ? 'red' : 'green'}}>{toFixed4(item["changeAmount"])}</Text>
+            <Text style={{color: item['changeAmount'] > 0 ? 'red' : 'green'}}>{toFixed4(item['changeAmount'])}</Text>
           </Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item["description"]}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item['description']}</Text>
         </Flex>
         <Flex justify="space-between">
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作日期：{formatTime(item["operateTime"])}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作日期：{formatTime(item['operateTime'])}</Text>
         </Flex>
         <Flex justify="space-between">
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作前金额：{toFixed4(item["oldBalance"])}</Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作后金额：{toFixed4(item["newBalance"])}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作前金额：{toFixed4(item['oldBalance'])}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作后金额：{toFixed4(item['newBalance'])}</Text>
         </Flex>
       </View>
     )
   }
 
 }
+
 class PersonalScreen extends React.Component {
-  static navigationOptions = ({ navigation, navigationOptions }) => {
+  static navigationOptions = ({navigation, navigationOptions}) => {
     return {
       title: '个人账变记录',
-      headerRight: <Button style={{marginRight: 14}} type="ghost" size="small" onPress={navigation.getParam('onSearch')}>
+      headerRight: <Button style={{marginRight: 14}} type="ghost" size="small"
+                           onPress={navigation.getParam('onSearch')}>
         <Text style={{color: '#fff'}}>查询</Text>
       </Button>
+    }
+  }
+
+  componentWillUnmount() {
+    this.state = () => () => {
     }
   }
 
@@ -52,7 +59,7 @@ class PersonalScreen extends React.Component {
       api: '/frontReport/capitalBase/queryBalanceLogRecords',
       params: {
         userId: props.loginInfo['acc'].user.userId,
-        accountId: props.userBalanceInfo["CNY"]['ye'].accountId,
+        accountId: props.userBalanceInfo['CNY']['ye'].accountId,
         startTime: '',
         endTime: '',
         pageNumber: 1,
@@ -88,10 +95,11 @@ class PersonalScreen extends React.Component {
     )
   }
 
-  onPressItem = (type, item) => {}
+  onPressItem = (type, item) => {
+  }
 
-  getUserBalanceIds () {
-    let obj = this.props.userBalanceInfo["CNY"]
+  getUserBalanceIds() {
+    let obj = this.props.userBalanceInfo['CNY']
     let arr = []
     for (let prop in obj) {
       if (obj.hasOwnProperty(prop)) {
@@ -114,12 +122,14 @@ class PersonalScreen extends React.Component {
         }
       }
     }
-    let rst =  arr.filter(item => { return item !== undefined && item !== null && item !== '' })
+    let rst = arr.filter(item => {
+      return item !== undefined && item !== null && item !== ''
+    })
     return rst
   }
 
   componentDidMount() {
-    this.props.navigation.setParams({ onSearch: this.onSearch })
+    this.props.navigation.setParams({onSearch: this.onSearch})
   }
 
   render() {
@@ -169,6 +179,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, props) => {
   let {loginInfo} = state.common
   let {userBalanceInfo, activeAccount} = state.member
-  return {loginInfo,userBalanceInfo, activeAccount}
+  return {loginInfo, userBalanceInfo, activeAccount}
 }
 export default connect(mapStateToProps)(PersonalScreen)
