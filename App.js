@@ -13,6 +13,7 @@ import initReactFastClick from 'react-fastclick'
 import LinesPanel from './components/LinesPanel'
 // import HbPacket from './components/HbPacket'
 import AudioPlay from './components/AudioPlay'
+import GlobalComp from './components/GlobalComp'
 
 initReactFastClick()
 
@@ -34,6 +35,7 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <Provider2>
+          <GlobalComp/>
           <LinesPanel/>
           <AudioPlay/>
           {/*<HbPacket/>*/}

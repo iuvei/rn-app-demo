@@ -61,7 +61,7 @@ class LinesPanel extends Component {
       if(res.code === 0) {
         Toast.success('设置成功！', 0.3)
       } else if(res.code === -1) {
-        NavigationService.navigate('Login')
+        // NavigationService.navigate('Login')
         this.props.setLoginStatus(false)
         Toast.info('设置成功！需要重新登录', 0.3)
       }
