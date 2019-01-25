@@ -63,6 +63,7 @@ class AppLoadingScreen extends React.Component {
         if (res.code === 0) {
           this.props.setLoginStatus(res.code === 0)
           this.props.setLoginInfo(res.data)
+          this.props.setUserRebate(res.data.acc.user.userId)
         }
       })
     ])
@@ -71,11 +72,11 @@ class AppLoadingScreen extends React.Component {
   // 可以延迟加载的资源
   _loadResourcesAsyncEvent = async () => {
     let {loginInfo} = this.props
-    let rebateInfo = await getUserRebateInfo({userId: loginInfo.userId})
+    // let rebateInfo = await getUserRebateInfo({userId: loginInfo.userId})
     let balance = await getUserBalance({userId: loginInfo.userId})
-    if (rebateInfo.code === 0) {
-      this.props.setUserRebate(rebateInfo.data)
-    }
+    // if (rebateInfo.code === 0) {
+    //   this.props.setUserRebate(rebateInfo.data)
+    // }
     if (balance.code === 0) {
       this.props.setUserBalance(balance.data.banlance.CNY)
     }

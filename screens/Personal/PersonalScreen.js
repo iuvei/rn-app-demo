@@ -9,6 +9,7 @@ import Headers from './../../components/Header'
 import { AsetAllBalance } from "../../actions/member"
 import { WebBrowser } from 'expo'
 import { AsetServiceUrl } from '../../actions/common'
+import { styleUtil, stylesUtil } from '../../utils/ScreenUtil'
 
 const REBATE_TYPE = {
   0: '彩票返点', 1: '快乐彩返点', 2: '百家乐彩票返点'
@@ -25,21 +26,20 @@ const WATER_TYPE = {
 
 class PersonalScreen extends React.Component {
 
-
   static navigationOptions = ({navigation, navigationOptions}) => {
     const {params} = navigation.state
     return {
       header: <Headers
       title={'个人中心'}
       leftContent={
-        <Text style={{fontSize: 16, color: '#fff'}}>
+        <Text style={styleUtil({fontSize: 16, color: '#fff'})}>
           <Text onPress={() => params.openKefu()}>  客服   </Text>
         </Text>
       }
       rightContent={
-        <Text style={{fontSize: 16, color: '#fff'}}>
-          <Text onPress={() => params.changeTextFun('Broadcast')} style={{paddingHorizontal: 16}}>公告  </Text>
-          <Text onPress={() => params.changeTextFun('Mailbox')} style={{paddingHorizontal: 16}}>信箱</Text>
+        <Text style={styleUtil({fontSize: 16, color: '#fff'})}>
+          <Text onPress={() => params.changeTextFun('Broadcast')} style={styleUtil({paddingHorizontal: 16})}>公告  </Text>
+          <Text onPress={() => params.changeTextFun('Mailbox')} style={styleUtil({paddingHorizontal: 16})}>信箱</Text>
         </Text>
       }
     />
@@ -224,47 +224,46 @@ class PersonalScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ImageBackground resizeMode='cover' source={require('../../assets/images/personal/bg0.png')}
-                         style={{height: 200}}>
+                         style={styleUtil({height: 200})}>
           <View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around', height: 90, alignItems: 'center'}}>
+            <View style={styleUtil({flexDirection: 'row', justifyContent: 'space-around', height: 90, alignItems: 'center'})}>
               <Image source={require('../../assets/images/personal/avatar.png')}
-                     style={{width: 80, height: 80}}></Image>
+                     style={styleUtil({width: 80, height: 80})}></Image>
               <View>
                 <Text>{loginInfo.acc.user.loginName}</Text>
                 <Text>余额： {userBalanceInfoYE.currentBalance}元</Text>
               </View>
-              <View style={{alignItems: 'flex-end'}}>
-                <Button style={{height: 32, backgroundColor: '#0f81de', borderRadius: 15}}
-                        onPress={() => this.changeRoute('RebateDetails')}>
-                  <Text style={{color: 'white', fontSize: 14}}>彩票返点:{lotteryRebate}</Text>
+              <View style={styleUtil({alignItems: 'flex-end'})}>
+                <Button style={styleUtil({height: 32, backgroundColor: '#0f81de', borderRadius: 15})}>
+                  <Text style={styleUtil({color: 'white', fontSize: 14})}>彩票返点:{lotteryRebate}</Text>
                 </Button>
-                <Text>更多返点></Text>
+                <Text onPress={() => this.changeRoute('RebateDetails')}>更多返点></Text>
               </View>
             </View>
-            <View style={{
+            <View style={styleUtil({
               flexDirection: 'row',
               justifyContent: 'space-around',
               alignItems: 'center',
               height: 55,
               borderBottomWidth: 1,
               borderBottomColor: '#0c7edb'
-            }}>
-              <View style={{width: 200, borderRightWidth: 1, borderRightColor: '#0c7edb', alignItems: 'center'}}>
+            })}>
+              <View style={styleUtil({width: 200, borderRightWidth: 1, borderRightColor: '#0c7edb', alignItems: 'center'})}>
                 <Text>{userBalanceInfoYE.canWithdrawBalance}元</Text>
                 <Text>可提金额</Text>
               </View>
-              <View style={{width: 200, alignItems: 'center'}}>
+              <View style={styleUtil({width: 200, alignItems: 'center'})}>
                 <Text>{userBalanceInfoFD.currentBalance}元</Text>
                 <Text>返点金额</Text>
               </View>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 55}}>
+            <View style={styleUtil({flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 55})}>
               {
                 list.map((item, index) => {
                   return (
                     <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
-                      <View key={index} style={{height: 45}}>
-                        <Image resizeMode='contain' source={item.src} style={{width: 28, height: 26}}></Image>
+                      <View key={index} style={styleUtil({height: 45})}>
+                        <Image resizeMode='contain' source={item.src} style={styleUtil({width: 28, height: 26})}></Image>
                         <Text style={{color: '#0c7edb'}}>{item.name}</Text>
                       </View>
                     </TouchableHighlight>
@@ -280,8 +279,8 @@ class PersonalScreen extends React.Component {
               <ScrollView style={styles.agent}>
                 <Grid data={order} columnNum={4} hasLine={false} renderItem={(el, index) => {
                   return (
-                    <View style={{alignItems: 'center', width: 90}}>
-                      <Image source={el.src} style={{width: 50, height: 50}}></Image>
+                    <View style={styleUtil({alignItems: 'center', width: 90})}>
+                      <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
                       <Text>{el.name}</Text>
                     </View>
                   )
@@ -292,8 +291,8 @@ class PersonalScreen extends React.Component {
               <ScrollView style={styles.agent}>
                 <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
                   return (
-                    <View style={{alignItems: 'center', width: 90}}>
-                      <Image source={el.src} style={{width: 50, height: 50}}></Image>
+                    <View style={styleUtil({alignItems: 'center', width: 90})}>
+                      <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
                       <Text>{el.name}</Text>
                     </View>
                   )
@@ -307,14 +306,14 @@ class PersonalScreen extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(stylesUtil({
   container: {
     flex: 1,
   },
   agent: {
     padding: 10
   }
-})
+}))
 
 const mapStateToProps = (state) => {
   let {rebateInfo, loginInfo, balanceInfo, serviceUrl} = state.common

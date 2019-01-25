@@ -6,7 +6,8 @@ import {
   getUserSecurityLevel,
   getUserSecurityConfig,
   getUserPlatformInfo,
-  coustomerService
+  coustomerService,
+  getUserRebateInfo
 } from "../api/basic";
 import { createAction } from "redux-actions";
 import { AsyncStorage } from "react-native";
@@ -145,12 +146,15 @@ export const queryActivity = createAction(
   }
 )
 
-export const setUserRebate = (data) => {
-  return {
-    type: 'SET_USER_REBATE',
-    payload: data
-  }
-}
+export const setUserRebate = function(userId) {
+  return createAction(
+    'SET_USER_REBATE',
+    async () => {
+      let res = await getUserRebateInfo({userId})
+      return res.code === 0 ? res.data : []
+    }
+  )
+}()
 
 export const setUserBalance = (data) => {
   return {
