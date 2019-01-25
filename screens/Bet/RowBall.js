@@ -276,8 +276,8 @@ class RowBall extends React.Component {
               <View style={styles.SliderView}>
                 <Slider
                   // disabled
-                  // defaultValue={rebateMode}
-                  value={rebateMode}
+                  defaultValue={rebateMode}
+                  // value={rebateMode}
                   minimumValue={lotterMinMode}
                   maximumValue={curMaxMode}
                   step={2}
