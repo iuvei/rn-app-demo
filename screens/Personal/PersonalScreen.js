@@ -25,7 +25,6 @@ const WATER_TYPE = {
 
 class PersonalScreen extends React.Component {
 
-
   static navigationOptions = ({navigation, navigationOptions}) => {
     const {params} = navigation.state
     return {
@@ -234,11 +233,10 @@ class PersonalScreen extends React.Component {
                 <Text>余额： {userBalanceInfoYE.currentBalance}元</Text>
               </View>
               <View style={{alignItems: 'flex-end'}}>
-                <Button style={{height: 32, backgroundColor: '#0f81de', borderRadius: 15}}
-                        onPress={() => this.changeRoute('RebateDetails')}>
+                <Button style={{height: 32, backgroundColor: '#0f81de', borderRadius: 15}}>
                   <Text style={{color: 'white', fontSize: 14}}>彩票返点:{lotteryRebate}</Text>
                 </Button>
-                <Text>更多返点></Text>
+                <Text onPress={() => this.changeRoute('RebateDetails')}>更多返点></Text>
               </View>
             </View>
             <View style={{
