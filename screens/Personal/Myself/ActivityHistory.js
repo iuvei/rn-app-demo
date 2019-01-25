@@ -13,6 +13,7 @@ import UIListView from '../../../components/UIListView'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
 import { ActivityStatus } from '../../../data/options'
+import { formatTime } from '../../../utils/MathUtils'
 
 const TableRow = 20
 
@@ -33,11 +34,13 @@ class FlatListItem extends React.PureComponent {
         <View style={{padding: 10, backgroundColor: '#fff', position: 'relative'}}>
           <Text style={{fontSize: 15, lineHeight: 24}}>{activityName}</Text>
           <Flex>
-            <Text style={{flex: 1, color: '#666', fontSize: 14, lineHeight: 22}}>活动时间: <Text style={{color: '#1689e6'}}>{activitytTime}</Text></Text>
+            <Text style={{flex: 1, color: '#666', fontSize: 14, lineHeight: 22}}>当前限制: <Text style={{color: '#1689e6'}}>{nowConsumeQuota}</Text></Text>
             <Text style={{width: 150, color: '#666', fontSize: 14, lineHeight: 22, textAlign: 'right'}}>{statusObj.label}</Text>
           </Flex>
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>活动参与金额: <Text style={{color: '#1689e6'}}>{activityBonus}</Text></Text>
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>当前限制: <Text style={{color: '#1689e6'}}>{nowConsumeQuota}</Text></Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>奖金: <Text style={{color: '#1689e6'}}>{bonus}</Text></Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>总流水限制: <Text style={{color: '#1689e6'}}>{allConsumeQuota}</Text></Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}} note>活动时间: <Text style={{color: '#1689e6'}}>{formatTime(activitytTime)}</Text></Text>
         </View>
       </TouchableHighlight>
     )

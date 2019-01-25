@@ -12,6 +12,10 @@ import {
   Toast
 } from '@ant-design/react-native'
 import { modifyNickName } from '../../api/member'
+import { setLoginInfo } from '../../actions/common'
+import {
+  getLoginUser
+} from '../../api/basic'
 
 class UpdateNickname extends React.Component {
   static navigationOptions = {
@@ -41,7 +45,11 @@ class UpdateNickname extends React.Component {
       modifyNickName({nickName}).then(res => {
         if (res.code === 0) {
           Toast.success(res.message || '修改昵称成功')
-          // this.AgetUserInfo()
+          getLoginUser().then(res => {
+            if (res.code === 0) {
+              this.props.setLoginInfo(res.data)
+            }
+          })
         } else {
           Toast.fail(res.message || '网络异常，请稍后重试')
         }
@@ -95,7 +103,9 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    setLoginInfo: data => dispatch(setLoginInfo(data))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateNickname)
