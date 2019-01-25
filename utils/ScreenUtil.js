@@ -139,7 +139,7 @@ export function ifIphoneX(iphoneXStyle, iosStyle = {}, androidStyle = {}) {
 // 单个 Style
 export const styleUtil = (StyleObj = {}) => {
   let WIDTH_NAME = ['width', 'paddingHorizontal', 'paddingLeft', 'paddingRight',
-    'marginHorizontal', 'marginLeft', 'marginRight']
+    'marginHorizontal', 'marginLeft', 'marginRight', 'norHeight']
   let HEIGHT_NAME = ['height', 'paddingVertical', 'paddingTop', 'paddingBottom',
     'marginVertical', 'marginTop', 'marginBottom', 'lineHeight']
 
@@ -151,7 +151,12 @@ export const styleUtil = (StyleObj = {}) => {
       return
     }
     if (WIDTH_NAME.includes(styleItem)) {
-      StyleObj[styleItem] = scaleSize(StyleObj[styleItem])
+      if (styleItem === 'norHeight') {
+        StyleObj['height'] = scaleSize(StyleObj[styleItem])
+        delete StyleObj['norHeight']
+      } else {
+        StyleObj[styleItem] = scaleSize(StyleObj[styleItem])
+      }
     }
     if (HEIGHT_NAME.includes(styleItem)) {
       StyleObj[styleItem] = scaleHeight(StyleObj[styleItem])

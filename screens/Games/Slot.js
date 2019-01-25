@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react'
-import {View, Text, ImageBackground, StyleSheet} from 'react-native'
-import {Flex, Button, Toast} from '@ant-design/react-native'
-import {getBjlComputerGameType, bjlGameLogin, bjlGameTry} from './../../api/lottery'
-import { AsetUserPlatfrom } from "../../actions/common";
-import { connect } from "react-redux";
+import { View, Text, ImageBackground, StyleSheet } from 'react-native'
+import { Flex, Button, Toast } from '@ant-design/react-native'
+import { getBjlComputerGameType, bjlGameLogin, bjlGameTry } from './../../api/lottery'
+import { AsetUserPlatfrom } from '../../actions/common'
+import { connect } from 'react-redux'
+import { Video } from 'expo'
 import UIListView from './../../components/UIListView'
+import { styleUtil } from '../../utils/ScreenUtil'
 
 class FlatListItem extends PureComponent {
   constructor(props) {
@@ -15,7 +17,7 @@ class FlatListItem extends PureComponent {
         2: require('../../assets/images/slot/slot2.png'),
         3: require('../../assets/images/slot/slot3.png'),
         4: require('../../assets/images/slot/slot4.png'),
-        5: require('../../assets/images/slot/slot2.png'),
+        5: require('../../assets/images/slot/slot2.png')
       }
     }
   }
@@ -42,12 +44,12 @@ class FlatListItem extends PureComponent {
     let {item, index} = this.props
     return (
       <Flex.Item onPress={() => this.props.onPressFunc(item)}>
-        <ImageBackground source={imgs[index%5 + 1]} resizeMode= 'contain' style={styles.card}>
+        <ImageBackground source={imgs[index % 5 + 1]} resizeMode='contain' style={styles.card}>
           <View style={styles.footer}>
             <Text style={{color: 'white'}}>{item.gameNameCn}</Text>
             <Button size={'small'} onPress={() => this.loginGame(item)}>进入游戏</Button>
             {/*{*/}
-              {/*!item.isTry ? <Button size={'small'}>立即试玩</Button> : <Button size={'small'}>进入游戏</Button>*/}
+            {/*!item.isTry ? <Button size={'small'}>立即试玩</Button> : <Button size={'small'}>进入游戏</Button>*/}
             {/*}*/}
           </View>
         </ImageBackground>
@@ -59,7 +61,7 @@ class FlatListItem extends PureComponent {
 
 class Slot extends React.Component {
   constructor(props) {
-    super (props)
+    super(props)
     this.state = {
       KeyName: 'bjlComputerGameList',
       api: '/user/bjl/getBjlComputerGameList',
@@ -78,7 +80,7 @@ class Slot extends React.Component {
         '0003': 'BBIN',
         '0004': 'AG',
         '0010': 'UC8'
-      },
+      }
     }
   }
 
@@ -98,10 +100,22 @@ class Slot extends React.Component {
 
   }
 
-  render () {
+  render() {
     let {api, params, KeyName} = this.state
     return (
       <View style={styles.container}>
+        <View>
+          <Video
+            source={{uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'}}
+            rate={1.0}
+            volume={1.0}
+            isMuted={false}
+            resizeMode="cover"
+            shouldPlay
+            isLooping
+            style={styleUtil({width: '100%', height: 166})}
+          />
+        </View>
         <UIListView
           ref={ref => this.bjlComputerGameList = ref}
           api={api}
@@ -125,23 +139,23 @@ class Slot extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#f0f0f0'
   },
   card: {
     height: 180,
-    marginRight:3,
-    marginLeft:3,
+    marginRight: 3,
+    marginLeft: 3,
     justifyContent: 'flex-end'
   },
   footer: {
     height: 40,
     flexDirection: 'row',
     justifyContent: 'space-around'
-  },
+  }
 })
 
 const mapStateToProps = (state, props) => {
-  let { userPlatformInfo, userId } = state.common
+  let {userPlatformInfo, userId} = state.common
   return {
     userId,
     userPlatformInfo
@@ -150,7 +164,9 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    AsetUserPlatfrom: (data) => { dispatch(AsetUserPlatfrom(data)) }
+    AsetUserPlatfrom: (data) => {
+      dispatch(AsetUserPlatfrom(data))
+    }
   }
 }
 

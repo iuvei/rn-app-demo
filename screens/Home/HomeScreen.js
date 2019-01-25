@@ -13,7 +13,6 @@ import {
 } from 'react-native'
 import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native'
 import { connect } from 'react-redux'
-import { Video } from 'expo'
 import Header from './../../components/Header'
 import {
   setCustomizeLottery,
@@ -42,7 +41,7 @@ class HomeScreen extends React.Component {
       LotArray: [{
         'countExcept': 0,
         'isOuter': 0,
-        'lotterCode': 'cqssc',
+        'lotterCode': 'txffc',
         'lotterLabel': 0,
         'lotterName': '重庆时时彩',
         'lotterNumber': 5,
@@ -124,7 +123,7 @@ class HomeScreen extends React.Component {
     this._initHotLottery()
     this.props.navigation.setParams({changeTextFun: this.changeTextFun})
     this.props.queryActivity()
-    // this.props.navigation.push('Bet', this.state.LotArray[0])
+    this.props.navigation.push('Bet', this.state.LotArray[0])
   }
 
   componentWillMount() {
@@ -206,18 +205,6 @@ class HomeScreen extends React.Component {
           infinite
           afterChange={this.onHorizontalSelectedIndexChange}
         >
-          <View style={styles.containerHorizontal}>
-            <Video
-              source={{uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'}}
-              rate={1.0}
-              volume={1.0}
-              isMuted={false}
-              resizeMode="cover"
-              shouldPlay
-              isLooping
-              style={{width: '100%', height: '100%'}}
-            />
-          </View>
           <View style={styles.containerHorizontal}>
             <Image source={require('./../../assets/images/home/banner_01.png')} resizeMode={'contain'}
                    style={styles.carouselImg}/>

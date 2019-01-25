@@ -312,8 +312,10 @@ class RowBall extends React.Component {
                 min={1}
                 style={styles.stepper}
                 defaultValue={multiple}
-                onChange={multiple => setBuyInfo({multiple})}
-                inputStyle={{color: '#0a7cda'}}
+                onChange={multiple => {
+                  setBuyInfo({multiple: multiple || 1})
+                }}
+                inputStyle={{color: '#0a7cda', width: '100%'}}
               />
             </View>
             <View style={styles.ModeView}>
@@ -323,7 +325,11 @@ class RowBall extends React.Component {
                     key={m.money}
                     type={m.money === model ? 'primary' : 'ghost'}
                     onPress={() => setBuyInfo({model: m.money})}
-                    size="small" style={styles.ModeButton}>{m.name}</Button>
+                    size="small" style={styles.ModeButton}>
+                    <Text style={styles.modeText}>
+                      {m.name}
+                    </Text>
+                  </Button>
                 )
               }
             </View>
@@ -444,7 +450,11 @@ const styles = StyleSheet.create(stylesUtil({
   RebateView: {width: 100},
   RebateText: {fontSize: 16},
   BonusText: {color: '#333', paddingHorizontal: 10},
-  features: {flexDirection: 'row', paddingHorizontal: 10},
+  features: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    justifyContent: 'center'
+  },
   StepperView: {width: 100},
   stepper: {
     borderRadius: 5
@@ -457,6 +467,7 @@ const styles = StyleSheet.create(stylesUtil({
     width: 28, height: 28,
     borderRadius: 4, marginLeft: 0, marginRight: 2
   },
+  modeText: {fontSize: 12},
   chaseView: {width: 80},
   chaseButton: {height: 28, borderRadius: 4},
   BuyInfoView: {
