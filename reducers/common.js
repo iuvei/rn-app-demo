@@ -42,45 +42,7 @@ const initialState = {
   count: 1,
   sysSortLottery: [],
   syswpSortLottery: [],
-  usualLottery: [
-    {
-      isOuter: 0,
-      lotterCode: 'cqssc',
-      lotterName: '重庆时时彩',
-      realCategory: 'ssc',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'sdsyxw',
-      lotterName: '山东11选5',
-      realCategory: 'syx5',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'bjpks',
-      lotterName: '北京PK拾',
-      realCategory: 'pk10',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'bjklb',
-      lotterName: '北京快乐8',
-      realCategory: 'kl8',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'xdlks',
-      lotterName: '新德里快3',
-      realCategory: 'k3',
-      status: 0
-    }, {
-      isOuter: 0,
-      lotterCode: 'jzdklb',
-      lotterName: '济州岛快乐8',
-      realCategory: 'kl8',
-      status: 0
-    }
-  ],
+  usualLottery: [],
   userId: '',
   sysActivities: [], // 活动信息列表
   systemNews: [],  // 系统公告
