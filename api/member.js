@@ -187,7 +187,7 @@ export const bindGoogleAuto = (data) => {
   })
 }
 
-export const googleAuthImg = `${prependUrl}/user/generateGaImage?platformKey=${platformKey}`
+export const googleAuthImg = `${prependUrl}/qm/user/generateGaImage?platformKey=${platformKey}`
 
 // 获取谷歌验证密钥
 export const getGaKey = () => {
