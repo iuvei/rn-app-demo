@@ -138,7 +138,7 @@ class PersonalScreen extends React.Component {
       ],
       lotteryRebate: 0
     }
-    props.AsetAllBalance({userId: props.loginInfo.acc.user.userId})
+    props.AsetAllBalance()
   }
 
   componentDidMount () {

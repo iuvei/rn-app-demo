@@ -96,8 +96,9 @@ export const AsetSubUserInfo = (data) => {
   }
 }
 
-export const AsetAllBalance = ({userId, cb}) => {
+export const AsetAllBalance = ({cb}) => {
   return (dispatch, getState) => {
+    let {common: {userId}} = getState()
     getUserBalance({userId}).then(res => {
       if (res.code === 0) {
         dispatch(AgetUserBalance(res.data.banlance))

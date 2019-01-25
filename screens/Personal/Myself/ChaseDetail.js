@@ -170,7 +170,7 @@ class ChaseDetail extends React.Component {
             }))
             // this.AsetCancelOrder({time: new Date().getTime(), index: index})
             setTimeout(() => {
-              // this.props.AsetAllBalance({userId: this.props.loginInfo.acc.user.userId})
+              // this.props.AsetAllBalance()
             }, 50)
           } else {
             Toast.fail(res.message || '网络异常')
