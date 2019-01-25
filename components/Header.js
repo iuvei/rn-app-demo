@@ -4,19 +4,18 @@ import {
   StyleSheet,
   Image,
   Text,
-  View,
+  View
 } from 'react-native'
+import { stylesUtil } from '../utils/ScreenUtil'
 
 export default class Header extends PureComponent {
 
   constructor(props) {
-    super(props);
-    this.state = {
-
-    }
+    super(props)
+    this.state = {}
   }
 
-  render(){
+  render() {
     /**
      * 参数
      * @param hideLeft optional 是否隐藏left back-btn
@@ -26,20 +25,23 @@ export default class Header extends PureComponent {
      * @param rightContent optional 右侧内容
      * @param navigation 必传
      */
-    const { hideLeft, title, bg, color, rightContent, leftContent } = this.props
-    return(
+    const {hideLeft, title, bg, color, rightContent, leftContent} = this.props
+    return (
       <View style={[styles.headerContainer, bg || null]}>
         {
           leftContent ? leftContent :
-            (!hideLeft && <TouchableOpacity activeOpacity={0.8} style={{flexDirection: 'row', alignItems:'center', flex: 1}} onPress={() => this.props.navigation.goBack()} >
-              <Image source={require('./../assets/images/i_goback.png')} resizeMode={'contain'} style={styles.headerLeftImg} />
-              <Text style={{color: 'white', fontSize: 16}}>{this.props.leftText}</Text>
-            </TouchableOpacity>)
+            (!hideLeft &&
+              <TouchableOpacity activeOpacity={0.8} style={{flexDirection: 'row', alignItems: 'center', flex: 1}}
+                                onPress={() => this.props.navigation.goBack()}>
+                <Image source={require('./../assets/images/i_goback.png')} resizeMode={'contain'}
+                       style={styles.headerLeftImg}/>
+                <Text style={{color: 'white', fontSize: 16}}>{this.props.leftText}</Text>
+              </TouchableOpacity>)
         }
         {title ?
-        <View style={styles.headerCenterContainer}>
-          <Text style={[styles.headerCenterText, color || null]}>{title || this.props.centerText}</Text>
-        </View> :
+          <View style={styles.headerCenterContainer}>
+            <Text style={[styles.headerCenterText, color || null]}>{title || this.props.centerText}</Text>
+          </View> :
           <View style={styles.headerCenterContainer}>
             <Image source={require('./../assets/images/logo.png')} resizeMode={'contain'} style={styles.logo}/>
           </View>
@@ -50,7 +52,7 @@ export default class Header extends PureComponent {
           }
         </View>
         {
-          !hideLeft && <View style={{height: 25, width: 25, justifyContent: 'center', flex: 1, zIndex:1} }/>
+          !hideLeft && <View style={{height: 25, width: 25, justifyContent: 'center', flex: 1, zIndex: 1}}/>
         }
       </View>
     )
@@ -58,22 +60,22 @@ export default class Header extends PureComponent {
 }
 
 Header.defaultProps = {
-  leftText:'返回',
-  centerText:'天祥国际',
+  leftText: '返回',
+  centerText: '天祥国际'
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(stylesUtil({
   headerContainer: {
     flexDirection: 'row',
     backgroundColor: '#016fca',
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 70,
-    paddingTop: 20,
+    paddingTop: 20
   },
   headerLeftImg: {
-    width:25,
-    height:25,
+    width: 25,
+    height: 25
   },
   logo: {
     width: 40
@@ -83,17 +85,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 36,
-    flex: 4,
+    flex: 4
   },
   headerCenterText: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#f8f8f8',
+    color: '#f8f8f8'
   },
   rightContainer: {
     position: 'absolute',
     right: 10,
     zIndex: 10,
-    bottom: 15,
+    bottom: 15
   }
-})
+}))

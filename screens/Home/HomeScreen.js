@@ -239,7 +239,8 @@ class HomeScreen extends React.Component {
                   <View style={styles.hotItem} key={index}>
                     <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
                       <View>
-                        <Image source={getIconName(item.categoryCode)} resizeMode={'contain'} style={styles.hotItemImg}/>
+                        <Image source={getIconName(item.categoryCode)} resizeMode={'contain'}
+                               style={styles.hotItemImg}/>
                       </View>
                       <View style={styles.hotItemCenter}>
                         <Text style={styles.hotItemTitle}>{item.lotterName}</Text>
@@ -253,7 +254,8 @@ class HomeScreen extends React.Component {
                                 <View key={i} style={styles.hotItemBall}><Text
                                   style={styles.hotItemLgText}>{v}</Text></View>
                                 : codeList.length < 11 ?
-                                <View key={i} style={styles.hotItemMidBall}><Text style={styles.hotItemMidText}>{v}</Text></View>
+                                <View key={i} style={styles.hotItemMidBall}><Text
+                                  style={styles.hotItemMidText}>{v}</Text></View>
                                 : <View key={i} style={styles.hotItemSmallBall}><Text
                                   style={styles.hotItemSmallText}>{v}</Text></View>)
                           }
