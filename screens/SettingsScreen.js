@@ -51,11 +51,11 @@ class SettingsScreen extends React.Component {
           if (res.code === 0) {
             Toast.success('退出成功')
             this.props.setLoginStatus(false)
-            // this.props.navigation.navigate('Login')
+            // this.props.navigation.navigate('AppLoading')
           } else {
             if (res.code === -200012 || res.code === -200010 || res.code === -200011 || res.code === -200014 || res.code === -20000) {
               this.props.setLoginStatus(false)
-              // this.props.navigation.navigate('Login')
+              // this.props.navigation.navigate('AppLoading')
             } else {
               Toast.fail('退出失败')
             }

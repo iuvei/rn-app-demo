@@ -400,13 +400,16 @@ class RechargeScreen extends React.Component {
           </List.Item>
         </List>
         <View style={styleUtil({height: 22, backgroundColor: '#f0f0f0'})}></View>
-        <List>
-          <List.Item
-            extra={rechargeFee}
-          >
-            手续费
-          </List.Item>
-        </List>
+        {
+          activeAccount.feeRate > 0 &&
+          <List>
+            <List.Item
+              extra={rechargeFee}
+            >
+              手续费
+            </List.Item>
+          </List>
+        }
         <View style={styleUtil({paddingLeft: 15, paddingTop: 30, paddingRight: 15})}>
           <Button type="primary" loading={isLoading} onPress={this.submitFunc}>下一步</Button>
         </View>
