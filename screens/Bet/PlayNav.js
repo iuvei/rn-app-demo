@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   View, Text,
-  StyleSheet, ScrollView
+  StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native'
 import {
   Flex
@@ -91,14 +91,15 @@ class PlayNav extends React.Component {
                 {
                   playTabs.length > 0 ? playTabs.map((tab, index) => {
                     return (
-                      <View
+                      <TouchableOpacity
                         key={index}
+                        activeOpacity={0.7}
+                        onPress={() => InitBetView(tab)}
                         style={[styles.btnDefault, tab.code === activePlay.code ? styles.btnActive : '']}>
                         <Text
                           style={[styles.btnDefaultText, tab.code === activePlay.code ? styles.btnActiveText : '']}
-                          numberOfLines={1}
-                          onPress={() => InitBetView(tab)}>{tab.name}</Text>
-                      </View>
+                          numberOfLines={1}>{tab.name}</Text>
+                      </TouchableOpacity>
                     )
                   }) : <Text style={{textAlign: 'center', lineHeight: 40}}>正在加载中···</Text>
                 }

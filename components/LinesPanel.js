@@ -57,7 +57,6 @@ class LinesPanel extends Component {
 
   checkLine = (lineSwitchParam) => {
     checkLineSwitchParam({lineSwitchParam}).then(res => {
-      console.log(res)
       if(res.code === 0) {
         Toast.success('设置成功！', 0.3)
       } else if(res.code === -1) {
