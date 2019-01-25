@@ -95,7 +95,7 @@ class AppLoadingScreen extends React.Component {
   }
 
   // 登录状态检测
-  loopCheckLogin () {
+  loopCheckLogin = () => {
     clearTimeout(this.loopTimer)
     // 增加： 当切非当前页面，不再轮询，储存监听
     // if (!this.visibility) {
