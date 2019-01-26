@@ -43,7 +43,7 @@ class ChaseDetail extends React.Component {
         {key: 'batchNo', title: '批次号'},
         {key: 'createTime', title: '投注时间'},
         {key: 'lotterName', title: '游戏名称'},
-        // {key: 'openCode', title: '开奖号码'},
+        {key: 'openCode', title: '开奖号码'},
         {key: 'castCodes', title: '投注号码'},
         {key: 'ruleName', title: '玩法名称'},
         {key: 'orderIssue', title: '起始奖期 '},
