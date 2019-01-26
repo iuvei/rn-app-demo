@@ -57,7 +57,8 @@ class ChaseDetail extends React.Component {
         {key: 'castAmount', title: '追号金额'},
         {key: 'castAmountEd', title: '已完成金额'},
         {key: 'castAmountCancel', title: '已取消金额'},
-        {key: 'rewardBonus', title: '中奖金额'}
+        {key: 'rewardBonus', title: '中奖金额'},
+        {key: 'rewardAndRebate', title: '奖金/返点'}
       ],
       columns: [
         {key: 'orderIssue', title: '期号', width: '30%'},
@@ -109,9 +110,10 @@ class ChaseDetail extends React.Component {
   componentDidMount() {
     queryOrderAdditions({userId: this.props.loginInfo.acc.user.userId, batchNo: this.props.navigation.getParam('detail', {}).batchNo}).then(res => {
       if (res.code === 0) {
-        this.setState({
-          orderShareList: Object.keys(res.data).length ? res.data : []
-        })
+        this.setState(prevState => ({
+          orderShareList: Object.keys(res.data).length ? res.data : [],
+          detailInfo: {...prevState.detailInfo, rewardAndRebate: Object.keys(res.data).length ? res.data[0].rewardAndRebate : ''}
+        }))
       }
     })
   }
