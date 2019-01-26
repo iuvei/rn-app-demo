@@ -87,7 +87,7 @@ class PersonalScreen extends React.Component {
       show: false,
       item: {},
       KeyName: 'TeamWithdrawHistory',
-      api: '/user/getTeamReWiLog',
+      api: '/frontReport/getTeamReWiLog',
       changeList: [
         {value: 1, label: '充值'},
         {value: -1, label: '提款'}
