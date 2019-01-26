@@ -76,7 +76,7 @@ class LatelyList extends Component {
         {
           latelyOpenList.length ?
             latelyOpenList.map((list, idx) =>
-              <View key={list.openIssue} style={styles.listItem}>
+              <View key={list.openIssue+'_'+idx} style={styles.listItem}>
                 <Text>第 {list.openIssue} 期</Text>
                 <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
                   {

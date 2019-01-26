@@ -376,12 +376,12 @@ class ChaseScreen extends React.Component {
       <List>
         <Flex justify="around">
           <Flex.Item>
-            <InputItem labelNumber={5} value={chaseIssueTotal} onChange={v => {
+            <InputItem labelNumber={5} value={chaseIssueTotal} type="number" onChange={v => {
               this.setState({chaseIssueTotal: v})
             }}>追号期数</InputItem>
           </Flex.Item>
           <Flex.Item>
-            <InputItem labelNumber={5} value={startMultiple} onChange={v => {
+            <InputItem labelNumber={5} value={startMultiple} type="number" onChange={v => {
               this.setState({startMultiple: v})
             }}>起始倍数</InputItem>
           </Flex.Item>
@@ -390,12 +390,12 @@ class ChaseScreen extends React.Component {
           activeTab === 'lilv' &&
           <Flex justify="around">
             <Flex.Item>
-              <InputItem labelNumber={5} value={bigMultiple} onChange={v => {
+              <InputItem labelNumber={5} value={bigMultiple} type="number" onChange={v => {
                 this.setState({bigMultiple: v})
               }}>最大倍投</InputItem>
             </Flex.Item>
             <Flex.Item>
-              <InputItem labelNumber={5} value={lowIncome} onChange={v => {
+              <InputItem labelNumber={5} value={lowIncome} type="number" onChange={v => {
                 this.setState({lowIncome: v})
               }}>最大收益率</InputItem>
             </Flex.Item>
@@ -430,7 +430,7 @@ class ChaseScreen extends React.Component {
               </Flex>
             </Flex.Item>
             <Flex.Item alignItems="center">
-              <InputItem value={nextMultiple} onChange={v => {
+              <InputItem value={nextMultiple} type="number" onChange={v => {
                 this.setState({nextMultiple: v})
               }} extra={<Text>倍</Text>}></InputItem>
             </Flex.Item>
