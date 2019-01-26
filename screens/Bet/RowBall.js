@@ -279,6 +279,7 @@ class RowBall extends React.Component {
                 modeInfo.map(modeItem =>
                   <ModeComponent
                     key={modeItem.value}
+                    setBuyInfo={setBuyInfo}
                     model={model} modeItem={modeItem}/>
                 )
               }
