@@ -1,10 +1,27 @@
 import React from 'react'
-import {View, Text, StyleSheet, ImageBackground} from 'react-native'
-import {Picker} from 'native-base'
+import {View, Text, StyleSheet, ImageBackground,} from 'react-native'
+import {Flex, Icon, Picker} from '@ant-design/react-native'
 import Echarts from 'native-echarts'
 import {connect} from 'react-redux'
 import {getTeamNumInfo, teamEcharts, getTeamStatistics} from '../../../api/member'
 import dayjs from 'dayjs'
+
+const TIME_TYPE = [
+  {label: '今天', value: 1},
+  {label: '最近一周', value: 7},
+  {label: '最近一个月', value: 30}
+]
+
+// 操作类型
+const OPERATION_TYPE = [
+  {label: '投注', value: 'tz'},
+  {label: '充值', value: 'cz'},
+  {label: '提现', value: 'tx'},
+  {label: '返点', value: 'fd'},
+  {label: '返水', value: 'fs'},
+  {label: '派奖', value: 'pj'},
+  {label: '注册', value: 'xz'},
+]
 
 class AgentIndex extends React.Component {
   static navigationOptions = {
@@ -30,7 +47,9 @@ class AgentIndex extends React.Component {
       userId: this.props.loginInfo.userId,
       teamStatistics: {},
       teamEcharts: {},
-      timeLength: 1
+      timeLength: [1],
+      timeLabel: '今天',
+      typeLabel: '投注'
     }
   }
 
@@ -72,11 +91,15 @@ class AgentIndex extends React.Component {
     }
   }
 
-  onTimeChange = async value => {
+  onTimeChange = async (value) => {
     let end = dayjs().format('YYYY-MM-DD')
     let start = dayjs().subtract(value, 'day').format('YYYY-MM-DD')
+    let temp = TIME_TYPE.filter(item => {
+      return item.value === value[0]
+    })
     await this.setState({
       timeLength: value,
+      timeLabel: temp[0].label,
       formData: {
         ...this.state.formData,
         startTime: start,
@@ -87,12 +110,17 @@ class AgentIndex extends React.Component {
   }
 
   onTypeChange = async value => {
-    await this.setState({formData: {...this.state.formData, type: value}})
+    let temp = OPERATION_TYPE.filter(item => {
+      return value[0] === item.value
+    })
+    await this.setState({
+      typeLabel: temp[0].label,
+      formData: {...this.state.formData, type: value[0]}})
     this._getTeamChart()
   }
 
   render () {
-    let {teamInfo, teamStatistics, teamEcharts} = this.state
+    let {teamInfo, teamStatistics, teamEcharts, timeLength, timeLabel, typeLabel} = this.state
     let {teamAgentSum, teamMemberSum, teamOnline, teamSumChildUser, teamSumCurrent} = teamInfo
     let option = {
       title: {
@@ -195,6 +223,8 @@ class AgentIndex extends React.Component {
                 <Text style={styles.text}>代购量</Text>
                 <Text style={styles.text}>{teamStatistics.dayDownEnsureConsumpMoney}</Text>
               </View>
+            </View>
+            <View style={styles.balanceInfo}>
               <View style={styles.pics}>
                 <Text style={styles.text}>派奖</Text>
                 <Text style={styles.text}>{teamStatistics.dayDownIncomeMoney}</Text>
@@ -204,22 +234,33 @@ class AgentIndex extends React.Component {
                 <Text style={styles.text}>{teamStatistics.dayDownCommMoney}</Text>
               </View>
               <View style={styles.pics}>
-                <Picker selectedValue={this.state.timeLength} onValueChange={this.onTimeChange}
-                        mode="dialog" style={styles.picker}>
-                  <Picker.Item label="今天" value={1}/>
-                  <Picker.Item label="最近一周" value={7}/>
-                  <Picker.Item label="最近一个月" value={30}/>
+                <Picker value={timeLength} cols={1} data={TIME_TYPE} onChange={this.onTimeChange}>
+                  <Flex style={{ backgroundColor: '#1182df', borderRadius: 3}}>
+                    <Text style={{
+                      textAlign: 'center',
+                      lineHeight: 18,
+                      color: '#fff',
+                      width: 50,
+                      fontSize: 12,
+                      overflow: 'hidden',
+                      height: 18
+                    }}>{timeLabel}</Text>
+                    <Icon name="down" size={16} color="#fff"/>
+                  </Flex>
                 </Picker>
-                <Picker selectedValue={this.state.formData.type}
-                        onValueChange={this.onTypeChange}
-                        mode="dialog" style={styles.picker}>
-                  <Picker.Item label="投注" value={'tz'}/>
-                  <Picker.Item label="充值" value={'cz'}/>
-                  <Picker.Item label="提现" value={'tx'}/>
-                  <Picker.Item label="返点" value={'fd'}/>
-                  <Picker.Item label="返水" value={'fs'}/>
-                  <Picker.Item label="派奖" value={'pj'}/>
-                  <Picker.Item label="注册" value={'xz'}/>
+                <Picker cols={1} data={OPERATION_TYPE} onChange={this.onTypeChange}>
+                  <Flex style={{backgroundColor: '#1182df', borderRadius: 3, marginTop: 4}}>
+                    <Text style={{
+                      textAlign: 'center',
+                      lineHeight: 18,
+                      width: 50,
+                      color: '#fff',
+                      fontSize: 12,
+                      overflow: 'hidden',
+                      height: 18
+                    }}>{typeLabel}</Text>
+                    <Icon name="down" size={16} color="#fff"/>
+                  </Flex>
                 </Picker>
               </View>
             </View>
@@ -269,7 +310,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     height: 50,
-    width: '27%'
+    flex: 1
   },
   picker: {
     backgroundColor: 'white',
@@ -286,7 +327,7 @@ const styles = StyleSheet.create({
     paddingTop: 24
   },
   chartBg: {
-    // width: '98%',
+    paddingTop: 10
   },
   text: {
     color: 'white'
