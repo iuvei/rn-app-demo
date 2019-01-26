@@ -15,6 +15,8 @@ import Bet from '../screens/Bet/BetScreen'
 import ChaseScreen from '../screens/Bet/ChaseScreen'
 import SizeScreen from '../screens/SizeScreen'
 import BallScreen from '../screens/BallScreen'
+import ShouldUpdateScreen from '../screens/ShouldUpdateScreen'
+import ShouldUpdateBetScreen from '../screens/ShouldUpdateBetScreen'
 
 const MainNavigator = createStackNavigator({
   Main: MainTabNavigator,
@@ -47,8 +49,11 @@ const RootNavigation = createSwitchNavigator(
     // Read more at https://reactnavigation.org/docs/en/auth-flow.html
     AppLoading: AuthLoadingScreen,
     Login: LoginScreen,
-    Main: MainNavigator
-  }, {
+    Main: MainNavigator,
+    ShouldUpdateScreen,
+    ShouldUpdateBetScreen
+  },
+  {
     initialRouteName: 'AppLoading'
   }
 )
