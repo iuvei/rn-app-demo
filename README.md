@@ -7,3 +7,5 @@ WebView的source资源引入方式
 改成
 ** source={{uri:'线上资源'}} **
 ```
+
+**https://www.iosanzhuangbao.com/ios_download/tianxiang/tianxiangh5.qmuitest.com/tpl.html**

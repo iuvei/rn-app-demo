@@ -76,7 +76,7 @@ class TeamReport extends React.Component {
       details: {},
       previousId: [],
       previousUser: [],
-      api: '/report/system/webComplexReport',
+      api: '/frontReport/system/webComplexReport',
       summary: {},
       params: {
         userName: '',

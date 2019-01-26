@@ -20,7 +20,7 @@ const initialState = {
 }
 
 const member = handleActions({
-  SET_ACTIVE_ACCOUNT: (state, {payload}) => {
+  SET_ACTIVE_ACCOUNT: (state, {payload = {}}) => {
     return {
       ...state,
       activeAccount: payload

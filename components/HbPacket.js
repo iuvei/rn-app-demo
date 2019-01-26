@@ -8,7 +8,7 @@ class HbPacket extends Component {
   constructor(props) {
     super (props);
     this.state = {
-      visible: false,
+      visible: true,
       hb: {},
       // 有没有红包
       hasValuePacket: false,
@@ -26,12 +26,6 @@ class HbPacket extends Component {
       // 红包金额
       redEnvelopeAmount: '',
     }
-    this.onClose = () => {
-      this.getRedPacketList()
-      this.setState({
-        visible: false,
-      });
-    };
   }
 
   componentDidMount() {}
@@ -39,17 +33,33 @@ class HbPacket extends Component {
   componentWillReceiveProps(np) {
     if(np.isLogin) {
       this.getRedPacketList()
+    } else {
+      clearTimeout(this.PacketTimer)
+      clearTimeout(this.timeDown_Time)
+      this.setState({
+        hasValuePacket: false,
+        redEnvelopeAmount: '',
+        visible: false,
+        hb: {},
+        timedown: 0
+      })
     }
   }
 
-  // 没有红包数据的时候180秒查一次
+  onClose = () => {
+    this.setState({
+      visible: false,
+      hasValuePacket: false
+    }, () => this.getRedPacketList());
+  }
+  // 没有红包数据的时候60秒查一次
   getRedPacketList = () => {
     clearTimeout(this.PacketTimer)
     if (!this.state.hasValuePacket) {
       this.WheelTraining()
       this.PacketTimer = setTimeout(() => {
         this.getRedPacketList()
-      }, 180000)
+      }, 60*1000)
     }
   }
 
@@ -146,7 +156,7 @@ class HbPacket extends Component {
           visible={this.state.visible}
           closable
           maskClosable
-          onClose={this.onClose}
+          onClose={() => this.onClose()}
           style={{backgroundColor: 'none'}}
         >
           <ImageBackground
@@ -163,10 +173,10 @@ class HbPacket extends Component {
                 <Text style={styles.timeDown}>
                   <Text>{ downTime.hour1 }{ downTime.hour2 } : {downTime.min1 }{ downTime.min2 } : { downTime.sec1 }{ downTime.sec2 }</Text>
                 </Text> :
-                <View style={{ paddingHorizontal: 10 }}>
+                <View style={{ paddingHorizontal: 20 }}>
                   {
-                    showBtn && <Button type="warning" onPress={() => this.getSendRedPacket()}>
-                      立即领取
+                    showBtn && <Button type="warning" style={{backgroundColor: '#fbd69e'}} onPress={() => this.getSendRedPacket()}>
+                      <Text style={{color: '#c62f4d'}}>立即领取</Text>
                     </Button>
                   }
                 </View>

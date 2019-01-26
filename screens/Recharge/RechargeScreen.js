@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {ScrollView, StyleSheet, View, Text, Platform} from 'react-native'
 import { Drawer, List, Button, Tabs, InputItem, Toast } from '@ant-design/react-native' // , Radio
-import {getRechargeChannels, commitRecharge} from '../../api/member'
+import { commitRecharge } from '../../api/member'
 import {isObject} from 'lodash'
 // import {MyIconFont} from '../../components/MyIconFont'
 import SvgIcon from '../../components/SvgIcon'
@@ -12,6 +12,7 @@ import Header from '../../components/Header'
 import {platformKey, prependUrl} from '../../api.config'
 import { ListItem, Radio, Right, Left } from 'native-base'
 import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
+import { isNaN } from 'lodash'
 
 // const RadioItem = Radio.RadioItem
 
@@ -29,7 +30,7 @@ class RechargeScreen extends React.Component {
     this.state = {
       value: undefined,
       activeSections: [0],
-      recharge: {},
+      realAccounts: [],
       channelRealObj: {},
       // activeAccount: {}
       virtualAccounts: [],
@@ -43,53 +44,51 @@ class RechargeScreen extends React.Component {
       channelType: Platform.OS,
       isQuick: 'N'
     };
-    getRechargeChannels().then(res => {
-      if (res.code === 0) {
-        let recharge = res.data.recharge
-        // 人民币渠道集合
-        let channelRealObj = {}
-        let realAccounts = []
-        Object.keys(recharge).forEach((keyTitle) => {
-          if (keyTitle !== 'virtual') {
-            Object.keys(recharge[keyTitle]).forEach((infomap) => {
-              if (isObject(recharge[keyTitle][infomap])) {
-                let channelReal = ''
-                for (channelReal in recharge[keyTitle][infomap]) {
-                  if (recharge[keyTitle][infomap].hasOwnProperty(channelReal)) {
-                    for (let i = 0; i < recharge[keyTitle][infomap][channelReal].length; i++) {
-                      if (Object.keys(this.props.activeAccount).length === 0 && i === 0) {
-                        this.props.setActiveAccount(recharge[keyTitle][infomap][channelReal][i]);
-                      }
-                      recharge[keyTitle][infomap][channelReal][i]['local_id'] =  channelReal + '_' + i + '_' + new Date().getTime()
-                      realAccounts.push(recharge[keyTitle][infomap][channelReal][i])
-                    }
-                    channelRealObj[channelReal] = recharge[keyTitle][infomap][channelReal]
+  }
+
+  componentDidMount() {
+    let recharge = this.props.recharge
+    // 人民币渠道集合
+    let channelRealObj = {}
+    let realAccounts = []
+    Object.keys(recharge).forEach((keyTitle) => {
+      if (keyTitle !== 'virtual') {
+        Object.keys(recharge[keyTitle]).forEach((infomap) => {
+          if (isObject(recharge[keyTitle][infomap])) {
+            let channelReal = ''
+            for (channelReal in recharge[keyTitle][infomap]) {
+              if (recharge[keyTitle][infomap].hasOwnProperty(channelReal)) {
+                for (let i = 0; i < recharge[keyTitle][infomap][channelReal].length; i++) {
+                  if (Object.keys(this.props.activeAccount).length === 0 && i === 0) {
+                    this.props.setActiveAccount(recharge[keyTitle][infomap][channelReal][i]);
                   }
+                  recharge[keyTitle][infomap][channelReal][i]['local_id'] =  channelReal + '_' + i + '_' + new Date().getTime()
+                  realAccounts.push(recharge[keyTitle][infomap][channelReal][i])
                 }
+                channelRealObj[channelReal] = recharge[keyTitle][infomap][channelReal]
               }
-            })
-          }
-        })
-        // 数字货币充值渠道集合
-        let virtualAccounts = []
-        if (recharge && recharge.virtual && recharge.virtual.virtualInfoMap) {
-          let channelVirtual = ''
-          for (channelVirtual in recharge.virtual.virtualInfoMap) {
-            if (recharge.virtual.virtualInfoMap.hasOwnProperty(channelVirtual)) {
-              recharge.virtual.virtualInfoMap[channelVirtual].forEach((accountVirtual, idx) => {
-                accountVirtual['local_id'] = channelVirtual + '_' + idx + '_' + new Date().getTime()
-                virtualAccounts.push(accountVirtual)
-              })
             }
           }
-        }
-        this.setState({
-          virtualAccounts: [].concat(virtualAccounts),
-          realAccounts: [].concat(realAccounts),
-          channelRealObj: Object.assign({}, channelRealObj),
-          recharge: Object.assign({}, recharge)
         })
       }
+    })
+    // 数字货币充值渠道集合
+    let virtualAccounts = []
+    if (recharge && recharge.virtual && recharge.virtual.virtualInfoMap) {
+      let channelVirtual = ''
+      for (channelVirtual in recharge.virtual.virtualInfoMap) {
+        if (recharge.virtual.virtualInfoMap.hasOwnProperty(channelVirtual)) {
+          recharge.virtual.virtualInfoMap[channelVirtual].forEach((accountVirtual, idx) => {
+            accountVirtual['local_id'] = channelVirtual + '_' + idx + '_' + new Date().getTime()
+            virtualAccounts.push(accountVirtual)
+          })
+        }
+      }
+    }
+    this.setState({
+      virtualAccounts: [].concat(virtualAccounts),
+      realAccounts: [].concat(realAccounts),
+      channelRealObj: Object.assign({}, channelRealObj)
     })
   }
 
@@ -360,6 +359,7 @@ class RechargeScreen extends React.Component {
         {activeAccount.feeRate > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值手续费费率 <Text style={{color: '#f15a23'}}>{ activeAccount.feeRate || 0 }%</Text></Text> : null}
         {activeAccount.dayLimit > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单日最高 <Text style={{color: '#f15a23'}}>{ activeAccount.dayLimit }</Text> 元</Text> : null}
         <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值限时：请在 <Text style={{color: '#f15a23'}}>30</Text> 分钟内完成充值</Text>
+        { Boolean(activeAccount.isFloat) && <Text style={{color: '#f15a23', lineHeight: 25, fontSize: 12}}>说明：充值金额必须是两位小数，且末尾不能是0</Text> }
       </View>
     )
 
@@ -368,22 +368,24 @@ class RechargeScreen extends React.Component {
       <View>
         <List>
           <InputItem
-            error
             value={amount}
+            type="number"
             onChange={value => {
-              if (activeAccount.feeRate > 0) {
-                let fee = Number(value) * activeAccount.feeRate / 100
-                this.setState({
-                  amount: String(value),
-                  orderAmount: String(Number(Number(value) - fee).toFixed(2)),
-                  rechargeFee: String(Number(fee).toFixed(2))
-                });
-              } else {
-                this.setState({
-                  amount: String(value),
-                  orderAmount: String(value),
-                  rechargeFee: ''
-                });
+              if (!isNaN(Number(value))) {
+                if (activeAccount.feeRate > 0) {
+                  let fee = Number(value) * activeAccount.feeRate / 100
+                  this.setState({
+                    amount: String(value),
+                    orderAmount: String(Number(Number(value) - fee).toFixed(2)),
+                    rechargeFee: String(Number(fee).toFixed(2))
+                  });
+                } else {
+                  this.setState({
+                    amount: String(value),
+                    orderAmount: String(value),
+                    rechargeFee: ''
+                  });
+                }
               }
             }}
             placeholder="请输入充值金额"
@@ -456,7 +458,8 @@ class RechargeScreen extends React.Component {
 
 const mapStateToProps = (state, props) => {
   let {activeAccount} = state.member
-  return {activeAccount}
+  let {recharge} = state.common
+  return {activeAccount, recharge}
 }
 
 const mapDispatchToProps = (dispatch) => {

@@ -14,6 +14,7 @@ import CheckBox from 'react-native-check-box'
 import { modeInfo } from '../../data/options'
 import { withNavigation } from 'react-navigation'
 import { stylesUtil } from '../../utils/ScreenUtil'
+import { isInteger } from 'lodash'
 
 class RowBall extends React.Component {
   constructor(props) {
@@ -311,9 +312,13 @@ class RowBall extends React.Component {
               <Stepper
                 min={1}
                 style={styles.stepper}
-                defaultValue={multiple}
+                value={Number(multiple) || 1}
                 onChange={multiple => {
-                  setBuyInfo({multiple: multiple || 1})
+                  if (isInteger(Number(multiple))) {
+                    setBuyInfo({multiple: Number(multiple) || 1})
+                  } else {
+                    setBuyInfo({multiple: 1})
+                  }
                 }}
                 inputStyle={{color: '#0a7cda', width: '100%'}}
               />

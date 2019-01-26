@@ -13,6 +13,7 @@ import {
 } from '../../actions/member'
 import { commitWithdrawal } from '../../api/member'
 import { styleUtil } from '../../utils/ScreenUtil'
+import { isNaN } from 'lodash'
 
 const height = Dimensions.get('window').height
 
@@ -133,7 +134,7 @@ class Withdrawal extends React.Component {
           })
           newval += obj.originamount
         } else {
-          // this.$toast.success(`您当前输入金额拆单后最后一笔小于最小提款金额${this.minMoney}元，已为您优化提款金额`)
+          Toast.info(`您当前输入金额拆单后最后一笔小于最小提款金额${minMoney}元，已为您优化提款金额`)
         }
       }
       this.setState({
@@ -270,14 +271,17 @@ class Withdrawal extends React.Component {
           <List>
             <InputItem
               value={amount}
+              type="number"
               onChange={value => {
-                this.setState({
-                  amount: value
-                })
-                this.sonOrderAndFee(Number(value))
+                if (!isNaN(Number(value))) {
+                  this.setState({
+                    amount: value
+                  })
+                  this.sonOrderAndFee(Number(value))
+                }
               }
               }
-              placeholder="请输入充值金额"
+              placeholder="请输入提款金额"
             >
               提款金额
             </InputItem>

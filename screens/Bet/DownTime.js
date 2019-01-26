@@ -44,8 +44,8 @@ class DownTime extends Component {
         </View>
         <View style={styles.openResultView}>
           <Text style={styles.openResultText}>
-            <Text style={{color: 'blue'}}>{prevOpenResult.openIssue || '000000000'}</Text>
-            <Text style={styles.stopTimeText}>期开奖结果</Text>
+            <Text style={{color: '#016fca'}}>{prevOpenResult.openIssue || '000000000'}</Text>
+            <Text style={styles.stopTimeText}> 期开奖结果</Text>
           </Text>
           <View style={styles.openListView}>
             {
@@ -63,10 +63,10 @@ class DownTime extends Component {
             }
           </View>
           <Text style={styles.stopTimeText}>
-            <Text style={{color: 'blue'}}>{openIssue.currentIssue}</Text>
+            <Text style={{color: '#016fca'}}>{openIssue.currentIssue} </Text>
             距离封单
-            <Text style={{color: 'red'}}>
-              {`${h1}${h2}:${m1}${m2}:${s1}${s2}`}
+            <Text style={{color: '#f3564d'}}>
+              {` ${h1}${h2}:${m1}${m2}:${s1}${s2}`}
             </Text>
           </Text>
         </View>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create(stylesUtil({
     marginBottom: 1
   },
   lotBallTxt5: {
-    fontSize: 16
+    fontSize: 14
   },
   lotBallTxt10: {
     fontSize: 12
@@ -135,7 +135,7 @@ const styles = StyleSheet.create(stylesUtil({
   lotBallTxt20: {
     fontSize: 12
   },
-  stopTimeText: {fontSize: 12},
+  stopTimeText: {fontSize: 12, color: '#333'},
   stopTimeView: {
     norHeight: 30,
     justifyContent: 'center'

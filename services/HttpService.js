@@ -19,8 +19,9 @@ axios.interceptors.request.use((config) => {
   }
   return config
 }, (error) => {
-  console.warn('错误的传参')
-  return Promise.reject(error)
+  console.log('错误的传参')
+  return false
+  // return Promise.reject(error)
 })
 
 // 返回 状态判断
@@ -122,7 +123,7 @@ export const fetch = async ({api, params, type, selfProxy, hasKey}) => {
       }, err => {
         resolve(err)
       }).catch((error) => {
-        reject(error)
+        // reject(error)
       })
     } else {
       axios.post(api, params).then(response => {
@@ -132,7 +133,7 @@ export const fetch = async ({api, params, type, selfProxy, hasKey}) => {
       }, err => {
         resolve(err)
       }).catch((error) => {
-        reject(error)
+        // reject(error)
       })
     }
   })

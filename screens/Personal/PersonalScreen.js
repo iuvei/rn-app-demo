@@ -33,7 +33,7 @@ class PersonalScreen extends React.Component {
       title={'个人中心'}
       leftContent={
         <Text style={styleUtil({fontSize: 16, color: '#fff'})}>
-          <Text onPress={() => params.openKefu()}>  客服   </Text>
+          <Text onPress={() => params.openKefu()}>  客服    </Text>
         </Text>
       }
       rightContent={

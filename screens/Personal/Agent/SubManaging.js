@@ -6,6 +6,7 @@ import {Tab, Tabs, Picker, ScrollableTab} from 'native-base'
 import {setRebate, downRecharge, updateBaijlWater, updateBaijlRebate, canSignContract} from '../../../api/member'
 import Contract from '../../../components/Contract'
 import Quota from '../../../components/Quota'
+import {AsetUserSecureLevel} from "../../../actions/common"
 
 const $TOAST = (message) => {
   Toast.info(message, 1, undefined, false)
@@ -44,6 +45,10 @@ class SubManaging extends Component {
       },
       isCanSign: {},
     }
+  }
+
+  componentWillMount () {
+    this.props.AsetUserSecureLevel()
   }
 
   async componentDidMount () {
@@ -141,8 +146,14 @@ class SubManaging extends Component {
     })
   }
 
+  goSetTrade = () => {
+    this.props.navigation.navigate('UpdatePwd', {title: '资金密码', type: 'paypwd'})
+  }
+
   render () {
-    let {subUserInfo, loginInfo} = this.props
+    let {subUserInfo, loginInfo, navigation, userSecurityLevel} = this.props
+    console.log(userSecurityLevel.isTradePassword)
+    let flag = navigation.getParam('isSon')
     let {userPlatform} = subUserInfo
     let {contractStatus, dailyWages} = this.state.isCanSign
     return (
@@ -184,57 +195,67 @@ class SubManaging extends Component {
             </Tab>
             <Tab heading={'充值'}>
               {
-                subUserInfo.downRecharge === 1 ?
-                  <View style={styles.tab}>
-                    <View style={styles.textArea}>
-                      <InputItem
-                        clear
-                        type="number"
-                        value={this.state.chargeData.money}
-                        placeholder="请输入金额"
-                        onChange={value => {
-                          this.setState({
-                            chargeData: {
-                              ...this.state.chargeData,
-                              money: value
-                            }
-                          })
-                        }}
-                      >
-                        充值金额
-                      </InputItem>
-                      <InputItem
-                        clear
-                        type="password"
-                        value={this.state.chargeData.tradePassword}
-                        placeholder="请输入资金密码"
-                        onChange={value => {
-                          this.setState({
-                            chargeData: {
-                              ...this.state.chargeData,
-                              tradePassword: value
-                            }
-                          })
-                        }}
-                      >
-                        资金密码
-                      </InputItem>
+                subUserInfo.downRecharge === 1 &&
+                (userSecurityLevel.isTradePassword ? <View style={styles.tab}>
+                      <View style={styles.textArea}>
+                        <InputItem
+                          clear
+                          type="number"
+                          value={this.state.chargeData.money}
+                          placeholder="请输入金额"
+                          onChange={value => {
+                            this.setState({
+                              chargeData: {
+                                ...this.state.chargeData,
+                                money: value
+                              }
+                            })
+                          }}
+                        >
+                          充值金额
+                        </InputItem>
+                        <InputItem
+                          clear
+                          type="password"
+                          value={this.state.chargeData.tradePassword}
+                          placeholder="请输入资金密码"
+                          onChange={value => {
+                            this.setState({
+                              chargeData: {
+                                ...this.state.chargeData,
+                                tradePassword: value
+                              }
+                            })
+                          }}
+                        >
+                          资金密码
+                        </InputItem>
+                      </View>
+                      <Flex direction={'row'} justify={'center'}>
+                        <Button style={{flex: 3}} type={'primary'} onPress={this.downRecharge}>确定</Button>
+                        <View style={{flex: 1}}></View>
+                        <Button style={{flex: 3}} type={'warning'} onPress={this.resetCharge}>重置</Button>
+                      </Flex>
+                    </View> :
+                    <View style={styles.warning}>
+                      <Text style={styles.warningText}>暂未设置资金密码，请<Text onPress={this.goSetTrade} style={{color: 'blue', fontSize: 20}}>前往设置</Text></Text>
                     </View>
-                    <Flex direction={'row'} justify={'center'}>
-                      <Button style={{flex: 3}} type={'primary'} onPress={this.downRecharge}>确定</Button>
-                      <View style={{flex: 1}}></View>
-                      <Button style={{flex: 3}} type={'warning'} onPress={this.resetCharge}>重置</Button>
-                    </Flex>
-                  </View> : <View style={styles.warning}>
-                    <Text style={styles.warningText}>不能为该下级充值！</Text>
-                  </View>
+                )
+              }
+              {
+                subUserInfo.downRecharge !== 1 &&
+                <View style={styles.warning}>
+                  <Text style={styles.warningText}>不能为该下级充值！</Text>
+                </View>
               }
             </Tab>
-            <Tab heading={'开户额'}>
-              <View style={styles.tab}>
-                <Quota subUserInfo={subUserInfo} loginInfo={loginInfo}></Quota>
-              </View>
-            </Tab>
+            {
+              flag && <Tab heading={'开户额'}>
+                <View style={styles.tab}>
+                  <Quota subUserInfo={subUserInfo} loginInfo={loginInfo}></Quota>
+                </View>
+              </Tab>
+            }
             <Tab heading={'百家乐信息'}>
               <View style={styles.tab}>
                 <View style={styles.textArea}>
@@ -358,7 +379,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   warningText: {
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#ccc',
     textAlign: 'center'
@@ -379,10 +400,18 @@ const styles = StyleSheet.create({
 export default connect(
   (state) => {
     let {subUserInfo} = state.member
-    let {loginInfo} = state.common
+    let {loginInfo, userSecurityLevel} = state.common
     return ({
       subUserInfo,
-      loginInfo
+      loginInfo,
+      userSecurityLevel
     })
+  },
+  dispatch => {
+    return {
+      AsetUserSecureLevel: (data) => {
+        dispatch(AsetUserSecureLevel(data))
+      }
+    }
   }
 )(SubManaging)

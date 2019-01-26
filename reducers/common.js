@@ -60,6 +60,7 @@ const initialState = {
     time: 0,
     orderId: ''
   }, // 保存撤单时间和撤单订单号
+  recharge: {}, // 充值渠道对象
 }
 
 // 常规处理
@@ -87,6 +88,12 @@ const common = handleActions({
     return {
       ...state,
       soundType: payload
+    }
+  },
+  SET_RECHARGE: (state, {payload = {}}) => {
+    return {
+      ...state,
+      recharge: payload
     }
   },
   SET_CUSTOMIZE_LOTTERY: (state, {payload}) => {

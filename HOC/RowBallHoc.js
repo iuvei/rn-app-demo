@@ -348,7 +348,7 @@ export default (Comp) => {
               if (b.ball === numItem.ball && b.choose === true) {
                 clearTimeout(this.curBallTime)
                 this.curBallTime = setTimeout(() => {
-                  Toast('胆码拖码数字不能相同')
+                  Toast.info('胆码拖码数字不能相同')
                 }, 100)
                 b.choose = false
                 this.setState(prevState => ({
