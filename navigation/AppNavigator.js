@@ -17,6 +17,7 @@ import SizeScreen from '../screens/SizeScreen'
 import BallScreen from '../screens/BallScreen'
 import ShouldUpdateScreen from '../screens/ShouldUpdateScreen'
 import ShouldUpdateBetScreen from '../screens/ShouldUpdateBetScreen'
+import ShouldUpdateBetHOCScreen from '../screens/ShouldUpdateBetHOCScreen'
 
 const MainNavigator = createStackNavigator({
   Main: MainTabNavigator,
@@ -51,7 +52,8 @@ const RootNavigation = createSwitchNavigator(
     Login: LoginScreen,
     Main: MainNavigator,
     ShouldUpdateScreen,
-    ShouldUpdateBetScreen
+    ShouldUpdateBetScreen,
+    ShouldUpdateBetHOCScreen
   },
   {
     initialRouteName: 'AppLoading'
