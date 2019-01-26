@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {ScrollView, StyleSheet, View, Text, Platform} from 'react-native'
 import { Drawer, List, Button, Tabs, InputItem, Toast } from '@ant-design/react-native' // , Radio
-import {getRechargeChannels, commitRecharge} from '../../api/member'
+import { commitRecharge } from '../../api/member'
 import {isObject} from 'lodash'
 // import {MyIconFont} from '../../components/MyIconFont'
 import SvgIcon from '../../components/SvgIcon'
@@ -44,53 +44,52 @@ class RechargeScreen extends React.Component {
       channelType: Platform.OS,
       isQuick: 'N'
     };
-    getRechargeChannels().then(res => {
-      if (res.code === 0) {
-        let recharge = res.data.recharge
-        // 人民币渠道集合
-        let channelRealObj = {}
-        let realAccounts = []
-        Object.keys(recharge).forEach((keyTitle) => {
-          if (keyTitle !== 'virtual') {
-            Object.keys(recharge[keyTitle]).forEach((infomap) => {
-              if (isObject(recharge[keyTitle][infomap])) {
-                let channelReal = ''
-                for (channelReal in recharge[keyTitle][infomap]) {
-                  if (recharge[keyTitle][infomap].hasOwnProperty(channelReal)) {
-                    for (let i = 0; i < recharge[keyTitle][infomap][channelReal].length; i++) {
-                      if (Object.keys(this.props.activeAccount).length === 0 && i === 0) {
-                        this.props.setActiveAccount(recharge[keyTitle][infomap][channelReal][i]);
-                      }
-                      recharge[keyTitle][infomap][channelReal][i]['local_id'] =  channelReal + '_' + i + '_' + new Date().getTime()
-                      realAccounts.push(recharge[keyTitle][infomap][channelReal][i])
-                    }
-                    channelRealObj[channelReal] = recharge[keyTitle][infomap][channelReal]
+  }
+
+  componentDidMount() {
+    let recharge = this.props.recharge
+    // 人民币渠道集合
+    let channelRealObj = {}
+    let realAccounts = []
+    Object.keys(recharge).forEach((keyTitle) => {
+      if (keyTitle !== 'virtual') {
+        Object.keys(recharge[keyTitle]).forEach((infomap) => {
+          if (isObject(recharge[keyTitle][infomap])) {
+            let channelReal = ''
+            for (channelReal in recharge[keyTitle][infomap]) {
+              if (recharge[keyTitle][infomap].hasOwnProperty(channelReal)) {
+                for (let i = 0; i < recharge[keyTitle][infomap][channelReal].length; i++) {
+                  if (Object.keys(this.props.activeAccount).length === 0 && i === 0) {
+                    this.props.setActiveAccount(recharge[keyTitle][infomap][channelReal][i]);
                   }
+                  recharge[keyTitle][infomap][channelReal][i]['local_id'] =  channelReal + '_' + i + '_' + new Date().getTime()
+                  realAccounts.push(recharge[keyTitle][infomap][channelReal][i])
                 }
+                channelRealObj[channelReal] = recharge[keyTitle][infomap][channelReal]
               }
-            })
-          }
-        })
-        // 数字货币充值渠道集合
-        let virtualAccounts = []
-        if (recharge && recharge.virtual && recharge.virtual.virtualInfoMap) {
-          let channelVirtual = ''
-          for (channelVirtual in recharge.virtual.virtualInfoMap) {
-            if (recharge.virtual.virtualInfoMap.hasOwnProperty(channelVirtual)) {
-              recharge.virtual.virtualInfoMap[channelVirtual].forEach((accountVirtual, idx) => {
-                accountVirtual['local_id'] = channelVirtual + '_' + idx + '_' + new Date().getTime()
-                virtualAccounts.push(accountVirtual)
-              })
             }
           }
-        }
-        this.setState({
-          virtualAccounts: [].concat(virtualAccounts),
-          realAccounts: [].concat(realAccounts),
-          channelRealObj: Object.assign({}, channelRealObj),
-          recharge: Object.assign({}, recharge)
         })
       }
+    })
+    // 数字货币充值渠道集合
+    let virtualAccounts = []
+    if (recharge && recharge.virtual && recharge.virtual.virtualInfoMap) {
+      let channelVirtual = ''
+      for (channelVirtual in recharge.virtual.virtualInfoMap) {
+        if (recharge.virtual.virtualInfoMap.hasOwnProperty(channelVirtual)) {
+          recharge.virtual.virtualInfoMap[channelVirtual].forEach((accountVirtual, idx) => {
+            accountVirtual['local_id'] = channelVirtual + '_' + idx + '_' + new Date().getTime()
+            virtualAccounts.push(accountVirtual)
+          })
+        }
+      }
+    }
+    this.setState({
+      virtualAccounts: [].concat(virtualAccounts),
+      realAccounts: [].concat(realAccounts),
+      channelRealObj: Object.assign({}, channelRealObj),
+      recharge: Object.assign({}, recharge)
     })
   }
 
@@ -460,7 +459,8 @@ class RechargeScreen extends React.Component {
 
 const mapStateToProps = (state, props) => {
   let {activeAccount} = state.member
-  return {activeAccount}
+  let {recharge} = state.common
+  return {activeAccount, recharge}
 }
 
 const mapDispatchToProps = (dispatch) => {

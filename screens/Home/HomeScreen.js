@@ -18,7 +18,8 @@ import {
   setCustomizeLottery,
   setActiveUsualLot,
   getSystemNews,
-  queryActivity
+  queryActivity,
+  AgetRecharge
 } from './../../actions/common'
 import { getHotLotter } from './../../api/lottery'
 import { getIconName } from '../../utils/getLotImg'
@@ -113,6 +114,7 @@ class HomeScreen extends React.Component {
     this.props.setActiveUsualLot({custom: 0, data: []})
     this._initHotLottery()
     this.props.queryActivity()
+    this.props.AgetRecharge()
     // this.props.navigation.push('Bet', this.state.LotArray[0])
   }
 
@@ -499,6 +501,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     queryActivity: () => {
       dispatch(queryActivity())
+    },
+    AgetRecharge: () => {
+      dispatch(AgetRecharge())
     }
   }
 }

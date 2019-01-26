@@ -1,4 +1,5 @@
 import { getSysLottery } from "../api/lottery";
+import { getRechargeChannels } from '../api/member'
 import {
   getAllAdversize,
   getActivities,
@@ -126,6 +127,14 @@ export const getSystemNews = createAction(
   async () => {
     let res = await getAllAdversize()
     return res.code === 0 ? res.data.pageColumns : []
+  }
+)
+
+export const AgetRecharge = createAction(
+  'SET_RECHARGE',
+  async () => {
+    let res = await getRechargeChannels()
+    return res.code === 0 ? res.data.recharge : {}
   }
 )
 
