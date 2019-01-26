@@ -51,7 +51,7 @@ class PersonalScreen extends React.Component {
     super(props)
     this.state = {
       KeyName: 'TeamAccountChangeHistory',
-      api: '/user/getBanlanceLog',
+      api: '/frontReport/getBanlanceLog',
       params: {
         userId: props.loginInfo['acc'].user.userId,
         pageNumber: 1,
