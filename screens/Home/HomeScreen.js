@@ -227,9 +227,9 @@ class HomeScreen extends React.Component {
                 let codeList = item.openCode.split(',')
                 return (
                   <View style={styles.hotItem} key={index}>
-                    <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
+                    <Flex justify="space-between" onPress={() => this.props.navigation.navigate('Bet', item)}>
                       <View>
-                        <Image source={getIconName(item.categoryCode)} resizeMode={'contain'}
+                        <Image source={getIconName(item.realCategory)} resizeMode={'contain'}
                                style={styles.hotItemImg}/>
                       </View>
                       <View style={styles.hotItemCenter}>
@@ -357,10 +357,10 @@ const styles = StyleSheet.create(stylesUtil({
     marginTop: 3
   },
   hotItem: {
-    height: 75,
+    height: 80,
     borderWidth: 1,
     borderColor: '#eaeaea',
-    paddingLeft: 10,
+    paddingHorizontal: 5,
     borderRadius: 2
   },
   hotItemImg: {
@@ -381,7 +381,7 @@ const styles = StyleSheet.create(stylesUtil({
     paddingBottom: 5
   },
   hotItemRight: {
-    maxWidth: 170,
+    maxWidth: 190,
     marginLeft: 10
   },
   hotItemBall: {
@@ -393,17 +393,17 @@ const styles = StyleSheet.create(stylesUtil({
     backgroundColor: '#097bd9'
   },
   hotItemSmallBall: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
     marginRight: 3,
     marginBottom: 3,
     backgroundColor: '#097bd9'
   },
   hotItemMidBall: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     marginRight: 3,
     marginBottom: 3,
     backgroundColor: '#097bd9'
@@ -415,7 +415,7 @@ const styles = StyleSheet.create(stylesUtil({
     color: 'white'
   },
   hotItemMidText: {
-    lineHeight: 18,
+    lineHeight: 20,
     fontSize: 12,
     textAlign: 'center',
     color: 'white'
