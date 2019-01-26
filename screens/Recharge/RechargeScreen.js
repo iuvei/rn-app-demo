@@ -368,7 +368,6 @@ class RechargeScreen extends React.Component {
       <View>
         <List>
           <InputItem
-            error
             value={amount}
             type="number"
             onChange={value => {
