@@ -560,7 +560,7 @@ export const toLiveGame = (params) => {
 export const teamEcharts = (data) => {
   return fetch({
     type: 'post',
-    api: '/user/teamEcharts',
+    api: '/frontReport/teamEcharts',
     params: data
   })
 }
@@ -577,7 +577,7 @@ export const getTeamNumInfo = (formData) => {
 export const getTeamStatistics = (data) => {
   return fetch({
     type: 'post',
-    api: '/user/teamStatistics',
+    api: '/frontReport/teamStatistics',
     params: data
   })
 }
@@ -665,7 +665,7 @@ export const getOnlineMember = (data) => {
 export const getTeamCount = (data) => {
   return fetch({
     type: 'post',
-    api: '/report/system/teamCount',
+    api: '/frontReport/system/teamCount',
     params: data
   })
 }
