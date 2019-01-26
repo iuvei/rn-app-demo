@@ -127,7 +127,7 @@ const styles = StyleSheet.create(stylesUtil({
     marginBottom: 1
   },
   lotBallTxt5: {
-    fontSize: 16
+    fontSize: 14
   },
   lotBallTxt10: {
     fontSize: 12

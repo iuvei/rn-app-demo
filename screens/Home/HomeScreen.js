@@ -25,6 +25,10 @@ import { getIconName } from '../../utils/getLotImg'
 import { stylesUtil } from '../../utils/ScreenUtil'
 
 class HomeScreen extends React.Component {
+  static navigationOptions = {
+    header: <Header hideLeft={true}/>
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -103,25 +107,11 @@ class HomeScreen extends React.Component {
     }
   }
 
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state
-    return {
-      header: <Header
-        hideLeft={true}/>
-    }
-  }
-
-  changeTextFun = (val) => {
-    this.props.navigation.navigate(val)
-    // Toast.info(val+ '正在开发中')
-  }
-
   componentDidMount() {
     this.props.SetCustomizeLottery()
     this.props.getSystemNews()
     this.props.setActiveUsualLot({custom: 0, data: []})
     this._initHotLottery()
-    this.props.navigation.setParams({changeTextFun: this.changeTextFun})
     this.props.queryActivity()
     // this.props.navigation.push('Bet', this.state.LotArray[0])
   }
@@ -302,6 +292,9 @@ class HomeScreen extends React.Component {
                 </View>)
             }
           </Flex>
+          {
+            usualLottery.length === 0 && <Text style={styles.nullData}>数据加载中···</Text>
+          }
         </ScrollView>
         <Flex>
           <View style={styles.gameItem}>
@@ -477,6 +470,11 @@ const styles = StyleSheet.create(stylesUtil({
     width: '25%',
     height: 50,
     backgroundColor: '#ffffff'
+  },
+  nullData: {
+    paddingVertical: 40,
+    textAlign: 'center',
+    color: '#666666'
   }
 }))
 

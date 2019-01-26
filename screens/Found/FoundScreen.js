@@ -62,15 +62,15 @@ export default class FoundScreen extends React.Component {
           params:{},
           src: require('./../../assets/images/found/share.png'),
           rotation: new Animated.Value(0),
-        },
-        {
-          title: '抢红包',
-          text: '手气旺抢红包',
-          route: '',
-          params:{},
-          src: require('./../../assets/images/found/packet.png'),
-          rotation: new Animated.Value(0),
         }
+        // {
+        //   title: '抢红包',
+        //   text: '手气旺抢红包',
+        //   route: '',
+        //   params:{},
+        //   src: require('./../../assets/images/found/packet.png'),
+        //   rotation: new Animated.Value(0),
+        // }
       ]
     }
   }
