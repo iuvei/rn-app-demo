@@ -125,11 +125,13 @@ class BetScreen extends React.Component {
     let {code} = selfRoute.find(lot => lot.mapCode.includes(realCategory))
     // status 1 的玩法code
     let usefulCode = []
-    resData.forEach(item => {
-      if (item.status === 1) {
-        usefulCode.push(item.ruleCode)
-      }
-    })
+    if (resData) {
+      resData.forEach(item => {
+        if (item.status === 1) {
+          usefulCode.push(item.ruleCode)
+        }
+      })
+    }
     AsyncStorage.getItem('setLocalCustomPlays').then(p => {
       let d = JSON.parse(p) || {}
       let newCusPlayNav = []
