@@ -90,7 +90,7 @@ const common = handleActions({
       soundType: payload
     }
   },
-  SET_RECHARGE: (state, {payload}) => {
+  SET_RECHARGE: (state, {payload = {}}) => {
     return {
       ...state,
       recharge: payload

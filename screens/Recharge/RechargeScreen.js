@@ -30,7 +30,7 @@ class RechargeScreen extends React.Component {
     this.state = {
       value: undefined,
       activeSections: [0],
-      recharge: {},
+      realAccounts: [],
       channelRealObj: {},
       // activeAccount: {}
       virtualAccounts: [],
@@ -88,8 +88,7 @@ class RechargeScreen extends React.Component {
     this.setState({
       virtualAccounts: [].concat(virtualAccounts),
       realAccounts: [].concat(realAccounts),
-      channelRealObj: Object.assign({}, channelRealObj),
-      recharge: Object.assign({}, recharge)
+      channelRealObj: Object.assign({}, channelRealObj)
     })
   }
 
