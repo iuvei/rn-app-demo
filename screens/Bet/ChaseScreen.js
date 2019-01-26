@@ -475,7 +475,7 @@ class ChaseScreen extends React.Component {
         <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'})}>期号</Text>
         <Text style={styleUtil({width: '15%', textAlign: 'center', fontSize: 14, color: '#fff'})}>倍数</Text>
         <Text style={styleUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#fff'})}>金额</Text>
-        <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'})}>截至时间</Text>
+        <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'})}>截止日期</Text>
       </Flex>
       <View style={styleUtil({paddingVertical: 5})}>
         {
