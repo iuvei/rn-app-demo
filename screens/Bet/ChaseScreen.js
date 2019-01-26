@@ -19,6 +19,7 @@ import {
 import { getChaseTime, toBuyLottery } from '../../api/lottery'
 import { toCrypto } from '../../plugin/crypto'
 import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
+import { isInteger } from 'lodash'
 
 const tabs = [
   { title: '利润率追号', value: 'lilv' },
@@ -377,12 +378,16 @@ class ChaseScreen extends React.Component {
         <Flex justify="around">
           <Flex.Item>
             <InputItem labelNumber={5} value={chaseIssueTotal} type="number" onChange={v => {
-              this.setState({chaseIssueTotal: v})
+              if (isInteger(Number(v))) {
+                this.setState({chaseIssueTotal: String(Number(v))})
+              }
             }}>追号期数</InputItem>
           </Flex.Item>
           <Flex.Item>
             <InputItem labelNumber={5} value={startMultiple} type="number" onChange={v => {
-              this.setState({startMultiple: v})
+              if (isInteger(Number(v))) {
+                this.setState({startMultiple: String(Number(v))})
+              }
             }}>起始倍数</InputItem>
           </Flex.Item>
         </Flex>
@@ -391,12 +396,16 @@ class ChaseScreen extends React.Component {
           <Flex justify="around">
             <Flex.Item>
               <InputItem labelNumber={5} value={bigMultiple} type="number" onChange={v => {
-                this.setState({bigMultiple: v})
+                if (isInteger(Number(v))) {
+                  this.setState({bigMultiple: String(Number(v))})
+                }
               }}>最大倍投</InputItem>
             </Flex.Item>
             <Flex.Item>
               <InputItem labelNumber={5} value={lowIncome} type="number" onChange={v => {
-                this.setState({lowIncome: v})
+                if (isInteger(Number(v))) {
+                  this.setState({lowIncome: String(Number(v))})
+                }
               }}>最大收益率</InputItem>
             </Flex.Item>
           </Flex>
@@ -410,7 +419,9 @@ class ChaseScreen extends React.Component {
                 type="number"
                 labelNumber={2}
                 onChange={v => {
-                  this.setState({middleIssue: v})
+                  if (isInteger(Number(v))) {
+                    this.setState({middleIssue: String(Number(v))})
+                  }
                 }}
                 extra={<Text>期</Text>}
               >隔</InputItem>
@@ -431,7 +442,9 @@ class ChaseScreen extends React.Component {
             </Flex.Item>
             <Flex.Item alignItems="center">
               <InputItem value={nextMultiple} type="number" onChange={v => {
-                this.setState({nextMultiple: v})
+                if (isInteger(Number(v))) {
+                  this.setState({nextMultiple: String(Number(v))})
+                }
               }} extra={<Text>倍</Text>}></InputItem>
             </Flex.Item>
           </Flex>
