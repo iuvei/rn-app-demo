@@ -15,6 +15,9 @@ import { modeInfo } from '../../data/options'
 import { withNavigation } from 'react-navigation'
 import { stylesUtil } from '../../utils/ScreenUtil'
 import { isInteger } from 'lodash'
+import SliderComponent from './BetPage/SliderComponent'
+import BetBallContainer from './BetPage/BetBallContainer'
+import ModeComponent from './BetPage/ModeComponent'
 
 class RowBall extends React.Component {
   constructor(props) {
@@ -191,48 +194,16 @@ class RowBall extends React.Component {
                 {
                   showLayout ? activeViewData.layout.map((row, index) => {
                     return (
-                      <View key={index} style={styles.BetView}>
-                        <Flex key={row.title}>
-                          <View style={[
-                            styles.BetTitleView,
-                            row.title.length === 3 ? {width: 44} : {}
-                          ]}>
-                            <Text style={styles.BetTitleText}>{row.title}</Text>
-                          </View>
-                          <View style={[
-                            styles.BetBallsView,
-                            row.balls.length > 3 ? {justifyContent: 'space-between'} : {}
-                          ]}>
-                            {
-                              row.balls.map((b, bIdx) =>
-                                <Button
-                                  key={`${bIdx + '--' + b.title}`}
-                                  type={b.choose ? 'primary' : 'ghost'} size="small"
-                                  onPress={() => clickBall(b, row, activeViewData.layout, index, activeViewData)}
-                                  style={rectangle ? styles.ballSquare : styles.ballCircle}>
-                                  <Text style={styles.ballText}>
-                                    {b.text || b.ball}
-                                    {b.rate ? '~' + b.rate : null}
-                                  </Text>
-                                </Button>
-                              )
-                            }
-                          </View>
-                        </Flex>
-                        {
-                          activeViewData.tools ? <Flex style={styles.ToolsFlex}>
-                            {
-                              tools.map((t, tIdx) =>
-                                <Text
-                                  style={styles.ToolsText}
-                                  key={`${tIdx + '--' + t.code}`}
-                                  onPress={() => toolsCur(t, row)}
-                                >{t.name}</Text>
-                              )
-                            }
-                          </Flex> : null
-                        }
-                      </View>
+                      <BetBallContainer
+                        key={index}
+                        index={index}
+                        row={row}
+                        clickBall={clickBall}
+                        activeViewData={activeViewData}
+                        rectangle={rectangle}
+                        tools={tools}
+                        toolsCur={toolsCur}
+                      />
                     )
                   }) : null
                 }
@@ -270,32 +241,13 @@ class RowBall extends React.Component {
 
         <View style={styles.priceWarp}>
           {
-            !isKlcYxyLot ? <View style={styles.bonusWarp}>
-              <Text style={{color: '#333'}}>
-                奖金调节
-              </Text>
-              <View style={styles.SliderView}>
-                <Slider
-                  // disabled
-                  defaultValue={rebateMode}
-                  // value={rebateMode}
-                  minimumValue={lotterMinMode}
-                  maximumValue={curMaxMode}
-                  step={2}
-                  disabled={curMaxMode === 1700 || curMaxMode === lotterMinMode}
-                  minimumTrackTintColor="#1c8de9"
-                  maximumTrackTintColor="#1e8fea"
-                  thumbTintColor="#1c8de9"
-                  onValueChange={rebateMode => setBuyInfo({rebateMode})}
-                />
-              </View>
-              {/*num,multiple,model,rebateMode,total*/}
-              <View style={styles.RebateView}>
-                <Text style={styles.RebateText}>
-                  {rebateMode}/{this.state.sliderMode}
-                </Text>
-              </View>
-            </View> : null
+            !isKlcYxyLot ? <SliderComponent
+              rebateMode={rebateMode}
+              lotterMinMode={lotterMinMode}
+              curMaxMode={curMaxMode}
+              setBuyInfo={setBuyInfo}
+              sliderMode={this.state.sliderMode}
+            /> : null
           }
           {
             !isKlcYxyLot ? <Text style={styles.BonusText}>
@@ -320,21 +272,14 @@ class RowBall extends React.Component {
                     setBuyInfo({multiple: 1})
                   }
                 }}
-                inputStyle={{color: '#0a7cda', width: '100%'}}
               />
             </View>
             <View style={styles.ModeView}>
               {
-                modeInfo.map(m =>
-                  <Button
-                    key={m.money}
-                    type={m.money === model ? 'primary' : 'ghost'}
-                    onPress={() => setBuyInfo({model: m.money})}
-                    size="small" style={styles.ModeButton}>
-                    <Text style={styles.modeText}>
-                      {m.name}
-                    </Text>
-                  </Button>
+                modeInfo.map(modeItem =>
+                  <ModeComponent
+                    key={modeItem.value}
+                    model={model} modeItem={modeItem}/>
                 )
               }
             </View>
@@ -397,46 +342,7 @@ const styles = StyleSheet.create(stylesUtil({
     // alignItems: 'center'
   },
   BitView: {flex: 1, padding: 6},
-  BetView: {
-    flex: 1, fontSize: 16, padding: 4,
-    margin: 10, marginBottom: 2,
-    borderRadius: 6, backgroundColor: '#fff'
-  },
-  BetTitleView: {width: 38, marginLeft: 8, justifyContent: 'center'},
-  BetTitleText: {justifyContent: 'center', textAlign: 'center'},
-  BetBallsView: {
-    flexWrap: 'wrap', flexDirection: 'row',
-    // 还可以
-    // justifyContent: 'space-between',
-    margin: 2, flex: 1
-  },
-  ballSquare: {
-    width: 120, height: 40, margin: 6,
-    paddingLeft: 10, paddingRight: 10
-  },
-  ballCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    margin: 6
-  },
-  ballText: {fontSize: 16},
-  ToolsFlex: {
-    width: '100%',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  ToolsText: {
-    flex: 1, fontSize: 14,
-    height: 30,
-    lineHeight: 30,
-    color: '#666',
-    textAlign: 'center',
-    // backgroundColor: 'red',
-    justifyContent: 'center'
-  },
+
   TextAreaTips: {padding: 10, paddingBottom: 0},
   TextAreaItem: {margin: 10, padding: 10, borderRadius: 6},
 
@@ -445,34 +351,21 @@ const styles = StyleSheet.create(stylesUtil({
     borderColor: '#dfdfdf',
     borderTopWidth: 1
   },
-  bonusWarp: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10
-  },
-  SliderView: {width: 200},
-  RebateView: {width: 100},
-  RebateText: {fontSize: 16},
   BonusText: {color: '#333', paddingHorizontal: 10},
   features: {
     flexDirection: 'row',
-    paddingHorizontal: 10,
-    justifyContent: 'center'
+    paddingHorizontal: 10
   },
-  StepperView: {width: 100},
-  stepper: {
-    borderRadius: 5
+  StepperView: {
+    padding: 0,
+    width: 120
   },
+  stepper: {borderRadius: 5},
   ModeView: {
     flex: 1, flexDirection: 'row', justifyContent: 'space-evenly',
-    margin: 10, marginBottom: 0
+    marginBottom: 0
   },
-  ModeButton: {
-    width: 28, height: 28,
-    borderRadius: 4, marginLeft: 0, marginRight: 2
-  },
-  modeText: {fontSize: 12},
+
   chaseView: {width: 80},
   chaseButton: {height: 28, borderRadius: 4},
   BuyInfoView: {

@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { Button } from '@ant-design/react-native'
 import { stylesUtil } from '../../utils/ScreenUtil'
 import { showOpenCodeListRule } from './../../data/options'
 
-class LatelyList extends Component {
+class LatelyList extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {

@@ -45,7 +45,7 @@ class FlatListItem extends PureComponent {
 
 }
 
-class BetSimpleHistory extends React.Component {
+class BetSimpleHistory extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
