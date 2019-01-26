@@ -12,6 +12,7 @@ import Header from '../../components/Header'
 import {platformKey, prependUrl} from '../../api.config'
 import { ListItem, Radio, Right, Left } from 'native-base'
 import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
+import { isNaN } from 'lodash'
 
 // const RadioItem = Radio.RadioItem
 
@@ -370,20 +371,23 @@ class RechargeScreen extends React.Component {
           <InputItem
             error
             value={amount}
+            type="number"
             onChange={value => {
-              if (activeAccount.feeRate > 0) {
-                let fee = Number(value) * activeAccount.feeRate / 100
-                this.setState({
-                  amount: String(value),
-                  orderAmount: String(Number(Number(value) - fee).toFixed(2)),
-                  rechargeFee: String(Number(fee).toFixed(2))
-                });
-              } else {
-                this.setState({
-                  amount: String(value),
-                  orderAmount: String(value),
-                  rechargeFee: ''
-                });
+              if (!isNaN(Number(value))) {
+                if (activeAccount.feeRate > 0) {
+                  let fee = Number(value) * activeAccount.feeRate / 100
+                  this.setState({
+                    amount: String(value),
+                    orderAmount: String(Number(Number(value) - fee).toFixed(2)),
+                    rechargeFee: String(Number(fee).toFixed(2))
+                  });
+                } else {
+                  this.setState({
+                    amount: String(value),
+                    orderAmount: String(value),
+                    rechargeFee: ''
+                  });
+                }
               }
             }}
             placeholder="请输入充值金额"

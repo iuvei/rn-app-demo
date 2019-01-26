@@ -13,6 +13,7 @@ import {
 } from '../../actions/member'
 import { commitWithdrawal } from '../../api/member'
 import { styleUtil } from '../../utils/ScreenUtil'
+import { isNaN } from 'lodash'
 
 const height = Dimensions.get('window').height
 
@@ -271,13 +272,15 @@ class Withdrawal extends React.Component {
             <InputItem
               value={amount}
               onChange={value => {
-                this.setState({
-                  amount: value
-                })
-                this.sonOrderAndFee(Number(value))
+                if (!isNaN(Number(value))) {
+                  this.setState({
+                    amount: value
+                  })
+                  this.sonOrderAndFee(Number(value))
+                }
               }
               }
-              placeholder="请输入充值金额"
+              placeholder="请输入提款金额"
             >
               提款金额
             </InputItem>
