@@ -8,7 +8,7 @@ class HbPacket extends Component {
   constructor(props) {
     super (props);
     this.state = {
-      visible: false,
+      visible: true,
       hb: {},
       // 有没有红包
       hasValuePacket: false,
@@ -26,12 +26,6 @@ class HbPacket extends Component {
       // 红包金额
       redEnvelopeAmount: '',
     }
-    this.onClose = () => {
-      this.getRedPacketList()
-      this.setState({
-        visible: false,
-      });
-    };
   }
 
   componentDidMount() {}
@@ -52,7 +46,13 @@ class HbPacket extends Component {
     }
   }
 
-  // 没有红包数据的时候180秒查一次
+  onClose = () => {
+    this.setState({
+      visible: false,
+      hasValuePacket: false
+    }, () => this.getRedPacketList());
+  }
+  // 没有红包数据的时候60秒查一次
   getRedPacketList = () => {
     clearTimeout(this.PacketTimer)
     if (!this.state.hasValuePacket) {
@@ -156,7 +156,7 @@ class HbPacket extends Component {
           visible={this.state.visible}
           closable
           maskClosable
-          onClose={this.onClose}
+          onClose={() => this.onClose()}
           style={{backgroundColor: 'none'}}
         >
           <ImageBackground
