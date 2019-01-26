@@ -113,7 +113,7 @@ class MemberManage extends React.Component {
 
   onOpen = async (downInfo) => {
     await this.props.setDownUserInfo(downInfo)
-    this.props.navigation.navigate('SubManaging')
+    this.props.navigation.navigate('SubManaging', {isSon: this.state.userList.length === 0})
   }
 
   render () {

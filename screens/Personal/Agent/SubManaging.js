@@ -142,7 +142,8 @@ class SubManaging extends Component {
   }
 
   render () {
-    let {subUserInfo, loginInfo} = this.props
+    let {subUserInfo, loginInfo, navigation} = this.props
+    let flag = navigation.getParam('isSon')
     let {userPlatform} = subUserInfo
     let {contractStatus, dailyWages} = this.state.isCanSign
     return (
@@ -230,11 +231,13 @@ class SubManaging extends Component {
                   </View>
               }
             </Tab>
-            <Tab heading={'开户额'}>
-              <View style={styles.tab}>
-                <Quota subUserInfo={subUserInfo} loginInfo={loginInfo}></Quota>
-              </View>
-            </Tab>
+            {
+              flag && <Tab heading={'开户额'}>
+                <View style={styles.tab}>
+                  <Quota subUserInfo={subUserInfo} loginInfo={loginInfo}></Quota>
+                </View>
+              </Tab>
+            }
             <Tab heading={'百家乐信息'}>
               <View style={styles.tab}>
                 <View style={styles.textArea}>
