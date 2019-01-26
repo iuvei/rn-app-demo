@@ -39,6 +39,16 @@ class HbPacket extends Component {
   componentWillReceiveProps(np) {
     if(np.isLogin) {
       this.getRedPacketList()
+    } else {
+      clearTimeout(this.PacketTimer)
+      clearTimeout(this.timeDown_Time)
+      this.setState({
+        hasValuePacket: false,
+        redEnvelopeAmount: '',
+        visible: false,
+        hb: {},
+        timedown: 0
+      })
     }
   }
 
@@ -49,7 +59,7 @@ class HbPacket extends Component {
       this.WheelTraining()
       this.PacketTimer = setTimeout(() => {
         this.getRedPacketList()
-      }, 180000)
+      }, 60*1000)
     }
   }
 
@@ -163,10 +173,10 @@ class HbPacket extends Component {
                 <Text style={styles.timeDown}>
                   <Text>{ downTime.hour1 }{ downTime.hour2 } : {downTime.min1 }{ downTime.min2 } : { downTime.sec1 }{ downTime.sec2 }</Text>
                 </Text> :
-                <View style={{ paddingHorizontal: 10 }}>
+                <View style={{ paddingHorizontal: 20 }}>
                   {
-                    showBtn && <Button type="warning" onPress={() => this.getSendRedPacket()}>
-                      立即领取
+                    showBtn && <Button type="warning" style={{backgroundColor: '#fbd69e'}} onPress={() => this.getSendRedPacket()}>
+                      <Text style={{color: '#c62f4d'}}>立即领取</Text>
                     </Button>
                   }
                 </View>
