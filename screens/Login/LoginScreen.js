@@ -134,7 +134,7 @@ class LoginComponent extends Component {
                         j_username: j_username
                       })
                       if (rememberUser) {
-                        AsyncStorage.setItem('j_username', j_username)
+                        AsyncStorage.setItem('j_username', j_username || '')
                       }
                     }}
                     onExtraClick={() => {
@@ -157,7 +157,7 @@ class LoginComponent extends Component {
                         j_password: j_password
                       })
                       if (rememberPwd) {
-                        AsyncStorage.setItem('j_password', j_password)
+                        AsyncStorage.setItem('j_password', j_password || '')
                       }
                     }}
                     onExtraClick={() => {
@@ -182,7 +182,7 @@ class LoginComponent extends Component {
                             })
                             AsyncStorage.setItem('rememberUser', v ? 'true' : '')
                             if (v) {
-                              AsyncStorage.setItem('j_username', j_username)
+                              AsyncStorage.setItem('j_username', j_username || '')
                             } else {
                               AsyncStorage.removeItem('j_username')
                             }
@@ -204,7 +204,7 @@ class LoginComponent extends Component {
                             })
                             AsyncStorage.setItem('rememberPwd', v ? 'true' : '')
                             if (v) {
-                              AsyncStorage.setItem('j_password', j_password)
+                              AsyncStorage.setItem('j_password', j_password || '')
                             } else {
                               AsyncStorage.removeItem('j_password')
                             }
