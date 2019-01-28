@@ -217,6 +217,7 @@ export const minbankCodeMap = {
   BOCOM: 'jiaotongyinhang',
   BHBC: 'bohaiyinhang',
   BOB: 'beijingyinhang', // 北京银行
+  BCCB: 'beijingyinhang', // 北京银行
   BOC: 'zhongguoyinhang',
   BJRCB: 'beijingnongcunshangyeyinhang',
   CCB: 'jiansheyinhang',
@@ -278,6 +279,7 @@ export const RechargeChannelIconMap = {
   ICBC: 'zhongguogongshangyinhang',
   ABC: 'zhongguonongyeyinhang',
   BOB: 'beijingyinhang', // 北京银行
+  BCCB: 'beijingyinhang', // 北京银行
   CMBC: 'zhongguominshengyinhang',
   CITIC: 'zhongxinyinhang',
   CGB: 'guangfayinhang', // 广发银行

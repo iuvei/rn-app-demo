@@ -26,7 +26,6 @@ class RechargeScreen extends React.Component {
 
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       currentIndex: 0,
       value: undefined,
