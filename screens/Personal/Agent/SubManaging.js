@@ -152,7 +152,6 @@ class SubManaging extends Component {
 
   render () {
     let {subUserInfo, loginInfo, navigation, userSecurityLevel} = this.props
-    console.log(userSecurityLevel.isTradePassword)
     let flag = navigation.getParam('isSon')
     let {userPlatform} = subUserInfo
     let {contractStatus, dailyWages} = this.state.isCanSign

@@ -71,8 +71,19 @@ class OpenCenter extends React.Component {
       isProxy: 0,
       availableTimes: '',
       validDays: 24,
-      isShow: false
+      isShow: false,
+      maxRebate: 0,
+      minRebate: 0
     }
+  }
+
+  componentDidMount () {
+    let {systemMaxRebate, userRebateVO, systemMinRebate} = this.props.rebateInfo
+    let maxRebate = userRebateVO[0].userRebate < systemMaxRebate ? userRebateVO[0].userRebate : systemMaxRebate
+    this.setState({
+      maxRebate,
+      minRebate: systemMinRebate
+    })
   }
 
   onChange = e => {
@@ -82,9 +93,8 @@ class OpenCenter extends React.Component {
   }
 
   _addDown = () => {
-    let {userName, userRebate, isProxy} = this.state
-    let {systemMaxRebate, systemMinRebate, userRebateVO} = this.props.rebateInfo
-    let maxRebate = userRebateVO[0].userRebate < systemMaxRebate ? userRebateVO[0].userRebate : systemMaxRebate
+    let {userName, userRebate, isProxy, maxRebate} = this.state
+    let {systemMinRebate} = this.props.rebateInfo
     if (!userName) {
       Toast.info(`请输入账号`)
       return false
@@ -167,6 +177,7 @@ class OpenCenter extends React.Component {
   }
 
   normalRender = () => {
+    let {maxRebate, minRebate} = this.state
     return (
       <View>
         <View style={styles.normal}>
@@ -199,7 +210,7 @@ class OpenCenter extends React.Component {
                 userRebate,
               })
             }}
-            placeholder="范围5-14"
+            placeholder={`"范围${minRebate}-${maxRebate}"`}
           >
             彩票返点
           </InputItem>
@@ -218,6 +229,7 @@ class OpenCenter extends React.Component {
   }
 
   linkRender = () => {
+    let {maxRebate, minRebate} = this.state
     return (
       <View>
         <View style={styles.normal}>
@@ -263,7 +275,7 @@ class OpenCenter extends React.Component {
                 userRebate,
               })
             }}
-            placeholder="范围5-14"
+            placeholder={`"范围${minRebate}-${maxRebate}"`}
           >
             彩票返点
           </InputItem>
