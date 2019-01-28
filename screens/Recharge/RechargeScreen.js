@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import {ScrollView, StyleSheet, View, Text, Platform} from 'react-native'
 import { Drawer, List, Button, Tabs, InputItem, Toast } from '@ant-design/react-native' // , Radio
 import { commitRecharge } from '../../api/member'
-import {isObject} from 'lodash'
 // import {MyIconFont} from '../../components/MyIconFont'
 import SvgIcon from '../../components/SvgIcon'
 import {minbankCodeMap} from '../../constants/glyphMapHex'
@@ -12,7 +11,7 @@ import Header from '../../components/Header'
 import {platformKey, prependUrl} from '../../api.config'
 import { ListItem, Radio, Right, Left } from 'native-base'
 import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
-import { isNaN } from 'lodash'
+import { isNaN, isObject } from 'lodash'
 
 // const RadioItem = Radio.RadioItem
 
@@ -27,7 +26,9 @@ class RechargeScreen extends React.Component {
 
   constructor(props) {
     super(props)
+    console.log(props)
     this.state = {
+      currentIndex: 0,
       value: undefined,
       activeSections: [0],
       realAccounts: [],
@@ -93,6 +94,31 @@ class RechargeScreen extends React.Component {
   }
 
   componentWillUnmount() {
+  }
+
+  // 处理step步骤
+  handleStepNum = () => {
+    this.currentIndex = 0
+    if (this.userBankCards.length === 0) {
+      this.userSecurityLevel.isBindCard = false
+    } else {
+      this.userSecurityLevel.isBindCard = true
+    }
+    this.userSecurityLevel.rechargeBankName = this.userSecurityLevel.rechargeBank
+    let cidx = 0
+    this.stepsIdxs = []
+    for (let i = 0; i < this.stepsarr.length; i++) {
+      if (this.userSecurityLevel[this.stepsarr[i]]) {
+        this.stepsobj[this.stepsarr[i]] = {index: cidx++, value: this.userSecurityLevel[this.stepsItem[i]]}
+        this.stepsIdxs.push(this.stepsItem[i])
+      }
+    }
+    for (let idx of this.stepsIdxs) {
+      if (!this.userSecurityLevel[idx]) {
+        break
+      }
+      this.currentIndex++
+    }
   }
 
   onOpenChange = isOpen => {
@@ -262,9 +288,13 @@ class RechargeScreen extends React.Component {
     }
   }
 
+  goSetTrade = () => {
+    this.props.navigation.navigate('UpdatePwd', {title: '资金密码', type: 'paypwd'})
+  }
+
   render() {
     let {channelRealObj, activeTabIndex, virtualAccounts, minRechargeMoney, orderAmount, amount, rechargeFee, isLoading} = this.state
-    let {activeAccount} = this.props
+    let {activeAccount, userSecurityLevel} = this.props
     const sidebar = (
       <ScrollView style={styles.container}>
         {
@@ -354,12 +384,20 @@ class RechargeScreen extends React.Component {
       { title: '币宝数字货币支付' }
     ];
     const infoDesc = (
-      <View style={styleUtil({padding: 12, backgroundColor: '#f0f0f0'})}>
-        <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单笔最低充值金额为 <Text style={{color: '#f15a23'}}>{minRechargeMoney}</Text> 元{activeAccount.signleLimit > 0 ? <Text>, 最高 <Text style={{color: '#f15a23'}}>{activeAccount.signleLimit}</Text> 元</Text> : null}</Text>
-        {activeAccount.feeRate > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值手续费费率 <Text style={{color: '#f15a23'}}>{ activeAccount.feeRate || 0 }%</Text></Text> : null}
-        {activeAccount.dayLimit > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单日最高 <Text style={{color: '#f15a23'}}>{ activeAccount.dayLimit }</Text> 元</Text> : null}
-        <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值限时：请在 <Text style={{color: '#f15a23'}}>30</Text> 分钟内完成充值</Text>
-        { Boolean(activeAccount.isFloat) && <Text style={{color: '#f15a23', lineHeight: 25, fontSize: 12}}>说明：充值金额必须是两位小数，且末尾不能是0</Text> }
+      <View>
+        {
+          !userSecurityLevel.isTradePassword &&
+          <View style={{backgroundColor: '#fff'}}>
+            <Text style={{color: '#333', textAlign: 'center'}}>暂未设置资金密码，请<Text onPress={this.goSetTrade} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
+          </View>
+        }
+        <View style={styleUtil({padding: 12, backgroundColor: '#f0f0f0'})}>
+          <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单笔最低充值金额为 <Text style={{color: '#f15a23'}}>{minRechargeMoney}</Text> 元{activeAccount.signleLimit > 0 ? <Text>, 最高 <Text style={{color: '#f15a23'}}>{activeAccount.signleLimit}</Text> 元</Text> : null}</Text>
+          {activeAccount.feeRate > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值手续费费率 <Text style={{color: '#f15a23'}}>{ activeAccount.feeRate || 0 }%</Text></Text> : null}
+          {activeAccount.dayLimit > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单日最高 <Text style={{color: '#f15a23'}}>{ activeAccount.dayLimit }</Text> 元</Text> : null}
+          <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值限时：请在 <Text style={{color: '#f15a23'}}>30</Text> 分钟内完成充值</Text>
+          { Boolean(activeAccount.isFloat) && <Text style={{color: '#f15a23', lineHeight: 25, fontSize: 12}}>说明：充值金额必须是两位小数，且末尾不能是0</Text> }
+        </View>
       </View>
     )
 
@@ -457,9 +495,9 @@ class RechargeScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  let {activeAccount} = state.member
-  let {recharge} = state.common
-  return {activeAccount, recharge}
+  let {activeAccount, userBankInfo} = state.member
+  let {recharge, userSecurityLevel} = state.common
+  return {activeAccount, recharge, userSecurityLevel, userBankInfo}
 }
 
 const mapDispatchToProps = (dispatch) => {

@@ -3,7 +3,8 @@ import { AppLoading, Font, Icon } from 'expo'
 import { connect } from 'react-redux'
 import {
   setLoginStatus, setUserRebate,
-  setLoginInfo, setUserBalance
+  setLoginInfo, setUserBalance,
+  AsetUserSecureLevel
 } from '../../actions/common'
 import {
   getLoginUser, getUserRebateInfo,
@@ -64,6 +65,7 @@ class AppLoadingScreen extends React.Component {
           this.props.setLoginStatus(res.code === 0)
           this.props.setLoginInfo(res.data)
           this.props.setUserRebate(res.data.acc.user.userId)
+          this.props.AsetUserSecureLevel()
         }
       })
     ])
@@ -113,6 +115,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setUserBalance: (data) => {
       dispatch(setUserBalance(data))
+    },
+    AsetUserSecureLevel: (data) => {
+      dispatch(AsetUserSecureLevel(data))
     }
   }
 }
