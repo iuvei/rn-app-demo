@@ -17,6 +17,7 @@ import {
 import { doCancelOrder } from '../../../api/member'
 import {queryOrderAdditions, getChaseOrderDetail} from '../../../api/lottery'
 import { orderStatus } from '../../../data/options'
+import { formatTime } from '../../../utils/MathUtils'
 
 const chaseOrderStatus = [
   {value: '', label: '所有状态'},
@@ -41,7 +42,9 @@ class ChaseDetail extends React.Component {
     this.state = {
       keyList: [
         {key: 'batchNo', title: '批次号'},
-        {key: 'createTime', title: '投注时间'},
+        {key: 'createTime', title: '投注时间', formatter: function(v) {
+          return formatTime(v)
+        }},
         {key: 'lotterName', title: '游戏名称'},
         {key: 'openCode', title: '开奖号码'},
         {key: 'castCodes', title: '投注号码'},
@@ -109,7 +112,8 @@ class ChaseDetail extends React.Component {
 
   componentDidMount() {
     queryOrderAdditions({userId: this.props.loginInfo.acc.user.userId, batchNo: this.props.navigation.getParam('detail', {}).batchNo}).then(res => {
-      if (res.code === 0) {
+        console.log(res)
+        if (res.code === 0) {
         this.setState(prevState => ({
           orderShareList: Object.keys(res.data).length ? res.data : [],
           detailInfo: {...prevState.detailInfo, rewardAndRebate: Object.keys(res.data).length ? res.data[0].rewardAndRebate : ''}
