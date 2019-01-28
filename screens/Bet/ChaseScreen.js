@@ -379,14 +379,24 @@ class ChaseScreen extends React.Component {
           <Flex.Item>
             <InputItem labelNumber={5} value={chaseIssueTotal} type="number" onChange={v => {
               if (isInteger(Number(v))) {
-                this.setState({chaseIssueTotal: String(Number(v))})
+                this.setState({
+                  chaseIssueTotal: String(Number(v)),
+                  showChaseList: [],
+                  chaseList: [],
+                  total: '0'
+                })
               }
             }}>追号期数</InputItem>
           </Flex.Item>
           <Flex.Item>
             <InputItem labelNumber={5} value={startMultiple} type="number" onChange={v => {
               if (isInteger(Number(v))) {
-                this.setState({startMultiple: String(Number(v))})
+                this.setState({
+                  startMultiple: String(Number(v)),
+                  showChaseList: [],
+                  chaseList: [],
+                  total: '0'
+                })
               }
             }}>起始倍数</InputItem>
           </Flex.Item>
@@ -397,14 +407,24 @@ class ChaseScreen extends React.Component {
             <Flex.Item>
               <InputItem labelNumber={5} value={bigMultiple} type="number" onChange={v => {
                 if (isInteger(Number(v))) {
-                  this.setState({bigMultiple: String(Number(v))})
+                  this.setState({
+                    bigMultiple: String(Number(v)),
+                    showChaseList: [],
+                    chaseList: [],
+                    total: '0'
+                  })
                 }
               }}>最大倍投</InputItem>
             </Flex.Item>
             <Flex.Item>
               <InputItem labelNumber={5} value={lowIncome} type="number" onChange={v => {
                 if (isInteger(Number(v))) {
-                  this.setState({lowIncome: String(Number(v))})
+                  this.setState({
+                    lowIncome: String(Number(v)),
+                    showChaseList: [],
+                    chaseList: [],
+                    total: '0'
+                  })
                 }
               }}>最大收益率</InputItem>
             </Flex.Item>
@@ -420,7 +440,12 @@ class ChaseScreen extends React.Component {
                 labelNumber={2}
                 onChange={v => {
                   if (isInteger(Number(v))) {
-                    this.setState({middleIssue: String(Number(v))})
+                    this.setState({
+                      middleIssue: String(Number(v)),
+                      showChaseList: [],
+                      chaseList: [],
+                      total: '0'
+                    })
                   }
                 }}
                 extra={<Text>期</Text>}
@@ -430,12 +455,22 @@ class ChaseScreen extends React.Component {
               <Flex justify="around">
                 <Flex.Item alignItems="center">
                   <Button size="small" type={nextType==='add'?'primary':'ghost'} style={styleUtil({width: 30})} onPress={() => {
-                    this.setState({nextType: 'add'})
+                    this.setState({
+                      nextType: 'add',
+                      showChaseList: [],
+                      chaseList: [],
+                      total: '0'
+                    })
                   }}>+</Button>
                 </Flex.Item>
                 <Flex.Item alignItems="center">
                   <Button size="small" type={nextType==='cheng'?'primary':'ghost'} style={styleUtil({width: 30})} onPress={() => {
-                    this.setState({nextType: 'cheng'})
+                    this.setState({
+                      nextType: 'cheng',
+                      showChaseList: [],
+                      chaseList: [],
+                      total: '0'
+                    })
                   }}>x</Button>
                 </Flex.Item>
               </Flex>
@@ -443,7 +478,12 @@ class ChaseScreen extends React.Component {
             <Flex.Item alignItems="center">
               <InputItem value={nextMultiple} type="number" onChange={v => {
                 if (isInteger(Number(v))) {
-                  this.setState({nextMultiple: String(Number(v))})
+                  this.setState({
+                    nextMultiple: String(Number(v)),
+                    showChaseList: [],
+                    chaseList: [],
+                    total: '0'
+                  })
                 }
               }} extra={<Text>倍</Text>}></InputItem>
             </Flex.Item>
@@ -451,7 +491,12 @@ class ChaseScreen extends React.Component {
         }
         <Flex justify="around" style={styleUtil({paddingVertical: 6})}>
           <Flex.Item alignItems="center">
-            <Checkbox checked={winStop} onChange={v => this.setState({winStop: v})}>中奖后停止追号</Checkbox>
+            <Checkbox checked={winStop} onChange={v => this.setState({
+              winStop: v,
+              showChaseList: [],
+              chaseList: [],
+              total: '0'
+              })}>中奖后停止追号</Checkbox>
           </Flex.Item>
           <Flex.Item alignItems="center">
             <Button type="primary" size="small" onPress={this.beforeBuildOrder}>
