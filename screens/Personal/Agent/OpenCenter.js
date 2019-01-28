@@ -210,7 +210,7 @@ class OpenCenter extends React.Component {
                 userRebate,
               })
             }}
-            placeholder={`"范围${minRebate}-${maxRebate}"`}
+            placeholder={`范围${minRebate}-${maxRebate}`}
           >
             彩票返点
           </InputItem>
@@ -275,7 +275,7 @@ class OpenCenter extends React.Component {
                 userRebate,
               })
             }}
-            placeholder={`"范围${minRebate}-${maxRebate}"`}
+            placeholder={`范围${minRebate}-${maxRebate}`}
           >
             彩票返点
           </InputItem>

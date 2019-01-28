@@ -287,18 +287,21 @@ class PersonalScreen extends React.Component {
                 }} onPress={(el) => this.changeRoute(el.path)} />
               </ScrollView>
             </Tab>
-            <Tab heading={'代理管理'}>
-              <ScrollView style={styles.agent}>
-                <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
-                  return (
-                    <View style={styleUtil({alignItems: 'center', width: 90})}>
-                      <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
-                      <Text>{el.name}</Text>
-                    </View>
-                  )
-                }} onPress={(el) => this.changeRoute(el.path)} />
-              </ScrollView>
-            </Tab>
+            {
+              loginInfo.proxy === 1 &&
+              <Tab heading={'代理管理'}>
+                <ScrollView style={styles.agent}>
+                  <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
+                    return (
+                      <View style={styleUtil({alignItems: 'center', width: 90})}>
+                        <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
+                        <Text>{el.name}</Text>
+                      </View>
+                    )
+                  }} onPress={(el) => this.changeRoute(el.path)} />
+                </ScrollView>
+              </Tab>
+            }
           </Tabs>
         </View>
       </View>
