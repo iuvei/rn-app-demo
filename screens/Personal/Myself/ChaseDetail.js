@@ -112,7 +112,6 @@ class ChaseDetail extends React.Component {
 
   componentDidMount() {
     queryOrderAdditions({userId: this.props.loginInfo.acc.user.userId, batchNo: this.props.navigation.getParam('detail', {}).batchNo}).then(res => {
-        console.log(res)
         if (res.code === 0) {
         this.setState(prevState => ({
           orderShareList: Object.keys(res.data).length ? res.data : [],
