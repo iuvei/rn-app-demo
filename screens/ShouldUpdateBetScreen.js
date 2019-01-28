@@ -9,7 +9,6 @@ import {
   WhiteSpace, WingBlank
 } from '@ant-design/react-native'
 import { connect } from 'react-redux'
-import deepEqual from 'react-deep-equal'
 import { scaleSize, setSpText, styleUtil } from '../utils/ScreenUtil'
 
 /**
