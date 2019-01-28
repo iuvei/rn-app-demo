@@ -16,7 +16,7 @@ const initialState = {
   userConsume: {}, // 用户消费量验证对象
   bankList: [], // 系统银行列表
   gaKey: '',
-  subUserInfo: {} // 下级用户信息
+  subUserInfo: {}, // 下级用户信息
 }
 
 const member = handleActions({

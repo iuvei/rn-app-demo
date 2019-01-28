@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {ScrollView, StyleSheet, View, Text, Platform} from 'react-native'
-import { Drawer, List, Button, Tabs, InputItem, Toast } from '@ant-design/react-native' // , Radio
+import {ScrollView, StyleSheet, View, Text, Platform, AsyncStorage} from 'react-native'
+import { Drawer, List, Button, Tabs, Toast } from '@ant-design/react-native' // , Radio
 import { commitRecharge } from '../../api/member'
 // import {MyIconFont} from '../../components/MyIconFont'
 import SvgIcon from '../../components/SvgIcon'
@@ -11,9 +11,9 @@ import Header from '../../components/Header'
 import {platformKey, prependUrl} from '../../api.config'
 import { ListItem, Radio, Right, Left } from 'native-base'
 import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
-import { isNaN, isObject } from 'lodash'
+import { isObject } from 'lodash'
+import InputAmount from './InputAmount'
 
-// const RadioItem = Radio.RadioItem
 
 class RechargeScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -28,21 +28,20 @@ class RechargeScreen extends React.Component {
     super(props)
     this.state = {
       currentIndex: 0,
-      value: undefined,
       activeSections: [0],
       realAccounts: [],
       channelRealObj: {},
-      // activeAccount: {}
       virtualAccounts: [],
       activeTabIndex: 0,
       minRechargeMoney: 50,
-      amount: '',
-      orderAmount: '',
-      rechargeFee: '',
+      // amount: '',
+      // orderAmount: '',
+      // rechargeFee: '',
       isLoading: false,
       returnUrl: 'https://www.baidu.com',
       channelType: Platform.OS,
-      isQuick: 'N'
+      isQuick: 'N',
+      rechargeTime: 0
     };
   }
 
@@ -119,22 +118,15 @@ class RechargeScreen extends React.Component {
       this.currentIndex++
     }
   }
-
-  onOpenChange = isOpen => {
-    /* tslint:disable: no-console */
-    // console.log('是否打开了 Drawer', isOpen.toString());
-  };
-
-  onAccordionChange = activeSections => {
-    this.setState({ activeSections });
-  };
   
   /**
    * 提交充值
    */
-  submitFunc = () => {
-    let {amount, orderAmount, rechargeFee, minRechargeMoney, isLoading, returnUrl, channelType, isQuick} = this.state
+  submitFunc = async () => {
+    let {minRechargeMoney, returnUrl, channelType, isQuick} = this.state
     let {activeAccount} = this.props
+    let rechargeMoney = await AsyncStorage.getItem('RechargeMoney')
+    let {amount, orderAmount, rechargeFee} = JSON.parse(rechargeMoney)
     // if (!this.checkBindPay()) return
     let pattern = /^(([1-9]\d*)(\.\d{1,2})?)$|(0\.0?([1-9]\d?))$/
     let msg = '请输入正确的充值金额，最多两位小数!'
@@ -142,7 +134,7 @@ class RechargeScreen extends React.Component {
       pattern = /^(([1-9]\d*)(\.\d[1-9]))$|(0\.\d[1-9])$/
       msg = '请输入正确的充值金额，必须是两位小数，且末尾不能是0!'
     }
-    if (!pattern.test(amount)) {
+    if (!pattern.test(Number(amount))) {
       Toast.info(msg)
     } else {
       if (amount < minRechargeMoney) {
@@ -156,21 +148,13 @@ class RechargeScreen extends React.Component {
         commitRecharge({bankCode, channelType, isQuick, orderAmount, payChannelAlias, payChannelCode, rechargeFee, returnUrl, amount, coinCode}).then((res) => {
           if (res.code === 0) {
             let tmprecinfo = Object.assign({}, res.data, {amount: amount})
-            // this.$store.commit('SET_REC_INFO', tmprecinfo)
             this.setState({
-              amount: '',
+              // amount: '',
               isLoading: false,
-              orderAmount: '',
-              rechargeFee: ''
+              // orderAmount: '',
+              // rechargeFee: ''
             })
-            // if (res.data.submitType === 'url') {
-            //   this.goThird(tmprecinfo.url + '?' + tmprecinfo.params)
-            //   return
-            // }
-            // this.splitParams(res.data.params || '')
             let qrCodeSrc = prependUrl + '/capital/capitalBase/queryQrCode?platformKey=' + platformKey + '&payChannelCode=' + activeAccount.payChannelCode + '&bankCode=' + activeAccount.bankCode + '&time=' + new Date().getTime()
-            // this.$store.commit('SET_RECHARGE_QRCODE', this.qrCodeSrc)
-            // router.push({name: 'rechargeSuccess', params: {value: this.activeAccount.bankCode}})
             this.props.navigation.navigate('RechargeSuccess', {recinfo: tmprecinfo, qrCodeSrc: qrCodeSrc, bankCode: activeAccount.bankCode})
           } else {
             if (res.message.indexOf('}') !== -1) {
@@ -179,39 +163,20 @@ class RechargeScreen extends React.Component {
               Toast.info(res.message || '充值服务异常')
             }
             this.setState({
-              amount: '',
+              // amount: '',
               isLoading: false,
-              orderAmount: '',
-              rechargeFee: ''
+              // orderAmount: '',
+              // rechargeFee: ''
             })
           }
+          this.setState({
+            rechargeTime: new Date().getTime()
+          })
         })
       })
     }
   }
-
-  onChange = value => {
-    this.setState({ value });
-  };
-
-  _renderSectionTitle = section => {
-    return <Text></Text>
-  }
-
-  _renderHeader = (content, index, isActive, sections) => {
-    return (
-      <List>
-        <List.Item arrow={isActive ? "empty" : "horizontal"} onPress={() => {
-          this.setState({
-            activeSections: [index,]
-          })
-        }}>
-          <Text>{content.title}</Text>
-        </List.Item>
-      </List>
-    );
-  };
-
+  
   _renderContent = section => {
     return (
       <List key={section.title} renderHeader={section.title}>
@@ -241,34 +206,6 @@ class RechargeScreen extends React.Component {
                 </Right>
               </ListItem>
             )
-            // return <RadioItem
-            //   multipleLine
-            //   name="rechargeChannels"
-            //   extra={<Text>{section.title}</Text>}
-            //   checked={this.props.activeAccount.local_id === item.local_id}
-            //   key={item.payChannelAlias + index}
-            //   onChange={event => {
-            //     if (event.target.checked) {
-            //       this.setState({
-            //         amount: '',
-            //         orderAmount: '',
-            //         rechargeFee: '0'
-            //       });
-            //       this.props.setActiveAccount(item);
-            //     }
-            //   }}>
-            //   <View
-            //     style={{
-            //       flexDirection: 'row',
-            //       justifyContent: 'space-between',
-            //       alignItems: 'center',
-            //       height: 30,
-            //       paddingLeft: 20
-            //     }}
-            //   >
-            //     <SvgIcon icon={minbankCodeMap[String(item.bankCode).toUpperCase()]} size={80}/>
-            //   </View>
-            // </RadioItem>
           })
         }
       </List>
@@ -298,22 +235,8 @@ class RechargeScreen extends React.Component {
       <ScrollView style={styles.container}>
         {
           Object.keys(channelRealObj || {}).map((key) => {
-            // return {title: key, content: channelRealObj[key]}
             return this._renderContent({title: key, content: channelRealObj[key]})
           })
-          // <Accordion
-          //   onChange={this.onAccordionChange}
-          //   activeSections={this.state.activeSections}
-          //   sections={
-          //     Object.keys(channelRealObj || {}).map((key) => {
-          //       return {title: key, content: channelRealObj[key]}
-          //     })
-          //   }
-          //   renderSectionTitle={this._renderSectionTitle}
-          //   renderHeader={this._renderHeader}
-          //   renderContent={this._renderContent}
-          // >
-          // </Accordion>
         }
       </ScrollView>
     );
@@ -346,33 +269,6 @@ class RechargeScreen extends React.Component {
                   </Right>
                 </ListItem>
               )
-              // return <RadioItem
-              //   multipleLine
-              //   name="rechargeChannels"
-              //   checked={this.props.activeAccount.local_id === item.local_id}
-              //   key={item.payChannelAlias + index}
-              //   onChange={event => {
-              //     if (event.target.checked) {
-              //       this.setState({
-              //         amount: '',
-              //         orderAmount: '',
-              //         rechargeFee: ''
-              //       });
-              //       this.props.setActiveAccount(item);
-              //     }
-              //   }}>
-              //   <View
-              //     style={{
-              //       flexDirection: 'row',
-              //       justifyContent: 'space-between',
-              //       alignItems: 'center',
-              //       height: 30,
-              //       paddingLeft: 10
-              //     }}
-              //   >
-              //     <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/>
-              //   </View>
-              // </RadioItem>
             })
           }
         </List>
@@ -403,52 +299,7 @@ class RechargeScreen extends React.Component {
     // 金额输入框
     const inputArea = (
       <View>
-        <List>
-          <InputItem
-            value={amount}
-            type="number"
-            onChange={value => {
-              if (!isNaN(Number(value))) {
-                if (activeAccount.feeRate > 0) {
-                  let fee = Number(value) * activeAccount.feeRate / 100
-                  this.setState({
-                    amount: String(value),
-                    orderAmount: String(Number(Number(value) - fee).toFixed(2)),
-                    rechargeFee: String(Number(fee).toFixed(2))
-                  });
-                } else {
-                  this.setState({
-                    amount: String(value),
-                    orderAmount: String(value),
-                    rechargeFee: ''
-                  });
-                }
-              }
-            }}
-            placeholder="请输入充值金额"
-          >
-            充值金额
-          </InputItem>
-        </List>
-        <View style={styleUtil({height: 22, backgroundColor: '#f0f0f0'})}></View>
-        <List>
-          <List.Item
-            extra={orderAmount}
-          >
-            实际到账
-          </List.Item>
-        </List>
-        <View style={styleUtil({height: 22, backgroundColor: '#f0f0f0'})}></View>
-        {
-          activeAccount.feeRate > 0 &&
-          <List>
-            <List.Item
-              extra={rechargeFee}
-            >
-              手续费
-            </List.Item>
-          </List>
-        }
+        <InputAmount activeAccount={activeAccount} rechargeTime={this.state.rechargeTime}/>
         <View style={styleUtil({paddingLeft: 15, paddingTop: 30, paddingRight: 15})}>
           <Button type="primary" loading={isLoading} onPress={this.submitFunc}>下一步</Button>
         </View>
