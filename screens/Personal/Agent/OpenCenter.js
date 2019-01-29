@@ -40,7 +40,7 @@ class FlatListItem extends PureComponent {
         }}>注册码: {id}</Text>
         <Text>用户类别: {isProxy === 0 ? '玩家' : '代理'}</Text>
         <Text>彩票返点: {rebate}</Text>
-        <Text>剩余次数: {times}</Text>
+        <Text>剩余次数: {times-useTimes}</Text>
         <Text>过期时间: {text}</Text>
         <Flex>
           <Text>操作:</Text>
@@ -304,17 +304,6 @@ class OpenCenter extends React.Component {
           KeyName={`KeyName-${KeyName}`}
           params={params}
           renderItem={this.renderItem}
-          // 第一个参数 params 第二个子组件的将要请求的第N页
-          beforeHttpGet={async ({params, page}, fn) => {
-            // 解决父级数据数据源同步问题，然后数据给到子组件本身
-            await this.setState({
-              params: Object.assign({}, params, {
-                pageNumber: page
-              })
-            })
-            let handlerParams = this.state.params
-            fn(handlerParams, true)
-          }}
           // 返回数据空或者处理后的数据源
           beforeUpdateList={({res}, fn) => {
             let dataList = res.data && res.data.root ? res.data.root : []
