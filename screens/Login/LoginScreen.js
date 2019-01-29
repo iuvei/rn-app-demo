@@ -14,6 +14,7 @@ import { Constants } from 'expo'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const height = Dimensions.get('window').height
+const width = Dimensions.get('window').width
 
 class LoginComponent extends Component {
   static navigationOptions = {
@@ -55,12 +56,12 @@ class LoginComponent extends Component {
         rememberUser: Boolean(v)
       })
     })
-    AsyncStorage.getItem('rememberPwd').then(v => {
-      if (this.willUnmount) return
-      this.setState({
-        rememberPwd: Boolean(v)
-      })
-    })
+    // AsyncStorage.getItem('rememberPwd').then(v => {
+    //   if (this.willUnmount) return
+    //   this.setState({
+    //     rememberPwd: Boolean(v)
+    //   })
+    // })
     this.props.AsetServiceUrl()
   }
 
@@ -120,114 +121,124 @@ class LoginComponent extends Component {
             <Flex direction="column">
               <Flex.Item>
                 <View style={{paddingTop: 88}}>
-                  <Image source={require('../../assets/images/login_logo.png')} style={{width: 135, height: 105, marginLeft: 'auto', marginRight: 'auto'}}/>
+                  <Image source={require('../../assets/images/logo.png')} style={{width: width * 0.24, height: 0.21 * width, marginLeft: 'auto', marginRight: 'auto'}}/>
                 </View>
-                <View style={styles.container}>
-                  <InputItem
-                    style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0, marginBottom: 18, marginLeft: 0}}
-                    placeholder="请输入用户名"
-                    value={j_username}
-                    extra={<Icon name="close" size={20} color="#1789e6" />}
-                    labelNumber={3}
-                    onChangeText={(j_username) => {
-                      this.setState({
-                        j_username: j_username
-                      })
-                      if (rememberUser) {
-                        AsyncStorage.setItem('j_username', j_username || '')
-                      }
-                    }}
-                    onExtraClick={() => {
-                      this.setState({
-                        j_username: ''
-                      })
-                    }}
-                  >
-                    <Icon name="user" size={32} color="#1789e6" style={{paddingLeft: 6}} />
-                  </InputItem>
-                  <InputItem
-                    style={{height: 45, width: 280, backgroundColor: '#ffffff', borderRadius: 5, margin: 0, marginLeft: 0}}
-                    placeholder="请输入登录密码"
-                    value={j_password}
-                    labelNumber={3}
-                    type={seePwd ? "text" : "password"}
-                    extra={<Icon name="eye" size={20} color="#1789e6" />}
-                    onChangeText={(j_password) => {
-                      this.setState({
-                        j_password: j_password
-                      })
-                      if (rememberPwd) {
-                        AsyncStorage.setItem('j_password', j_password || '')
-                      }
-                    }}
-                    onExtraClick={() => {
-                      this.setState({
-                        seePwd: !seePwd
-                      })
-                    }}
-                  >
-                    <Icon name="lock" size={32} color="#1789e6" style={{paddingLeft: 6}} />
-                  </InputItem>
-                  <Flex style={{height: 38}}>
-                    <Flex.Item style={{ paddingRight: 0 }}>
-                      <Text style={{textAlign: 'right', color: '#ffffff'}}>记住账号</Text>
-                    </Flex.Item>
-                    <View style={{ paddingLeft: 4, paddingRight: 14, width: 68 }}>
-                      <Switch
-                          style={Platform.OS === 'ios' ? { transform: [{ scaleX: .7 }, { scaleY: .7 }] } : {}}
-                          value={rememberUser}
-                          onValueChange={(v) => {
-                            this.setState({
-                              rememberUser: v
-                            })
-                            AsyncStorage.setItem('rememberUser', v ? 'true' : '')
-                            if (v) {
-                              AsyncStorage.setItem('j_username', j_username || '')
-                            } else {
-                              AsyncStorage.removeItem('j_username')
-                            }
-                          }}
-                          trackColor={{true: '#05bde1'}}
-                          thumbColor={'#ffffff'}
-                        />
-                    </View>
-                    <Flex.Item style={{ paddingRight: 0 }}>
-                      <Text style={{textAlign: 'right', color: '#ffffff'}}>记住密码</Text>
-                    </Flex.Item>
-                    <View style={{ paddingLeft: 4, paddingRight: 14, width: 68 }}>
-                      <Switch
-                          style={Platform.OS === 'ios' ? { transform: [{ scaleX: .7 }, { scaleY: .7 }] } : {}}
-                          value={rememberPwd}
-                          onValueChange={(v) => {
-                            this.setState({
-                              rememberPwd: v
-                            })
-                            AsyncStorage.setItem('rememberPwd', v ? 'true' : '')
-                            if (v) {
-                              AsyncStorage.setItem('j_password', j_password || '')
-                            } else {
-                              AsyncStorage.removeItem('j_password')
-                            }
-                          }}
-                          trackColor={{true: '#05bde1'}}
-                          thumbColor={'#ffffff'}
-                        />
-                    </View>
-                  </Flex>
-                  <Button activeStyle={false} style={styles.btn} loading={isLoading} type="primary" onPress={() => this._toLogin()}>登 录</Button>
-                  <Flex style={{width: 280, marginTop: 25}}>
-                    <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-                      {/* <Text style={{color: '#ffffff'}}>线路检测</Text> */}
-                    </Flex.Item>
-                    <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
-                      <Text style={{textAlign: 'right', color: '#ffffff'}} onPress={this._handleDownloadAsync}>移动端下载</Text>
-                    </Flex.Item>
-                  </Flex>
-                </View>
+                <ImageBackground source={require('../../assets/images/Landingwindow.png')} style={{width: width, height: width, alignItems: 'center'}}>
+                  <View style={styles.container}>
+                    <InputItem
+                      style={{height: 0.14 * width, lineHeight: 0.14 * width}}
+                      placeholder="请输入用户名"
+                      value={j_username}
+                      // extra={<Icon name="close" size={20} color="#1789e6" />}
+                      labelNumber={3}
+                      onChangeText={(j_username) => {
+                        this.setState({
+                          j_username: j_username
+                        })
+                        if (rememberUser) {
+                          AsyncStorage.setItem('j_username', j_username || '')
+                        }
+                      }}
+                      // onExtraClick={() => {
+                      //   this.setState({
+                      //     j_username: ''
+                      //   })
+                      // }}
+                    >
+                      {/* <Icon name="user" size={32} color="#1789e6" style={{paddingLeft: 6}} /> */}
+                      <Image source={require('../../assets/images/ic_user.png')} style={{width: 30, height: 30}} />
+                    </InputItem>
+                    <InputItem
+                      style={{height: 0.14 * width, lineHeight: 0.14 * width}}
+                      placeholder="请输入登录密码"
+                      value={j_password}
+                      labelNumber={3}
+                      type={seePwd ? "text" : "password"}
+                      // extra={<Icon name="eye" size={20} color="#1789e6" />}
+                      onChangeText={(j_password) => {
+                        this.setState({
+                          j_password: j_password
+                        })
+                        if (rememberUser) {
+                          AsyncStorage.setItem('j_password', j_password || '')
+                        }
+                      }}
+                      // onExtraClick={() => {
+                      //   this.setState({
+                      //     seePwd: !seePwd
+                      //   })
+                      // }}
+                    >
+                      {/* <Icon name="lock" size={32} color="#1789e6" style={{paddingLeft: 6}} /> */}
+                      <Image source={require('../../assets/images/ic_password.png')} style={{width: 30, height: 30}} />
+                    </InputItem>
+                    <Flex style={{height: 38}}>
+                      <Flex.Item style={{ paddingRight: 0 }}>
+                        <Text style={{textAlign: 'right', color: '#333'}}>记住</Text>
+                      </Flex.Item>
+                      <View style={{ paddingLeft: 4, paddingRight: 14, width: 68 }}>
+                        <Switch
+                            style={Platform.OS === 'ios' ? { transform: [{ scaleX: .7 }, { scaleY: .7 }] } : {}}
+                            value={rememberUser}
+                            onValueChange={(v) => {
+                              this.setState({
+                                rememberUser: v
+                              })
+                              AsyncStorage.setItem('rememberUser', v ? 'true' : '')
+                              if (v) {
+                                AsyncStorage.setItem('j_username', j_username || '')
+                                AsyncStorage.setItem('j_password', j_password || '')
+                              } else {
+                                AsyncStorage.removeItem('j_username')
+                                AsyncStorage.removeItem('j_password')
+                              }
+                            }}
+                            trackColor={{true: '#05bde1'}}
+                            thumbColor={'#ffffff'}
+                          />
+                      </View>
+                      {/* <Flex.Item style={{ paddingRight: 0 }}>
+                        <Text style={{textAlign: 'right', color: '#333'}}>记住密码</Text>
+                      </Flex.Item>
+                      <View style={{ paddingLeft: 4, paddingRight: 14, width: 68 }}>
+                        <Switch
+                            style={Platform.OS === 'ios' ? { transform: [{ scaleX: .7 }, { scaleY: .7 }] } : {}}
+                            value={rememberPwd}
+                            onValueChange={(v) => {
+                              this.setState({
+                                rememberPwd: v
+                              })
+                              AsyncStorage.setItem('rememberPwd', v ? 'true' : '')
+                              if (v) {
+                                AsyncStorage.setItem('j_password', j_password || '')
+                              } else {
+                                AsyncStorage.removeItem('j_password')
+                              }
+                            }}
+                            trackColor={{true: '#05bde1'}}
+                            thumbColor={'#ffffff'}
+                          />
+                      </View> */}
+                    </Flex>
+                    <ImageBackground source={require('../../assets/images/login_btn.png')} style={styles.btn}>
+                      <Button activeStyle={false} style={styles.btn} loading={isLoading} type="ghost" onPress={() => this._toLogin()}><Text style={{color: '#fff', fontSize: 14}}>登 录</Text></Button>
+                    </ImageBackground>
+                    {/* <Flex style={{width: 280, marginTop: 25}}>
+                      <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}> */}
+                        {/* <Text style={{color: '#ffffff'}}>线路检测</Text> */}
+                      {/* </Flex.Item>
+                      <Flex.Item style={{ paddingLeft: 4, paddingRight: 4 }}>
+                        <Text style={{textAlign: 'right', color: '#ffffff'}}></Text>
+                      </Flex.Item>
+                    </Flex> */}
+                  </View>
+                </ImageBackground>
               </Flex.Item>
-              <View style={{height: 40, width: 280, flexDirection: 'row'}}>
-                <Text style={{color: '#ffffff', flex: 1}}  onPress={this._handleServiceAsync}>在线客服</Text>
-                <Text style={{textAlign: 'right', color: '#ffffff', flex: 1}}>v{manifest.version}</Text>
+              <View style={{height: 40, width: 280, flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{color: '#333', flex: 1}}  onPress={this._handleServiceAsync}>
+                  联系客服<Icon name="phone" size={20} color="#333"/>
+                </Text>
+                <Text style={{textAlign: 'right', color: '#333', flex: 1}} onPress={this._handleDownloadAsync}>移动端下载v{manifest.version}</Text>
               </View>
             </Flex>
           </ImageBackground>
@@ -240,12 +251,9 @@ class LoginComponent extends Component {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: 310,
-    height: 290,
-    backgroundColor: '#0a84db',
-    marginTop: 39,
-    borderRadius: 7,
-    paddingTop: 38,
+    width: 0.64 *  width,
+    height: 0.64 *  width,
+    paddingTop: 0.28 * width
   },
   welcomeImage: {
     width: 100,
@@ -254,7 +262,9 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   btn: {
-    width: 280,
+    width: 0.37 * width,
+    height: 40,
+    borderWidth: 0,
   }
 })
 
