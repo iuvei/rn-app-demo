@@ -3,6 +3,7 @@ import { View, Text, Image, ImageBackground, Dimensions, TouchableHighlight } fr
 import { Modal, Button, Flex } from '@ant-design/react-native'
 
 const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 export default class RechargeTutorial extends React.PureComponent {
   constructor(props) {
@@ -96,7 +97,7 @@ export default class RechargeTutorial extends React.PureComponent {
           }}>
             <Image source={require('../../assets/images/recharge/close.png')} style={{width: 24, height: 24}}></Image>
           </TouchableHighlight>
-          <View style={{ paddingVertical: 20, alignItems: 'center' }}>
+          <View style={{ paddingVertical: 20, alignItems: 'center', height: (step === 8 || step === 9) ? height : 'auto', position: 'relative' }}>
             {
               step === 1 &&
               <View style={{}}>
@@ -119,7 +120,7 @@ export default class RechargeTutorial extends React.PureComponent {
             {
               step === 4 &&
               <View>
-                <Image source={require('../../assets/images/recharge/step4_01.png')} style={{width: width, height: 0.4 * width, marginTop: 308}}></Image>
+                <Image source={require('../../assets/images/recharge/step4_01.png')} style={{width: width, height: 0.4 * width, marginTop: 324}}></Image>
               </View>
             }
             {
@@ -144,7 +145,40 @@ export default class RechargeTutorial extends React.PureComponent {
               </View>
             }
             {
-              step < 9 &&
+              step === 8 &&
+              <View style={{position: 'absolute', bottom: 0, left: 0, width: '100%', alignItems: 'center'}}>
+                <TouchableHighlight onPress={() => {
+                  if (step >= 9) return
+                  this.setState({
+                    step: step+1
+                  })
+                }}>
+                  <Image source={require('../../assets/images/recharge/nextstep.png')} style={{width: 99, height: 48, marginBottom: 30}}></Image>
+                </TouchableHighlight>
+                <Image source={require('../../assets/images/recharge/step8_01.png')} style={{width: 0.86 * width, height: 0.34 * width, marginLeft: 20}}></Image>
+                <Image source={require('../../assets/images/recharge/step8_02.jpg')} style={{width: 0.94 * width, height: 0.15 * width}}></Image>
+              </View>
+            }
+            {
+              step === 9 &&
+              <View style={{position: 'absolute', bottom: 0, left: 0, width: '100%', alignItems: 'center'}}>
+                <TouchableHighlight onPress={() => {
+                  this.setState({
+                    visible: false
+                  }, () => {
+                    this.setState({
+                      step: 0
+                    })
+                  })
+                }}>
+                  <Image source={require('../../assets/images/recharge/iknow.png')} style={{width: 99, height: 48, marginBottom: 30}}></Image>
+                </TouchableHighlight>
+                <Image source={require('../../assets/images/recharge/step9_01.png')} style={{width: 0.86 * width, height: 0.34 * width, marginLeft: 20}}></Image>
+                <Image source={require('../../assets/images/recharge/step9_02.jpg')} style={{width: 0.94 * width, height: 0.15 * width}}></Image>
+              </View>
+            }
+            {
+              step < 8 &&
               <TouchableHighlight onPress={() => {
                 if (step >= 9) return
                 this.setState({
@@ -152,20 +186,6 @@ export default class RechargeTutorial extends React.PureComponent {
                 })
               }}>
                 <Image source={require('../../assets/images/recharge/nextstep.png')} style={{width: 99, height: 48, marginTop: 30}}></Image>
-              </TouchableHighlight>
-            }
-            {
-              step >= 9 &&
-              <TouchableHighlight onPress={() => {
-                this.setState({
-                  visible: false
-                }, () => {
-                  this.setState({
-                    step: 0
-                  })
-                })
-              }}>
-                <Image source={require('../../assets/images/recharge/iknow.png')} style={{width: 99, height: 48}}></Image>
               </TouchableHighlight>
             }
           </View>
