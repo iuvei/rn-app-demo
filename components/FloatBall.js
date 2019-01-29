@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { PanResponder, View, Dimensions } from 'react-native'
+import { PanResponder, View, Dimensions, Platform } from 'react-native'
 
 class FloatBall extends Component {
   constructor (props) {
@@ -132,10 +132,10 @@ class FloatBall extends Component {
         backgroundColor: this.state.isHeightShow ? '#ffddff' : '#ea5b16',
         borderColor: '#ff0',
         borderWidth: 1,
-        borderRadius: 20,
-        width: 40,
-        height: 40,
-        zIndex: 1,
+        borderRadius: Platform.OS === 'ios' ? 25 : 20,
+        width: Platform.OS === 'ios' ? 50 : 40,
+        height: Platform.OS === 'ios' ? 50 : 40,
+        zIndex: 2,
         position: 'absolute',
         left: this.state.marginLeft,
         top: this.state.marginTop,
