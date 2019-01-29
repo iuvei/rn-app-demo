@@ -86,7 +86,7 @@ export default class RechargeTutorial extends React.PureComponent {
           onClose={this.onClose}
           style={{backgroundColor: 'transparent', position: 'relative'}}
         >
-          <TouchableHighlight style={{position: 'absolute', top: 50, right: 20, width: 24, height: 24}} onPress={() => {
+          <TouchableHighlight style={{position: 'absolute', top: 35, right: 20, width: 24, height: 24}} onPress={() => {
             this.setState({
               visible: false
             }, () => {
