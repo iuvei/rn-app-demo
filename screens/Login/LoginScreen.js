@@ -174,7 +174,7 @@ class LoginComponent extends Component {
                     </InputItem>
                     <Flex style={{height: 38}}>
                       <Flex.Item style={{ paddingRight: 0 }}>
-                        <Text style={{textAlign: 'right', color: '#333'}}>记住</Text>
+                        <Text style={{textAlign: 'right', color: '#333', fontSize: 14}}>记住</Text>
                       </Flex.Item>
                       <View style={{ paddingLeft: 4, paddingRight: 14, width: 68 }}>
                         <Switch
@@ -193,7 +193,7 @@ class LoginComponent extends Component {
                                 AsyncStorage.removeItem('j_password')
                               }
                             }}
-                            trackColor={{true: '#05bde1'}}
+                            trackColor={{true: '#80a7ff'}}
                             thumbColor={'#ffffff'}
                           />
                       </View>
