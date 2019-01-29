@@ -26,7 +26,7 @@ class FlatListItem extends PureComponent {
         </Flex>
         <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>用户名：{item["loginName"]}</Text>
         <Flex justify="space-between">
-          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作日期：{formatTime(item["operateTime"])}</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作日期：{formatTime(item["createTime"])}</Text>
         </Flex>
         <Flex justify="space-between">
           <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作前金额：{toFixed4(item["oldBalance"])}</Text>
