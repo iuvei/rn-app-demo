@@ -46,8 +46,6 @@ class ChaseDetail extends React.Component {
           return formatTime(v)
         }},
         {key: 'lotterName', title: '游戏名称'},
-        {key: 'openCode', title: '开奖号码'},
-        {key: 'castCodes', title: '投注号码'},
         {key: 'ruleName', title: '玩法名称'},
         {key: 'orderIssue', title: '起始奖期 '},
         {key: 'haltAddition', title: '中将即停', formatter: function(v) {
@@ -61,7 +59,9 @@ class ChaseDetail extends React.Component {
         {key: 'castAmountEd', title: '已完成金额'},
         {key: 'castAmountCancel', title: '已取消金额'},
         {key: 'rewardBonus', title: '中奖金额'},
-        {key: 'rewardAndRebate', title: '奖金/返点'}
+        {key: 'rewardAndRebate', title: '奖金/返点'},
+        {key: 'openCode', title: '开奖号码'},
+        {key: 'castCodes', title: '投注号码'},
       ],
       columns: [
         {key: 'orderIssue', title: '期号', width: '30%'},
@@ -207,7 +207,7 @@ class ChaseDetail extends React.Component {
                     <View style={{backgroundColor: '#fff', width: '98%'}} key={item.title}>
                       <Flex>
                         <Text style={{width: 100, paddingLeft: 20, color: '#a4a4a4', lineHeight: 32, fontSize: 14}}>{item.title}</Text>
-                        <Text style={{flex: 1, textAlign: 'right', color: '#585858', paddingRight: 16, lineHeight: 32, fontSize: 14}} ellipsizeMode={'tail'} numberOfLines={1}>{item.formatter ? item.formatter(detailInfo[item.key]) : detailInfo[item.key]}</Text>
+                        <Text style={{flex: 1, textAlign: 'right', color: '#585858', paddingRight: 16, lineHeight: 32, fontSize: 14}}>{item.formatter ? item.formatter(detailInfo[item.key]) : detailInfo[item.key]}</Text>
                       </Flex>
                       <Image source={require('../../../assets/images/detail_dashed.png')} style={{width: '100%', height: 0.5}} />
                     </View>
