@@ -13,6 +13,7 @@ import { ListItem, Radio, Right, Left } from 'native-base'
 import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
 import { isObject } from 'lodash'
 import InputAmount from './InputAmount'
+import RechargeTutorial from './RechargeTutorial'
 
 
 class RechargeScreen extends React.Component {
@@ -301,7 +302,8 @@ class RechargeScreen extends React.Component {
       <View>
         <InputAmount activeAccount={activeAccount} rechargeTime={this.state.rechargeTime}/>
         <View style={styleUtil({paddingLeft: 15, paddingTop: 30, paddingRight: 15})}>
-          <Button type="primary" loading={isLoading} onPress={this.submitFunc}>下一步</Button>
+          <RechargeTutorial/>
+          <Button type="primary" loading={isLoading} onPress={this.submitFunc} style={{marginTop: 15}}>下一步</Button>
         </View>
       </View>
     )
@@ -324,8 +326,8 @@ class RechargeScreen extends React.Component {
                     {activeAccount.bankCode ? <SvgIcon icon={minbankCodeMap[String(activeAccount.bankCode).toUpperCase()]} size={80}/> : null}
                   </List.Item>
                 </List>
-                {infoDesc}
                 {inputArea}
+                {infoDesc}
               </View>
               <View>
                 <List style={{width: '100%'}}>
@@ -333,8 +335,8 @@ class RechargeScreen extends React.Component {
                     {activeAccount.coinCode ? <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/> : null}
                   </List.Item>
                 </List>
-                {infoDesc}
                 {inputArea}
+                {infoDesc}
               </View>
             </Tabs>
           </View>
