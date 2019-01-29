@@ -54,6 +54,7 @@ export default class InputAmount extends React.PureComponent {
                     orderAmount: String(value),
                     rechargeFee: ''
                   }
+                  this.setState(tmp)
                   AsyncStorage.setItem('RechargeMoney', JSON.stringify(tmp))
                 }
               }

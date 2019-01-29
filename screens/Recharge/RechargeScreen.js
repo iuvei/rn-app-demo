@@ -29,7 +29,6 @@ class RechargeScreen extends React.Component {
     super(props)
     this.state = {
       currentIndex: 0,
-      activeSections: [0],
       realAccounts: [],
       channelRealObj: {},
       virtualAccounts: [],
@@ -216,7 +215,8 @@ class RechargeScreen extends React.Component {
   channelTabsChange = (tab, index) => {
     this.setState({
       activeTabIndex: index,
-      minRechargeMoney: index === 0 ? 50 : 100
+      minRechargeMoney: index === 0 ? 50 : 100,
+      rechargeTime: new Date().getTime()
     })
     if (index === 1) {
       this.props.setActiveAccount(this.state.virtualAccounts[0])
@@ -230,7 +230,7 @@ class RechargeScreen extends React.Component {
   }
 
   render() {
-    let {channelRealObj, activeTabIndex, virtualAccounts, minRechargeMoney, orderAmount, amount, rechargeFee, isLoading} = this.state
+    let {channelRealObj, activeTabIndex, virtualAccounts, minRechargeMoney, isLoading} = this.state
     let {activeAccount, userSecurityLevel} = this.props
     const sidebar = (
       <ScrollView style={styles.container}>
@@ -302,7 +302,10 @@ class RechargeScreen extends React.Component {
       <View>
         <InputAmount activeAccount={activeAccount} rechargeTime={this.state.rechargeTime}/>
         <View style={styleUtil({paddingLeft: 15, paddingTop: 30, paddingRight: 15})}>
-          <RechargeTutorial/>
+          {
+            activeTabIndex === 1 &&
+            <RechargeTutorial/>
+          }
           <Button type="primary" loading={isLoading} onPress={this.submitFunc} style={{marginTop: 15}}>下一步</Button>
         </View>
       </View>

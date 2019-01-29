@@ -120,20 +120,20 @@ export default class RechargeTutorial extends React.PureComponent {
             {
               step === 4 &&
               <View>
-                <Image source={require('../../assets/images/recharge/step4_01.png')} style={{width: width, height: 0.4 * width, marginTop: 324}}></Image>
+                <Image source={require('../../assets/images/recharge/step4_01.png')} style={{width: width, height: 0.4 * width, marginTop: 264}}></Image>
               </View>
             }
             {
               step === 5 &&
               <View>
-                <Image source={require('../../assets/images/recharge/step5_01.jpg')} style={{width: 0.94 * width, height: 0.45 * width, marginTop: 160}}></Image>
+                <Image source={require('../../assets/images/recharge/step5_01.jpg')} style={{width: 0.94 * width, height: 0.45 * width, marginTop: 130}}></Image>
                 <Image source={require('../../assets/images/recharge/step5_02.png')} style={{width: 0.77 * width, height: 0.19 * width, marginLeft: 20}}></Image>
               </View>
             }
             {
               step === 6 &&
               <View>
-                <Image source={require('../../assets/images/recharge/step6_01.jpg')} style={{width: 0.94 * width, height: 0.23 * width, marginTop: 160}}></Image>
+                <Image source={require('../../assets/images/recharge/step6_01.jpg')} style={{width: 0.94 * width, height: 0.23 * width, marginTop: 170}}></Image>
                 <Image source={require('../../assets/images/recharge/step6_02.png')} style={{width: 0.70 * width, height: 0.19 * width, marginLeft: 20}}></Image>
               </View>
             }
