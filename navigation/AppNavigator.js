@@ -38,7 +38,7 @@ const MainNavigator = createStackNavigator({
   navigationOptions: {
     headerStyle: {
       elevation: 0, // 去阴影
-      backgroundColor: '#016fca'
+      backgroundColor: '#6d96f7'
     },
     headerTintColor: '#fff'
   }

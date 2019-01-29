@@ -20,7 +20,7 @@ export default class FoundScreen extends React.Component {
           text: '回馈新老客户',
           route: 'Activity',
           params:{},
-          src: require('./../../assets/images/found/activity.png'),
+          src: require('./../../assets/images/found/huodong.png'),
           rotation: new Animated.Value(0),
         },
         {
@@ -28,7 +28,7 @@ export default class FoundScreen extends React.Component {
           text: '趣味休闲小游戏',
           route: 'Links',
           params: {activeTab: 2},
-          src: require('./../../assets/images/found/game.png'),
+          src: require('./../../assets/images/found/youxi.png'),
           rotation: new Animated.Value(0),
         },
         {
@@ -36,7 +36,7 @@ export default class FoundScreen extends React.Component {
           text: '实时公布开奖号',
           route: '',
           params:{},
-          src: require('./../../assets/images/found/open.png'),
+          src: require('./../../assets/images/found/gonggao.png'),
           rotation: new Animated.Value(0),
         },
         // {
@@ -44,7 +44,7 @@ export default class FoundScreen extends React.Component {
         //   text: '小惊喜大回报',
         //   route: '',
         //   params:{},
-        //   src: require('./../../assets/images/found/shop.png'),
+        //   src: require('./../../assets/images/found/jifen.png'),
         //   rotation: new Animated.Value(0),
         // },
         {
@@ -52,7 +52,7 @@ export default class FoundScreen extends React.Component {
           text: '狠狠提高中奖率',
           route: '',
           params:{},
-          src: require('./../../assets/images/found/lucky.png'),
+          src: require('./../../assets/images/found/xuanhao.png'),
           rotation: new Animated.Value(0),
         },
         {
@@ -60,7 +60,7 @@ export default class FoundScreen extends React.Component {
           text: '与朋友分享娱乐',
           route: '',
           params:{},
-          src: require('./../../assets/images/found/share.png'),
+          src: require('./../../assets/images/found/yingyong.png'),
           rotation: new Animated.Value(0),
         }
         // {
@@ -68,7 +68,7 @@ export default class FoundScreen extends React.Component {
         //   text: '手气旺抢红包',
         //   route: '',
         //   params:{},
-        //   src: require('./../../assets/images/found/packet.png'),
+        //   src: require('./../../assets/images/found/hongbao.png'),
         //   rotation: new Animated.Value(0),
         // }
       ]
@@ -160,9 +160,9 @@ export default class FoundScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.findHeader}>
-          <ImageBackground source={require('./../../assets/images/found/find_bg.png')} style={{width: '100%', height: '100%'}}>
+          <ImageBackground source={require('./../../assets/images/found/find_head_bg.jpg')} style={{width: '100%', height: '100%'}}>
             <Flex justify="center">
-              <View style={styles.findHeaderContent}>
+              <View>
                 <Text style={styles.findHeadText}>天祥国际累积派发奖金</Text>
                 <Animated.View style={{
                     top: this.state.top.interpolate({
@@ -183,28 +183,31 @@ export default class FoundScreen extends React.Component {
             </Flex>
           </ImageBackground>
         </View>
-        <WhiteSpace size="md" />
+        <ImageBackground
+          resizeMode={'cover'}
+          source={require('./../../assets/images/found/find_bg.png')}
+          style={{width: '100%', height: '95%'}}>
         <ScrollView>
+          <WhiteSpace size="md" />
           <Flex wrap="wrap">
             {
               list.map((item, index) => {
                 return (
                   <View style={[styles.findItem]} key={index}>
-                    <Flex style={{height: 70}} onPress={() => this._actionFun(item)}>
+                    <Flex onPress={() => this._actionFun(item)}>
                       <View style={styles.listBlock}>
+                        <View>
+                          <Animated.Image
+                            source={item.src}
+                            resizeMode={'contain'}
+                            style={{width: 91, height: 90, transform: [{
+                                rotateZ: item["rotation"].interpolate({
+                                  inputRange: [0, 1],
+                                  outputRange: ['0deg', '360deg']
+                                })
+                              }]}}/>
+                        </View>
                         <Text style={styles.listTitle}>{item.title}</Text>
-                        <Text style={styles.listText}>{item.text}</Text>
-                      </View>
-                      <View>
-                        <Animated.Image
-                          source={item.src}
-                          resizeMode={'contain'}
-                          style={{width: 60, marginLeft: 10, transform: [{
-                              rotateZ: item["rotation"].interpolate({
-                                inputRange: [0, 1],
-                                outputRange: ['0deg', '360deg']
-                              })
-                            }]}}/>
                       </View>
                     </Flex>
                   </View>
@@ -213,6 +216,7 @@ export default class FoundScreen extends React.Component {
             }
           </Flex>
         </ScrollView>
+        </ImageBackground>
       </View>
     )
   }
@@ -241,7 +245,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   findHeadText: {
-    color: '#016fca',
+    color: '#ffffff',
     fontSize: 13,
     paddingTop: 10,
     paddingBottom: 10,
@@ -249,16 +253,10 @@ const styles = StyleSheet.create({
   },
   findHeadNumber: {
     fontSize: 24,
-    color: '#016fca',
+    color: '#ffffff',
   },
   findItem: {
-    width: '45%',
-    marginLeft: '3%',
-    borderWidth: 1,
-    backgroundColor: '#ffffff',
-    borderColor: '#d7d6d6',
-    borderRadius: 10,
-    marginBottom: 10,
+    width: '33%',
     //以下是阴影属性：
     shadowOffset: {width: 1, height: 2},
     shadowOpacity: 0.2,
@@ -268,12 +266,13 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   listBlock: {
-    width: 80,
     paddingLeft: 10
   },
   listTitle: {
     fontSize: 14,
-    color: '#333333'
+    color: '#333333',
+    width: '100%',
+    textAlign: 'center'
   },
   listText: {
     marginTop: 5,
