@@ -263,10 +263,11 @@ class RowBall extends React.Component {
             <View style={styles.StepperView}>
               <Stepper
                 min={1}
+                max={999999}
                 style={styles.stepper}
                 value={multiple}
                 onChange={multiple => {
-                  if (Number(multiple) > 0 && isInteger(Number(multiple))) {
+                  if (Number(multiple) > 0 && isInteger(Number(multiple)) && Number(multiple) < 1000000) {
                     setBuyInfo({multiple: Number(multiple)})
                   }
                 }}
