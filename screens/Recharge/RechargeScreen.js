@@ -1,19 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {ScrollView, StyleSheet, View, Text, Platform, AsyncStorage} from 'react-native'
-import { Drawer, List, Button, Tabs, Toast } from '@ant-design/react-native' // , Radio
+import { StyleSheet, View, Text, Platform, AsyncStorage } from 'react-native'
+import { Button, Tabs, Toast } from '@ant-design/react-native' // , Radio
 import { commitRecharge } from '../../api/member'
-// import {MyIconFont} from '../../components/MyIconFont'
-import SvgIcon from '../../components/SvgIcon'
-import {minbankCodeMap} from '../../constants/glyphMapHex'
 import {setActiveAccount} from '../../actions/common'
 import Header from '../../components/Header'
 import {platformKey, prependUrl} from '../../api.config'
-import { ListItem, Radio, Right, Left } from 'native-base'
 import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
-import { isObject } from 'lodash'
 import InputAmount from './InputAmount'
 import RechargeTutorial from './RechargeTutorial'
+import VirtualAccounts from './VirtualAccounts'
+import RealAccounts from './RealAccounts'
+import ActiveAccountbar from './ActiveAccountbar'
 
 
 class RechargeScreen extends React.Component {
@@ -29,69 +27,29 @@ class RechargeScreen extends React.Component {
     super(props)
     this.state = {
       currentIndex: 0,
-      realAccounts: [],
-      channelRealObj: {},
-      virtualAccounts: [],
       activeTabIndex: 0,
       minRechargeMoney: 50,
-      // amount: '',
-      // orderAmount: '',
-      // rechargeFee: '',
       isLoading: false,
       returnUrl: 'https://www.baidu.com',
       channelType: Platform.OS,
       isQuick: 'N',
-      rechargeTime: 0
+      rechargeTime: 0,
+      visibleReal: 0,
+      visibleVirtual: 0
     };
   }
 
   componentDidMount() {
-    let recharge = this.props.recharge
-    // 人民币渠道集合
-    let channelRealObj = {}
-    let realAccounts = []
-    Object.keys(recharge).forEach((keyTitle) => {
-      if (keyTitle !== 'virtual') {
-        Object.keys(recharge[keyTitle]).forEach((infomap) => {
-          if (isObject(recharge[keyTitle][infomap])) {
-            let channelReal = ''
-            for (channelReal in recharge[keyTitle][infomap]) {
-              if (recharge[keyTitle][infomap].hasOwnProperty(channelReal)) {
-                for (let i = 0; i < recharge[keyTitle][infomap][channelReal].length; i++) {
-                  if (Object.keys(this.props.activeAccount).length === 0 && i === 0) {
-                    this.props.setActiveAccount(recharge[keyTitle][infomap][channelReal][i]);
-                  }
-                  recharge[keyTitle][infomap][channelReal][i]['local_id'] =  channelReal + '_' + i + '_' + new Date().getTime()
-                  realAccounts.push(recharge[keyTitle][infomap][channelReal][i])
-                }
-                channelRealObj[channelReal] = recharge[keyTitle][infomap][channelReal]
-              }
-            }
-          }
-        })
-      }
-    })
-    // 数字货币充值渠道集合
-    let virtualAccounts = []
-    if (recharge && recharge.virtual && recharge.virtual.virtualInfoMap) {
-      let channelVirtual = ''
-      for (channelVirtual in recharge.virtual.virtualInfoMap) {
-        if (recharge.virtual.virtualInfoMap.hasOwnProperty(channelVirtual)) {
-          recharge.virtual.virtualInfoMap[channelVirtual].forEach((accountVirtual, idx) => {
-            accountVirtual['local_id'] = channelVirtual + '_' + idx + '_' + new Date().getTime()
-            virtualAccounts.push(accountVirtual)
-          })
-        }
-      }
-    }
-    this.setState({
-      virtualAccounts: [].concat(virtualAccounts),
-      realAccounts: [].concat(realAccounts),
-      channelRealObj: Object.assign({}, channelRealObj)
-    })
   }
 
   componentWillUnmount() {
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.activeAccount.local_id !== this.props.activeAccount.local_id) {
+      return false
+    }
+    return true
   }
 
   // 处理step步骤
@@ -176,41 +134,6 @@ class RechargeScreen extends React.Component {
       })
     }
   }
-  
-  _renderContent = section => {
-    return (
-      <List key={section.title} renderHeader={section.title}>
-        {
-          section.content.map((item, index) => {
-            return (
-              <ListItem selected={this.props.activeAccount.local_id === item.local_id} key={section.title+item.bankCode+index}
-                style={styleUtil({height: 44, lineHeight: 44})}
-                onPress={() => {
-                  this.setState({
-                    amount: '',
-                    orderAmount: '',
-                    rechargeFee: '0'
-                  })
-                  this.props.setActiveAccount(item)
-                }}
-              >
-                <Left>
-                  <SvgIcon icon={minbankCodeMap[String(item.bankCode).toUpperCase()]} size={80}/>
-                </Left>
-                <Right>
-                  <Radio
-                    color={"#ccc"}
-                    selectedColor={"#198ae7"}
-                    selected={this.props.activeAccount.local_id === item.local_id}
-                  />
-                </Right>
-              </ListItem>
-            )
-          })
-        }
-      </List>
-    );
-  };
 
   channelTabsChange = (tab, index) => {
     this.setState({
@@ -218,11 +141,6 @@ class RechargeScreen extends React.Component {
       minRechargeMoney: index === 0 ? 50 : 100,
       rechargeTime: new Date().getTime()
     })
-    if (index === 1) {
-      this.props.setActiveAccount(this.state.virtualAccounts[0])
-    } else {
-      this.props.setActiveAccount(this.state.realAccounts[0])
-    }
   }
 
   goSetTrade = () => {
@@ -230,56 +148,13 @@ class RechargeScreen extends React.Component {
   }
 
   render() {
-    let {channelRealObj, activeTabIndex, virtualAccounts, minRechargeMoney, isLoading} = this.state
+    let { activeTabIndex, minRechargeMoney, isLoading, visibleReal, visibleVirtual} = this.state
     let {activeAccount, userSecurityLevel} = this.props
-    const sidebar = (
-      <ScrollView style={styles.container}>
-        {
-          Object.keys(channelRealObj || {}).map((key) => {
-            return this._renderContent({title: key, content: channelRealObj[key]})
-          })
-        }
-      </ScrollView>
-    );
-    const sidebarVirtual = (
-      <ScrollView style={styles.container}>
-        <List>
-          {
-            virtualAccounts.map((item, index) => {
-              return (
-                <ListItem selected={this.props.activeAccount.local_id === item.local_id} key={item.bankCode+index}
-                  style={styleUtil({height: 44, lineHeight: 44})}
-                  onPress={() => {
-                    this.setState({
-                      amount: '',
-                      orderAmount: '',
-                      rechargeFee: '0'
-                    })
-                    this.props.setActiveAccount(item)
-                  }}
-                >
-                  <Left>
-                    <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/>
-                  </Left>
-                  <Right>
-                    <Radio
-                      color={"#ccc"}
-                      selectedColor={"#198ae7"}
-                      selected={this.props.activeAccount.local_id === item.local_id}
-                    />
-                  </Right>
-                </ListItem>
-              )
-            })
-          }
-        </List>
-      </ScrollView>
-    )
-    const tabs = [
+    let tabs = [
       { title: '人民币支付' },
       { title: '币宝数字货币支付' }
     ];
-    const infoDesc = (
+    let infoDesc = (
       <View>
         {
           !userSecurityLevel.isTradePassword &&
@@ -298,9 +173,9 @@ class RechargeScreen extends React.Component {
     )
 
     // 金额输入框
-    const inputArea = (
+    let inputArea = (
       <View>
-        <InputAmount activeAccount={activeAccount} rechargeTime={this.state.rechargeTime}/>
+        <InputAmount rechargeTime={this.state.rechargeTime}/>
         <View style={styleUtil({paddingLeft: 15, paddingTop: 30, paddingRight: 15})}>
           {
             activeTabIndex === 1 &&
@@ -313,37 +188,20 @@ class RechargeScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Drawer
-          sidebar={activeTabIndex === 0 ? sidebar : sidebarVirtual}
-          position="right"
-          open={false}
-          drawerRef={el => (this.drawer = el)}
-          onOpenChange={this.onOpenChange}
-          drawerBackgroundColor="#ccc"
-        >
-          <View style={{ flex: 1 }}>
-            <Tabs tabs={tabs} onChange={this.channelTabsChange}>
-              <View>
-                <List style={{width: '100%'}}>
-                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()} style={styleUtil({height: 50})}>
-                    {activeAccount.bankCode ? <SvgIcon icon={minbankCodeMap[String(activeAccount.bankCode).toUpperCase()]} size={80}/> : null}
-                  </List.Item>
-                </List>
-                {inputArea}
-                {infoDesc}
-              </View>
-              <View>
-                <List style={{width: '100%'}}>
-                  <List.Item arrow="horizontal" onPress={() => this.drawer && this.drawer.openDrawer()} style={styleUtil({height: 50})}>
-                    {activeAccount.coinCode ? <SvgIcon icon={minbankCodeMap[String(activeAccount.coinCode).toUpperCase()]} size={80}/> : null}
-                  </List.Item>
-                </List>
-                {inputArea}
-                {infoDesc}
-              </View>
-            </Tabs>
+        <Tabs tabs={tabs} onChange={this.channelTabsChange}>
+          <View>
+            <ActiveAccountbar onpress={() => this.setState({visibleReal: new Date().getTime()})}/>
+            <RealAccounts visible={visibleReal} activeTabIndex={!activeTabIndex}/>
+            {inputArea}
+            {infoDesc}
           </View>
-        </Drawer>
+          <View>
+            <ActiveAccountbar onpress={() => this.setState({visibleVirtual: new Date().getTime()})}/>
+            <VirtualAccounts visible={visibleVirtual} activeTabIndex={!activeTabIndex}/>
+            {inputArea}
+            {infoDesc}
+          </View>
+        </Tabs>
       </View>
     )
   }

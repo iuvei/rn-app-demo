@@ -1,9 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { isNaN } from 'lodash'
 import { View, AsyncStorage } from 'react-native'
 import { List, InputItem } from '@ant-design/react-native'
 import { styleUtil } from '../../utils/ScreenUtil'
-export default class InputAmount extends React.PureComponent {
+class InputAmount extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -87,3 +88,14 @@ export default class InputAmount extends React.PureComponent {
     )
   }
 }
+
+const mapStateToProps = (state, props) => {
+  let {activeAccount} = state.member
+  return {activeAccount}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InputAmount)
