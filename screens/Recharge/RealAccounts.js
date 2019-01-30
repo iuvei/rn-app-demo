@@ -11,8 +11,59 @@ import { setActiveAccount } from '../../actions/common'
 import { minbankCodeMap } from '../../constants/glyphMapHex'
 import { styleUtil } from '../../utils/ScreenUtil'
 import SvgIcon from '../../components/SvgIcon'
-import { isObject } from 'lodash'
+import { isObject, isEqual } from 'lodash'
 const height = Dimensions.get('window').height
+
+class AccountsList extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (isEqual(nextProps.channelRealObj, this.props.channelRealObj)) {
+      return false
+    }
+    return true
+  }
+  
+  _renderContent = section => {
+    return (
+      <View key={section.title}>
+        {
+          section.content.map((item, index) => {
+            return (
+              <TouchableHighlight key={section.title+item.bankCode+index}
+                onPress={() => {
+                  this.props.setActiveAccount(item)
+                }}
+              >
+                <View
+                  style={styleUtil({height: 60, lineHeight: 60, backgroundColor: '#fff'})}
+                >
+                  <SvgIcon icon={minbankCodeMap[String(item.bankCode).toUpperCase()]} size={80}/>
+                </View>
+              </TouchableHighlight>
+            )
+          })
+        }
+      </View>
+    )
+  }
+
+  render() {
+    let { channelRealObj } = this.props
+
+    return (
+      <ScrollView style={{height: 0.5 * height, backgroundColor: '#fff'}}>
+      {
+        Object.keys(channelRealObj || {}).map((key) => {
+          return this._renderContent({title: key, content: channelRealObj[key]})
+        })
+      }
+    </ScrollView>
+    )
+  }
+}
 
 class RealAccounts extends React.Component {
   constructor(props) {
@@ -74,34 +125,9 @@ class RealAccounts extends React.Component {
     }
     return true
   }
-  
-  _renderContent = section => {
-    return (
-      <View key={section.title}>
-        {
-          section.content.map((item, index) => {
-            return (
-              <TouchableHighlight key={section.title+item.bankCode+index}
-                onPress={() => {
-                  this.props.setActiveAccount(item)
-                }}
-              >
-                <View
-                  style={styleUtil({height: 60, lineHeight: 60, backgroundColor: '#fff'})}
-                >
-                  <SvgIcon icon={minbankCodeMap[String(item.bankCode).toUpperCase()]} size={80}/>
-                </View>
-              </TouchableHighlight>
-            )
-          })
-        }
-      </View>
-    )
-  }
 
   render() {
     let { channelRealObj } = this.state
-    let { activeAccount } = this.props
 
     return (
       <View>
@@ -112,13 +138,7 @@ class RealAccounts extends React.Component {
           onClose={() => this.setState({visible: false})}
         >
           <View style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
-            <ScrollView style={{height: 0.5 * height, backgroundColor: '#fff'}}>
-              {
-                Object.keys(channelRealObj || {}).map((key) => {
-                  return this._renderContent({title: key, content: channelRealObj[key]})
-                })
-              }
-            </ScrollView>
+            <AccountsList channelRealObj={channelRealObj} setActiveAccount={this.props.setActiveAccount}/>
             <Button type="ghost" onPress={() => this.setState({visible: false})} style={{marginTop: 20}}>
               关闭
             </Button>
