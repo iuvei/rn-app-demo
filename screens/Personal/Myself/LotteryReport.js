@@ -117,6 +117,10 @@ export default class LotteryReport extends React.Component {
       this.setState({isShow: false})
     })
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   handleDate = async ({startTime, endTime}) => {
     await this.setState(prevState => ({

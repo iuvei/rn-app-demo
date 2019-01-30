@@ -10,6 +10,10 @@ class Panel extends PureComponent{
       animation: new Animated.Value()
     };
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   toggle(){
     let initialValue= this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight,

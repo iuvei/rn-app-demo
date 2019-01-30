@@ -182,6 +182,10 @@ class PersonalScreen extends React.Component {
       lotteryRebate
     })
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   changeRoute = (path) => {
     if (path) {

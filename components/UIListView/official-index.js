@@ -18,6 +18,10 @@ export default class Example extends Component {
       text: ''
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   onFetch = async (page = 1, startFetch, abortFetch) => {
     try {

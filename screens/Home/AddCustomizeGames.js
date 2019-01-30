@@ -70,6 +70,10 @@ class AddCustomizeGamesScreen extends React.Component {
       this.setState({ activeSections });
     };
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   initUsualGames = () => {
     let { usualLottery } = this.props

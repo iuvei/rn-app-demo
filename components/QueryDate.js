@@ -47,6 +47,10 @@ export default class QueryDate extends React.Component {
     }
     props.handleDate({startTime: today, endTime: today})
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   render() {
     let { startTime, endTime, buttonIndex } = this.state

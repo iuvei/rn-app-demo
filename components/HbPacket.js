@@ -29,6 +29,10 @@ class HbPacket extends Component {
   }
 
   componentDidMount() {}
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   componentWillReceiveProps(np) {
     if(np.isLogin) {

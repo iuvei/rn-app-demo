@@ -138,6 +138,10 @@ class PersonalScreen extends React.Component {
       params: Object.assign({}, {...prevState.params, startTime, endTime})
     }))
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   handlePickerBack = (val) => {
     this.setState(prevState => ({

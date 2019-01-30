@@ -38,6 +38,10 @@ class ActivityScreen extends React.Component {
       }
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   _renderHeader = (item, index) => {
     let width = Dimensions.get('window').width

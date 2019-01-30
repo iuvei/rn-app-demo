@@ -85,6 +85,10 @@ class BetHistory extends React.Component {
       params: Object.assign({}, {...prevState.params, startTime, endTime})
     }))
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   // renderItem
   // item, index, separators

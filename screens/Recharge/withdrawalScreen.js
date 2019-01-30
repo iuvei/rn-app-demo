@@ -65,6 +65,10 @@ class Withdrawal extends React.Component {
       curBankItem: Object.assign({}, curBankItem)
     })
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   // 银行卡绑定时间判断
   checkBankTime = (bankItem) => {

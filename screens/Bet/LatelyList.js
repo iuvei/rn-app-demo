@@ -12,6 +12,10 @@ class LatelyList extends PureComponent {
       activeClass: []
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   // 计算 activeClass
   _showOpenCodeListRule = (code) => {

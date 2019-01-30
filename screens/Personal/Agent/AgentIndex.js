@@ -118,6 +118,10 @@ class AgentIndex extends React.Component {
       formData: {...this.state.formData, type: value[0]}})
     this._getTeamChart()
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   render () {
     let {teamInfo, teamStatistics, teamEcharts, timeLength, timeLabel, typeLabel} = this.state

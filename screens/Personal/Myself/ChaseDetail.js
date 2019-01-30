@@ -149,6 +149,10 @@ class ChaseDetail extends React.Component {
       } },
     ])
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   cancelOrder = ({isBatch, orderId}) => {
     let {index, batchNo} = this.state.detailInfo

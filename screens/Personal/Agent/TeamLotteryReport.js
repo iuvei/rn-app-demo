@@ -111,6 +111,10 @@ export default class TeamLotteryReport extends React.Component {
         index={index}/>
     )
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   onSearch = async () => {
     await this.setState({isShow: true}, () => {

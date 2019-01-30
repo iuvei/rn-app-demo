@@ -16,6 +16,10 @@ export default class Quota extends React.Component {
   componentDidMount () {
     this._getUserQuotaList()
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   _getUserQuotaList = async () => {
     let res = await getUserQuotaList()

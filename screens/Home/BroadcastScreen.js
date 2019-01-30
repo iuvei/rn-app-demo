@@ -27,6 +27,10 @@ class BroadcastScreen extends React.Component {
       activeSections: []
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   _onRefresh = () => {
     this.setState({refreshing: true});

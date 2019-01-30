@@ -51,6 +51,10 @@ class Contract extends React.Component {
       </View>
     )
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   render () {
     let {subUserInfo} = this.props

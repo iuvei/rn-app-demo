@@ -57,6 +57,10 @@ class Transfer extends React.Component {
       allAccs: arr
     })
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   submitFunc = () => {
     let { amount, toCode, outCode } = this.state

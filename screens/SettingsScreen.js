@@ -69,6 +69,10 @@ class SettingsScreen extends React.Component {
     let result = await WebBrowser.openBrowserAsync(host+'/app/#/download')
     console.log(result)
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   render() {
     let { audioChecked } = this.state

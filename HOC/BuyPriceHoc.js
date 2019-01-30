@@ -66,6 +66,10 @@ export default (Comp) => {
         ViewData: d
       })
     }
+  
+    componentWillUnmount(){
+      this.setState = () => () => {}
+    }
 
     render() {
       return (

@@ -85,6 +85,10 @@ class OpenCenter extends React.Component {
       minRebate: systemMinRebate
     })
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   onChange = e => {
     this.setState({

@@ -125,6 +125,10 @@ class FloatBall extends Component {
       })
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   render() {
     return (

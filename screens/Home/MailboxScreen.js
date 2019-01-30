@@ -44,6 +44,10 @@ class MailboxScreen extends React.Component {
       showDetail: false
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   renderItem = (item, index) => {
     const right = [

@@ -28,6 +28,10 @@ class InputAmount extends React.PureComponent {
       }))
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   render() {
     let {amount, orderAmount, rechargeFee} = this.state

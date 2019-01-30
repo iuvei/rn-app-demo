@@ -104,6 +104,10 @@ export default class BaccaratReport extends React.Component {
         index={index}/>
     )
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   onSearch = async () => {
     await this.setState({isShow: true}, () => {

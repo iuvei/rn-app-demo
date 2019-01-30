@@ -83,6 +83,10 @@ class OrderDetail extends React.Component {
       }
     })
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   cancelOrder = () => {
     let {detailInfo} = this.state

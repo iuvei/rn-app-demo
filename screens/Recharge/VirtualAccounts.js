@@ -33,6 +33,10 @@ class VirtualAccounts extends React.PureComponent {
       this.props.setActiveAccount(this.state.virtualAccounts[0])
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   componentDidMount() {
     let { recharge } = this.props

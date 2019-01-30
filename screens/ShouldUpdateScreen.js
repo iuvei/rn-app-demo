@@ -18,6 +18,10 @@ class ShouldScreen extends React.Component {
   componentDidMount() {
     // this.setState(prevState => ({diffValue: prevState.diffValue + 2}))
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   submitBtn = () => {
     this.setState({

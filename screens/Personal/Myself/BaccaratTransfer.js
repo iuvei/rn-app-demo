@@ -98,6 +98,10 @@ class BaccaratTransfer extends React.Component {
       outAccounts: prevState.outAccounts.concat(arr)
     }))
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   handleDate = ({startTime, endTime}) => {
     this.setState(prevState => ({

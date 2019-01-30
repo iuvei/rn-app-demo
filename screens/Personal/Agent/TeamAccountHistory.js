@@ -69,6 +69,10 @@ class PersonalScreen extends React.Component {
       ]
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   handleDate = ({startTime, endTime}) => {
     this.setState(prevState => ({

@@ -14,6 +14,10 @@ export default class QueryPickerOne extends React.PureComponent {
     }
     props.handlePickerBack({[props.queryName]:props.data[0].value})
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   render() {
     let { pickered }= this.state

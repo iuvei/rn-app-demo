@@ -38,6 +38,10 @@ class UpdatePwd extends React.Component {
     props.AsetUserSecureLevel()
     props.AsetUserSecureConfig()
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   /** @description
    * 确认按钮点击

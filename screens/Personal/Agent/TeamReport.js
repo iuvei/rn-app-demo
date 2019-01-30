@@ -122,6 +122,10 @@ class TeamReport extends React.Component {
         showDetails={this.showDetails}/>
     )
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   // 查询下级团队报表信息，
   onPress = async (userId, userName) => {

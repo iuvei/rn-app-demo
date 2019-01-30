@@ -42,7 +42,8 @@ class RechargeScreen extends React.Component {
   componentDidMount() {
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(){
+    this.setState = () => () => {}
   }
 
   shouldComponentUpdate(nextProps, nextState) {

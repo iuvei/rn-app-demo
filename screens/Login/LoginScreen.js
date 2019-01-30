@@ -146,7 +146,7 @@ class LoginComponent extends Component {
                       // }}
                     >
                       {/* <Icon name="user" size={32} color="#1789e6" style={{paddingLeft: 6}} /> */}
-                      <Image source={require('../../assets/images/ic_user.png')} style={{width: 30, height: 30}} />
+                      <Image source={require('../../assets/images/ic_user.png')} style={{width: 30, height: 30, marginLeft: 10}} />
                     </InputItem>
                     <InputItem
                       style={{height: 0.14 * width, lineHeight: 0.14 * width}}
@@ -170,7 +170,7 @@ class LoginComponent extends Component {
                       // }}
                     >
                       {/* <Icon name="lock" size={32} color="#1789e6" style={{paddingLeft: 6}} /> */}
-                      <Image source={require('../../assets/images/ic_password.png')} style={{width: 30, height: 30}} />
+                      <Image source={require('../../assets/images/ic_password.png')} style={{width: 30, height: 30, marginLeft: 10}} />
                     </InputItem>
                     <Flex style={{height: 38}}>
                       <Flex.Item style={{ paddingRight: 0 }}>

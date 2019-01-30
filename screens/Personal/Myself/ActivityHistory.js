@@ -77,6 +77,10 @@ export default class ActivityHistory extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({ onSearch: this.onSearch })
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   handleDate = ({startTime, endTime}) => {
     this.setState(prevState => ({

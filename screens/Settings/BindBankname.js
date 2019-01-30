@@ -29,6 +29,10 @@ class BindBankname extends React.Component {
       bankName: ''
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   submitFunc = () => {
     let { bankName } = this.state

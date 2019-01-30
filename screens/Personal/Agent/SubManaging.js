@@ -50,6 +50,10 @@ class SubManaging extends Component {
   componentWillMount () {
     this.props.AsetUserSecureLevel()
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   async componentDidMount () {
     let res = await canSignContract()

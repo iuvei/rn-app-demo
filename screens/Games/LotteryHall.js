@@ -82,6 +82,10 @@ class LotteryHall extends React.Component {
   componentDidMount() {
     this._initHotLottery()
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   _initHotLottery() {
     getHotLotter().then((res) => {

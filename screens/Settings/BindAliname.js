@@ -31,6 +31,10 @@ class BindAliname extends React.Component {
       isLoading: false
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   submitFunc = () => {
     let { alipayName, alipayAccount } = this.state

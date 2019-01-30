@@ -13,6 +13,10 @@ export default class RechargeTutorial extends React.PureComponent {
       step: 0
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   onClose = () => {
     this.setState({

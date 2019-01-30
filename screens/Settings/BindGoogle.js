@@ -43,6 +43,10 @@ class BindGoogleComp extends React.Component {
       gaKey: nextProps.gaKey
     })
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   submitFunc = () => {
     let { gaCode, password, gaKey } = this.state

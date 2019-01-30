@@ -109,6 +109,10 @@ class UnbindSet extends React.Component {
       } },
     ])
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   callBack = (res) => {
     if (res.code === 0) {

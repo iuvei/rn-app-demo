@@ -116,6 +116,10 @@ class TeamBaccaratReport extends React.Component {
       }
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   // 返回上一级
   goBack = async () => {

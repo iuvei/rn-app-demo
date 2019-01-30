@@ -118,6 +118,10 @@ class RealAccounts extends React.Component {
       this.props.setActiveAccount(this.state.realAccounts[0])
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.activeAccount.local_id !== this.props.activeAccount.local_id) {

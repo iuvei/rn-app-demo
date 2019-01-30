@@ -36,6 +36,10 @@ class BindSecurity extends React.Component {
       tradePwd: ''
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   submitFunc = () => {
     let { questionOne, questionTwo, questionThree, answerOne, answerTwo, answerThree, tradePwd } = this.state

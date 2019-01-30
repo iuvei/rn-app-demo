@@ -83,6 +83,10 @@ class TeamBetHistory extends React.Component {
       lotterList: []
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   handleDate = ({startTime, endTime}) => {
     this.setState(prevState => ({

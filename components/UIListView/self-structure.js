@@ -32,6 +32,10 @@ export default class ExampleScroll extends Component {
       }
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   // 获取数据
   // page = 1, startFetch, abortFetch

@@ -29,6 +29,10 @@ class UpdateNickname extends React.Component {
       nickName: ''
     }
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   submitFunc = () => {
     let { nickName } = this.state

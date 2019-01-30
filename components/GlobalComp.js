@@ -53,6 +53,7 @@ class GlobalComp extends React.Component {
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange)
+    this.setState = () => () => {}
   }
 
   _handleAppStateChange = (nextAppState) => {

@@ -46,6 +46,10 @@ class AddBankcard extends React.Component {
     }
     props.AsetSysBanklist()
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   /** @description
    * 确认按钮点击

@@ -141,6 +141,10 @@ class BallRow extends React.Component {
   }
 
   setSliderValue = sliderValue => this.setState({sliderValue})
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   render() {
     return (

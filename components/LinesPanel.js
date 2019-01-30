@@ -124,6 +124,7 @@ class LinesPanel extends Component {
 
   componentWillUnmount() {
     NetInfo.isConnected.removeEventListener('connectionChange');
+    this.setState = () => () => {}
   }
 
   render() {

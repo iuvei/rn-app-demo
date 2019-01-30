@@ -58,6 +58,10 @@ class ChaseScreen extends React.Component {
 
   componentDidMount() {
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   getChaseList = ({size, showlen}) => {
     let {lotterCode} = this.props.navParams

@@ -100,6 +100,10 @@ export default class WriteEmail extends React.Component {
       }
     })
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   submitDownUser = (visible = false) => {
     let down_data = this.state.down_data.filter(item => item.checked)

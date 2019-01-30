@@ -115,6 +115,10 @@ class MemberManage extends React.Component {
     await this.props.setDownUserInfo(downInfo)
     this.props.navigation.navigate('SubManaging', {isSon: this.state.userList.length === 0})
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   render () {
     let {api, params, KeyName, isShow, userList} = this.state

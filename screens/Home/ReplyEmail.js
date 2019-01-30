@@ -26,6 +26,10 @@ class ReplyEmail extends React.Component {
   componentDidMount() {
     this.getMsgDetail()
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   getMsgDetail = () => {
     let {messageId, messageAddress} = this.props.replyData

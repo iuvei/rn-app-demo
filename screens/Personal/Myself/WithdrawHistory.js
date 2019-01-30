@@ -95,6 +95,10 @@ class PersonalScreen extends React.Component {
       api:tableAPI
     }, ()=> this.WithdrawHistory.listView.refresh())
   }
+  
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
 
   onSearch = () => {
     this.WithdrawHistory.listView.refresh()
