@@ -5,24 +5,24 @@ import { Toast } from '@ant-design/react-native'
 export const fetchUpdateAndReload = async () => {
   try {
     const response = await Updates.fetchUpdateAsync()
-    // logInfo('JES app fetchUpdateAndReload response', response)
-
-    Alert.alert(
-      'Aviso',
-      'fetchUpdateAsync response->' + JSON.stringify(response),
-      [
-        {text: 'Cerrar', onPress: () => Toast.info('Alert Cerrar checkOtaUpdates'), style: 'cancel'}
-      ],
-      {cancelable: true}
-    )
-
     if (response.isNew) {
-      Updates.reloadFromCache()
+      Alert.alert(
+        '温馨提示',
+        '感谢您的耐心等待，已为您更新最新版本！',
+        [
+          {
+            text: '进入游戏',
+            onPress: () => Updates.reloadFromCache(),
+            style: 'cancel'
+          }
+        ],
+        {cancelable: true}
+      )
     }
 
   } catch (e) {
     // handle or log error
-    // logInfo('JES app fetchUpdateAndReload error!!!', e)
+    // console.log('JES app fetchUpdateAndReload error!!!', e)
   }
 }
 
@@ -35,34 +35,24 @@ export const checkOtaUpdates = async () => {
 
   try {
     const update = await Updates.checkForUpdateAsync()
-    console.log('JES checkOtaUpdates', update)
-    Alert.alert(
-      'Aviso',
-      'update.isAvailable:' + update.isAvailable,
-      [
-        {text: 'Cerrar', onPress: () => Toast.info('Alert Cerrar checkOtaUpdates'), style: 'cancel'}
-      ],
-      {cancelable: true}
-    )
-
     if (update.isAvailable) {
-      fetchUpdateAndReload()
+      Alert.alert(
+        '温馨提示',
+        '当前有新版本，是否为您自动更新！',
+        [
+          {
+            text: '确 定',
+            onPress: () => {
+              Toast.loading('正在下载最新版本...')
+              fetchUpdateAndReload()
+            },
+            style: 'cancel'
+          }
+        ],
+        {cancelable: true}
+      )
     }
-    // return update.isAvailable
-    // ... notify user of update ...
-    // logInfo('JES app checkOtaUpdates about to reload from cache!!!');
-    // Alert.alert(
-    //   'Aviso',
-    //   '应用程序检查ota更新即将从缓存重新加载',
-    //   [
-    //     {text: 'Cerrar', onPress: () => Toast.info('Alert Cerrar checkOtaUpdates'), style: 'cancel'}
-    //   ],
-    //   {cancelable: true}
-    // )
-
   } catch (e) {
-    // handle or log error
-    console.log('JES app checkOtaUpdates error!!!', e)
     return false
   }
 }
