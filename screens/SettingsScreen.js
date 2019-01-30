@@ -20,7 +20,7 @@ import {
   AsetAudioSwitch
 } from '../actions/common'
 import { loginOut } from '../api/basic'
-import { WebBrowser } from 'expo'
+import { WebBrowser, Constants } from 'expo'
 import { host } from '../api.config'
 import AudioPlay from '../components/AudioPlay'
 
@@ -178,8 +178,7 @@ class SettingsScreen extends React.Component {
         <List>
           <List.Item
             thumb={<Icon name="book" color="#333333" size={20}/>}
-            arrow="horizontal"
-            onPress={() => this.props.navigation.navigate('VersionInfo')}
+            extra={<Text>{'v' + Constants.manifest.version}</Text>}
           >
             <Text style={styles.itemTxt}>版本信息</Text>
           </List.Item>

@@ -31,7 +31,6 @@ import UpdateNickname from '../Settings/UpdateNickname'
 import BindAliname from '../Settings/BindAliname'
 import BindSecurity from '../Settings/BindSecurity'
 import BindGoogle from '../Settings/BindGoogle'
-import VersionInfo from '../Settings/VersionInfo'
 import UnbindSet from '../Settings/UnbindSet'
 import BindBankname from '../Settings/BindBankname'
 
@@ -64,7 +63,6 @@ export default {
   BindAliname,
   BindSecurity,
   BindGoogle,
-  VersionInfo,
   UnbindSet,
   BindBankname,
   SubManaging,
