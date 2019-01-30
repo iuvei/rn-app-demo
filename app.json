@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "天祥国际",
+    "name": "天祥国际测试区",
     "slug": "tianxiang",
     "privacy": "public",
     "sdkVersion": "31.0.0",
@@ -18,7 +18,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ziyunprivate.goleteam",
+      "bundleIdentifier": "com.yiyou3.goleteam.debug",
       "buildNumber": "1.0.0",
       "splash": {
         "image": "./assets/images/screen.png",
