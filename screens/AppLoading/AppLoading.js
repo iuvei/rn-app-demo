@@ -11,6 +11,10 @@ import {
   getUserBalance, _getImageSetCookie
 } from '../../api/basic'
 
+import {
+  checkOtaUpdates, fetchUpdateAndReload
+} from '../../services/UpdateService'
+
 class AppLoadingScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -30,6 +34,7 @@ class AppLoadingScreen extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
+      await checkOtaUpdates(),
       // Asset.loadAsync([
       //   require('./assets/images/robot-dev.png'),
       //   require('./assets/images/robot-prod.png')
@@ -56,7 +61,6 @@ class AppLoadingScreen extends React.Component {
         //   // to remove this if you are not using it in your app
         'space-mono': require('../../assets/fonts/SpaceMono-Regular.ttf')
       }),
-      // this._testReturnPromise(),
       // 这里回先执行二维码然后再去那数据
       await _getImageSetCookie(),
       getLoginUser().then(res => {
@@ -69,6 +73,10 @@ class AppLoadingScreen extends React.Component {
         }
       })
     ])
+  }
+
+  _testReturnPromise = async () => {
+    await checkOtaUpdates()
   }
 
   // 可以延迟加载的资源

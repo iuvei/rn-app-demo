@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/appIcon.png",
     "splash": {
@@ -19,7 +19,6 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.yiyou3.goleteam.debug",
-      "buildNumber": "1.0.0",
       "splash": {
         "image": "./assets/images/screen.png",
         "backgroundColor": "#FFFFFF",
