@@ -191,7 +191,8 @@ export default (Comp) => {
       let gamesPlay = gamesPlayStore.find(item => item.ruleCode === playOrgin) || {}
       let playLen = Object.keys(gamesPlay).length
       this.setState({
-        activeGamesPlay: playLen ? gamesPlay : {}
+        activeGamesPlay: playLen ? gamesPlay : {},
+        buyCardData: []
       }, () => {
         this.setMaxMode()
       })
