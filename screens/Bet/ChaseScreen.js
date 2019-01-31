@@ -541,9 +541,9 @@ class ChaseScreen extends React.Component {
       <Flex style={styleUtil({height: 40, backgroundColor: '#198ae7'})}>
         <View style={{width: '9%'}}><Checkbox checked={checkedAll} onChange={event => this.checkAllChange(event)} style={{color: '#fff'}}></Checkbox></View>
         <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'})}>期号</Text>
-        <Text style={styleUtil({width: '15%', textAlign: 'center', fontSize: 14, color: '#fff'})}>倍数</Text>
+        <Text style={styleUtil({width: '12%', textAlign: 'center', fontSize: 14, color: '#fff'})}>倍数</Text>
         <Text style={styleUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#fff'})}>金额</Text>
-        <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'})}>截止日期</Text>
+        <Text style={styleUtil({width: '30%', textAlign: 'center', fontSize: 14, color: '#fff'})}>截止日期</Text>
       </Flex>
       <View style={styleUtil({paddingVertical: 5})}>
         {
@@ -551,9 +551,9 @@ class ChaseScreen extends React.Component {
             return <Flex key={item.currentIssue + '_' + item.showTime + index} style={styleUtil({backgroundColor: '#fff', height: 35})}>
               <View style={{width: '9%'}}><Checkbox checked={item.checked} onChange={event => this.chaseItemChange(event, index)}></Checkbox></View>
               <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.currentIssue}</Text>
-              <Text style={styleUtil({width: '15%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.multiple}</Text>
+              <Text style={styleUtil({width: '12%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.multiple}</Text>
               <Text style={styleUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.money}</Text>
-              <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.showTime}</Text>
+              <Text style={styleUtil({width: '30%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.showTime}</Text>
             </Flex>
           })
         }
