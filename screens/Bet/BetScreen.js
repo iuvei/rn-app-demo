@@ -1,7 +1,8 @@
 import React from 'react'
 import {
   View, SafeAreaView,
-  StyleSheet, ScrollView, AsyncStorage
+  StyleSheet, ScrollView, AsyncStorage,
+  KeyboardAvoidingView
 } from 'react-native'
 import { Tabs, Drawer } from '@ant-design/react-native'
 import { connect } from 'react-redux'
@@ -243,6 +244,7 @@ class BetScreen extends React.Component {
     let {ContentTabs, filterNavBar, intoHistory} = this.state
     let {params} = this.props.navigation.state
     return (
+      <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
       <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
         <View style={styles.container}>
           <Drawer
@@ -286,7 +288,7 @@ class BetScreen extends React.Component {
             </Tabs>
           </Drawer>
         </View>
-      </SafeAreaView>
+      </SafeAreaView></KeyboardAvoidingView>
     )
   }
 }

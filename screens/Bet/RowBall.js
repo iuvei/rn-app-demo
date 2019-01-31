@@ -1,12 +1,11 @@
 import React from 'react'
 import _ from 'lodash'
 import {
-  View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Slider
+  View, Text, StyleSheet, ScrollView
 } from 'react-native'
 import {
-  Flex, Tabs, Card, WhiteSpace,
-  List, Stepper,
-  Button, WingBlank, TextareaItem
+  Stepper,
+  Button, TextareaItem
 } from '@ant-design/react-native'
 
 import CheckBox from 'react-native-check-box'
@@ -240,25 +239,6 @@ class RowBall extends React.Component {
         }
 
         <View style={styles.priceWarp}>
-          {
-            !isKlcYxyLot ? <SliderComponent
-              rebateMode={rebateMode}
-              lotterMinMode={lotterMinMode}
-              curMaxMode={curMaxMode}
-              setBuyInfo={setBuyInfo}
-              sliderMode={this.state.sliderMode}
-            /> : null
-          }
-          {
-            !isKlcYxyLot ? <Text style={styles.BonusText}>
-              当前奖金：
-              {
-
-                bonusPrize.bonus ? `${bonusPrize.resmin} ~ ${bonusPrize.resmax}`
-                  : (bonusPrize.resmin || '00000.0000')
-              }
-            </Text> : null
-          }
           <View style={styles.features}>
             <View style={styles.StepperView}>
               <Stepper
@@ -301,6 +281,25 @@ class RowBall extends React.Component {
               </View>
             }
           </View>
+          {
+            !isKlcYxyLot ? <SliderComponent
+              rebateMode={rebateMode}
+              lotterMinMode={lotterMinMode}
+              curMaxMode={curMaxMode}
+              setBuyInfo={setBuyInfo}
+              sliderMode={this.state.sliderMode}
+            /> : null
+          }
+          {
+            !isKlcYxyLot ? <Text style={styles.BonusText}>
+              当前奖金：
+              {
+
+                bonusPrize.bonus ? `${bonusPrize.resmin} ~ ${bonusPrize.resmax}`
+                  : (bonusPrize.resmin || '00000.0000')
+              }
+            </Text> : null
+          }
           <View style={styles.BuyInfoView}>
             <View style={{flex: 1}}>
               <Text style={styles.BuyInfoDefaultText}>
