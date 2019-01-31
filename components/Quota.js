@@ -71,6 +71,13 @@ export default class Quota extends React.Component {
     let {quotaList, childQuotaList} = this.state
     let {userQuotas} = childQuotaList || {}
     let downQuota = JSON.parse(userQuotas || '{}')
+    if (quotaList.length === 0) {
+      return (
+        <View>
+          <Text style={{color: '#f15a23', fontSize: 14, lineHeight: 32, textAlign: 'center'}}>没有开户权限，请联系管理员处理</Text>
+        </View>
+      )
+    }
     return (
       <View>
         <View style={styles.textArea}>
