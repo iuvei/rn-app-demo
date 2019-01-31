@@ -7,8 +7,9 @@ import {
   View
 } from 'react-native'
 import { stylesUtil } from '../utils/ScreenUtil'
+import { connect } from "react-redux";
 
-export default class Header extends PureComponent {
+class Header extends PureComponent {
 
   constructor(props) {
     super(props)
@@ -25,7 +26,7 @@ export default class Header extends PureComponent {
      * @param rightContent optional 右侧内容
      * @param navigation 必传
      */
-    const {hideLeft, title, bg, color, rightContent, leftContent} = this.props
+    const {hideLeft, title, bg, color, rightContent, leftContent, isConnected} = this.props
     return (
       <View style={[styles.headerContainer, bg || null]}>
         {
@@ -38,7 +39,11 @@ export default class Header extends PureComponent {
                 <Text style={{color: 'white', fontSize: 16}}>{this.props.leftText}</Text>
               </TouchableOpacity>)
         }
-        {title ?
+        {!isConnected ?
+          <View style={styles.headerCenterContainer}>
+            <Text style={[styles.headerCenterText, color || null]}>网络已断开连接</Text>
+          </View> :
+          title ?
           <View style={styles.headerCenterContainer}>
             <Text style={[styles.headerCenterText, color || null]}>{title || this.props.centerText}</Text>
           </View> :
@@ -99,3 +104,14 @@ const styles = StyleSheet.create(stylesUtil({
     bottom: 15
   }
 }))
+
+const mapStateToProps = (state) => {
+  let {isConnected} = state.common
+  return ({
+    isConnected
+  })
+}
+
+export default connect(
+  mapStateToProps
+)(Header)

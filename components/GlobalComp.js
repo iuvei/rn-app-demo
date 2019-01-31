@@ -2,11 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {
   setLoginStatus,
-  setLoginInfo
+  setLoginInfo,
+  AsetNetInfo
 } from '../actions/common'
-import { AppState } from 'react-native'
+import { AppState, NetInfo } from 'react-native'
 import { AsetAllBalance } from '../actions/member'
 import NavigationService from '../navigation/NavigationService'
+import { Toast } from "@ant-design/react-native/lib/index";
 
 class GlobalComp extends React.Component {
   constructor(props) {
@@ -46,13 +48,29 @@ class GlobalComp extends React.Component {
       }
     })
   }
-  
+
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange)
+    //检测网络是否连接
+    NetInfo.isConnected.fetch().then((isConnected) => {
+      this.props.AsetNetInfo(isConnected)
+      if(!isConnected) {
+        Toast.fail('无网络服务！', 0.5)
+      }
+    });
+
+    //监听网络变化事件
+    NetInfo.isConnected.addEventListener('connectionChange', (isConnected) => {
+      this.props.AsetNetInfo(isConnected)
+      if(!isConnected) {
+        Toast.fail('无网络服务！', 0.5)
+      }
+    })
   }
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange)
+    NetInfo.isConnected.removeEventListener('connectionChange');
     this.setState = () => () => {}
   }
 
@@ -87,7 +105,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     AsetAllBalance: (data) => {
       dispatch(AsetAllBalance(data))
-    }
+    },
+    AsetNetInfo: (data) => {
+      dispatch(AsetNetInfo(data))
+    },
   }
 }
 

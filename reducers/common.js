@@ -61,6 +61,7 @@ const initialState = {
     orderId: ''
   }, // 保存撤单时间和撤单订单号
   recharge: {}, // 充值渠道对象
+  isConnected: true, //是否有网络
 }
 
 // 常规处理
@@ -230,6 +231,12 @@ const common = handleActions({
     return {
       ...state,
       revokeInfo: payload
+    }
+  },
+  SET_NET_INFO: (state, {payload}) => {
+    return {
+      ...state,
+      isConnected: payload
     }
   }
 }, initialState)
