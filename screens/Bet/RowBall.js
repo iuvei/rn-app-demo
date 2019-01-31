@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import {
-  View, Text, StyleSheet, ScrollView
+  View, Text, StyleSheet, ScrollView, Keyboard
 } from 'react-native'
 import {
   Stepper,
@@ -32,11 +32,32 @@ class RowBall extends React.Component {
     // 渲染视图
     // 计算数据
     // 改变数据时
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._keyboardDidShow,
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this._keyboardDidHide,
+    );
   }
 
   componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
     this.setState = () => () => {
     }
+  } 
+  _keyboardDidShow = () => {
+    this.setState({
+      showKeyboard: true
+    })
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({
+      showKeyboard: false
+    })
   }
 
   componentWillReceiveProps(np) {
@@ -238,7 +259,7 @@ class RowBall extends React.Component {
             </View>
         }
 
-        <View style={styles.priceWarp}>
+        <View style={{...styles.priceWarp, paddingBottom: this.state.showKeyboard ? 90 : 0}}>
           <View style={styles.features}>
             <View style={styles.StepperView}>
               <Stepper
