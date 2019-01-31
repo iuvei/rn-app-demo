@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, NetInfo, AsyncStorage, Platform, WebView } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, AsyncStorage, Platform, WebView } from 'react-native'
 import { Toast, Flex, Modal, List, Radio } from '@ant-design/react-native'
 import FloatBall from './FloatBall'
 import { connect } from "react-redux";
@@ -107,23 +107,9 @@ class LinesPanel extends Component {
     AsyncStorage.getItem('url').then(res => {
       this.setState({activeUrl:res || prependUrl})
     })
-    //检测网络是否连接
-    NetInfo.isConnected.fetch().then((isConnected) => {
-      if(!isConnected) {
-        Toast.fail('无网络服务！', 0.5)
-      }
-    });
-
-    //监听网络变化事件
-    NetInfo.isConnected.addEventListener('connectionChange', (isConnected) => {
-      if(!isConnected) {
-        Toast.fail('无网络服务！', 0.5)
-      }
-    })
   }
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener('connectionChange');
     this.setState = () => () => {}
   }
 

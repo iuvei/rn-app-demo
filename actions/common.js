@@ -229,3 +229,10 @@ export const AsetRevokeInfo = (data) => {
     payload: data
   }
 }
+
+export const AsetNetInfo = (data) => {
+  return {
+    type: 'SET_NET_INFO',
+    payload: data
+  }
+}
