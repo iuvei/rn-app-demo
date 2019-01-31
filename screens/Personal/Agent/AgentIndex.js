@@ -190,7 +190,7 @@ class AgentIndex extends React.Component {
         <ImageBackground resizeMode={'cover'} source={require('../../../assets/images/personal/agent/balanceBg.png')}
                          style={styles.balanceBg}>
           <View style={{alignItems: 'center'}}>
-            <Text style={{color: 'white', fontSize: 20}}>{teamSumCurrent}元</Text>
+            <Text style={{color: 'white', fontSize: 20}}>{teamSumCurrent || '0'}元</Text>
             <Text style={{color: 'white', fontSize: 14}}>团队余额</Text>
           </View>
           <View style={styles.float}>
