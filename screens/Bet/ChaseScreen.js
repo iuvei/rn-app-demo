@@ -34,6 +34,7 @@ class ChaseScreen extends React.Component {
 
   constructor(props) {
     super(props)
+    this.chasing = false
     this.state = {
       checkedAll: true,
       isLoading: false,
@@ -261,7 +262,11 @@ class ChaseScreen extends React.Component {
   }
 
   submitFunc = () => {
+    if (this.chasing) return
     let {winStop, showChaseList, orderList} = this.state
+    if (showChaseList.length === 0) {
+      return
+    }
     let planList = []
     let [reqAmount] = [0, 0]
     let tmparr = showChaseList.filter(c => {
@@ -312,15 +317,23 @@ class ChaseScreen extends React.Component {
     if (!this.props.Environment) {
       repZip = toCrypto(rep)
     }
+    console.log('rep', rep)
+    this.chasing = true
     this.setState({
       isLoading: true
     }, () => {
       toBuyLottery(repZip || rep).then((res) => {
         this.setState({
-          isLoading: false,
           showChaseList: [],
           chaseList: [],
           total: '0'
+        }, () => {
+          setTimeout(() => {
+            this.chasing = false
+            this.setState({
+              isLoading: false
+            })
+          }, 1000)
         })
         if (res.code === 0) {
           Toast.success('追号成功')
@@ -329,10 +342,16 @@ class ChaseScreen extends React.Component {
         }
       }).catch(() => {
         this.setState({
-          isLoading: false,
           showChaseList: [],
           chaseList: [],
           total: '0'
+        }, () => {
+          setTimeout(() => {
+            this.chasing = false
+            this.setState({
+              isLoading: false
+            })
+          }, 1000)
         })
         Toast.fail('网络异常，请稍后重试')
       })
@@ -556,7 +575,7 @@ class ChaseScreen extends React.Component {
           <ScrollView style={{ backgroundColor: 'f0f0f0', flex: 1 }}>{topContent}{listContent}</ScrollView>
         </Tabs>
         <View style={styleUtil({height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center', borderTopWidth: 0.5, borderTopColor: '#198ae7'})}>
-          <Button disabled={checkedArr.length === 0} loading={isLoading} type="ghost" style={styleUtil({width: '50%', height: 40})} onPress={this.submitFunc}>
+          <Button disabled={showChaseList.length === 0 || checkedArr.length === 0} loading={isLoading} type="ghost" style={styleUtil({width: '50%', height: 40})} onPress={this.submitFunc}>
             <Text style={styleUtil({fontSize: 14})}>立即追号</Text>
           </Button>
         </View>
