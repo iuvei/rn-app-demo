@@ -270,34 +270,34 @@ class HomeScreen extends React.Component {
           </Flex>
         </View>
 
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }>
-          <Flex wrap="wrap">
-            {
-              usualLottery.length > 0 && usualLottery.map((item, index) =>
-                <View style={styles.favoriteItem} key={index}>
-                  <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
-                    <View>
-                      <Image source={getIconName(item.realCategory)} resizeMode={'cover'}
-                             style={styles.favoriteItemImg}/>
-                    </View>
-                    <View style={styles.favoriteItemCenter}>
-                      <Text numberOfLines={1} style={styles.favoriteItemTitle}>{item.lotterName}</Text>
-                      <Text style={styles.favoriteItemText}>100万派送中</Text>
-                    </View>
-                  </Flex>
-                </View>)
-            }
-          </Flex>
-          {
-            usualLottery.length === 0 && <Text style={styles.nullData}>数据加载中···</Text>
-          }
-        </ScrollView>
+        {/*<ScrollView*/}
+          {/*refreshControl={*/}
+            {/*<RefreshControl*/}
+              {/*refreshing={this.state.refreshing}*/}
+              {/*onRefresh={this._onRefresh}*/}
+            {/*/>*/}
+          {/*}>*/}
+          {/*<Flex wrap="wrap">*/}
+            {/*{*/}
+              {/*usualLottery.length > 0 && usualLottery.map((item, index) =>*/}
+                {/*<View style={styles.favoriteItem} key={index}>*/}
+                  {/*<Flex onPress={() => this.props.navigation.navigate('Bet', item)}>*/}
+                    {/*<View>*/}
+                      {/*<Image source={getIconName(item.realCategory)} resizeMode={'cover'}*/}
+                             {/*style={styles.favoriteItemImg}/>*/}
+                    {/*</View>*/}
+                    {/*<View style={styles.favoriteItemCenter}>*/}
+                      {/*<Text numberOfLines={1} style={styles.favoriteItemTitle}>{item.lotterName}</Text>*/}
+                      {/*<Text style={styles.favoriteItemText}>100万派送中</Text>*/}
+                    {/*</View>*/}
+                  {/*</Flex>*/}
+                {/*</View>)*/}
+            {/*}*/}
+          {/*</Flex>*/}
+          {/*{*/}
+            {/*usualLottery.length === 0 && <Text style={styles.nullData}>数据加载中···</Text>*/}
+          {/*}*/}
+        {/*</ScrollView>*/}
         <Flex>
           <View style={styles.gameItem}>
             <ImageBackground
