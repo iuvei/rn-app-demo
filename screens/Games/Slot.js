@@ -4,9 +4,9 @@ import { Flex, Button, Toast } from '@ant-design/react-native'
 import { getBjlComputerGameType, bjlGameLogin, bjlGameTry } from './../../api/lottery'
 import { AsetUserPlatfrom } from '../../actions/common'
 import { connect } from 'react-redux'
-import { Video } from 'expo'
+// import { Video } from 'expo'
 import UIListView from './../../components/UIListView'
-import { styleUtil } from '../../utils/ScreenUtil'
+// import { styleUtil } from '../../utils/ScreenUtil'
 
 class FlatListItem extends PureComponent {
   constructor(props) {
@@ -105,16 +105,16 @@ class Slot extends React.Component {
     return (
       <View style={styles.container}>
         <View>
-          <Video
-            source={{uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'}}
-            rate={1.0}
-            volume={1.0}
-            isMuted={false}
-            resizeMode="cover"
-            shouldPlay
-            isLooping
-            style={styleUtil({width: '100%', height: 166})}
-          />
+          {/*<Video*/}
+            {/*source={{uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'}}*/}
+            {/*rate={1.0}*/}
+            {/*volume={1.0}*/}
+            {/*isMuted={false}*/}
+            {/*resizeMode="cover"*/}
+            {/*shouldPlay*/}
+            {/*isLooping*/}
+            {/*style={styleUtil({width: '100%', height: 166})}*/}
+          {/*/>*/}
         </View>
         <UIListView
           ref={ref => this.bjlComputerGameList = ref}
