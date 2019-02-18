@@ -1,7 +1,6 @@
 import React from 'react'
 import {Image, ScrollView, View, Text, StyleSheet, ImageBackground, TouchableHighlight} from 'react-native'
-import {Button, Flex, Modal, Toast, Grid} from '@ant-design/react-native'
-import {Tab, Tabs, Header} from 'native-base'
+import {Button, Flex, Grid, Tabs} from '@ant-design/react-native'
 import {connect} from 'react-redux'
 // import RebateDetails from './RebateDetails'
 // import {setLoginStatus} from "../../actions/common"
@@ -153,7 +152,8 @@ class PersonalScreen extends React.Component {
           src: require('../../assets/images/personal/tbl3.png')
         }
       ],
-      lotteryRebate: 0
+      lotteryRebate: 0,
+      page: 0
     }
     props.AsetAllBalance()
   }
@@ -222,9 +222,7 @@ class PersonalScreen extends React.Component {
       }
     ]
     let {agent, order, lotteryRebate} = this.state
-    let {loginInfo, balanceInfo, userBalanceInfoFD, userBalanceInfoYE} = this.props
-    let {canWithdrawBalance, currentBalance} = balanceInfo.ye || {}
-    let {currentBalance: fdBalance} = balanceInfo.fd || {}
+    let {loginInfo, userBalanceInfoFD, userBalanceInfoYE} = this.props
     return (
       <View style={styles.container}>
         <ImageBackground resizeMode='cover' source={require('../../assets/images/personal/bg0.png')}
@@ -278,8 +276,26 @@ class PersonalScreen extends React.Component {
           </View>
         </ImageBackground>
         <View style={{flex: 1}}>
-          <Tabs tabStyle={{color: '#0070cc'}} activeTabStyle={{backgroundColor: '#eff5fb'}}>
-            <Tab heading={'订单报表'}>
+          <Tabs
+            tabs={[
+              {title: '订单报表'},
+              {title: '代理管理'}
+            ]}
+            page={this.state.page}
+            renderTabBar={() => {
+            return <Flex style={styleUtil({marginTop: 16, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#6d96f7', height: 32, borderWidth: 1, borderColor: '#6d96f7', borderRadius: 17})}>
+              <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 0})}>
+                  <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#6d96f7', borderRadius: 17, height: 32}}>
+                    <Text style={styleUtil({textAlign: 'center', color: this.state.page === 0 ? '#6d96f7' : '#fff', lineHeight: 32})}>订单报表</Text></View>
+                </TouchableHighlight>
+              </Flex.Item>
+              <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 1})}>
+                <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#6d96f7', borderRadius: 17, height: 32}}>
+                  <Text style={styleUtil({textAlign: 'center', color: this.state.page === 1 ? '#6d96f7' : '#fff', lineHeight: 32})}>代理管理</Text></View>
+                </TouchableHighlight>
+              </Flex.Item>
+            </Flex>
+          }}>
               <ScrollView style={styles.agent}>
                 <Grid data={order} columnNum={4} hasLine={false} renderItem={(el, index) => {
                   return (
@@ -290,21 +306,18 @@ class PersonalScreen extends React.Component {
                   )
                 }} onPress={(el) => this.changeRoute(el.path)} />
               </ScrollView>
-            </Tab>
             {
               loginInfo.proxy === 1 &&
-              <Tab heading={'代理管理'}>
-                <ScrollView style={styles.agent}>
-                  <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
-                    return (
-                      <View style={styleUtil({alignItems: 'center', width: 90})}>
-                        <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
-                        <Text>{el.name}</Text>
-                      </View>
-                    )
-                  }} onPress={(el) => this.changeRoute(el.path)} />
-                </ScrollView>
-              </Tab>
+              <ScrollView style={styles.agent}>
+                <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
+                  return (
+                    <View style={styleUtil({alignItems: 'center', width: 90})}>
+                      <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
+                      <Text>{el.name}</Text>
+                    </View>
+                  )
+                }} onPress={(el) => this.changeRoute(el.path)} />
+              </ScrollView>
             }
           </Tabs>
         </View>
@@ -316,9 +329,11 @@ class PersonalScreen extends React.Component {
 const styles = StyleSheet.create(stylesUtil({
   container: {
     flex: 1,
+    backgroundColor: '#fff'
   },
   agent: {
-    padding: 10
+    padding: 10,
+    flex: 1
   }
 }))
 
