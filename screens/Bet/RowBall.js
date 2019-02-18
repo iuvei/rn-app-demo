@@ -237,7 +237,7 @@ class RowBall extends React.Component {
                       </Text>
                       <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
                         <TextareaItem
-                          rows={10}
+                          rows={4}
                           onChange={(val) => handleText(val)}
                           value={activeViewData.textarea}
                           placeholder="请输入投注号码"
@@ -260,8 +260,8 @@ class RowBall extends React.Component {
               </Text>
             </View>
         }
-
-        <View style={{...styles.priceWarp, paddingBottom: this.state.showKeyboard ? 90 : 0}}>
+        <KeyboardAvoidingView behavior={'padding'} enabled>
+        <View style={{...styles.priceWarp, paddingBottom: this.state.showKeyboard ? 130 :0}}>
           <View style={styles.features}>
             <View style={styles.StepperView}>
               <Stepper
@@ -323,7 +323,7 @@ class RowBall extends React.Component {
               }
             </Text> : null
           }
-          <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
+          {/*<KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>*/}
           <View style={styles.BuyInfoView}>
             <View style={{flex: 1}}>
               <Text style={styles.BuyInfoDefaultText}>
@@ -345,8 +345,9 @@ class RowBall extends React.Component {
                 快速投注</Button>
             </View>
           </View>
-          </KeyboardAvoidingView>
+          {/*</KeyboardAvoidingView>*/}
         </View>
+        </KeyboardAvoidingView>
       </View>
     )
   }
