@@ -1,5 +1,5 @@
 import React from 'react'
-import {Image, ScrollView, View, Text, StyleSheet, ImageBackground, TouchableHighlight} from 'react-native'
+import {Image, ScrollView, View, Text, StyleSheet, ImageBackground, TouchableHighlight, StatusBar, Platform} from 'react-native'
 import {Button, Flex, Grid, Tabs} from '@ant-design/react-native'
 import {connect} from 'react-redux'
 // import RebateDetails from './RebateDetails'
@@ -179,6 +179,10 @@ class PersonalScreen extends React.Component {
   }
 
   componentDidMount () {
+    // this._navListener = this.props.navigation.addListener('didFocus', () => {
+    //   StatusBar.setTranslucent(false);
+    //   (Platform.OS === 'android') && StatusBar.setBackgroundColor('red');
+    // });
     this.props.AsetServiceUrl()
     this.updateImmediateData()
     let {userRebateVO} = this.props.rebateInfo
@@ -201,6 +205,7 @@ class PersonalScreen extends React.Component {
   }
 
   componentWillUnmount(){
+    // this._navListener.remove();
     this.setState = () => () => {}
   }
 
@@ -227,11 +232,11 @@ class PersonalScreen extends React.Component {
         path: 'TransferScreen',
         src: require('../../assets/images/personal/icon3.png')
       },
-      {
-        name: '公告',
-        path: 'Broadcast',
-        src: require('../../assets/images/personal/icon4.png')
-      },
+      // {
+      //   name: '公告',
+      //   path: 'Broadcast',
+      //   src: require('../../assets/images/personal/icon4.png')
+      // },
       {
         name: '设置',
         path: 'SettingsScreen',
@@ -242,56 +247,65 @@ class PersonalScreen extends React.Component {
     let {loginInfo, userBalanceInfoFD, userBalanceInfoYE} = this.props
     return (
       <View style={styles.container}>
-        <ImageBackground resizeMode='cover' source={require('../../assets/images/personal/bg0.png')}
+        <ImageBackground resizeMode="stretch" source={require('../../assets/images/personal/bg0.png')}
                          style={styleUtil({height: 200})}>
           <View>
             <View style={styleUtil({flexDirection: 'row', justifyContent: 'space-around', height: 90, alignItems: 'center'})}>
               <Image source={require('../../assets/images/personal/avatar.png')}
                      style={styleUtil({width: 80, height: 80})}></Image>
               <View>
-                <Text>{loginInfo.acc.user.loginName}</Text>
-                <Text>余额： {userBalanceInfoYE.currentBalance}元</Text>
+                <Text style={styleUtil({color: '#fff', fontSize: 14})}>{loginInfo.acc.user.loginName}</Text>
+                <Text style={styleUtil({color: '#fff', fontSize: 14})}>余额： {userBalanceInfoYE.currentBalance}元</Text>
               </View>
               <View style={styleUtil({alignItems: 'flex-end'})}>
-                <Button style={styleUtil({height: 32, backgroundColor: '#0f81de', borderRadius: 15})}>
-                  <Text style={styleUtil({color: 'white', fontSize: 14})}>彩票返点:{lotteryRebate}</Text>
+                <Button style={styleUtil({height: 32, backgroundColor: '#fff', borderRadius: 15})}>
+                  <Text style={styleUtil({color: '#6d96f7', fontSize: 14})}>彩票返点:{lotteryRebate}</Text>
                 </Button>
-                <Text onPress={() => this.changeRoute('RebateDetails')}>更多返点></Text>
+                <Text style={styleUtil({color: '#fff', fontSize: 14})} onPress={() => this.changeRoute('RebateDetails')}>更多返点></Text>
               </View>
-            </View>
-            <View style={styleUtil({
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-              height: 55,
-              borderBottomWidth: 1,
-              borderBottomColor: '#0c7edb'
-            })}>
-              <View style={styleUtil({width: 200, borderRightWidth: 1, borderRightColor: '#0c7edb', alignItems: 'center'})}>
-                <Text>{userBalanceInfoYE.canWithdrawBalance}元</Text>
-                <Text>可提金额</Text>
-              </View>
-              <View style={styleUtil({width: 200, alignItems: 'center'})}>
-                <Text>{userBalanceInfoFD.currentBalance}元</Text>
-                <Text>返点金额</Text>
-              </View>
-            </View>
-            <View style={styleUtil({flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', height: 55})}>
-              {
-                list.map((item, index) => {
-                  return (
-                    <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
-                      <View key={index} style={styleUtil({height: 45})}>
-                        <Image resizeMode='contain' source={item.src} style={styleUtil({width: 28, height: 26})}></Image>
-                        <Text style={{color: '#0c7edb'}}>{item.name}</Text>
-                      </View>
-                    </TouchableHighlight>
-                  )
-                })
-              }
             </View>
           </View>
         </ImageBackground>
+        <View style={styleUtil({
+          width: '90%',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          marginTop: -105,
+          backgroundColor: '#fff',
+          borderRadius: 8
+        })}>
+          <View style={styleUtil({
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            height: 55,
+            borderBottomWidth: 1,
+            borderBottomColor: '#0c7edb'
+          })}>
+            <View style={styleUtil({width: 200, borderRightWidth: 1, borderRightColor: '#0c7edb', alignItems: 'center'})}>
+              <Text style={styleUtil({color: '#333', fontSize: 14})}>{userBalanceInfoYE.canWithdrawBalance}元</Text>
+              <Text style={styleUtil({color: '#333', fontSize: 14})}>可提金额</Text>
+            </View>
+            <View style={styleUtil({width: 200, alignItems: 'center'})}>
+              <Text style={styleUtil({color: '#333', fontSize: 14})}>{userBalanceInfoFD.currentBalance}元</Text>
+              <Text style={styleUtil({color: '#333', fontSize: 14})}>返点金额</Text>
+            </View>
+          </View>
+          <Flex justify="around" align="center" style={styleUtil({height: 55})}  wrap="wrap">
+            {
+              list.map((item, index) => {
+                return (
+                  <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
+                    <View key={index} style={styleUtil({height: 45})}>
+                      <Image resizeMode='contain' source={item.src} style={styleUtil({width: 28, height: 26})}></Image>
+                      <Text style={{color: '#0c7edb'}}>{item.name}</Text>
+                    </View>
+                  </TouchableHighlight>
+                )
+              })
+            }
+          </Flex>
+        </View>
         <View style={{flex: 1}}>
           <Tabs
             tabs={[
@@ -300,7 +314,7 @@ class PersonalScreen extends React.Component {
             ]}
             page={this.state.page}
             renderTabBar={() => {
-            return <Flex style={styleUtil({marginTop: 16, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#6d96f7', height: 32, borderWidth: 1, borderColor: '#6d96f7', borderRadius: 17})}>
+            return <Flex style={styleUtil({marginTop: 25, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#6d96f7', height: 32, borderWidth: 1, borderColor: '#6d96f7', borderRadius: 17})}>
               <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 0})}>
                   <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#6d96f7', borderRadius: 17, height: 32}}>
                     <Text style={styleUtil({textAlign: 'center', color: this.state.page === 0 ? '#6d96f7' : '#fff', lineHeight: 32})}>订单报表</Text></View>
