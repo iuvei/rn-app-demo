@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import {
-  View, Text, StyleSheet, ScrollView, Keyboard
+  View, Text, StyleSheet, ScrollView, Keyboard, KeyboardAvoidingView
 } from 'react-native'
 import {
   Stepper,
@@ -47,7 +47,7 @@ class RowBall extends React.Component {
     this.keyboardDidHideListener.remove();
     this.setState = () => () => {
     }
-  } 
+  }
   _keyboardDidShow = () => {
     this.setState({
       showKeyboard: true
@@ -235,13 +235,15 @@ class RowBall extends React.Component {
                         <Text>空格</Text>或'
                         <Text>;</Text>'分割开。
                       </Text>
-                      <TextareaItem
-                        rows={10}
-                        onChange={(val) => handleText(val)}
-                        value={activeViewData.textarea}
-                        placeholder="请输入投注号码"
-                        style={styles.TextAreaItem}
-                      />
+                      <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
+                        <TextareaItem
+                          rows={10}
+                          onChange={(val) => handleText(val)}
+                          value={activeViewData.textarea}
+                          placeholder="请输入投注号码"
+                          style={styles.TextAreaItem}
+                        />
+                      </KeyboardAvoidingView>
                     </View>
                     : null
                 }
@@ -321,6 +323,7 @@ class RowBall extends React.Component {
               }
             </Text> : null
           }
+          <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
           <View style={styles.BuyInfoView}>
             <View style={{flex: 1}}>
               <Text style={styles.BuyInfoDefaultText}>
@@ -342,6 +345,7 @@ class RowBall extends React.Component {
                 快速投注</Button>
             </View>
           </View>
+          </KeyboardAvoidingView>
         </View>
       </View>
     )
