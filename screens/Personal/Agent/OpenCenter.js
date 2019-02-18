@@ -1,9 +1,9 @@
-import React, {PureComponent} from 'react'
-import {View, Text, StyleSheet, Clipboard} from 'react-native'
-import {connect} from 'react-redux'
-import {SegmentedControl, InputItem, Flex, Button, Toast} from '@ant-design/react-native'
-import {Picker} from 'native-base'
-import {addDown, addSignup, delSignup} from '../../../api/member'
+import React, { PureComponent } from 'react'
+import { View, Text, StyleSheet, Clipboard } from 'react-native'
+import { connect } from 'react-redux'
+import { SegmentedControl, InputItem, Flex, Button, Toast } from '@ant-design/react-native'
+import { Picker } from 'native-base'
+import { addDown, addSignup, delSignup } from '../../../api/member'
 import UIListView from '../../../components/UIListView'
 import Base64 from '../../../utils/Base64'
 import dayjs from 'dayjs'
@@ -11,7 +11,7 @@ import dayjs from 'dayjs'
 const TableRow = 20
 
 class FlatListItem extends PureComponent {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -24,7 +24,7 @@ class FlatListItem extends PureComponent {
     })
   }
 
-  render () {
+  render() {
     let {item, index, loginInfo} = this.props
     let {balanceHours, createTime, id, isProxy, times, useTimes, validDays, rebate} = item
     validDays = validDays * 1000 * 3600
@@ -40,7 +40,7 @@ class FlatListItem extends PureComponent {
         }}>注册码: {id}</Text>
         <Text>用户类别: {isProxy === 0 ? '玩家' : '代理'}</Text>
         <Text>彩票返点: {rebate}</Text>
-        <Text>剩余次数: {times-useTimes}</Text>
+        <Text>剩余次数: {times - useTimes}</Text>
         <Text>过期时间: {text}</Text>
         <Flex>
           <Text>操作:</Text>
@@ -56,7 +56,7 @@ class OpenCenter extends React.Component {
     title: '开户中心'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       KeyName: 'OpenCenter',
@@ -77,7 +77,7 @@ class OpenCenter extends React.Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     let {systemMaxRebate, userRebateVO, systemMinRebate} = this.props.rebateInfo
     let maxRebate = userRebateVO[0].userRebate < systemMaxRebate ? userRebateVO[0].userRebate : systemMaxRebate
     this.setState({
@@ -85,9 +85,10 @@ class OpenCenter extends React.Component {
       minRebate: systemMinRebate
     })
   }
-  
-  componentWillUnmount(){
-    this.setState = () => () => {}
+
+  componentWillUnmount() {
+    this.setState = () => () => {
+    }
   }
 
   onChange = e => {
@@ -197,7 +198,7 @@ class OpenCenter extends React.Component {
             value={this.state.userName}
             onChange={userName => {
               this.setState({
-                userName,
+                userName
               })
             }}
             placeholder="5-10位数字或字母，字母开头"
@@ -211,7 +212,7 @@ class OpenCenter extends React.Component {
             value={this.state.userRebate}
             onChange={userRebate => {
               this.setState({
-                userRebate,
+                userRebate
               })
             }}
             placeholder={`范围${minRebate}-${maxRebate}`}
@@ -262,7 +263,7 @@ class OpenCenter extends React.Component {
             value={this.state.availableTimes}
             onChange={availableTimes => {
               this.setState({
-                availableTimes
+                availableTimes: availableTimes > 99999 ? '99999' : availableTimes
               })
             }}
             placeholder="请输入数字"
@@ -276,7 +277,7 @@ class OpenCenter extends React.Component {
             value={this.state.userRebate}
             onChange={userRebate => {
               this.setState({
-                userRebate,
+                userRebate
               })
             }}
             placeholder={`范围${minRebate}-${maxRebate}`}
@@ -339,7 +340,7 @@ class OpenCenter extends React.Component {
     )
   }
 
-  render () {
+  render() {
     let contain = ''
     switch (this.state.selectedIndex) {
       case 0:
@@ -385,7 +386,6 @@ const styles = StyleSheet.create({
   segmented: {
     margin: 12,
     borderRadius: 20,
-    fontSize: 16,
     height: 40
   },
   hint: {
