@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {ScrollView, StyleSheet, ImageBackground, Text, View, Dimensions} from 'react-native'
-import {Picker, Button, List, InputItem, Modal, Toast } from '@ant-design/react-native'
+import {Picker, Button, List, InputItem, Modal, Toast, Tabs } from '@ant-design/react-native'
 // import {MyIconFont} from '../../components/MyIconFont'
 import SvgIcon from '../../components/SvgIcon'
 import {minbankCodeMap} from '../../constants/glyphMapHex'
@@ -14,8 +14,13 @@ import {
 import { commitWithdrawal } from '../../api/member'
 import { styleUtil } from '../../utils/ScreenUtil'
 import { isNaN } from 'lodash'
+import { WebBrowser } from 'expo'
 
 const height = Dimensions.get('window').height
+const tabs = [
+  { title: '人民币' },
+  { title: '数字货币' }
+]
 
 class Withdrawal extends React.Component {
   static navigationOptions = {
@@ -37,7 +42,18 @@ class Withdrawal extends React.Component {
       payType: 1, // 支付类型0充值 1提现
       pwd: '', // 资金密码
       pwdType: 0, // 密码类型（0交易密码 1谷歌验证码）
-      sonOrderList: [] // 拆单-子订单集合
+      sonOrderList: [], // 拆单-子订单集合
+      
+      formDataOtc: { // 数字货币提现
+        bankCard: '',
+        currencyCode: 'CNY', // 币种(默认填写 CNY)
+        payType: '1', // 支付类型0充值 1提现
+        pwd: '', // 资金密码
+        pwdType: '0', // 密码类型（0交易密码 1谷歌验证码）
+        payChannelCode: '210001', // 固定值 210001
+        payChannelAlias: 'BIBAOVIRTUAL' // 固定值 BIBAOVIRTUAL
+      },
+      isLoadingOtc: false
     }
     props.AsetAllBalance()
     props.AsetUserBankCards(props.loginInfo.acc.user.userId)
@@ -191,18 +207,99 @@ class Withdrawal extends React.Component {
       }
     })
   }
+  
+  _handlePressButtonAsync = async (url) => {
+    let result = await WebBrowser.openBrowserAsync(url)
+    console.log(result)
+  }
+
+  submitFuncOtc = () => {
+    let { pwd } = this.state.formDataOtc
+    let { bankCard } = this.state.curBankItem
+    if (bankCard === '') {
+      Toast.info('请选择银行卡')
+      return
+    }
+    if (pwd === '') {
+      Toast.info('请输入资金密码')
+      return
+    }
+    this.setState({
+      loadingOtc: true
+    }, () => {
+      commitWithdrawal({...this.state.formDataOtc, bankCard}).then(res => {
+        if (res.code === 0 && res.data.sign) {
+          this._handlePressButtonAsync(res.data.param)
+        }
+        this.setState(prevState => ({
+          loadingOtc: false,
+          formDataOtc: {...prevState.formDataOtc, pwd: ''}
+        }))
+        let error = res.code === 0
+        if (error) {
+          Toast.success('提现申请已提交')
+        } else {
+          Toast.fail(res.message)
+        }
+        this.props.AsetAllBalance()
+      })
+    })
+  }
 
   render() {
-    let { submitFunc } = this
+
+    let { submitFunc, submitFuncOtc } = this
     let { isAllowWithdraw, userConsume, userBalanceInfoYE} = this.props
-    let {curBankItem, amount, totalFee, actualWithdraw, pwd, isLoading, sonOrderList, showSonOrders, pickerdata} = this.state
+    let {curBankItem, amount, totalFee, actualWithdraw, pwd, isLoading, sonOrderList, showSonOrders, pickerdata, isLoadingOtc} = this.state
+    let cnyView = <View></View>
+    let otcView = <View>
+      <List>
+        <Picker
+          data={pickerdata}
+          cols={1}
+          value={[curBankItem.value]}
+          itemStyle={styleUtil({color: '#333333', fontSize: 14, lineHeight: 32})}
+          onChange={(val) => {
+            this.setState({
+              curBankItem: pickerdata[val[0]]
+            })
+          }}
+        >
+          <List.Item
+            arrow="horizontal"
+            style={styleUtil({height: 40, borderBottomWidth: 0})}
+            thumb={
+              curBankItem.bankCode ?
+                <SvgIcon icon={minbankCodeMap[String(curBankItem.bankCode).toUpperCase()]} size={80}/> : null
+            }
+          ></List.Item>
+        </Picker>
+        <InputItem
+          value={this.state.formDataOtc.pwd}
+          onChange={value => {
+            this.setState(prevState => ({
+              formDataOtc: {...prevState.formDataOtc , pwd: value}
+            }))
+          }
+          }
+          placeholder="请输入资金密码"
+          type="password"
+        >
+          资金密码
+        </InputItem>
+      </List>
+      <View style={styleUtil({paddingLeft: 15, paddingTop: 30, paddingRight: 15})}>
+        <Button type="primary" loading={isLoadingOtc}
+                onPress={submitFuncOtc}>提 现</Button>
+      </View>
+    </View>
 
     if (isAllowWithdraw.local) {
-      return <View></View>
+      cnyView = <View></View>
     }
 
     if (!isAllowWithdraw.sign || userConsume.code !== 0) {
-      return (
+      cnyView =
         <View style={{backgroundColor: '#fff'}}>
           <Text style={styleUtil({color: '#f15a23', fontSize: 14, lineHeight: 30, textAlign: 'center'})}>温馨提示：您当前不可提现，如有疑问请联系客服</Text>
           {
@@ -210,19 +307,17 @@ class Withdrawal extends React.Component {
           }
           <Text style={styleUtil({color: '#f15a23', fontSize: 14, lineHeight: 30, textAlign: 'center'})}>{userConsume.message}</Text>
         </View>
-      )
     }
 
     if (userConsume.status === 1) {
-      return (
+      cnyView =
         <View style={{backgroundColor: '#fff'}}>
           <Text style={styleUtil({color: '#f15a23', fontSize: 14, lineHeight: 30, textAlign: 'center'})}>温馨提示：{userConsume.remark}</Text>
         </View>
-      )
     }
 
     if (userConsume.status === 0) {
-      return (
+      cnyView =
         <ScrollView style={{height: height}}>
           <ImageBackground source={require('../../assets/images/withdraw_bg1.jpg')}
             style={styleUtil({width: '100%', height: 120, alignItems: 'center', paddingTop: 26})}>
@@ -369,8 +464,13 @@ class Withdrawal extends React.Component {
             </View>
           </Modal>
         </ScrollView>
-      )
     }
+    return <View style={{ flex: 1 }}>
+      <Tabs tabs={tabs}>
+        { cnyView }
+        { otcView }
+      </Tabs>
+    </View>
   }
 }
 

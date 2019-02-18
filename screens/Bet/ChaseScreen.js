@@ -317,7 +317,6 @@ class ChaseScreen extends React.Component {
     if (!this.props.Environment) {
       repZip = toCrypto(rep)
     }
-    console.log('rep', rep)
     this.chasing = true
     this.setState({
       isLoading: true
