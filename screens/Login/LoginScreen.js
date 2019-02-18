@@ -235,10 +235,10 @@ class LoginComponent extends Component {
                 </ImageBackground>
               </Flex.Item>
               <View style={{height: 40, width: 280, flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{color: '#333', flex: 1}}  onPress={this._handleServiceAsync}>
-                  联系客服<Icon name="phone" size={20} color="#333"/>
+                <Text style={{color: '#6d96f7', flex: 1}}  onPress={this._handleServiceAsync}>
+                  联系客服<Icon name="phone" size={20} color="#6d96f7"/>
                 </Text>
-                <Text style={{textAlign: 'right', color: '#333', flex: 1}} onPress={this._handleDownloadAsync}>移动端下载v{manifest.version}</Text>
+                <Text style={{textAlign: 'right', color: '#6d96f7', flex: 1}} onPress={this._handleDownloadAsync}>下载v{manifest.version}</Text>
               </View>
             </Flex>
           </ImageBackground>
