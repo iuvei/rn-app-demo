@@ -6,7 +6,8 @@ import {
   getUserConsume
 } from '../api/basic'
 import {
-  getGaKey
+  getGaKey,
+  searchUnread
 } from '../api/member'
 import { AsyncStorage } from 'react-native'
 
@@ -28,6 +29,14 @@ export const AsetIsAllowWithdraw = createAction(
   async () => {
     let res = await isAllowWithdraw()
     return res.code === 0 ? {sign: res.data.sign, message: res.message} : {sign: false, message: ''}
+  }
+)
+
+export const AsetFreshMsg = createAction(
+  'SET_FRESH_MSG',
+  async () => {
+    let res = await searchUnread()
+    return res.code === 0 ? res.data : 0
   }
 )
 
