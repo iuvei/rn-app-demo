@@ -7,10 +7,12 @@ import {
 import Header from './../../components/Header'
 import { List, SwipeAction, SegmentedControl, Toast, Flex } from '@ant-design/react-native'
 import { delMessage } from './../../api/member'
+import { AsetFreshMsg } from "../../actions/member"
 import UIListView from '../../components/UIListView'
 import WriteEmail from './WriteEmail'
 import ReplyEmail from './ReplyEmail'
 import dayjs from 'dayjs'
+import { connect } from "react-redux";
 
 class MailboxScreen extends React.Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -44,8 +46,9 @@ class MailboxScreen extends React.Component {
       showDetail: false
     }
   }
-  
+
   componentWillUnmount(){
+    this.props.AsetFreshMsg()
     this.setState = () => () => {}
   }
 
@@ -71,7 +74,7 @@ class MailboxScreen extends React.Component {
                 <Text numberOfLines={1}>
                   {activeTab === '收件箱' ?
                     <Text style={styles.msgOrigin}>{item.senderName}: </Text> : null}
-                  <Text>{item.title}</Text>
+                  <Text style={item.status === 1 ? {color: '#666'} : {}}>{item.title}</Text>
                 </Text>
                 {activeTab === '发件箱' ?
                   <Text style={styles.msgOrigin}>{item.receiveName}(收) </Text> : null}
@@ -195,4 +198,13 @@ const styles = StyleSheet.create({
     color: '#666666'
   }
 })
-export default MailboxScreen
+
+const mapStateToProps = (state, props) => {
+  return {}
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    AsetFreshMsg: () => dispatch(AsetFreshMsg())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MailboxScreen)

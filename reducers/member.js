@@ -17,6 +17,7 @@ const initialState = {
   bankList: [], // 系统银行列表
   gaKey: '',
   subUserInfo: {}, // 下级用户信息
+  freshMsg: 0, // 当前未读消息总数
 }
 
 const member = handleActions({
@@ -72,6 +73,12 @@ const member = handleActions({
     return {
       ...state,
       isAllowWithdraw: payload
+    }
+  },
+  SET_FRESH_MSG: (state, {payload}) => {
+    return {
+      ...state,
+      freshMsg: payload
     }
   },
   SET_USER_CONSUME: (state, {payload}) => {

@@ -244,7 +244,6 @@ class BetScreen extends React.Component {
     let {ContentTabs, filterNavBar, intoHistory} = this.state
     let {params} = this.props.navigation.state
     return (
-      <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
       <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
         <View style={styles.container}>
           <Drawer
@@ -288,7 +287,8 @@ class BetScreen extends React.Component {
             </Tabs>
           </Drawer>
         </View>
-      </SafeAreaView></KeyboardAvoidingView>
+      </SafeAreaView>
+      // </KeyboardAvoidingView>
     )
   }
 }

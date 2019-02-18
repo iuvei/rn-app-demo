@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 // import RebateDetails from './RebateDetails'
 // import {setLoginStatus} from "../../actions/common"
 import Headers from './../../components/Header'
-import { AsetAllBalance } from "../../actions/member"
+import { AsetAllBalance, AsetFreshMsg } from "../../actions/member"
 import { WebBrowser } from 'expo'
 import { AsetServiceUrl } from '../../actions/common'
 import { styleUtil, stylesUtil } from '../../utils/ScreenUtil'
@@ -31,15 +31,20 @@ class PersonalScreen extends React.Component {
       header: <Headers
       title={'个人中心'}
       leftContent={
-        <Text style={styleUtil({fontSize: 16, color: '#fff'})}>
+        <Text style={styles.leftText}>
           <Text onPress={() => params.openKefu()}>  客服    </Text>
         </Text>
       }
       rightContent={
-        <Text style={styleUtil({fontSize: 16, color: '#fff'})}>
-          <Text onPress={() => params.changeTextFun('Broadcast')} style={styleUtil({paddingHorizontal: 16})}>公告  </Text>
-          <Text onPress={() => params.changeTextFun('Mailbox')} style={styleUtil({paddingHorizontal: 16})}>信箱</Text>
-        </Text>
+        <View>
+          <Text style={styles.navBarRight}>
+            <Text onPress={() => params.changeTextFun('Broadcast')} style={styles.navBarRightItem}>公告  </Text>
+            <Text onPress={() => params.changeTextFun('Mailbox')} style={styles.navBarRightItem}>信箱</Text>
+          </Text>
+          {
+            params && params.freshMsg > 0 && <View style={styles.navBarTip}><Text onPress={() => params.changeTextFun('Mailbox')} style={styles.navBarTipText}>{params.freshMsg > 99 ? 99 : params.freshMsg}</Text></View>
+          }
+        </View>
       }
     />
     }
@@ -168,9 +173,14 @@ class PersonalScreen extends React.Component {
     console.log(result)
   }
 
+  updateImmediateData = async () => {
+    let result = await this.props.AsetFreshMsg()
+    this.props.navigation.setParams({changeTextFun: this.changeTextFun, openKefu: this.openKefu, freshMsg: this.props.freshMsg})
+  }
+
   componentDidMount () {
     this.props.AsetServiceUrl()
-    this.props.navigation.setParams({changeTextFun: this.changeTextFun, openKefu: this.openKefu})
+    this.updateImmediateData()
     let {userRebateVO} = this.props.rebateInfo
     let lotteryRebate = 0
     userRebateVO?.forEach(item => {
@@ -182,7 +192,14 @@ class PersonalScreen extends React.Component {
       lotteryRebate
     })
   }
-  
+
+  componentWillReceiveProps(nextProps) {
+    let {freshMsg} = this.props
+    if (freshMsg !== nextProps.freshMsg) {
+      this.props.navigation.setParams({changeTextFun: this.changeTextFun, openKefu: this.openKefu, freshMsg: nextProps.freshMsg})
+    }
+  }
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -327,6 +344,19 @@ class PersonalScreen extends React.Component {
 }
 
 const styles = StyleSheet.create(stylesUtil({
+  navBarRight: {fontSize: 16, color: '#fff'},
+  navBarRightItem: {paddingHorizontal: 16},
+  leftText: {fontSize: 16, color: '#fff'},
+  navBarTip: {
+    position: 'absolute',
+    width: 16,
+    height: 14,
+    backgroundColor: 'red',
+    borderRadius: 8,
+    right: -5,
+    top: -5
+  },
+  navBarTipText: {color: 'white', fontSize: 10, textAlign: 'center'},
   container: {
     flex: 1,
     backgroundColor: '#fff'
@@ -339,21 +369,23 @@ const styles = StyleSheet.create(stylesUtil({
 
 const mapStateToProps = (state) => {
   let {rebateInfo, loginInfo, balanceInfo, serviceUrl} = state.common
-  let {userBalanceInfoYE, userBalanceInfoFD} = state.member
+  let {userBalanceInfoYE, userBalanceInfoFD, freshMsg} = state.member
   return ({
     rebateInfo,
     loginInfo,
     balanceInfo,
     userBalanceInfoYE,
     userBalanceInfoFD,
-    serviceUrl
+    serviceUrl,
+    freshMsg
   })
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     AsetAllBalance: data => dispatch(AsetAllBalance(data)),
-    AsetServiceUrl: data => dispatch(AsetServiceUrl(data))
+    AsetServiceUrl: data => dispatch(AsetServiceUrl(data)),
+    AsetFreshMsg: () => dispatch(AsetFreshMsg())
   }
 }
 
