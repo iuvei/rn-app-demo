@@ -220,17 +220,17 @@ class PersonalScreen extends React.Component {
       {
         name: '充值',
         path: 'Recharge',
-        src: require('../../assets/images/personal/icon1.png')
+        src: require('../../assets/images/personal/cunkuan.png')
       },
       {
         name: '提现',
         path: 'Withdrawal',
-        src: require('../../assets/images/personal/icon2.png')
+        src: require('../../assets/images/personal/tikuan.png')
       },
       {
         name: '转账',
         path: 'TransferScreen',
-        src: require('../../assets/images/personal/icon3.png')
+        src: require('../../assets/images/personal/zhuanzhang.png')
       },
       // {
       //   name: '公告',
@@ -258,10 +258,10 @@ class PersonalScreen extends React.Component {
                 <Text style={styleUtil({color: '#fff', fontSize: 14})}>余额： {userBalanceInfoYE.currentBalance}元</Text>
               </View>
               <View style={styleUtil({alignItems: 'flex-end'})}>
-                <Button style={styleUtil({height: 32, backgroundColor: '#fff', borderRadius: 15})}>
-                  <Text style={styleUtil({color: '#6d96f7', fontSize: 14})}>彩票返点:{lotteryRebate}</Text>
-                </Button>
-                <Text style={styleUtil({color: '#fff', fontSize: 14})} onPress={() => this.changeRoute('RebateDetails')}>更多返点></Text>
+                {/* <Button style={styleUtil({height: 28, backgroundColor: '#fff', borderRadius: 15})}> */}
+                  <Text style={styleUtil({color: '#fff', fontSize: 14})}>彩票返点:{lotteryRebate}</Text>
+                {/* </Button> */}
+                <Text style={styleUtil({color: '#fff', fontSize: 12})} onPress={() => this.changeRoute('RebateDetails')}>更多返点></Text>
               </View>
             </View>
           </View>
@@ -280,13 +280,13 @@ class PersonalScreen extends React.Component {
             alignItems: 'center',
             height: 55,
             borderBottomWidth: 1,
-            borderBottomColor: '#0c7edb'
+            borderBottomColor: '#e5e5e5'
           })}>
-            <View style={styleUtil({width: 200, borderRightWidth: 1, borderRightColor: '#0c7edb', alignItems: 'center'})}>
+            <View style={styleUtil({width: '50%', borderRightWidth: 1, borderRightColor: '#e5e5e5', alignItems: 'center'})}>
               <Text style={styleUtil({color: '#333', fontSize: 14})}>{userBalanceInfoYE.canWithdrawBalance}元</Text>
               <Text style={styleUtil({color: '#333', fontSize: 14})}>可提金额</Text>
             </View>
-            <View style={styleUtil({width: 200, alignItems: 'center'})}>
+            <View style={styleUtil({width: '50%', alignItems: 'center'})}>
               <Text style={styleUtil({color: '#333', fontSize: 14})}>{userBalanceInfoFD.currentBalance}元</Text>
               <Text style={styleUtil({color: '#333', fontSize: 14})}>返点金额</Text>
             </View>
@@ -298,7 +298,7 @@ class PersonalScreen extends React.Component {
                   <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
                     <View key={index} style={styleUtil({height: 45})}>
                       <Image resizeMode='contain' source={item.src} style={styleUtil({width: 28, height: 26})}></Image>
-                      <Text style={{color: '#0c7edb'}}>{item.name}</Text>
+                      <Text style={{color: '#000'}}>{item.name}</Text>
                     </View>
                   </TouchableHighlight>
                 )
@@ -314,15 +314,15 @@ class PersonalScreen extends React.Component {
             ]}
             page={this.state.page}
             renderTabBar={() => {
-            return <Flex style={styleUtil({marginTop: 25, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#6d96f7', height: 32, borderWidth: 1, borderColor: '#6d96f7', borderRadius: 17})}>
+            return <Flex style={styleUtil({marginTop: 25, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', height: 32, borderWidth: 1, borderColor: '#00bbcc', borderRadius: 17})}>
               <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 0})}>
-                  <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#6d96f7', borderRadius: 17, height: 32}}>
-                    <Text style={styleUtil({textAlign: 'center', color: this.state.page === 0 ? '#6d96f7' : '#fff', lineHeight: 32})}>订单报表</Text></View>
+                  <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 17, height: 32}}>
+                    <Text style={styleUtil({textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 32})}>订单报表</Text></View>
                 </TouchableHighlight>
               </Flex.Item>
               <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 1})}>
-                <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#6d96f7', borderRadius: 17, height: 32}}>
-                  <Text style={styleUtil({textAlign: 'center', color: this.state.page === 1 ? '#6d96f7' : '#fff', lineHeight: 32})}>代理管理</Text></View>
+                <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 17, height: 32}}>
+                  <Text style={styleUtil({textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 32})}>代理管理</Text></View>
                 </TouchableHighlight>
               </Flex.Item>
             </Flex>
