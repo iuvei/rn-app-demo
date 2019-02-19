@@ -72,7 +72,7 @@ Header.defaultProps = {
 const styles = StyleSheet.create(stylesUtil({
   headerContainer: {
     flexDirection: 'row',
-    backgroundColor: '#6d96f7',
+    backgroundColor: '#00b4cc',
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 70,

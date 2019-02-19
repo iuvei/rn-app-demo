@@ -194,6 +194,7 @@ class HomeScreen extends React.Component {
         <Carousel
           style={styles.wrapper}
           // autoplay
+          dots={false}
           infinite
           afterChange={this.onHorizontalSelectedIndexChange}
         >
@@ -208,8 +209,8 @@ class HomeScreen extends React.Component {
         </Carousel>
 
         <View>
-          <WhiteSpace size="sm"/>
           <NoticeBar
+            style={styles.noticeWrap}
             onPress={() => this.props.navigation.navigate('Broadcast')}
             marqueeProps={{loop: true, style: styles.NoticeBar}}
           >
@@ -222,6 +223,7 @@ class HomeScreen extends React.Component {
           style={styles.wrapper}
           autoplay
           infinite
+          dotActiveStyle={{backgroundColor: '#00b4cc'}}
           afterChange={this.onHorizontalSelectedIndexChange}
         >
           {
@@ -265,8 +267,13 @@ class HomeScreen extends React.Component {
 
         <View style={styles.favoriteHead}>
           <Flex justify="between">
-            <View><Text style={styles.favoriteHeadText}>我的喜爱</Text></View>
-            <View><Text style={styles.favoriteHeadText} onPress={() => this.setLot()}>自定义</Text></View>
+            <View>
+              <Flex>
+                <Image source={require('./../../assets/images/home/collect.png')} style={styles.favoriteIcon} resizeMode={'contain'} />
+                <Text style={styles.favoriteHeadText}>我的喜爱</Text>
+              </Flex>
+            </View>
+            <View><Text style={styles.favoriteHeadTextR} onPress={() => this.setLot()}>{'>'}</Text></View>
           </Flex>
         </View>
 
@@ -349,7 +356,7 @@ const styles = StyleSheet.create(stylesUtil({
     paddingRight: 10
   },
   wrapper: {
-    backgroundColor: '#fff'
+    // backgroundColor: '#fff'
   },
   containerHorizontal: {
     flexGrow: 1,
@@ -360,10 +367,11 @@ const styles = StyleSheet.create(stylesUtil({
   },
   hotItem: {
     height: 80,
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#eaeaea',
     paddingHorizontal: 5,
-    borderRadius: 2
+    borderRadius: 6
   },
   hotItemImg: {
     width: 70,
@@ -392,7 +400,7 @@ const styles = StyleSheet.create(stylesUtil({
     borderRadius: 12,
     marginRight: 3,
     marginBottom: 3,
-    backgroundColor: '#097bd9'
+    backgroundColor: '#00b4cc'
   },
   hotItemSmallBall: {
     width: 16,
@@ -400,7 +408,7 @@ const styles = StyleSheet.create(stylesUtil({
     borderRadius: 8,
     marginRight: 3,
     marginBottom: 3,
-    backgroundColor: '#097bd9'
+    backgroundColor: '#00b4cc'
   },
   hotItemMidBall: {
     width: 20,
@@ -408,7 +416,7 @@ const styles = StyleSheet.create(stylesUtil({
     borderRadius: 10,
     marginRight: 3,
     marginBottom: 3,
-    backgroundColor: '#097bd9'
+    backgroundColor: '#00b4cc'
   },
   hotItemLgText: {
     lineHeight: 24,
@@ -431,30 +439,46 @@ const styles = StyleSheet.create(stylesUtil({
   carouselImg: {
     width: '100%'
   },
-  NoticeBar: {fontSize: 12, color: '#000'},
+  noticeWrap: {
+    backgroundColor: 'white',
+    borderBottomLeftRadius:6,
+    borderBottomRightRadius:6
+  },
+  NoticeBar: {
+    fontSize: 12,
+    color: '#000'
+  },
   favoriteHead: {
     paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#e6e6e6'
+    paddingRight: 20,
+    borderTopLeftRadius:6,
+    borderTopRightRadius:6,
+    backgroundColor: '#ffffff'
+  },
+  favoriteIcon: {
+    width: 16,
+    marginRight: 5
   },
   favoriteHeadText: {
     height: 30,
     lineHeight: 30
   },
+  favoriteHeadTextR: {
+    height: 30,
+    lineHeight: 30,
+    fontSize: 20,
+    color: '#00b4cc'
+  },
   favoriteItem: {
     width: '50%',
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-    borderLeftWidth: 1,
-    borderLeftColor: '#f0f0f0'
+    height: 60,
+    backgroundColor: '#fff'
   },
   favoriteItemImg: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     marginLeft: 10,
-    backgroundColor: '#fff'
   },
   favoriteItemCenter: {},
   favoriteItemTitle: {
@@ -463,7 +487,7 @@ const styles = StyleSheet.create(stylesUtil({
   },
   favoriteItemText: {
     fontSize: 12,
-    color: '#787878'
+    color: '#00b4cc'
   },
   gameItem: {
     flexGrow: 1,

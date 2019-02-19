@@ -70,7 +70,7 @@ class AddCustomizeGamesScreen extends React.Component {
       this.setState({ activeSections });
     };
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginBottom: 10,
     borderRadius: 5,
-    backgroundColor: '#016fca'
+    backgroundColor: '#00b4cc'
   },
   defaultBtnText: {
     fontSize: 12,

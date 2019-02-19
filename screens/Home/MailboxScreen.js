@@ -143,6 +143,7 @@ class MailboxScreen extends React.Component {
           <View style={styles.headerSeg}>
             <SegmentedControl
               style={{width: '70%', height: 30}}
+              tintColor={'#00b4cc'}
               values={this.state.tabs}
               onValueChange={this._getActiveTab}
             />
