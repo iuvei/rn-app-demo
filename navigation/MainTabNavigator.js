@@ -87,6 +87,16 @@ const MainTabNavigator = createBottomTabNavigator(
     RechargeStack,
     FoundStack,
     PersonalStack
+  },
+  {
+    tabBarOptions: {
+      labelStyle: {
+        color: '#ffffff'
+      },
+      style: {
+        backgroundColor: '#00b4cc'
+      },
+    }
   }
 )
 
