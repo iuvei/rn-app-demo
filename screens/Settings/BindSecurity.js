@@ -27,9 +27,9 @@ class BindSecurity extends React.Component {
     this.state = {
       isLoading: false,
       quesChoosed: [0, 1, 2],
-      questionOne: '',
-      questionTwo: '',
-      questionThree: '',
+      questionOne: '您的出生地是?',
+      questionTwo: '您小学班主任的名字是?',
+      questionThree: '您中学班主任的名字是?',
       answerOne: '',
       answerTwo: '',
       answerThree: '',
