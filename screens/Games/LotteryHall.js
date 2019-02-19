@@ -82,7 +82,7 @@ class LotteryHall extends React.Component {
   componentDidMount() {
     this._initHotLottery()
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -156,7 +156,7 @@ class LotteryHall extends React.Component {
       >
         <Accordion
           sections={list}
-          sectionContainerStyle={{marginBottom:10}}
+          sectionContainerStyle={{marginTop:10}}
           activeSections={this.state.activeSections}
           renderHeader={this._renderHeader}
           renderContent={this._renderContent}
@@ -170,7 +170,9 @@ class LotteryHall extends React.Component {
 const styles = StyleSheet.create({
   card: {
     height: 120,
-    width: '100%',
+    marginHorizontal: 10,
+    borderRadius: 3,
+    overflow: 'hidden',
     flex: 1,
     backgroundColor: '#f5f5f9',
     flexDirection: 'row',
@@ -181,7 +183,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     backgroundColor: 'white',
-    padding: 8
+    padding: 8,
+    marginHorizontal:10
   },
   title: {
     fontSize: 20,

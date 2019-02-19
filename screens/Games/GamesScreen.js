@@ -61,10 +61,10 @@ export default class GamesScreen extends React.Component {
           Platform.OS === 'ios' ?
             <Tabs
               tabs={tabs}
-              tabBarUnderlineStyle={{backgroundColor: 'orange'}}
-              tabBarBackgroundColor={'#0066ba'}
-              tabBarActiveTextColor={'orange'}
-              tabBarInactiveTextColor={'#eff5fb'}>
+              tabBarUnderlineStyle={{backgroundColor: '#00bbcc'}}
+              tabBarBackgroundColor={'#ffffff'}
+              tabBarActiveTextColor={'#00bbcc'}
+              tabBarInactiveTextColor={'#666666'}>
               <LotteryHall navigation={this.props.navigation}></LotteryHall>
               <RealPeople navigation={this.props.navigation}></RealPeople>
               <Slot navigation={this.props.navigation}></Slot>
@@ -74,10 +74,10 @@ export default class GamesScreen extends React.Component {
             <Tabs
               tabs={tabs}
               page={activeTab}
-              tabBarUnderlineStyle={{backgroundColor: 'orange'}}
-              tabBarBackgroundColor={'#0066ba'}
-              tabBarActiveTextColor={'orange'}
-              tabBarInactiveTextColor={'#eff5fb'}
+              tabBarUnderlineStyle={{backgroundColor: '#00bbcc'}}
+              tabBarBackgroundColor={'#ffffff'}
+              tabBarActiveTextColor={'#00bbcc'}
+              tabBarInactiveTextColor={'#666666'}
               onChange={(tab, index) => this.setState({activeTab: index})}>
               <LotteryHall navigation={this.props.navigation}></LotteryHall>
               <RealPeople navigation={this.props.navigation}></RealPeople>
