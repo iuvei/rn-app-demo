@@ -160,32 +160,30 @@ export default class FoundScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.findHeader}>
-          <ImageBackground source={require('./../../assets/images/found/find_head_bg.jpg')} style={{width: '100%', height: '100%'}}>
-            <Flex justify="center">
-              <View>
-                <Text style={styles.findHeadText}>黄金海岸2累积派发奖金</Text>
-                <Animated.View style={{
-                    top: this.state.top.interpolate({
-                      inputRange: [0, 0.5, 1],
-                      outputRange: [-100, 10, 0]
-                    })
-                  }}>
-                  <Flex justify="center">
-                    <View>
-                      <Text style={styles.findHeadNumber}>¥</Text>
-                    </View>
-                    <View>
-                      <Text style={styles.findHeadNumber}>{this._moneyShow(this.state.accumulateBouns)}</Text>
-                    </View>
-                  </Flex>
-                </Animated.View>
-              </View>
-            </Flex>
-          </ImageBackground>
+          <Flex justify="center">
+            <View>
+              <Text style={styles.findHeadText}>黄金海岸2累积派发奖金</Text>
+              <Animated.View style={{
+                top: this.state.top.interpolate({
+                  inputRange: [0, 0.5, 1],
+                  outputRange: [-100, 10, 0]
+                })
+              }}>
+                <Flex justify="center">
+                  <View>
+                    <Text style={styles.findHeadNumber}>¥</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.findHeadNumber}>{this._moneyShow(this.state.accumulateBouns)}</Text>
+                  </View>
+                </Flex>
+              </Animated.View>
+            </View>
+          </Flex>
         </View>
         <ImageBackground
           resizeMode={'cover'}
-          source={require('./../../assets/images/found/find_bg.png')}
+          source={require('./../../assets/images/found/find_bg.jpg')}
           style={{width: '100%', height: '95%'}}>
         <ScrollView>
           <WhiteSpace size="md" />
@@ -195,7 +193,10 @@ export default class FoundScreen extends React.Component {
                 return (
                   <View style={[styles.findItem]} key={index}>
                     <Flex onPress={() => this._actionFun(item)}>
-                      <View style={styles.listBlock}>
+                      <ImageBackground
+                        resizeMode={'contain'}
+                        source={require('./../../assets/images/found/cloud.png')}
+                        style={styles.listBlock}>
                         <View>
                           <Animated.Image
                             source={item.src}
@@ -206,9 +207,9 @@ export default class FoundScreen extends React.Component {
                                   outputRange: ['0deg', '360deg']
                                 })
                               }]}}/>
+                          <Text style={styles.listTitle}>{item.title}</Text>
                         </View>
-                        <Text style={styles.listTitle}>{item.title}</Text>
-                      </View>
+                      </ImageBackground>
                     </Flex>
                   </View>
                 )
@@ -228,6 +229,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0'
   },
   findHeader: {
+    backgroundColor: '#00afbf',
     height: 94
   },
   findHeaderContent: {
@@ -266,7 +268,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   listBlock: {
-    paddingLeft: 10
+    marginLeft: 10
   },
   listTitle: {
     fontSize: 14,
