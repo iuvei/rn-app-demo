@@ -49,7 +49,7 @@ class UpdatePwd extends React.Component {
   submitFunc = () => {
     let { oldPwd, newPwd, rePwd } = this.state
     let typeStr = this.props.navigation.getParam('type', '')
-    let pattern = new RegExp(this.passwordParamDto.validator) // /((?=.*[a-z])(?=.*\d)|(?=[a-z])(?=.*[#@!~%^&*])|(?=.*\d)(?=.*[#@!~%^&*]))[a-z\d#@!~%^&*]{8,16}/i
+    let pattern = new RegExp(this.props.passwordRule.passwordParamDto.validator) // /((?=.*[a-z])(?=.*\d)|(?=[a-z])(?=.*[#@!~%^&*])|(?=.*\d)(?=.*[#@!~%^&*]))[a-z\d#@!~%^&*]{8,16}/i
     if (!pattern.test(newPwd)) {
       Toast.info('请输入符合规则的密码')
       return
