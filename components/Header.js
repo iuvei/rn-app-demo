@@ -66,7 +66,7 @@ class Header extends PureComponent {
 
 Header.defaultProps = {
   leftText: '返回',
-  centerText: '天祥国际'
+  centerText: '黄金海岸2'
 }
 
 const styles = StyleSheet.create(stylesUtil({

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "天祥国际测试区",
-    "slug": "tianxiang",
+    "name": "黄金海岸2",
+    "slug": "goldcoast2",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
@@ -18,7 +18,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yiyou3.goleteam.debug",
+      "bundleIdentifier": "com.goldcoast2.goleteam.debug",
       "splash": {
         "image": "./assets/images/screen.png",
         "backgroundColor": "#FFFFFF",

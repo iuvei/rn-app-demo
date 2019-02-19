@@ -163,7 +163,7 @@ export default class FoundScreen extends React.Component {
           <ImageBackground source={require('./../../assets/images/found/find_head_bg.jpg')} style={{width: '100%', height: '100%'}}>
             <Flex justify="center">
               <View>
-                <Text style={styles.findHeadText}>天祥国际累积派发奖金</Text>
+                <Text style={styles.findHeadText}>黄金海岸2累积派发奖金</Text>
                 <Animated.View style={{
                     top: this.state.top.interpolate({
                       inputRange: [0, 0.5, 1],
