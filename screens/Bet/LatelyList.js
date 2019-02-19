@@ -80,8 +80,8 @@ class LatelyList extends PureComponent {
         {
           latelyOpenList.length ?
             latelyOpenList.map((list, idx) =>
-              <View key={list.openIssue+'_'+idx} style={styles.listItem}>
-                <Text>第 {list.openIssue} 期</Text>
+              <View key={list.openIssue+'_'+idx} style={{...styles.listItem, borderLeftColor: idx%2 === 0 ? '#00bbcc' : '#f39b52'}}>
+                <Text style={{fontSize: 14, color: '#333'}}>第 {list.openIssue} 期</Text>
                 <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
                   {
                     list.codelist.map((b, bIdx) =>
@@ -135,15 +135,20 @@ const styles = StyleSheet.create(stylesUtil({
   container: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#ededed'
+    backgroundColor: '#f0f0f0',
+    paddingLeft: 10,
+    paddingRight: 10
   },
   listItem: {
     padding: 2,
     paddingLeft: 10,
     paddingRight: 10,
+    marginTop: 10,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#ededed'
+    borderLeftWidth: 5,
+    borderBottomColor: '#ededed',
+    borderRadius: 6
   },
   ballItem: {
     width: 30, height: 30,
