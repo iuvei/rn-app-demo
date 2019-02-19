@@ -38,7 +38,7 @@ class UnbindSet extends React.Component {
       }],
       selectType: 0,
       isLoading: false,
-      question: '',
+      question: '您的出生地是?',
       answer: '',
       pwd: '',
       userName: '',
@@ -119,7 +119,7 @@ class UnbindSet extends React.Component {
       Toast.success('解绑成功')
       this.props.AsetUserSecureLevel()
       this.setState({
-        question: '',
+        // question: '',
         answer: '',
         pwd: '',
         userName: '',
@@ -146,7 +146,7 @@ class UnbindSet extends React.Component {
             onChange={(val) => {
               this.setState({
                 selectType: val[0],
-                question: '',
+                // question: '',
                 answer: '',
                 pwd: '',
                 userName: '',
