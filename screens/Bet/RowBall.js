@@ -295,7 +295,7 @@ class RowBall extends React.Component {
                   onPress={() => {
                     addBuyCard(false, () => {
                       this.props.navigation.navigate('ChaseScreen', {
-                        orderList: this.props.buyCardData,
+                        orderList: [this.props.buyCardData[this.props.buyCardData.length - 1]],
                         buyCardInfo: this.props.buyInfo
                       })
                     })

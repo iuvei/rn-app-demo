@@ -40,7 +40,7 @@ export default class QueryPickerOne extends React.PureComponent {
         }}
       >
         <TouchableHighlight>
-          <Flex style={{backgroundColor: '#1182df', borderRadius: 3}}>
+          <Flex style={{backgroundColor: '#00bbcc', borderRadius: 3}}>
             <View style={{flex: 1}}>
               <Text style={{textAlign: 'center', lineHeight: 25, color: '#fff', fontSize: 12, overflow: 'hidden', height: 25}}>{pickered[0].label}</Text>
             </View>
