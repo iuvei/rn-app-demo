@@ -49,7 +49,7 @@ class UpdatePwd extends React.Component {
   submitFunc = () => {
     let { oldPwd, newPwd, rePwd } = this.state
     let typeStr = this.props.navigation.getParam('type', '')
-    let pattern = /((?=.*[a-z])(?=.*\d)|(?=[a-z])(?=.*[#@!~%^&*])|(?=.*\d)(?=.*[#@!~%^&*]))[a-z\d#@!~%^&*]{8,16}/i
+    let pattern = new RegExp(this.passwordParamDto.validator) // /((?=.*[a-z])(?=.*\d)|(?=[a-z])(?=.*[#@!~%^&*])|(?=.*\d)(?=.*[#@!~%^&*]))[a-z\d#@!~%^&*]{8,16}/i
     if (!pattern.test(newPwd)) {
       Toast.info('请输入符合规则的密码')
       return
@@ -131,7 +131,8 @@ class UpdatePwd extends React.Component {
 
   render() {
     let { oldPwd, newPwd, rePwd, isLoading } = this.state
-    let { userSecurityConfig, userSecurityLevel, navigation } = this.props
+    let { userSecurityConfig, userSecurityLevel, navigation, passwordRule } = this.props
+    let messgae = passwordRule.passwordParamDto ? passwordRule.passwordParamDto.messgae : ''
     let type = navigation.getParam('type')
 
     return (
@@ -151,7 +152,7 @@ class UpdatePwd extends React.Component {
           </List>
         }
         <View style={{padding: 12, backgroundColor: '#f0f0f0'}}>
-          <Text style={{color: '#a4a4a4', lineHeight: 24}}>提示：为了提高账号的安全性，请勿设置过于简单的密码：1.密码由8至16个字母和数字和特殊字符(#@!~%^&*)组成；2.密码不能是纯数字或纯字母或纯特殊字符；3.密码不能是系统默认密码（a123456）；4.资金密码不能与登录密码相同</Text>
+          <Text style={{color: '#a4a4a4', lineHeight: 24}}>提示：为了提高账号的安全性，请勿设置过于简单的密码：1.{messgae}；2.密码不能是纯数字或纯字母或纯特殊字符；3.密码不能是系统默认密码（a123456）；4.资金密码不能与登录密码相同</Text>
         </View>
         <List>
           {
@@ -202,8 +203,8 @@ class UpdatePwd extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  let { userSecurityLevel, userSecurityConfig } = state.common
-  return { userSecurityConfig, userSecurityLevel }
+  let { userSecurityLevel, userSecurityConfig, passwordRule } = state.common
+  return { userSecurityConfig, userSecurityLevel, passwordRule }
 }
 
 const mapDispatchToProps = (dispatch) => {

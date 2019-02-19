@@ -19,7 +19,8 @@ import {
   setActiveUsualLot,
   getSystemNews,
   queryActivity,
-  AgetRecharge
+  AgetRecharge,
+  setPasswordRule
 } from './../../actions/common'
 import { getHotLotter } from './../../api/lottery'
 import { getIconName } from '../../utils/getLotImg'
@@ -115,6 +116,7 @@ class HomeScreen extends React.Component {
     this._initHotLottery()
     this.props.queryActivity()
     this.props.AgetRecharge()
+    this.props.setPasswordRule()
     // this.props.navigation.push('Bet', this.state.LotArray[0])
   }
 
@@ -528,6 +530,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     AgetRecharge: () => {
       dispatch(AgetRecharge())
+    },
+    setPasswordRule: () => {
+      dispatch(setPasswordRule())
     }
   }
 }

@@ -8,7 +8,8 @@ import {
   getUserSecurityConfig,
   getUserPlatformInfo,
   coustomerService,
-  getUserRebateInfo
+  getUserRebateInfo,
+  getPasswordRule
 } from "../api/basic";
 import { createAction } from "redux-actions";
 import { AsyncStorage } from "react-native";
@@ -119,6 +120,14 @@ export const setCustomizeLottery = createAction(
   async (data) => {
     let res = await getSysLottery(data)
     return res.code === 0 ? res.data : []
+  }
+)
+
+export const setPasswordRule = createAction(
+  'SET_PASSWORD_RULE',
+  async () => {
+    let res = await getPasswordRule()
+    return res.code === 0 ? res.data : {}
   }
 )
 

@@ -37,7 +37,7 @@ const sortArray = arr => {
 
 const initialState = {
   isLogin: false,
-  showFloatBall: true,
+  showFloatBall: false,
   currentApiUrl: prependUrl,
   count: 1,
   sysSortLottery: [],
@@ -62,6 +62,7 @@ const initialState = {
   }, // 保存撤单时间和撤单订单号
   recharge: {}, // 充值渠道对象
   isConnected: true, //是否有网络
+  passwordRule: {}
 }
 
 // 常规处理
@@ -237,6 +238,12 @@ const common = handleActions({
     return {
       ...state,
       isConnected: payload
+    }
+  },
+  SET_PASSWORD_RULE: (state, {payload}) => {
+    return {
+      ...state,
+      passwordRule: payload
     }
   }
 }, initialState)
