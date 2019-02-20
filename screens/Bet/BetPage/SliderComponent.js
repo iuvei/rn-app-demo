@@ -22,9 +22,9 @@ class SliderComponent extends PureComponent {
             maximumValue={curMaxMode}
             step={2}
             disabled={curMaxMode === 1700 || curMaxMode === lotterMinMode}
-            minimumTrackTintColor="#1c8de9"
+            minimumTrackTintColor="#00bbcc"
             maximumTrackTintColor="#1e8fea"
-            thumbTintColor="#1c8de9"
+            thumbTintColor="#00bbcc"
             onValueChange={rebateMode => setBuyInfo({rebateMode})}
           />
         </View>
