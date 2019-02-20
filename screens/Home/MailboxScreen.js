@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import Header from './../../components/Header'
 import { List, SwipeAction, SegmentedControl, Toast, Flex } from '@ant-design/react-native'
-import { delMessage } from './../../api/member'
+import { delMessage, oneKeyRead } from './../../api/member'
 import { AsetFreshMsg } from "../../actions/member"
 import UIListView from '../../components/UIListView'
 import WriteEmail from './WriteEmail'
@@ -16,8 +16,18 @@ import { connect } from "react-redux";
 
 class MailboxScreen extends React.Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state
     return {
-      header: <Header title={'信箱'} navigation={navigation}/>
+      header: <Header
+        title={'信箱'}
+        navigation={navigation}
+        rightContent={
+          <View>
+            {
+              params && params.activeTab === '收件箱' ? <Text style={{color: '#ffffff'}} onPress={() => params.oneKeyReadRemove()} >一键已读</Text> : null
+            }
+          </View>
+        }/>
     }
   }
 
@@ -43,7 +53,8 @@ class MailboxScreen extends React.Component {
       api: '/user/message/searchMessage',
       sendApi: '/user/message/sendInboxMessage',
       replyData: {},
-      showDetail: false
+      showDetail: false,
+      dataList: []
     }
   }
 
@@ -94,6 +105,26 @@ class MailboxScreen extends React.Component {
     this.setState({
       activeTab: val
     })
+    this.props.navigation.setParams({
+      activeTab: val,
+      oneKeyReadRemove: this.oneKeyReadRemove
+    })
+  }
+
+  oneKeyReadRemove = () => {
+    let ids = []
+    this.state.dataList.forEach(item => {
+      if (item.status === 0) {
+        ids.push(item.id)
+      }
+    })
+    if (!ids.length) return
+    oneKeyRead({messageIds: ids}).then((res) => {
+      if (res.code === 0) {
+        Toast.success(res.message)
+        this.MailBox.listView.refresh()
+      }
+    })
   }
 
   remove = (messageId) => {
@@ -132,7 +163,10 @@ class MailboxScreen extends React.Component {
   }
 
   componentDidMount() {
-
+    this.props.navigation.setParams({
+      activeTab: this.state.activeTab,
+      oneKeyReadRemove: this.oneKeyReadRemove
+    })
   }
 
   render() {
@@ -143,7 +177,6 @@ class MailboxScreen extends React.Component {
           <View style={styles.headerSeg}>
             <SegmentedControl
               style={{width: '70%', height: 30}}
-              tintColor={'#00b4cc'}
               values={this.state.tabs}
               onValueChange={this._getActiveTab}
             />
@@ -157,6 +190,17 @@ class MailboxScreen extends React.Component {
             KeyName={`KeyName-${KeyName}`}
             params={params}
             renderItem={this.renderItem}
+            beforeUpdateList={({res}, fn) => {
+              let dataList = res.data && res.data.pageColumns ? res.data.pageColumns : []
+              this.setState({
+                dataList: dataList
+              })
+              let {total} = res.data
+              let {pageSize, pageNumber} = params
+              let NullData = Math.ceil(total / pageSize) < pageNumber
+              // 或在这里增加 其他状态码的处理Alter
+              fn(NullData ? [] : {dataList})
+            }}
           /> :
           activeTab === '发件箱' ? <UIListView
             ref={ref => this.MailBox = ref}

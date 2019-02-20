@@ -512,6 +512,15 @@ export const delMessage = (params) => {
   })
 }
 
+// 删除消息
+export const oneKeyRead = (params) => {
+  return fetch({
+    type: 'post',
+    api: '/user/message/oneKeyRead',
+    params
+  })
+}
+
 export const chatDetail = (params) => {
   return fetch({
     type: 'post',
