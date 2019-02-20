@@ -477,9 +477,8 @@ const styles = StyleSheet.create(stylesUtil({
     backgroundColor: '#fff'
   },
   favoriteItemImg: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 65,
+    height: 65,
     marginLeft: 10,
   },
   favoriteItemCenter: {},

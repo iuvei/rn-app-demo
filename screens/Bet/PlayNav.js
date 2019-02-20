@@ -108,7 +108,7 @@ class PlayNav extends React.Component {
           </View>
           <View style={styles.setting}>
             <Flex justify="center" align="center" onPress={() => this.props.openDrawer()}>
-              <Ionicons name="ios-add-circle" color="#0170cc" size={setSpText(30)}/>
+              <Ionicons name="ios-add-circle" color="#00b4cc" size={setSpText(30)}/>
             </Flex>
           </View>
         </Flex>
@@ -163,7 +163,7 @@ const styles = StyleSheet.create(stylesUtil({
     marginRight: 5
   },
   btnActive: {
-    borderColor: '#016fca'
+    borderColor: '#00b4cc'
   },
   btnDefaultText: {
     fontSize: 12,
@@ -173,6 +173,6 @@ const styles = StyleSheet.create(stylesUtil({
     textAlign: 'center'
   },
   btnActiveText: {
-    color: '#016fca'
+    color: '#00b4cc'
   }
 }))

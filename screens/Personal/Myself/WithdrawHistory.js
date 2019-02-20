@@ -47,8 +47,8 @@ class PersonalScreen extends React.Component {
     return {
       headerTitle: <SegmentedControl
         values={['充值', '提现']}
-        tintColor={'#ff6682'}
-        style={{ height: 30, width: 160 }}
+        tintColor={'#2d88be'}
+        style={{ height: 30, width: 160}}
         onValueChange={navigation.getParam('onValueChange')}
       />,
       headerRight: <Button style={{marginRight: 14}} type="primary" size="small" onPress={navigation.getParam('onSearch')}>
@@ -95,7 +95,7 @@ class PersonalScreen extends React.Component {
       api:tableAPI
     }, ()=> this.WithdrawHistory.listView.refresh())
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
