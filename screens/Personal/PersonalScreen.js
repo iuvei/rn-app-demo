@@ -310,10 +310,15 @@ class PersonalScreen extends React.Component {
         <View style={{flex: 1}}>
           <Tabs
             tabs={[
-              {title: '订单报表'},
-              {title: '代理管理'}
+              {title: '订单报表', index: 0},
+              {title: '代理管理', index: 1}
             ]}
             page={this.state.page}
+            onChange={(t) => {
+              this.setState({
+                page: t.index
+              })
+            }}
             renderTabBar={() => {
             return <Flex style={styleUtil({marginTop: 25, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', padding: 1, borderRadius: 18})}>
               <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 0})}>
