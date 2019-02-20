@@ -388,7 +388,8 @@ class Trend extends Component {
             {
               currentList?.sscType?.map((item, index) => {
                 return (
-                  <Tab heading={item.name} key={index} />
+                  <Tab heading={item.name} tabStyle={{backgroundColor: '#00bbcc'}} activeTabStyle={{backgroundColor: '#fff'}}
+                       textStyle={{color: '#fff'}} activeTextStyle={{color: '#00bbcc'}} key={index} />
                 )
               }) ||
               <Tab heading={'empty'}></Tab>
@@ -398,8 +399,8 @@ class Trend extends Component {
             !tabIsReady ? <Spinner/> : (curCategory !== 'kl8' ? <View style={styles.table}>
                 {
                   // 走势图画线
-                  ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ?
-                    <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
+                  /*['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ?
+                    <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null*/
                 }
                 <View style={[styles.row, styles.header]} ref={'table'}>
                   <Text style={[styles.issue, styles.cell]}>期数</Text>
