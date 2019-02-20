@@ -116,7 +116,7 @@ class TeamBaccaratReport extends React.Component {
       }
     }
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -172,10 +172,9 @@ class TeamBaccaratReport extends React.Component {
     let {api, params, KeyName, isShow, previousId} = this.state
     return (
       <View style={styles.container}>
-        <WingBlank>
-          <QueryDate handleDate={this.handleDate}/>
-        </WingBlank>
+        <QueryDate handleDate={this.handleDate}/>
         {isShow ? null :
+          <View style={{flex: 1, backgroundColor: 'white', borderRadius: 8, marginTop: 8}}>
           <UIListView
             ref={ref => this.TeamBaccaratReport = ref}
             api={api}
@@ -190,6 +189,7 @@ class TeamBaccaratReport extends React.Component {
               fn(NullData ? [] : {dataList})
             }}
           />
+          </View>
         }
         {
           previousId.length > 0 ?
@@ -203,7 +203,9 @@ class TeamBaccaratReport extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    paddingTop: 0,
   },
   light: {
     fontSize: 18,
