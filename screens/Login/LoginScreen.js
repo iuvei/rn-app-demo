@@ -85,12 +85,12 @@ class LoginComponent extends Component {
               this.props.setLoginStatus(res2.code === 0)
               this.props.setLoginInfo(res2.data)
             }
+            this.props.AsetAllBalance()
+            this.props.AsetUserBankCards(res.data.user.userId)
+            this.props.setUserRebate(res.data.user.userId)
+            this.props.AsetUserSecureLevel()
+            this.props.navigation.navigate('Main')
           })
-          this.props.AsetAllBalance()
-          this.props.AsetUserBankCards(res.data.user.userId)
-          this.props.setUserRebate(res.data.user.userId)
-          this.props.AsetUserSecureLevel()
-          this.props.navigation.navigate('Main')
         } else {
           this.setState({
             isLoading: false
