@@ -314,7 +314,7 @@ class PersonalScreen extends React.Component {
             ]}
             page={this.state.page}
             renderTabBar={() => {
-            return <Flex style={styleUtil({marginTop: 25, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', height: 32, borderWidth: 1, borderColor: '#00bbcc', borderRadius: 17})}>
+            return <Flex style={styleUtil({marginTop: 25, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', height: 35, borderRadius: 18})}>
               <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 0})}>
                   <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 17, height: 32}}>
                     <Text style={styleUtil({textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 32})}>订单报表</Text></View>
