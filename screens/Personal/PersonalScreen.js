@@ -272,7 +272,8 @@ class PersonalScreen extends React.Component {
           marginRight: 'auto',
           marginTop: -105,
           backgroundColor: '#fff',
-          borderRadius: 8
+          borderRadius: 8,
+          // borderColor: '#f3f3f3',
         })}>
           <View style={styleUtil({
             flexDirection: 'row',
@@ -280,9 +281,9 @@ class PersonalScreen extends React.Component {
             alignItems: 'center',
             height: 55,
             borderBottomWidth: 1,
-            borderBottomColor: '#e5e5e5'
+            borderBottomColor: '#f3f3f3'
           })}>
-            <View style={styleUtil({width: '50%', borderRightWidth: 1, borderRightColor: '#e5e5e5', alignItems: 'center'})}>
+            <View style={styleUtil({width: '50%', borderRightWidth: 1, borderRightColor: '#f3f3f3', alignItems: 'center'})}>
               <Text style={styleUtil({color: '#333', fontSize: 14})}>{Number(userBalanceInfoYE.canWithdrawBalance).toFixed(2)}元</Text>
               <Text style={styleUtil({color: '#333', fontSize: 14})}>可提金额</Text>
             </View>
