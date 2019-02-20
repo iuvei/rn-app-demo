@@ -72,30 +72,32 @@ class LoginComponent extends Component {
     this.willUnmount = true
   }
 
-  _toLogin() {
+  _toLogin = async () => {
     let {j_username, j_password, ua} = this.state
+    await _getImageSetCookie()
     this.setState({
       isLoading: true
-    })
-    signIn({j_username, j_password, ua}).then(res => {
-      if (res.code === 0) {
-        getLoginUser().then(res2 => {
-          if (res2.code === 0) {
-            this.props.setLoginStatus(res2.code === 0)
-            this.props.setLoginInfo(res2.data)
-          }
-        })
-        this.props.AsetAllBalance()
-        this.props.AsetUserBankCards(res.data.user.userId)
-        this.props.setUserRebate(res.data.user.userId)
-        this.props.AsetUserSecureLevel()
-        this.props.navigation.navigate('Main')
-      } else {
-        this.setState({
-          isLoading: false
-        })
-        Toast.info(res.message || '网络错误，请重试')
-      }
+    }, () => {
+      signIn({j_username, j_password, ua}).then(res => {
+        if (res.code === 0) {
+          getLoginUser().then(res2 => {
+            if (res2.code === 0) {
+              this.props.setLoginStatus(res2.code === 0)
+              this.props.setLoginInfo(res2.data)
+            }
+          })
+          this.props.AsetAllBalance()
+          this.props.AsetUserBankCards(res.data.user.userId)
+          this.props.setUserRebate(res.data.user.userId)
+          this.props.AsetUserSecureLevel()
+          this.props.navigation.navigate('Main')
+        } else {
+          this.setState({
+            isLoading: false
+          })
+          Toast.info(res.message || '网络错误，请重试')
+        }
+      })
     })
   }
 

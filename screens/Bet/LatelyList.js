@@ -137,7 +137,8 @@ const styles = StyleSheet.create(stylesUtil({
     width: '100%',
     backgroundColor: '#f0f0f0',
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
+    paddingBottom: 10
   },
   listItem: {
     padding: 2,
