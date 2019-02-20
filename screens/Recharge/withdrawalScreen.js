@@ -321,7 +321,7 @@ class Withdrawal extends React.Component {
         <ScrollView style={{height: height}}>
           <ImageBackground source={require('../../assets/images/withdraw_bg1.jpg')}
             style={styleUtil({width: '100%', height: 120, alignItems: 'center', paddingTop: 26})}>
-            <Text style={styleUtil({fontSize: 32, color: '#ffffff'})}>{userBalanceInfoYE.canWithdrawBalance}</Text>
+            <Text style={styleUtil({fontSize: 32, color: '#ffffff'})}>{Number(userBalanceInfoYE.canWithdrawBalance).toFixed(2)}</Text>
             <Text style={styleUtil({fontSize: 14, color: '#ffffff'})}>可提金额(元)</Text>
           </ImageBackground>
           {

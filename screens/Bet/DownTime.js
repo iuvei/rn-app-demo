@@ -44,7 +44,7 @@ class DownTime extends Component {
         </View>
         <View style={styles.openResultView}>
           <Text style={styles.openResultText}>
-            <Text style={{color: '#016fca'}}>{prevOpenResult.openIssue || '000000000'}</Text>
+            <Text style={{color: '#00bbcc'}}>{prevOpenResult.openIssue || '000000000'}</Text>
             <Text style={styles.stopTimeText}> 期开奖结果</Text>
           </Text>
           <View style={styles.openListView}>
@@ -63,7 +63,7 @@ class DownTime extends Component {
             }
           </View>
           <Text style={styles.stopTimeText}>
-            <Text style={{color: '#016fca'}}>{openIssue.currentIssue} </Text>
+            <Text style={{color: '#00bbcc'}}>{openIssue.currentIssue} </Text>
             距离封单
             <Text style={{color: '#f3564d'}}>
               {` ${h1}${h2}:${m1}${m2}:${s1}${s2}`}

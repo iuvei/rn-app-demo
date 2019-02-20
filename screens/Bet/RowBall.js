@@ -328,12 +328,12 @@ class RowBall extends React.Component {
             <View style={{flex: 1}}>
               <Text style={styles.BuyInfoDefaultText}>
                 人民币余额：
-                <Text style={styles.BuyInfoActiveText}>{userBalanceInfoYE.currentBalance}</Text>
+                <Text style={{...styles.BuyInfoActiveText, color: '#00bbcc'}}>{userBalanceInfoYE.currentBalance}</Text>
               </Text>
               <Text style={styles.BuyInfoDefaultText}>注数：
                 <Text style={styles.BuyInfoDefaultText}>{num}</Text>
-                <Text>{'\t'}投注金额：</Text>
-                <Text style={styles.BuyInfoDefaultText}>{total}</Text>
+                <Text>{'\t'}   投注金额：</Text>
+                <Text style={{...styles.BuyInfoDefaultText, color: '#ff0000'}}>{total}</Text>
               </Text>
             </View>
             <View style={styles.fastBuyView}>
