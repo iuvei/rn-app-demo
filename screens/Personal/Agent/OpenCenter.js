@@ -188,7 +188,7 @@ class OpenCenter extends React.Component {
         <View style={styles.normal}>
           <Flex direction={'row'} style={styles.userType}>
             <Text style={{fontSize: 16}}>玩家类型</Text>
-            <SegmentedControl selectedIndex={this.state.isProxy} values={['玩家', '代理']}
+            <SegmentedControl selectedIndex={this.state.isProxy} tintColor={'#00bbcc'} values={['玩家', '代理']}
                               style={{width: 100, marginLeft: 50}} onChange={e => {
               this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
             }}/>
@@ -220,7 +220,7 @@ class OpenCenter extends React.Component {
             彩票返点
           </InputItem>
         </View>
-        <Button size={'large'} type={'primary'} onPress={this._addDown}>确定</Button>
+        <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'} onPress={this._addDown}>确定</Button>
         <View style={{marginTop: 20}}>
           <Text style={styles.hint}>温馨提示</Text>
           <Text style={styles.hint}>自动注册的会员初始密码为“<Text style={{color: 'orange'}}>a123456</Text>”。</Text>
@@ -240,7 +240,7 @@ class OpenCenter extends React.Component {
         <View style={styles.normal}>
           <Flex direction={'row'} style={styles.userType}>
             <Text style={{fontSize: 16}}>玩家类型</Text>
-            <SegmentedControl selectedIndex={this.state.isProxy} values={['玩家', '代理']}
+            <SegmentedControl selectedIndex={this.state.isProxy} tintColor={'#00bbcc'} values={['玩家', '代理']}
                               style={{width: 100, marginLeft: 50}} onChange={e => {
               this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
             }}/>
@@ -285,7 +285,7 @@ class OpenCenter extends React.Component {
             彩票返点
           </InputItem>
         </View>
-        <Button size={'large'} type={'primary'} onPress={this._addLinkup}>生成链接</Button>
+        <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'} onPress={this._addLinkup}>生成链接</Button>
         <View style={{marginTop: 20}}>
           <Text style={styles.hint}>温馨提示</Text>
           <Text style={styles.hint}>生成链接不会立即扣减配额，只有用户使用该链接注册成功的时候，才会扣减配额；</Text>
@@ -357,7 +357,7 @@ class OpenCenter extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <SegmentedControl values={['普通开户', '链接开户', '链接管理']} style={styles.segmented} onChange={this.onChange}/>
+        <SegmentedControl values={['普通开户', '链接开户', '链接管理']} tintColor={'#00bbcc'} style={styles.segmented} onChange={this.onChange}/>
         {contain}
       </View>
     )
