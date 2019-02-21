@@ -47,8 +47,8 @@ class PersonalScreen extends React.Component {
     return {
       headerTitle: <SegmentedControl
         values={['充值', '提现']}
-        tintColor={'#2d88be'}
-        style={{ height: 30, width: 160}}
+        tintColor={'#f39b52'}
+        style={{ height: 30, width: 160, backgroundColor: '#ffffff',borderRadius:4}}
         onValueChange={navigation.getParam('onValueChange')}
       />,
       headerRight: <Button style={{marginRight: 14}} type="primary" size="small" onPress={navigation.getParam('onSearch')}>
