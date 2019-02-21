@@ -133,9 +133,8 @@ class FloatBall extends Component {
   render() {
     return (
         <View style={{
-          borderRadius: Platform.OS === 'ios' ? 25 : 20,
-          width: Platform.OS === 'ios' ? 50 : 40,
-          height: Platform.OS === 'ios' ? 50 : 40,
+          width: 40,
+          height: 50,
           zIndex: 2,
           position: 'absolute',
           left: this.state.marginLeft,
@@ -143,10 +142,10 @@ class FloatBall extends Component {
         }} {...this.panResponder.panHandlers}
         >
           <ImageBackground
-            source={require('./../assets/images/speed_ball.png')}
+            source={require('./../assets/images/rocket.png')}
             style={{
-              width: Platform.OS === 'ios' ? 50 : 40,
-              height: Platform.OS === 'ios' ? 50 : 40,}}>
+              width: 40,
+              height: 50}}>
             {this.props.children}
           </ImageBackground></View>
     )
