@@ -399,8 +399,8 @@ class Trend extends Component {
             !tabIsReady ? <Spinner/> : (curCategory !== 'kl8' ? <View style={styles.table}>
                 {
                   // 走势图画线
-                  /*['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ?
-                    <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null*/
+                  ['wan', 'qian', 'bai', 'shi', 'ge'].includes(curLotteryType) ?
+                    <Canvas style={styles.canvas} ref={this.handleCanvas}/> : null
                 }
                 <View style={[styles.row, styles.header]} ref={'table'}>
                   <Text style={[styles.issue, styles.cell]}>期数</Text>
