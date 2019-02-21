@@ -75,6 +75,7 @@ PersonalStack.navigationOptions = {
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
+      tips={true}
       name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'}
     />
   )
