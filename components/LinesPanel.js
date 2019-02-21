@@ -208,7 +208,7 @@ class LinesPanel extends Component {
 }
 
 const styles = StyleSheet.create({
-  text: {lineHeight: Platform.OS === 'ios' ? 50 : 40, textAlign: 'center', color: '#ffffff'},
+  text: {lineHeight: Platform.OS === 'ios' ? 50 : 40, textAlign: 'center', color: 'transparent'},
   tips: {fontSize: 12, color: '#666666'},
   defaultBt: {fontSize: 10, paddingLeft: 10, paddingRight: 10, color: '#ffffff', backgroundColor: '#a2a2a2'},
   activeBtn: {backgroundColor: '#016fca'}
