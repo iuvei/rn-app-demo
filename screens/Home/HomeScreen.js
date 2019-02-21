@@ -179,6 +179,22 @@ class HomeScreen extends React.Component {
     }, 1000)
   }
 
+  openCodeFun = (value) => {
+    if (!value) {
+      return <Text>暂无开奖球数据！</Text>
+    }
+    let codeList = value.split(',')
+    return codeList.map((v, i) =>
+      codeList.length < 6 ?
+        <View key={i} style={styles.hotItemBall}><Text
+          style={styles.hotItemLgText}>{v}</Text></View>
+        : codeList.length < 11 ?
+        <View key={i} style={styles.hotItemMidBall}><Text
+          style={styles.hotItemMidText}>{v}</Text></View>
+        : <View key={i} style={styles.hotItemSmallBall}><Text
+          style={styles.hotItemSmallText}>{v}</Text></View>)
+  }
+
   render() {
     let {usualLottery, systemNews} = this.props
     let {hotLoList} = this.state
@@ -230,7 +246,6 @@ class HomeScreen extends React.Component {
         >
           {
             hotLoList.length > 0 && hotLoList.map((item, index) => {
-                let codeList = item.openCode.split(',')
                 return (
                   <View style={styles.hotItem} key={index}>
                     <Flex justify="space-between" onPress={() => this.props.navigation.navigate('Bet', item)}>
@@ -245,15 +260,7 @@ class HomeScreen extends React.Component {
                       <View style={styles.hotItemRight}>
                         <Flex wrap="wrap">
                           {
-                            codeList.map((v, i) =>
-                              codeList.length < 6 ?
-                                <View key={i} style={styles.hotItemBall}><Text
-                                  style={styles.hotItemLgText}>{v}</Text></View>
-                                : codeList.length < 11 ?
-                                <View key={i} style={styles.hotItemMidBall}><Text
-                                  style={styles.hotItemMidText}>{v}</Text></View>
-                                : <View key={i} style={styles.hotItemSmallBall}><Text
-                                  style={styles.hotItemSmallText}>{v}</Text></View>)
+                            this.openCodeFun(item.openCode)
                           }
                         </Flex>
                       </View>
