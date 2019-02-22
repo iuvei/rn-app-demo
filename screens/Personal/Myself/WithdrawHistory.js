@@ -36,6 +36,9 @@ class FlatListItem extends PureComponent {
             <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>操作日期：{formatTime(item["time"])}</Text>
             <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>状态：{this.formateKey(ReWiTrStatus, item["status"])}</Text>
           </Flex>
+          <Flex justify="space-between">
+            <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>描述：{item["remark"] || '--'}</Text>
+          </Flex>
         </View>
       </TouchableHighlight>
     )
