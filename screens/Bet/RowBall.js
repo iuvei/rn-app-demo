@@ -261,7 +261,7 @@ class RowBall extends React.Component {
             </View>
         }
         <KeyboardAvoidingView behavior={'padding'} enabled>
-        <View style={{...styles.priceWarp, paddingBottom: this.state.showKeyboard ? 130 :0}}>
+        <View style={{...styles.priceWarp, paddingBottom: this.state.showKeyboard ? 220 :0}}>
           <View style={styles.features}>
             <View style={styles.StepperView}>
               <Stepper
