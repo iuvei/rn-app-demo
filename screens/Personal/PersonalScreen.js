@@ -261,7 +261,7 @@ class PersonalScreen extends React.Component {
               </Flex>
               <View style={styleUtil({alignItems: 'flex-end'})}>
                 {/* <Button style={styleUtil({height: 28, backgroundColor: '#fff', borderRadius: 15})}> */}
-                  <Text style={styleUtil({color: '#fff', fontSize: 14})}>彩票返点:{lotteryRebate}</Text>
+                  <Text style={styleUtil({color: '#fff', fontSize: 14})}>彩票返点：{lotteryRebate}</Text>
                 {/* </Button> */}
                 <Text style={styleUtil({color: '#fff', fontSize: 12})} onPress={() => this.changeRoute('RebateDetails')}>更多返点></Text>
               </View>

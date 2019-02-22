@@ -12,6 +12,7 @@ import { WebBrowser } from 'expo'
 import { host } from '../../api.config'
 import { Constants } from 'expo'
 import { ScrollView } from 'react-native-gesture-handler'
+import { styleUtil } from '../../utils/ScreenUtil'
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
@@ -122,13 +123,13 @@ class LoginComponent extends Component {
           <ImageBackground source={require('../../assets/images/login/login_bg.jpg')} style={{width: '100%', height: height, alignItems: 'center'}}>
             <Flex direction="column">
               <Flex.Item>
-                <View style={{paddingTop: 88, paddingBottom: 20}}>
+                <View style={styleUtil({paddingTop: 88, paddingBottom: 20})}>
                   <Image source={require('../../assets/images/logo.png')} style={{width: width * 0.3, height: 0.23 * width, marginLeft: 'auto', marginRight: 'auto'}}/>
                 </View>
                 <ImageBackground source={require('../../assets/images/login/Landingwindow.png')} style={{marginLeft: 8, width: 0.79 * width, height: 0.81 * width, alignItems: 'center'}}>
                   <View style={styles.container}>
                     <Image source={require('../../assets/images/login/welcome.png')}
-                      style={{width: 160, height: 18, marginLeft: 'auto', marginRight: 'auto', marginBottom: 0.07 * width}}/>
+                      style={styleUtil({width: 170, height: 18, marginLeft: 'auto', marginRight: 'auto', marginBottom: 0.07 * width})}/>
                     <InputItem
                       style={{height: 0.12 * width, lineHeight: 0.12 * width, backgroundColor: '#fff', borderRadius: 6, borderBottomWidth: 0, marginBottom: 15, paddingLeft: 15}}
                       placeholder="请输入用户名"

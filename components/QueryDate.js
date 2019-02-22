@@ -9,7 +9,7 @@ import {
 import dayjs from 'dayjs'
 import { shortcutsDays } from '../data/options'
 
-const today = dayjs().format('YYYY-MM-DD')
+const today = dayjs(Date.now()).format('YYYY-MM-DD')
 const BUTTONS = [
   '今天',
   '三天',
