@@ -8,14 +8,84 @@ import {
   RefreshControl,
   Dimensions,
 } from 'react-native';
-import { List, Toast, Flex, WhiteSpace, Button, Icon } from "@ant-design/react-native";
-import HTML from 'react-native-render-html';
+import { Toast, Flex, WhiteSpace, Button, Icon } from "@ant-design/react-native";
+import _ from 'lodash'
+import HTML from 'react-native-render-html'
+import { IGNORED_TAGS } from 'react-native-render-html/src/HTMLUtils'
 import { connect } from "react-redux";
 import Header from './../../components/Header';
 import { queryActivity } from "../../actions/common";
 import {joinActivity, getCashBouns} from './../../api/basic'
 import Accordion from 'react-native-collapsible/Accordion'
-const Item = List.Item;
+
+const tags = _.without(IGNORED_TAGS,
+  'table', 'caption', 'col', 'colgroup', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr'
+)
+let x = 1
+const renderers={
+  table: (htmlAttribs, children, style, passProps) => {
+    //return makeWebView(++x, item, content);
+
+    return (
+      <ScrollView key={`table${++x}`} horizontal={true}>
+        {children}
+      </ScrollView>
+    );
+  },
+  tr: (html, children, style, passProps) => {
+  return (
+    <View
+      key={`tr${++x}`}
+      style={{
+        borderBottomWidth: 1,
+        borderColor: '#ccc'
+      }}
+    >
+      {children}
+    </View>
+  );
+},
+  th: (attribs, children, style, passProps) => {
+  let rowspan = 1;
+  if (attribs.colspan) {
+    rowspan = parseInt(attribs.colspan, 10);
+  }
+  return (
+    <View
+      key={`th${++x}`}
+      style={{
+        borderLeftColor: 'white',
+        borderLeftWidth: passProps.nodeIndex === 0 ? 0 : 1,
+        padding: 6
+      }}
+    >
+      <Text style={{fontWeight: "bold" }}>
+        {children}
+      </Text>
+    </View>
+  );
+},
+  td: (attribs, children, style, passProps) => {
+  let rowspan = 1;
+  if (attribs.rowspan) {
+    rowspan = parseInt(attribs.rowspan, 10);
+  }
+  return (
+    <View
+      key={`td${++x}`}
+      style={{
+        borderColor: '#ccc',
+        borderRightWidth: 1,
+        borderLeftWidth: 1,
+        borderTopWidth: 1,
+        padding: 6
+      }}
+    >
+      <Text>{children}</Text>
+    </View>
+  );
+}
+}
 
 class ActivityScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -38,7 +108,7 @@ class ActivityScreen extends React.Component {
       }
     }
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -65,9 +135,9 @@ class ActivityScreen extends React.Component {
     let width = Dimensions.get('window').width
     return (
       <View style={{paddingLeft: 10, paddingRight: 10}}>
-        <HTML html={item.local_introduce || '<div>--</div>'} imagesMaxWidth={width} />
+        <HTML html={item.local_introduce || '<div>--</div>'} imagesMaxWidth={width} ignoredTags={tags} renderers={renderers} />
         <Text>活动说明:</Text>
-        <HTML html={item.local_explanation || '<div>--</div>'} imagesMaxWidth={width} />
+        <HTML html={item.local_explanation || '<div>--</div>'} imagesMaxWidth={width} ignoredTags={tags} renderers={renderers} />
         <WhiteSpace size="sm" />
         {
           this._getButtonAction(item)

@@ -46,7 +46,7 @@ export const list = {
     local_status: '已结束',
     local_status_class: 'gray',
     local_introduce: '<table border="1" style="min-width: 900px;text-align: center;">' +
-    '<tr><td>首次充值金额</td><td>500-999</td><td>1000-4999</td><td>5000-9999</td><td>10000-49999</td><td>50000-</td></tr>' +
+    '<tr><td>首次充值金额</td><td>500-999</td><td>1000-4999</td><td>5000-9999</td><td>10000-49999</td><td>50000+</td></tr>' +
     '<tr><td>领取金额标准</td><td>18元</td><td>38元</td><td>58元</td><td>88元</td><td>168元</td></tr>' +
     '</table>',
     local_explanation:
