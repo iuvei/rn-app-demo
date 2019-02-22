@@ -324,12 +324,12 @@ class PersonalScreen extends React.Component {
             renderTabBar={() => {
             return <Flex style={styleUtil({marginTop: 25, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', padding: 1, borderRadius: 18})}>
               <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 0})}>
-                  <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34}}>
+                  <View style={styleUtil({backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34})}>
                     <Text style={styleUtil({textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 34})}>订单报表</Text></View>
                 </TouchableHighlight>
               </Flex.Item>
               <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 1})}>
-                <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34}}>
+                <View style={styleUtil({backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34})}>
                   <Text style={styleUtil({textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 34})}>代理管理</Text></View>
                 </TouchableHighlight>
               </Flex.Item>
