@@ -255,7 +255,7 @@ class ChaseScreen extends React.Component {
     }
     this.setState({
       showChaseList: showChaseList,
-      total: tmptotal
+      total: Number(tmptotal).toFixed(4)
     })
     // 点击生成订单选中全部
     // this.selectAllTochase = true
@@ -371,7 +371,7 @@ class ChaseScreen extends React.Component {
     this.setState({
       checkedAll: event.target.checked,
       showChaseList: arr,
-      total: total
+      total: Number(total).toFixed(4)
     })
   }
 
@@ -386,7 +386,7 @@ class ChaseScreen extends React.Component {
     }
     this.setState({
       showChaseList: arr,
-      total: total
+      total: Number(total).toFixed(4)
     })
   }
 
@@ -551,7 +551,7 @@ class ChaseScreen extends React.Component {
               <View style={{width: '9%'}}><Checkbox checked={item.checked} onChange={event => this.chaseItemChange(event, index)}></Checkbox></View>
               <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.currentIssue}</Text>
               <Text style={styleUtil({width: '12%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.multiple}</Text>
-              <Text style={styleUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.money}</Text>
+              <Text style={styleUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{Number(item.money).toFixed(4)}</Text>
               <Text style={styleUtil({width: '30%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.showTime}</Text>
             </Flex>
           })
