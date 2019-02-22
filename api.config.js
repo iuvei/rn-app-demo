@@ -9,8 +9,8 @@ module.exports = {
   // proxyUrl: 'http://119.28.86.192:81',
 
   // 请求地址前缀
-  host: 'http://tianxiang.qmuitest.com',
-  prependUrl: 'http://tianxiang.qmuitest.com',
+  host: 'http://huangjinhaian.qmuitest.com',
+  prependUrl: 'http://huangjinhaian.qmuitest.com',
 
   // 平台key
   platformKey: '3LK0V/qWsjnMe935IUgNzw=='
