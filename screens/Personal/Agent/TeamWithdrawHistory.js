@@ -65,6 +65,10 @@ class FlatListItem extends PureComponent {
             <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{this.formateKey(this.state.status,item.status)}</Text>
           </Text>
         </Flex>
+        <Text>
+          <Text>账变描述：</Text>
+          <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item["description"]}</Text>
+        </Text>
       </View>
       </TouchableHighlight>
     )
@@ -275,6 +279,10 @@ class PersonalScreen extends React.Component {
             <Flex justify="space-between">
               <Text>类型：</Text>
               <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{this.formateKey(this.state.changeList2,item.type)}</Text>
+            </Flex>
+            <Flex justify="space-between">
+              <Text>账变描述：</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item.description}</Text>
             </Flex>
             <Flex justify="space-between">
               <Text>创建时间：</Text>
