@@ -251,12 +251,14 @@ class PersonalScreen extends React.Component {
                          style={styleUtil({height: 200})}>
           <View>
             <View style={styleUtil({flexDirection: 'row', justifyContent: 'space-around', height: 90, alignItems: 'center'})}>
-              <Image source={require('../../assets/images/personal/avatar.png')}
-                     style={styleUtil({width: 80, height: 80})}></Image>
-              <View>
-                <Text style={styleUtil({color: '#fff', fontSize: 14})}>{loginInfo.acc.user.loginName}</Text>
-                <Text style={styleUtil({color: '#fff', fontSize: 14})}>余额： {Number(userBalanceInfoYE.currentBalance).toFixed(2)}元</Text>
-              </View>
+              <Flex>
+                <Image source={require('../../assets/images/personal/avatar.png')}
+                      style={styleUtil({width: 55, height: 55})}></Image>
+                <View style={styleUtil({paddingLeft: 14})}>
+                  <Text style={styleUtil({color: '#fff', fontSize: 14})}>{loginInfo.acc.user.loginName}</Text>
+                  <Text style={styleUtil({color: '#fff', fontSize: 14})}>余额： {Number(userBalanceInfoYE.currentBalance).toFixed(2)}元</Text>
+                </View>
+              </Flex>
               <View style={styleUtil({alignItems: 'flex-end'})}>
                 {/* <Button style={styleUtil({height: 28, backgroundColor: '#fff', borderRadius: 15})}> */}
                   <Text style={styleUtil({color: '#fff', fontSize: 14})}>彩票返点:{lotteryRebate}</Text>
