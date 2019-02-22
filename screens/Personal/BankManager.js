@@ -37,6 +37,15 @@ class BankManager extends React.Component {
     let {userBankCards} = this.props.userBankInfo
 
     if (userBankCards.length === 0) {
+      if (!this.props.userSecurityLevel.isBankUserName) {
+        return (
+          <View>
+            <Button onPress={() => this.props.navigation.navigate('BindBankname')} bordered style={{marginLeft: 'auto', marginRight: 'auto', marginTop: 20}}>
+              <Text>请先绑定您银行卡的开户姓名</Text>
+            </Button>
+          </View>
+        )
+      }
       return (
         <View style={{flex: 1, alignItems: 'center'}}>
           <View style={{height: 60, backgroundColor: '#ffffff', width: '100%'}}></View>
@@ -116,11 +125,12 @@ class BankManager extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  let {loginInfo} = state.common
+  let {loginInfo, userSecurityLevel} = state.common
   let {userBankInfo} = state.member
   return {
     loginInfo,
-    userBankInfo
+    userBankInfo,
+    userSecurityLevel
   }
 }
 

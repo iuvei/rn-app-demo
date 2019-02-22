@@ -93,10 +93,10 @@ class LoginComponent extends Component {
             this.props.navigation.navigate('Main')
           })
         } else {
+          Toast.info(res.message || '网络错误，请重试')
           this.setState({
             isLoading: false
           })
-          Toast.info(res.message || '网络错误，请重试')
         }
       })
     })
@@ -118,7 +118,7 @@ class LoginComponent extends Component {
     const { manifest } = Constants
 
     return (
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
         <ScrollView>
           <ImageBackground source={require('../../assets/images/login/login_bg.jpg')} style={{width: '100%', height: height, alignItems: 'center'}}>
             <Flex direction="column">
