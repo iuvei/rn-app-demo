@@ -118,7 +118,7 @@ class AgentIndex extends React.Component {
       formData: {...this.state.formData, type: value[0]}})
     this._getTeamChart()
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -190,24 +190,24 @@ class AgentIndex extends React.Component {
         <ImageBackground resizeMode={'cover'} source={require('../../../assets/images/personal/agent/balanceBg.png')}
                          style={styles.balanceBg}>
           <View style={{alignItems: 'center'}}>
-            <Text style={{color: 'white', fontSize: 20}}>{teamSumCurrent || '0'}元</Text>
-            <Text style={{color: 'white', fontSize: 14}}>团队余额</Text>
+            <Text style={{color: 'white', fontSize: 22}}>{teamSumCurrent || '0'}</Text>
+            <Text style={{color: 'white', fontSize: 14}}>团队余额(元)</Text>
           </View>
           <View style={styles.float}>
             <View>
-              <Text>{teamSumChildUser}人</Text><Text>团队</Text>
+              <Text style={styles.textColor}>{teamSumChildUser}人</Text><Text style={styles.textColor}>团队</Text>
             </View>
             <View style={styles.divider}></View>
             <View>
-              <Text>{teamAgentSum}人</Text><Text>代理</Text>
+              <Text style={styles.textColor}>{teamAgentSum}人</Text><Text style={styles.textColor}>代理</Text>
             </View>
             <View style={styles.divider}></View>
             <View>
-              <Text>{teamMemberSum}人</Text><Text>玩家</Text>
+              <Text style={styles.textColor}>{teamMemberSum}人</Text><Text style={styles.textColor}>玩家</Text>
             </View>
             <View style={styles.divider}></View>
             <View>
-              <Text>{teamOnline}人</Text><Text>在线</Text>
+              <Text style={styles.textColor}>{teamOnline}人</Text><Text style={styles.textColor}>在线</Text>
             </View>
           </View>
         </ImageBackground>
@@ -239,31 +239,31 @@ class AgentIndex extends React.Component {
               </View>
               <View style={styles.pics}>
                 <Picker value={timeLength} cols={1} data={TIME_TYPE} onChange={this.onTimeChange}>
-                  <Flex style={{ backgroundColor: '#1182df', borderRadius: 3}}>
+                  <Flex style={{ backgroundColor: '#fff', borderRadius: 3}}>
                     <Text style={{
                       textAlign: 'center',
                       lineHeight: 18,
-                      color: '#fff',
+                      color: '#222',
                       width: 50,
                       fontSize: 12,
                       overflow: 'hidden',
                       height: 18
                     }}>{timeLabel}</Text>
-                    <Icon name="down" size={16} color="#fff"/>
+                    <Icon name="down" size={16} color="#222"/>
                   </Flex>
                 </Picker>
                 <Picker cols={1} data={OPERATION_TYPE} onChange={this.onTypeChange}>
-                  <Flex style={{backgroundColor: '#1182df', borderRadius: 3, marginTop: 4}}>
+                  <Flex style={{backgroundColor: '#fff', borderRadius: 3, marginTop: 4}}>
                     <Text style={{
                       textAlign: 'center',
                       lineHeight: 18,
                       width: 50,
-                      color: '#fff',
+                      color: '#222',
                       fontSize: 12,
                       overflow: 'hidden',
                       height: 18
                     }}>{typeLabel}</Text>
-                    <Icon name="down" size={16} color="#fff"/>
+                    <Icon name="down" size={16} color="#222"/>
                   </Flex>
                 </Picker>
               </View>
@@ -296,6 +296,9 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     backgroundColor: 'white'
+  },
+  textColor: {
+    color: '#4dd3df'
   },
   balanceInfo: {
     flexDirection: 'row',
@@ -331,7 +334,8 @@ const styles = StyleSheet.create({
     paddingTop: 24
   },
   chartBg: {
-    paddingTop: 10
+    paddingTop: 10,
+    borderRadius: 10
   },
   text: {
     color: 'white'
