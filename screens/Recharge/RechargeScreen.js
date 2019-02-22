@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, View, Text, Platform, AsyncStorage } from 'react-native'
+import { StyleSheet, View, Text, Platform, AsyncStorage, ScrollView } from 'react-native'
 import { Button, Tabs, Toast } from '@ant-design/react-native' // , Radio
 import { commitRecharge } from '../../api/member'
 import {setActiveAccount} from '../../actions/common'
@@ -159,7 +159,7 @@ class RechargeScreen extends React.Component {
       <View>
         {
           !userSecurityLevel.isTradePassword &&
-          <View style={{backgroundColor: '#fff'}}>
+          <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
             <Text style={{color: '#333', textAlign: 'center'}}>暂未设置资金密码，请<Text onPress={this.goSetTrade} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
           </View>
         }
@@ -190,18 +190,18 @@ class RechargeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Tabs tabs={tabs} onChange={this.channelTabsChange}>
-          <View>
+          <ScrollView>
             <ActiveAccountbar onpress={() => this.setState({visibleReal: new Date().getTime()})}/>
             <RealAccounts visible={visibleReal} activeTabIndex={!activeTabIndex}/>
             {inputArea}
             {infoDesc}
-          </View>
-          <View>
+          </ScrollView>
+          <ScrollView>
             <ActiveAccountbar onpress={() => this.setState({visibleVirtual: new Date().getTime()})}/>
             <VirtualAccounts visible={visibleVirtual} activeTabIndex={!activeTabIndex}/>
             {inputArea}
             {infoDesc}
-          </View>
+          </ScrollView>
         </Tabs>
       </View>
     )
