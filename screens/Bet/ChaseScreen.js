@@ -573,7 +573,7 @@ class ChaseScreen extends React.Component {
           tabs={tabs}>
           <ScrollView style={{ backgroundColor: 'f0f0f0', flex: 1 }}>{topContent}{listContent}</ScrollView>
         </Tabs>
-        <View style={styleUtil({height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center', borderTopWidth: 0.5, borderTopColor: '#198ae7'})}>
+        <View style={styleUtil({height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center', borderTopWidth: 0.5, borderTopColor: '#00bbcc'})}>
           <Button disabled={showChaseList.length === 0 || checkedArr.length === 0} loading={isLoading} type="ghost" style={styleUtil({width: '50%', height: 40})} onPress={this.submitFunc}>
             <Text style={styleUtil({fontSize: 14})}>立即追号</Text>
           </Button>

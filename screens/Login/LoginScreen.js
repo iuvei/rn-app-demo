@@ -129,12 +129,12 @@ class LoginComponent extends Component {
                 <ImageBackground source={require('../../assets/images/login/Landingwindow.png')} style={{marginLeft: 8, width: 0.79 * width, height: 0.81 * width, alignItems: 'center'}}>
                   <View style={styles.container}>
                     <Image source={require('../../assets/images/login/welcome.png')}
-                      style={styleUtil({width: 170, height: 18, marginLeft: 'auto', marginRight: 'auto', marginBottom: 0.07 * width})}/>
+                      style={{width: 160, height: 18, marginLeft: 'auto', marginRight: 'auto', marginBottom: 0.07 * width}}/>
                     <InputItem
                       style={{height: 0.12 * width, lineHeight: 0.12 * width, backgroundColor: '#fff', borderRadius: 6, borderBottomWidth: 0, marginBottom: 15, paddingLeft: 15}}
                       placeholder="请输入用户名"
                       value={j_username}
-                      // extra={<Icon name="close" size={20} color="#1789e6" />}
+                      extra={<Icon name="close" size={20} color="#00bbcc" />}
                       labelNumber={2}
                       onChangeText={(j_username) => {
                         this.setState({
@@ -144,11 +144,11 @@ class LoginComponent extends Component {
                           AsyncStorage.setItem('j_username', j_username || '')
                         }
                       }}
-                      // onExtraClick={() => {
-                      //   this.setState({
-                      //     j_username: ''
-                      //   })
-                      // }}
+                      onExtraClick={() => {
+                        this.setState({
+                          j_username: ''
+                        })
+                      }}
                     >
                       {/* <Icon name="user" size={32} color="#1789e6" style={{paddingLeft: 6}} /> */}
                       <Image source={require('../../assets/images/login/ic_zhanghu.png')} style={{width: 25, height: 30}} />
@@ -159,7 +159,7 @@ class LoginComponent extends Component {
                       value={j_password}
                       labelNumber={2}
                       type={seePwd ? "text" : "password"}
-                      // extra={<Icon name="eye" size={20} color="#1789e6" />}
+                      extra={<Icon name="eye" size={20} color="#00bbcc" />}
                       onChangeText={(j_password) => {
                         this.setState({
                           j_password: j_password
@@ -168,11 +168,11 @@ class LoginComponent extends Component {
                           AsyncStorage.setItem('j_password', j_password || '')
                         }
                       }}
-                      // onExtraClick={() => {
-                      //   this.setState({
-                      //     seePwd: !seePwd
-                      //   })
-                      // }}
+                      onExtraClick={() => {
+                        this.setState({
+                          seePwd: !seePwd
+                        })
+                      }}
                     >
                       {/* <Icon name="lock" size={32} color="#1789e6" style={{paddingLeft: 6}} /> */}
                       <Image source={require('../../assets/images/login/ic_mima.png')} style={{width: 22, height: 30}} />

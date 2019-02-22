@@ -12,7 +12,7 @@ import CheckBox from 'react-native-check-box'
 
 import { modeInfo } from '../../data/options'
 import { withNavigation } from 'react-navigation'
-import { stylesUtil } from '../../utils/ScreenUtil'
+import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
 import { isInteger } from 'lodash'
 import SliderComponent from './BetPage/SliderComponent'
 import BetBallContainer from './BetPage/BetBallContainer'
@@ -255,13 +255,13 @@ class RowBall extends React.Component {
               justifyContent: 'center',
               alignItems: 'center'
             }}>
-              <Text style={{marginTop: 100, fontSize: 20}}>
-                Loading...
+              <Text style={{marginTop: 50, fontSize: 16, color: '#00bbcc'}}>
+                加载中...
               </Text>
             </View>
         }
         <KeyboardAvoidingView behavior={'padding'} enabled>
-        <View style={{...styles.priceWarp, paddingBottom: this.state.showKeyboard ? 220 :0}}>
+        <View style={styleUtil({...styles.priceWarp, paddingBottom: this.state.showKeyboard ? 220 :0})}>
           <View style={styles.features}>
             <View style={styles.StepperView}>
               <Stepper

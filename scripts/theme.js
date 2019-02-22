@@ -110,7 +110,7 @@ module.exports = {
   button_font_size_sm: 12,
 
   primary_button_fill: brandPrimary,
-  primary_button_fill_tap: '#0e80d2',
+  primary_button_fill_tap: '#08838e',
 
   ghost_button_color: brandPrimary,    // 同时应用于背景、文字颜色、边框色
   ghost_button_fill_tap: `${brandPrimary}99`, // alpha 60%  https://codepen.io/chriscoyier/pen/XjbzAW
