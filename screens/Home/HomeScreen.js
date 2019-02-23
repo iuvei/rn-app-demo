@@ -183,18 +183,28 @@ class HomeScreen extends React.Component {
 
   openCodeFun = (value) => {
     if (!value) {
-      return <Text>暂无开奖球数据！</Text>
+      return  <View style={styles.hotItemRight}>
+                <Flex wrap="wrap">
+                  <Text>暂无开奖球数据！</Text>
+                </Flex>
+              </View>
     }
     let codeList = value.split(',')
-    return codeList.map((v, i) =>
-      codeList.length < 6 ?
-        <View key={i} style={styles.hotItemBall}><Text
-          style={styles.hotItemLgText}>{v}</Text></View>
-        : codeList.length < 11 ?
-        <View key={i} style={styles.hotItemMidBall}><Text
-          style={styles.hotItemMidText}>{v}</Text></View>
-        : <View key={i} style={styles.hotItemSmallBall}><Text
-          style={styles.hotItemSmallText}>{v}</Text></View>)
+    return <View style={codeList.length === 10 ?styles.hotItemRightTenBall : styles.hotItemRight}>
+              <Flex wrap="wrap">
+                {
+                  codeList.map((v, i) =>
+                    codeList.length < 6 ?
+                      <View key={i} style={styles.hotItemBall}><Text
+                        style={styles.hotItemLgText}>{v}</Text></View>
+                      : codeList.length < 11 ?
+                      <View key={i} style={styles.hotItemMidBall}><Text
+                        style={styles.hotItemMidText}>{v}</Text></View>
+                      : <View key={i} style={styles.hotItemSmallBall}><Text
+                        style={styles.hotItemSmallText}>{v}</Text></View>)
+                }
+              </Flex>
+            </View>
   }
 
   render() {
@@ -259,13 +269,9 @@ class HomeScreen extends React.Component {
                         <Text style={styles.hotItemTitle}>{item.lotterName}</Text>
                         <Text style={styles.hotItemText}>{item.openIssue}期</Text>
                       </View>
-                      <View style={styles.hotItemRight}>
-                        <Flex wrap="wrap">
-                          {
-                            this.openCodeFun(item.openCode)
-                          }
-                        </Flex>
-                      </View>
+                      {
+                        this.openCodeFun(item.openCode)
+                      }
                     </Flex>
                   </View>
                 )
@@ -401,6 +407,10 @@ const styles = StyleSheet.create(stylesUtil({
     color: '#787878',
     paddingBottom: 5
   },
+  hotItemRightTenBall: {
+    maxWidth: 130,
+    marginLeft: 10
+  },
   hotItemRight: {
     maxWidth: 190,
     marginLeft: 10
@@ -430,18 +440,21 @@ const styles = StyleSheet.create(stylesUtil({
     backgroundColor: '#00b4cc'
   },
   hotItemLgText: {
+    height: 24,
     lineHeight: 24,
     fontSize: 14,
     textAlign: 'center',
     color: 'white'
   },
   hotItemMidText: {
+    height: 20,
     lineHeight: 20,
     fontSize: 12,
     textAlign: 'center',
     color: 'white'
   },
   hotItemSmallText: {
+    height: 14,
     lineHeight: 14,
     fontSize: 10,
     textAlign: 'center',

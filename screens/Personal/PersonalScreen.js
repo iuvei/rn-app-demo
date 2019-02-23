@@ -372,13 +372,13 @@ const styles = StyleSheet.create(stylesUtil({
   navBarTip: {
     position: 'absolute',
     width: 16,
-    height: 14,
+    height: 16,
     backgroundColor: 'red',
     borderRadius: 8,
     right: -5,
     top: -5
   },
-  navBarTipText: {color: 'white', fontSize: 10, textAlign: 'center'},
+  navBarTipText: {color: 'white', fontSize: 10, height: 16, lineHeight: 16,textAlign: 'center'},
   container: {
     flex: 1,
     backgroundColor: '#fff'
