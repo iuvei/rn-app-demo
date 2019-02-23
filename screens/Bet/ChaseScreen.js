@@ -140,7 +140,7 @@ class ChaseScreen extends React.Component {
       if (thisMutiple === 0) {
         thisMutiple = sMultiple
       }
-      if (thisMutiple > maxMultiple) {
+      if (Number(thisMutiple) > Number(maxMultiple)) {
         thisMutiple = maxMultiple
       }
 
@@ -156,7 +156,7 @@ class ChaseScreen extends React.Component {
         thisProfit: thisProfit
       })
 
-      hisl = hisl + buyTotal * thisMutiple
+      hisl = Number(hisl) + buyTotal * thisMutiple
     }
     return result
   }
@@ -195,6 +195,12 @@ class ChaseScreen extends React.Component {
           }
           let val = chaseList[i]
           let multiple = result[i].multiple
+          tmptotal += total * multiple
+          if (tmptotal > this.props.userBalanceInfoYE.currentBalance) {
+            Toast.info('当前余额不足以追号指定期数，已为您优化总追号期数')
+            tmptotal -= total * multiple
+            break
+          }
           showChaseList.push({
             currentIssue: val.currentIssue,
             multiple: multiple,
@@ -203,7 +209,6 @@ class ChaseScreen extends React.Component {
             nextTime: val.nextTime,
             checked: true
           })
-          tmptotal += total * multiple
         }
       } else {
         Toast.info('没有符合要求的方案，请调整参数重新计算！')
@@ -215,6 +220,12 @@ class ChaseScreen extends React.Component {
           break
         }
         let val = chaseList[i]
+        tmptotal += total * startMultiple
+        if (tmptotal > this.props.userBalanceInfoYE.currentBalance) {
+          Toast.info('当前余额不足以追号指定期数，已为您优化总追号期数')
+          tmptotal -= total * startMultiple
+          break
+        }
         showChaseList.push({
           currentIssue: val.currentIssue,
           multiple: startMultiple,
@@ -223,7 +234,6 @@ class ChaseScreen extends React.Component {
           nextTime: val.nextTime,
           checked: true
         })
-        tmptotal += total * startMultiple
       }
     }
     if (activeTab === 'fanbei') {
@@ -240,7 +250,13 @@ class ChaseScreen extends React.Component {
           multiple = i < middleIssue ? startMultiple : (Number(startMultiple) + nextMultiple * Math.floor(i / middleIssue))
         }
         if (multiple > 10000) {
-          return
+          break
+        }
+        tmptotal += total * multiple
+        if (tmptotal > this.props.userBalanceInfoYE.currentBalance) {
+          Toast.info('当前余额不足以追号指定期数，已为您优化总追号期数')
+          tmptotal -= total * multiple
+          break
         }
         showChaseList.push({
           currentIssue: val.currentIssue,
@@ -250,7 +266,6 @@ class ChaseScreen extends React.Component {
           nextTime: val.nextTime,
           checked: true
         })
-        tmptotal += total * multiple
       }
     }
     this.setState({
@@ -585,12 +600,14 @@ class ChaseScreen extends React.Component {
 
 const mapStateToProps = (state, props) => {
   let { openIssue, navParams, Environment} = state.classic
+  let { userBalanceInfoYE } = state.member
   let { loginInfo } = state.common
   return {
     openIssue,
     navParams,
     loginInfo,
-    Environment
+    Environment,
+    userBalanceInfoYE
   }
 }
 
