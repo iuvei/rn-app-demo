@@ -412,7 +412,7 @@ const styles = StyleSheet.create(stylesUtil({
     marginLeft: 10
   },
   hotItemRight: {
-    maxWidth: 190,
+    maxWidth: 200,
     marginLeft: 10
   },
   hotItemBall: {
