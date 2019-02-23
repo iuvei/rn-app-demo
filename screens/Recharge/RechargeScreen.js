@@ -85,7 +85,7 @@ class RechargeScreen extends React.Component {
     let {minRechargeMoney, returnUrl, channelType, isQuick} = this.state
     let {activeAccount} = this.props
     let rechargeMoney = await AsyncStorage.getItem('RechargeMoney')
-    let {amount, orderAmount, rechargeFee} = JSON.parse(rechargeMoney)
+    let {amount, orderAmount, rechargeFee} = JSON.parse(rechargeMoney || '{}')
     // if (!this.checkBindPay()) return
     let pattern = /^(([1-9]\d*)(\.\d{1,2})?)$|(0\.0?([1-9]\d?))$/
     let msg = '请输入正确的充值金额，最多两位小数!'
