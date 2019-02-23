@@ -115,6 +115,7 @@ class UpdatePwd extends React.Component {
           if (res.code === 0) {
             Toast.success('绑定成功')
             this.props.AsetUserSecureLevel()
+            this.props.navigation.navigate('BankManager')
           } else {
             Toast.fail(res.message || '网络异常，请稍后重试')
           }
