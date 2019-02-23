@@ -463,7 +463,7 @@ class ChaseScreen extends React.Component {
                     total: '0'
                   })
                 }
-              }}>最大收益率</InputItem>
+              }}>最低收益率</InputItem>
             </Flex.Item>
           </Flex>
         }
