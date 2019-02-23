@@ -34,7 +34,7 @@ class FlatListItem extends PureComponent {
         <Text onPress={() => {
           let {userId} = loginInfo
           let highUser = Base64.btoa(loginInfo.acc?.user?.loginName)
-          let url = 'http://tianxiang.qmuitest.com/app/#/regist/' + userId + '/' + highUser + '/' + id
+          let url = 'http://huangjinhaian.qmuitest.com/app/#/regist/' + userId + '/' + highUser + '/' + id
           Clipboard.setString(url)
           Toast.info('复制成功！')
         }}>注册码: {id}</Text>
