@@ -1,7 +1,7 @@
 import React from 'react'
 import {View, Text, StyleSheet, ImageBackground,} from 'react-native'
 import {Flex, Icon, Picker} from '@ant-design/react-native'
-import Echarts from 'native-echarts'
+import Echarts from '../../../components/Echarts'
 import {connect} from 'react-redux'
 import {getTeamNumInfo, teamEcharts, getTeamStatistics} from '../../../api/member'
 import dayjs from 'dayjs'
