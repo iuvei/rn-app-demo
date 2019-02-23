@@ -253,13 +253,19 @@ class Withdrawal extends React.Component {
   render() {
 
     let { submitFunc, submitFuncOtc } = this
-    let { isAllowWithdraw, userConsume, userBalanceInfoYE, userSecurityLevel} = this.props
+    let { isAllowWithdraw, userConsume, userBalanceInfoYE, userSecurityLevel, userBankInfo} = this.props
     let {curBankItem, amount, totalFee, actualWithdraw, pwd, isLoading, sonOrderList, showSonOrders, pickerdata, isLoadingOtc} = this.state
 
     if (!userSecurityLevel.isTradePassword) {
       return (
         <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
           <Text style={{color: '#333', textAlign: 'center'}}>暂未设置资金密码，请<Text onPress={this.goSetTrade} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
+        </View>
+      )
+    } else if (userBankInfo.userBankCards.length === 0) {
+      return (
+        <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
+          <Text style={{color: '#333', textAlign: 'center'}}>暂未绑定银行卡，请<Text onPress={() => this.props.navigation.navigate('BankManager')} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
         </View>
       )
     }
