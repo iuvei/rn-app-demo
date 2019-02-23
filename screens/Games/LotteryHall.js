@@ -3,7 +3,7 @@ import {ScrollView, View, Text, ImageBackground, Image, StyleSheet, TouchableHig
 import Accordion from 'react-native-collapsible/Accordion'
 import { getHotLotter } from './../../api/lottery'
 import { connect } from "react-redux";
-import { getIconName } from '../../utils/getLotImg'
+import { getLoHoIconName } from '../../utils/getLotImg'
 
 class LotteryHall extends React.Component {
   constructor(props) {
@@ -128,7 +128,9 @@ class LotteryHall extends React.Component {
                     underlayColor="#f0f0f0"
                     onPress={() => this.props.navigation.navigate('Bet', list)}>
                     <View>
-                      <Image source={getIconName(list.realCategory || list.categoryCode)} style={{width: 80, height: 80}}></Image>
+                      <Image
+                        source={getLoHoIconName(list)}
+                        style={{width: 80, height: 80}}></Image>
                       <Text style={{fontSize: 10, textAlign: 'center'}} numberOfLines={1}>{list.lotterName}</Text>
                     </View>
                   </TouchableHighlight>
