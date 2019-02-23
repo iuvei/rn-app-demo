@@ -340,7 +340,7 @@ class PersonalScreen extends React.Component {
                   return (
                     <View style={styleUtil({alignItems: 'center', width: 90})}>
                       <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
-                      <Text>{el.name}</Text>
+                      <Text style={styleUtil({paddingTop: 8})}>{el.name}</Text>
                     </View>
                   )
                 }} onPress={(el) => this.changeRoute(el.path)} />
@@ -352,7 +352,7 @@ class PersonalScreen extends React.Component {
                   return (
                     <View style={styleUtil({alignItems: 'center', width: 90})}>
                       <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
-                      <Text>{el.name}</Text>
+                      <Text style={styleUtil({paddingTop: 8})}>{el.name}</Text>
                     </View>
                   )
                 }} onPress={(el) => this.changeRoute(el.path)} />

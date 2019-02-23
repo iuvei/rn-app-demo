@@ -8,6 +8,7 @@ import {
 import { orderStatus, shortcutsDays } from '../../data/options'
 import { withNavigation } from 'react-navigation'
 import { rulesNameMap } from '../../data/nor-lot/basic-info'
+import { styleUtil } from '../../utils/ScreenUtil';
 
 const TableRow = 20
 
@@ -128,12 +129,12 @@ class BetSimpleHistory extends React.PureComponent {
 
     return (
       <View style={styles.container}>
-        <View style={{flexDirection: 'row', backgroundColor: '#ccc', paddingHorizontal: 6, paddingVertical: 4, borderRadius: 10, justifyContent: 'space-around'}}>
+        <View style={styleUtil({flexDirection: 'row', backgroundColor: '#ccc', paddingHorizontal: 6, paddingVertical: 6, borderRadius: 10, justifyContent: 'space-around'})}>
           {
             shortcutsDays.map(item =>
               <Button key={item.id}
                       type={this.state.activeFast.id === item.id ? 'primary' : 'default'}
-                      style={{width: 80}} size="small"
+                      style={styleUtil({width: 80, height: 26})} size="small"
                       onPress={() => {
                         this.setState({
                           activeFast: item,
