@@ -152,20 +152,23 @@ class RechargeScreen extends React.Component {
   }
 
   render() {
-    let { activeTabIndex, minRechargeMoney, isLoading, visibleReal, visibleVirtual} = this.state
     let {activeAccount, userSecurityLevel} = this.props
+    let { activeTabIndex, minRechargeMoney, isLoading, visibleReal, visibleVirtual} = this.state
+    
+    if (!userSecurityLevel.isTradePassword) {
+      return (
+        <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
+          <Text style={{color: '#333', textAlign: 'center'}}>暂未设置资金密码，请<Text onPress={this.goSetTrade} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
+        </View>
+      )
+    }
+
     let tabs = [
       { title: '人民币支付' },
       { title: '币宝数字货币支付' }
     ];
     let infoDesc = (
       <View>
-        {
-          !userSecurityLevel.isTradePassword &&
-          <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
-            <Text style={{color: '#333', textAlign: 'center'}}>暂未设置资金密码，请<Text onPress={this.goSetTrade} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
-          </View>
-        }
         <View style={styleUtil({padding: 12, backgroundColor: '#f0f0f0'})}>
           <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单笔最低充值金额为 <Text style={{color: '#f15a23'}}>{minRechargeMoney}</Text> 元{activeAccount.signleLimit > 0 ? <Text>, 最高 <Text style={{color: '#f15a23'}}>{activeAccount.signleLimit}</Text> 元</Text> : null}</Text>
           {activeAccount.feeRate > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值手续费费率 <Text style={{color: '#f15a23'}}>{ activeAccount.feeRate || 0 }%</Text></Text> : null}
