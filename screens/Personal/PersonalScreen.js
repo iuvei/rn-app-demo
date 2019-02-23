@@ -339,7 +339,7 @@ class PersonalScreen extends React.Component {
                 <Grid data={order} columnNum={4} hasLine={false} renderItem={(el, index) => {
                   return (
                     <View style={styleUtil({alignItems: 'center', width: 90})}>
-                      <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
+                      <Image source={el.src} style={styleUtil({width: 50, height: 50, marginBottom: 5})}></Image>
                       <Text>{el.name}</Text>
                     </View>
                   )
@@ -351,7 +351,7 @@ class PersonalScreen extends React.Component {
                 <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
                   return (
                     <View style={styleUtil({alignItems: 'center', width: 90})}>
-                      <Image source={el.src} style={styleUtil({width: 50, height: 50})}></Image>
+                      <Image source={el.src} style={styleUtil({width: 50, height: 50, marginBottom: 5})}></Image>
                       <Text>{el.name}</Text>
                     </View>
                   )
