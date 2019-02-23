@@ -220,10 +220,10 @@ class PersonalScreen extends React.Component {
               <Text>操作日期</Text>
               <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{formatTime(item["time"])}</Text>
             </Flex>
-            <Flex justify="space-between">
+            {/* <Flex justify="space-between">
               <Text>银行卡</Text>
               <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item["bankCard"] || '--'}</Text>
-            </Flex>
+            </Flex> */}
             <Flex justify="space-between">
               <Text>描述</Text>
               <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item["remark"] || '--'}</Text>
