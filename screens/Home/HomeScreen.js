@@ -430,18 +430,21 @@ const styles = StyleSheet.create(stylesUtil({
     backgroundColor: '#00b4cc'
   },
   hotItemLgText: {
+    height: 24,
     lineHeight: 24,
     fontSize: 14,
     textAlign: 'center',
     color: 'white'
   },
   hotItemMidText: {
+    height: 20,
     lineHeight: 20,
     fontSize: 12,
     textAlign: 'center',
     color: 'white'
   },
   hotItemSmallText: {
+    height: 14,
     lineHeight: 14,
     fontSize: 10,
     textAlign: 'center',
