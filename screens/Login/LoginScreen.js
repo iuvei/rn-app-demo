@@ -245,7 +245,7 @@ class LoginComponent extends Component {
               </Flex.Item>
               <View style={{height: 40, width: 280, flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{color: '#00b4cc', flex: 1}}  onPress={this._handleServiceAsync}>
-                  联系客服<Icon name="phone" size={20} color="#00b4cc"/>
+                  联系客服
                 </Text>
                 <Text style={{textAlign: 'right', color: '#00b4cc', flex: 1}}>v{manifest.version}</Text>
               </View>

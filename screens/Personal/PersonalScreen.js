@@ -352,11 +352,14 @@ class PersonalScreen extends React.Component {
                     <Text style={styleUtil({textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 34})}>订单报表</Text></View>
                 </TouchableHighlight>
               </Flex.Item>
-              <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 1})}>
-                <View style={styleUtil({backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34})}>
-                  <Text style={styleUtil({textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 34})}>代理管理</Text></View>
-                </TouchableHighlight>
-              </Flex.Item>
+              {
+                loginInfo.proxy === 1 &&
+                <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 1})}>
+                  <View style={styleUtil({backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34})}>
+                    <Text style={styleUtil({textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 34})}>代理管理</Text></View>
+                  </TouchableHighlight>
+                </Flex.Item>
+              }
             </Flex>
           }}>
               <ScrollView style={styles.agent}>

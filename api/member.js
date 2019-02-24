@@ -718,3 +718,21 @@ export const updateDividendRule = (data) => {
     params: data
   })
 }
+
+// 手动派发契约日工资
+export const distributedContractDayWage = (data) => {
+  return fetch({
+    type: 'post',
+    api: '/user/dividend/distributedContractDayWage',
+    params: data
+  })
+}
+
+// 手动派发契约分红
+export const distributedContractDividend = (data) => {
+  return fetch({
+    type: 'post',
+    api: '/user/dividend/distributedContractDividend',
+    params: data
+  })
+}

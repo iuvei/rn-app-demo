@@ -7,7 +7,7 @@ import QueryPickerOne from '../../../components/QueryPickerOne'
 import { connect } from "react-redux"
 import { contractStatus } from '../../../data/options'
 import { AsetMyDaywageRule } from "../../../actions/member"
-import { updateDividendRule } from '../../../api/member'
+import { updateDividendRule, distributedContractDayWage } from '../../../api/member'
 
 class ContractDaywage extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -46,9 +46,21 @@ class ContractDaywage extends React.Component {
         {key: 'actualDividendProportion', name: '分红比例'},
         {key: 'dividendStartTime', name: '开始时间'},
         {key: 'dividendEndTime', name: '结束时间'},
-        {key: 'isSatisfy', name: '是否满足分红'},
+        {key: 'isSatisfy', name: '是否满足分红', formatter(v) {
+          if (v === 1) {
+            return '满足'
+          } else if (v === 0) {
+            return '不满足'
+          }
+        }},
         {key: 'dividendProportion', name: '分红比例'},
-        {key: 'status', name: '状态'},
+        {key: 'status', name: '状态', formatter(v) {
+          if (v === 3) {
+            return '未派发'
+          } else if (v === 4) {
+            return '已派发'
+          }
+        }},
       ],
       params: {
         loginName: '',
@@ -89,7 +101,19 @@ class ContractDaywage extends React.Component {
     }))
   }
 
-  renderItem = (dataItem, idx, column) => {
+  distributedContract = ({dataItem}) => {
+    let { id } = dataItem
+    distributedContractDayWage({id}).then(res => {
+      if (res.code === 0) {
+        Toast.success(res.message)
+      } else {
+        Toast.fail(res.message)
+      }
+      this.onSearch()
+    })
+  }
+
+  renderItem = (dataItem, idx, column, w) => {
     return <View key={idx} style={{backgroundColor: '#fff', margin: 10, padding: 10}}>
       {
         column.map(item => {
@@ -103,12 +127,20 @@ class ContractDaywage extends React.Component {
             </Flex>
           })
       }
-      { (dataItem.status === 0) &&
+      { (w === 'my' && dataItem.status === 0) &&
         <Flex>
           <Flex.Item style={{paddingHorizontal: 20}}>
               <Button size="small" onPress={() => this.editContract({dataItem, isConfrim: false})}>拒绝</Button>
           </Flex.Item>
           <Flex.Item style={{paddingHorizontal: 20}}><Button size="small" onPress={() => this.editContract({dataItem, isConfrim: true})}>确认</Button></Flex.Item>
+        </Flex>
+      }
+      {
+        (w === 'downuser' && dataItem.status === 3 && Number(dataItem.isSatisfy) === 1) &&
+        <Flex>
+          <Flex.Item style={{paddingHorizontal: 20}}>
+          </Flex.Item>
+          <Flex.Item style={{paddingHorizontal: 20}}><Button size="small" onPress={() => this.distributedContract({dataItem})}>派发</Button></Flex.Item>
         </Flex>
       }
     </View>
@@ -146,7 +178,7 @@ class ContractDaywage extends React.Component {
           <ScrollView>
             {
               this.props.myDaywageRule.map((dataItem, idx) => {
-                return this.renderItem(dataItem, idx, this.state.column)
+                return this.renderItem(dataItem, idx, this.state.column, 'my')
               })
             }
           </ScrollView>
@@ -158,6 +190,7 @@ class ContractDaywage extends React.Component {
                   <Flex.Item>
                     <QueryPickerOne
                       data={[
+                        {value: '', label: '全部'},
                         {value: 3, label: '未派发'},
                         {value: 4, label: '已派发'}
                       ]}
@@ -167,6 +200,7 @@ class ContractDaywage extends React.Component {
                   <Flex.Item style={{marginHorizontal: 16}}>
                     <QueryPickerOne
                       data={[
+                        {value: '', label: '全部'},
                         {value: 1, label: '满足 '},
                         {value: 0, label: '不满足 '}
                       ]}
@@ -196,7 +230,7 @@ class ContractDaywage extends React.Component {
               api={'/user/dividend/getContractDayWageList'}
               KeyName={`KeyName-${this.state.KeyName}`}
               params={this.state.params}
-              renderItem={(item, index) => this.renderItem(item, index, this.state.columnDownuser)}
+              renderItem={(item, index) => this.renderItem(item, index, this.state.columnDownuser, 'downuser')}
               // 第一个参数 params 第二个子组件的将要请求的第N页
               // beforeHttpGet={async ({params, page}, fn) => {
               //   // 解决父级数据数据源同步问题，然后数据给到子组件本身
