@@ -247,7 +247,7 @@ class LoginComponent extends Component {
                 <Text style={{color: '#00b4cc', flex: 1}}  onPress={this._handleServiceAsync}>
                   联系客服<Icon name="phone" size={20} color="#00b4cc"/>
                 </Text>
-                <Text style={{textAlign: 'right', color: '#00b4cc', flex: 1}}>下载v{manifest.version}</Text>
+                <Text style={{textAlign: 'right', color: '#00b4cc', flex: 1}}>v{manifest.version}</Text>
               </View>
             </Flex>
           </ImageBackground>
