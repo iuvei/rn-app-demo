@@ -104,7 +104,9 @@ class ActivityScreen extends React.Component {
       ImageList: {
         'activity/czxfs.png': require(`./../../assets/images/activity/czxfs.png`),
         'activity/dayhyscs.png': require(`./../../assets/images/activity/dayhyscs.png`),
-        'activity/hyscs.png': require(`./../../assets/images/activity/hyscs.png`)
+        'activity/hyscs.png': require(`./../../assets/images/activity/hyscs.png`),
+        'activity/otccz.png': require(`./../../assets/images/activity/otccz.png`),
+        'activity/sjkyj.png': require(`./../../assets/images/activity/sjkyj.png`)
       }
     }
   }
