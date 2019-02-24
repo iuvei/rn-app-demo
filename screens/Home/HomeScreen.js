@@ -9,9 +9,10 @@ import {
   RefreshControl,
   BackHandler,
   ToastAndroid,
-  ImageBackground
+  ImageBackground,
+  TouchableHighlight
 } from 'react-native'
-import { Carousel, NoticeBar, WhiteSpace, Flex, Toast } from '@ant-design/react-native'
+import { Carousel, NoticeBar, WhiteSpace, Flex, Toast, Icon } from '@ant-design/react-native'
 import { connect } from 'react-redux'
 import Header from './../../components/Header'
 import {
@@ -22,17 +23,25 @@ import {
   AgetRecharge,
   setPasswordRule
 } from './../../actions/common'
-import { AsetFreshMsg, AsetDayWagePower, AsetDividendPower } from "../../actions/member"
+import { AsetFreshMsg, AsetDayWagePower, AsetDividendPower } from '../../actions/member'
 import { getHotLotter } from './../../api/lottery'
 import { getIconName } from '../../utils/getLotImg'
 import { stylesUtil } from '../../utils/ScreenUtil'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: <Header hideLeft={true}/>
+    header:
+      <Header hideLeft={true}
+              rightContent={<TouchableHighlight
+                style={{marginRight: 14, marginTop: 4}}>
+                <View>
+                  <Icon name="share-apple" size="md" color="#fff"/>
+                </View>
+              </TouchableHighlight>}
+      />
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       refreshing: false,
@@ -110,7 +119,7 @@ class HomeScreen extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.SetCustomizeLottery()
     this.props.getSystemNews()
     this.props.setActiveUsualLot({custom: 0, data: []})
@@ -124,14 +133,14 @@ class HomeScreen extends React.Component {
     // this.props.navigation.push('Bet', this.state.LotArray[0])
   }
 
-  componentWillMount() {
+  componentWillMount () {
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     }
     this.didBlurSubscription = this.props.navigation.addListener('didFocus', this.updateImmediateData)
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     if (Platform.OS === 'android') {
       BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
     }
@@ -156,7 +165,7 @@ class HomeScreen extends React.Component {
     this._initHotLottery()
   }
 
-  _initHotLottery() {
+  _initHotLottery () {
     getHotLotter().then((res) => {
       if (res.code === 0) {
         this.setState({
@@ -166,12 +175,12 @@ class HomeScreen extends React.Component {
     })
   }
 
-  onHorizontalSelectedIndexChange(index) {
+  onHorizontalSelectedIndexChange (index) {
     // /* tslint:disable: no-console */
     // console.log('horizontal change to', index);
   }
 
-  setLot() {
+  setLot () {
     this.props.navigation.navigate('CustomizeGames')
   }
 
@@ -185,31 +194,31 @@ class HomeScreen extends React.Component {
 
   openCodeFun = (value) => {
     if (!value) {
-      return  <View style={styles.hotItemRight}>
-                <Flex wrap="wrap">
-                  <Text>暂无开奖球数据！</Text>
-                </Flex>
-              </View>
+      return <View style={styles.hotItemRight}>
+        <Flex wrap="wrap">
+          <Text>暂无开奖球数据！</Text>
+        </Flex>
+      </View>
     }
     let codeList = value.split(',')
-    return <View style={codeList.length === 10 ?styles.hotItemRightTenBall : styles.hotItemRight}>
-              <Flex wrap="wrap">
-                {
-                  codeList.map((v, i) =>
-                    codeList.length < 6 ?
-                      <View key={i} style={styles.hotItemBall}><Text
-                        style={styles.hotItemLgText}>{v}</Text></View>
-                      : codeList.length < 11 ?
-                      <View key={i} style={styles.hotItemMidBall}><Text
-                        style={styles.hotItemMidText}>{v}</Text></View>
-                      : <View key={i} style={styles.hotItemSmallBall}><Text
-                        style={styles.hotItemSmallText}>{v}</Text></View>)
-                }
-              </Flex>
-            </View>
+    return <View style={codeList.length === 10 ? styles.hotItemRightTenBall : styles.hotItemRight}>
+      <Flex wrap="wrap">
+        {
+          codeList.map((v, i) =>
+            codeList.length < 6 ?
+              <View key={i} style={styles.hotItemBall}><Text
+                style={styles.hotItemLgText}>{v}</Text></View>
+              : codeList.length < 11 ?
+              <View key={i} style={styles.hotItemMidBall}><Text
+                style={styles.hotItemMidText}>{v}</Text></View>
+              : <View key={i} style={styles.hotItemSmallBall}><Text
+                style={styles.hotItemSmallText}>{v}</Text></View>)
+        }
+      </Flex>
+    </View>
   }
 
-  render() {
+  render () {
     let {usualLottery, systemNews} = this.props
     let {hotLoList} = this.state
     let str = ''
@@ -290,11 +299,13 @@ class HomeScreen extends React.Component {
           <Flex justify="between">
             <View>
               <Flex>
-                <Image source={require('./../../assets/images/home/collect.png')} style={styles.favoriteIcon} resizeMode={'contain'} />
+                <Image source={require('./../../assets/images/home/collect.png')} style={styles.favoriteIcon}
+                       resizeMode={'contain'}/>
                 <Text style={styles.favoriteHeadText}>我的喜爱</Text>
               </Flex>
             </View>
-            <View style={styles.favoriteHeadR}><Text style={styles.favoriteHeadTextR} onPress={() => this.setLot()}>{'>'}</Text></View>
+            <View style={styles.favoriteHeadR}><Text style={styles.favoriteHeadTextR}
+                                                     onPress={() => this.setLot()}>{'>'}</Text></View>
           </Flex>
         </View>
 
@@ -470,8 +481,8 @@ const styles = StyleSheet.create(stylesUtil({
   },
   noticeWrap: {
     backgroundColor: 'white',
-    borderBottomLeftRadius:6,
-    borderBottomRightRadius:6
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6
   },
   NoticeBar: {
     fontSize: 12,
@@ -480,8 +491,8 @@ const styles = StyleSheet.create(stylesUtil({
   favoriteHead: {
     paddingLeft: 10,
     paddingRight: 20,
-    borderTopLeftRadius:6,
-    borderTopRightRadius:6,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
     backgroundColor: '#ffffff'
   },
   favoriteIcon: {
@@ -493,7 +504,7 @@ const styles = StyleSheet.create(stylesUtil({
     lineHeight: 30
   },
   favoriteHeadR: {
-    width:30
+    width: 30
   },
   favoriteHeadTextR: {
     height: 30,
@@ -510,7 +521,7 @@ const styles = StyleSheet.create(stylesUtil({
   favoriteItemImg: {
     width: 65,
     height: 65,
-    marginLeft: 10,
+    marginLeft: 10
   },
   favoriteItemCenter: {},
   favoriteItemTitle: {
