@@ -23,7 +23,8 @@ class RowBall extends React.Component {
     super(props)
     this.state = {
       sliderMode: '0.0',
-      checkboxItem1: true
+      checkboxItem1: true,
+      showFullTextArea: false
     }
     this.time = 1700
   }
@@ -182,7 +183,7 @@ class RowBall extends React.Component {
     // 当前渲染格式
 
     return (
-      <View style={{flex: 1}}>
+      <View style={this.state.showFullTextArea ? {} : {flex: 1}}>
         {
           showLayout || showBit || showText ?
             <ScrollView>
@@ -239,7 +240,18 @@ class RowBall extends React.Component {
                         <TextareaItem
                           rows={4}
                           onChange={(val) => handleText(val)}
+                          onFocus={() => {
+                            this.setState({
+                              showFullTextArea: true
+                            })
+                          }}
+                          onBlur={() => {
+                            this.setState({
+                              showFullTextArea: false
+                            })
+                          }}
                           value={activeViewData.textarea}
+                          keyboardType={'number-pad'}
                           placeholder="请输入投注号码"
                           style={styles.TextAreaItem}
                         />
