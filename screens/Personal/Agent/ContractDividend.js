@@ -75,7 +75,7 @@ class ContractDividend extends React.Component {
   onSearch = async () => {
     if (this.state.activeTab === 1) {
       this.downUserDividendRule.listView.refresh()
-    } else if (this.activeTab === 0) {
+    } else if (this.state.activeTab === 0) {
       this.props.AsetMyDividendRule()
     }
   }

@@ -22,6 +22,7 @@ class ContractDaywage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      KeyName: 'ContractDaywage',
       column: [
         {key: 'totalConsumption', name: '总消费量'},
         {key: 'totalCharge', name: '总充值量'},
@@ -70,8 +71,8 @@ class ContractDaywage extends React.Component {
 
   onSearch = async () => {
     if (this.state.activeTab === 1) {
-      this.downUserWageRule.listView.refresh()
-    } else if (this.activeTab === 0) {
+      this.ContractDaywage.listView.refresh()
+    } else if (this.state.activeTab === 0) {
       this.props.AsetMyDaywageRule()
     }
   }
@@ -191,9 +192,9 @@ class ContractDaywage extends React.Component {
               </View>
           </View>
             <UIListView
-              ref={ref => this.downUserWageRule = ref}
+              ref={ref => this.ContractDaywage = ref}
               api={'/user/dividend/getContractDayWageList'}
-              KeyName={`KeyName-downUserWageRule`}
+              KeyName={`KeyName-${this.state.KeyName}`}
               params={this.state.params}
               renderItem={(item, index) => this.renderItem(item, index, this.state.columnDownuser)}
               // 第一个参数 params 第二个子组件的将要请求的第N页
