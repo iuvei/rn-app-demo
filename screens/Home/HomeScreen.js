@@ -267,7 +267,9 @@ class HomeScreen extends React.Component {
                       </View>
                       <View style={styles.hotItemCenter}>
                         <Text style={styles.hotItemTitle}>{item.lotterName}</Text>
-                        <Text style={styles.hotItemText}>{item.openIssue}期</Text>
+                        {
+                          item.openIssue && <Text style={styles.hotItemText}>{item.openIssue}期</Text>
+                        }
                       </View>
                       {
                         this.openCodeFun(item.openCode)
@@ -290,11 +292,12 @@ class HomeScreen extends React.Component {
                 <Text style={styles.favoriteHeadText}>我的喜爱</Text>
               </Flex>
             </View>
-            <View><Text style={styles.favoriteHeadTextR} onPress={() => this.setLot()}>{'>'}</Text></View>
+            <View style={styles.favoriteHeadR}><Text style={styles.favoriteHeadTextR} onPress={() => this.setLot()}>{'>'}</Text></View>
           </Flex>
         </View>
 
         <ScrollView
+          style={{backgroundColor: '#ffffff'}}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
@@ -487,10 +490,14 @@ const styles = StyleSheet.create(stylesUtil({
     height: 30,
     lineHeight: 30
   },
+  favoriteHeadR: {
+    width:30
+  },
   favoriteHeadTextR: {
     height: 30,
     lineHeight: 30,
     fontSize: 20,
+    textAlign: 'center',
     color: '#00b4cc'
   },
   favoriteItem: {
