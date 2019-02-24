@@ -63,11 +63,16 @@ export const list = {
   sjksyj: {
     activityCode: 'sjksyj',
     activityName: '三级亏损佣金',
-    // local_banner: 'activity/',
+    local_banner: 'activity/sjkyj.png',
     local_date: '2018-12-01起',
     local_status: '已结束',
     local_status_class: 'gray',
     local_introduce: '三级亏损佣金',
     local_explanation: ''
-  }
+  },
+  otcPay: {
+  activityCode: 'otcPay',
+  activityName: 'OTC充值送',
+  local_banner: 'activity/otccz.png'
+}
 }
