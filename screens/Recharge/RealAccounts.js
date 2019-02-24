@@ -52,7 +52,6 @@ class AccountsList extends React.Component {
 
   render() {
     let { channelRealObj } = this.props
-
     return (
       <ScrollView style={{height: 0.5 * height, backgroundColor: '#fff'}}>
       {

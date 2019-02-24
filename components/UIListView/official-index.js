@@ -43,7 +43,6 @@ export default class Example extends Component {
       startFetch(rowData, pageLimit)
     } catch (err) {
       abortFetch() // manually stop the refresh or pagination if it encounters network error
-      console.log(err)
     }
   }
 

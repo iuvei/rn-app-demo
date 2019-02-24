@@ -294,36 +294,18 @@ class SubManaging extends Component {
               </View>
             </Tab>
             {
-              contractStatus === 1 ? <Tab heading={'契约分红'}>
+              this.props.dividendPower && <Tab heading={'契约分红'}>
                 <View style={styles.tab}>
-                  <Contract subUserInfo={subUserInfo}></Contract>
+                  <Contract subUserInfo={subUserInfo} dividendType={1}></Contract>
                 </View>
-              </Tab> : null
+              </Tab>
             }
             {
-              dailyWages === 1 ? <Tab heading={'契约工资'}>
+              this.props.daywagePower && <Tab heading={'契约工资'}>
                 <View style={styles.tab}>
-                  <View style={styles.textArea}>
-                    <InputItem
-                      clear
-                      type="number"
-                      value={this.state.chargeData.money}
-                      placeholder="请输入金额"
-                      onChange={value => {
-                        this.setState({
-                          chargeData: {
-                            ...this.state.chargeData,
-                            money: value
-                          }
-                        })
-                      }}
-                    >
-                      充值金额
-                    </InputItem>
-                  </View>
-                  <Button type={'primary'} onPress={this.downRecharge}>确定</Button>
+                  <Contract subUserInfo={subUserInfo} dividendType={5}></Contract>
                 </View>
-              </Tab> : null
+              </Tab>
             }
             <Tab heading={'百家乐返点'}>
               <View style={styles.tab}>
@@ -402,12 +384,14 @@ const styles = StyleSheet.create({
 
 export default connect(
   (state) => {
-    let {subUserInfo} = state.member
+    let {subUserInfo, daywagePower, dividendPower} = state.member
     let {loginInfo, userSecurityLevel} = state.common
     return ({
       subUserInfo,
       loginInfo,
-      userSecurityLevel
+      userSecurityLevel,
+      daywagePower,
+      dividendPower
     })
   },
   dispatch => {

@@ -119,7 +119,6 @@ class Withdrawal extends React.Component {
     let totalFee = 0
     let sonOrderList = []
     if (Number(val) >= minMoney && Number(val) <= canWithdrawBalance) { // this.formData.payChannelCode !== '' &&
-      console.log('计算拆单和手续费...')
       const freeTimesleft = freeTimes - alredTimes // 当前剩余免费次数
       // 拆单
       let orderCount = Math.ceil(val / maxMoney)  // 子订单个数
@@ -181,7 +180,6 @@ class Withdrawal extends React.Component {
     // 判断当前时间是否在 09:00:00 至 第二天 03:00:00 时间段
     let now = new Date()
     let hour = (now.getUTCHours() + 8) % 24 // 东八区
-    console.log('北京时间小时 === ', hour)
     this.setState({
       isLoading: true
     }, () => {

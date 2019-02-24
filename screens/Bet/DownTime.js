@@ -25,7 +25,7 @@ class DownTime extends Component {
   }
 
   logFn = () => {
-    console.log('我是一个数据')
+    // console.log('我是一个数据')
   }
 
   render() {

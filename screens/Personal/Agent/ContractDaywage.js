@@ -1,12 +1,13 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableHighlight, ScrollView } from 'react-native'
 import UIListView from '../../../components/UIListView'
-import { Flex, Button, Tabs, InputItem } from '@ant-design/react-native'
+import { Flex, Button, Tabs, InputItem, Toast } from '@ant-design/react-native'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
 import { connect } from "react-redux"
 import { contractStatus } from '../../../data/options'
 import { AsetMyDaywageRule } from "../../../actions/member"
+import { updateDividendRule } from '../../../api/member'
 
 class ContractDaywage extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -101,7 +102,28 @@ class ContractDaywage extends React.Component {
             </Flex>
           })
       }
+      { (dataItem.status === 0) &&
+        <Flex>
+          <Flex.Item style={{paddingHorizontal: 20}}>
+              <Button size="small" onPress={() => this.editContract({dataItem, isConfrim: false})}>拒绝</Button>
+          </Flex.Item>
+          <Flex.Item style={{paddingHorizontal: 20}}><Button size="small" onPress={() => this.editContract({dataItem, isConfrim: true})}>确认</Button></Flex.Item>
+        </Flex>
+      }
     </View>
+  }
+
+  editContract = ({dataItem, isConfrim}) => {
+    let { id } = dataItem
+    updateDividendRule({dividendType: 1, id, status: isConfrim ? 1 : 2}).then(res => {
+      if (res.code === 0) {
+        let str = isConfrim ? '确认成功' : '拒绝成功'
+        Toast.success(res.message || str)
+      } else {
+        Toast.fail(res.message || '撤销失败，请重试')
+      }
+      this.onSearch()
+    })
   }
 
   render() {
@@ -187,7 +209,6 @@ class ContractDaywage extends React.Component {
               // }}
               // 返回数据空或者处理后的数据源
               beforeUpdateList={({res}, fn) => {
-                console.log(res)
                 let dataList = res.data && res.data ? res.data : []
                 let {pageNumber, pageSize, totalCount} = res.data
                 let NullData = Math.ceil(totalCount / pageSize) < pageNumber

@@ -75,9 +75,7 @@ class GlobalComp extends React.Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
-    console.log(nextAppState)
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      console.log('App has come to the foreground!')
     }
     this.setState({appState: nextAppState})
   }

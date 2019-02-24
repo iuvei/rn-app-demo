@@ -36,7 +36,6 @@ class PlayNav extends React.Component {
     }
     this.onOpenChange = isOpen => {
       /* tslint:disable: no-console */
-      console.log('是否打开了 Drawer', isOpen.toString())
     }
   }
 
