@@ -37,7 +37,7 @@ const sortArray = arr => {
 
 const initialState = {
   isLogin: false,
-  showFloatBall: false,
+  showFloatBall: true,
   currentApiUrl: prependUrl,
   count: 1,
   sysSortLottery: [],
