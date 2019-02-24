@@ -12,7 +12,10 @@ import {
   ImageBackground,
   TouchableHighlight
 } from 'react-native'
-import { Carousel, NoticeBar, WhiteSpace, Flex, Toast, Icon } from '@ant-design/react-native'
+import {
+  Carousel, NoticeBar, Button,
+  WhiteSpace, Flex, Toast, Icon
+} from '@ant-design/react-native'
 import { connect } from 'react-redux'
 import Header from './../../components/Header'
 import {
@@ -192,7 +195,7 @@ class HomeScreen extends React.Component {
     }, 1000)
   }
 
-  openCodeFun = (value) => {
+  openCodeFun = (value, {lotterNumber}) => {
     if (!value) {
       return <View style={styles.hotItemRight}>
         <Flex wrap="wrap">
@@ -201,18 +204,17 @@ class HomeScreen extends React.Component {
       </View>
     }
     let codeList = value.split(',')
-    return <View style={codeList.length === 10 ? styles.hotItemRightTenBall : styles.hotItemRight}>
+    return <View style={styles.hotItemRight}>
       <Flex wrap="wrap">
         {
           codeList.map((v, i) =>
-            codeList.length < 6 ?
-              <View key={i} style={styles.hotItemBall}><Text
-                style={styles.hotItemLgText}>{v}</Text></View>
-              : codeList.length < 11 ?
-              <View key={i} style={styles.hotItemMidBall}><Text
-                style={styles.hotItemMidText}>{v}</Text></View>
-              : <View key={i} style={styles.hotItemSmallBall}><Text
-                style={styles.hotItemSmallText}>{v}</Text></View>)
+            <Button
+              key={`${i}-${v}`}
+              type="primary" size="small"
+              style={styles['lotBall' + (lotterNumber || 5)]}>
+              <Text style={styles['lotBallTxt' + (lotterNumber || 5)]}>{v}</Text>
+            </Button>
+          )
         }
       </Flex>
     </View>
@@ -271,7 +273,7 @@ class HomeScreen extends React.Component {
             hotLoList.length > 0 && hotLoList.map((item, index) => {
                 return (
                   <View style={styles.hotItem} key={index}>
-                    <Flex justify="space-between" onPress={() => this.props.navigation.navigate('Bet', item)}>
+                    <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
                       <View>
                         <Image source={getIconName(item.realCategory)} resizeMode={'contain'}
                                style={styles.hotItemImg}/>
@@ -283,7 +285,7 @@ class HomeScreen extends React.Component {
                         }
                       </View>
                       {
-                        this.openCodeFun(item.openCode)
+                        this.openCodeFun(item.openCode, item)
                       }
                     </Flex>
                   </View>
@@ -403,7 +405,7 @@ const styles = StyleSheet.create(stylesUtil({
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#eaeaea',
-    paddingHorizontal: 5,
+    paddingHorizontal: 0,
     borderRadius: 6
   },
   hotItemImg: {
@@ -413,7 +415,7 @@ const styles = StyleSheet.create(stylesUtil({
     backgroundColor: '#fff'
   },
   hotItemCenter: {
-    marginLeft: 10
+    marginLeft: 0
   },
   hotItemTitle: {
     fontSize: 14
@@ -428,8 +430,12 @@ const styles = StyleSheet.create(stylesUtil({
     marginLeft: 10
   },
   hotItemRight: {
-    maxWidth: 200,
-    marginLeft: 10
+    width: 200,
+    marginLeft: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    padding: 2, flexWrap: 'wrap',
+    paddingLeft: 2
   },
   hotItemBall: {
     width: 24,
@@ -457,6 +463,7 @@ const styles = StyleSheet.create(stylesUtil({
   },
   hotItemLgText: {
     height: 24,
+    width: 24,
     lineHeight: 24,
     fontSize: 14,
     textAlign: 'center',
@@ -464,6 +471,7 @@ const styles = StyleSheet.create(stylesUtil({
   },
   hotItemMidText: {
     height: 20,
+    width: 20,
     lineHeight: 20,
     fontSize: 12,
     textAlign: 'center',
@@ -471,10 +479,55 @@ const styles = StyleSheet.create(stylesUtil({
   },
   hotItemSmallText: {
     height: 14,
+    width: 14,
     lineHeight: 14,
     fontSize: 10,
     textAlign: 'center',
     color: 'white'
+  },
+  lotBall3: {
+    padding: 0,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 4,
+    marginRight: 6
+  },
+  lotBall5: {
+    padding: 0,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 0,
+    marginRight: 4
+  },
+  lotBall10: {
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    marginRight: 4,
+    marginBottom: 2
+  },
+  lotBall20: {
+    padding: 0,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    marginRight: 1,
+    marginBottom: 1
+  },
+  lotBallTxt3: {
+    fontSize: 14
+  },
+  lotBallTxt5: {
+    fontSize: 14
+  },
+  lotBallTxt10: {
+    fontSize: 12
+  },
+  lotBallTxt20: {
+    fontSize: 10
   },
   carouselImg: {
     width: '100%'
