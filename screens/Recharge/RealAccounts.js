@@ -4,7 +4,8 @@ import {
   ScrollView,
   Dimensions,
   View,
-  TouchableHighlight
+  TouchableHighlight,
+  Text
 } from 'react-native'
 import { Button, Modal } from '@ant-design/react-native'
 import { setActiveAccount } from '../../actions/common'
@@ -28,7 +29,8 @@ class AccountsList extends React.Component {
   
   _renderContent = section => {
     return (
-      <View key={section.title}>
+      <View key={section.title} style={{borderBottomColor: '#f0f0f0', borderBottomWidth: 1, paddingBottom: 15}}>
+        <Text style={{color: '#000', fontSize: 14, paddingTop: 10}}>{section.title}</Text>
         {
           section.content.map((item, index) => {
             return (
@@ -38,7 +40,7 @@ class AccountsList extends React.Component {
                 }}
               >
                 <View
-                  style={styleUtil({height: 60, lineHeight: 60, backgroundColor: '#fff'})}
+                  style={styleUtil({height: 50, lineHeight: 50, backgroundColor: '#fff'})}
                 >
                   <SvgIcon icon={minbankCodeMap[String(item.bankCode).toUpperCase()]} size={80}/>
                 </View>
