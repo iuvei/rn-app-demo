@@ -64,7 +64,7 @@ class AppLoadingScreen extends React.Component {
       // 这里回先执行二维码然后再去那数据
       await _getImageSetCookie(),
       getLoginUser().then(res => {
-        console.log(`当前用户登陆状态:${res.code === 0 ? '在线' : '下线'}`)
+        // console.log(`当前用户登陆状态:${res.code === 0 ? '在线' : '下线'}`)
         if (res.code === 0) {
           this.props.setLoginStatus(res.code === 0)
           this.props.setLoginInfo(res.data)

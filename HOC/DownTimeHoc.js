@@ -79,7 +79,7 @@ export default (Comp) => {
           this.space = 0
           this.spaceTotal = 0
           if (!res.data.currentIssue) {
-            console.log(`我要报警了: ${lotterCode}没返回当前期信息`)
+            // console.log(`我要报警了: ${lotterCode}没返回当前期信息`)
           } else if (Object.keys(res.data).length) {
             res.data.latelyIssue = Number(res.data.currentIssue) - 1
             this.props._setOpenIssue(res.data)
@@ -88,10 +88,10 @@ export default (Comp) => {
               this.setStopTime(res.data, Date.now())
             }, 20)
           } else {
-            console.log(`我要报警了: ${lotterCode}没返回开奖信息`)
+            // console.log(`我要报警了: ${lotterCode}没返回开奖信息`)
           }
         } else {
-          console.log(`我要报警了:没${lotterCode}返回信息`, res)
+          // console.log(`我要报警了:没${lotterCode}返回信息`, res)
         }
         // this.setStopTime({timedown: 10}, Date.now())
       })

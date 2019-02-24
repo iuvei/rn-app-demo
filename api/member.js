@@ -678,3 +678,43 @@ export const getTeamCount = (data) => {
     params: data
   })
 }
+
+/**
+ * 2019-02-24 契约分红/日工资 接口
+ */
+
+// 查询契约分红或契约日工资权限
+export const getDividendAuthority = (data) => {
+  return fetch({
+    type: 'post',
+    api: '/user/dividend/getDividendAuthority',
+    params: data
+  })
+}
+
+// 获取本人用户契约日工资、契约分红
+export const getMineDividendRule = (data) => {
+  return fetch({
+    type: 'post',
+    api: '/user/dividend/getMineDividendRule',
+    params: data
+  })
+}
+
+// 新增契约日工资、契约分红
+export const insertDividendRule = (data) => {
+  return fetch({
+    type: 'post',
+    api: '/user/dividend/insertDividendRule',
+    params: data
+  })
+}
+
+// 更改契约日工资、分红状态
+export const updateDividendRule = (data) => {
+  return fetch({
+    type: 'post',
+    api: '/user/dividend/updateDividendRule',
+    params: data
+  })
+}

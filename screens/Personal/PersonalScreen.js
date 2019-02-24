@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 // import RebateDetails from './RebateDetails'
 // import {setLoginStatus} from "../../actions/common"
 import Headers from './../../components/Header'
-import { AsetAllBalance, AsetFreshMsg } from "../../actions/member"
+import { AsetAllBalance, AsetFreshMsg, AsetMyDaywageRule, AsetMyDividendRule } from "../../actions/member"
 import { WebBrowser } from 'expo'
 import { AsetServiceUrl } from '../../actions/common'
 import { styleUtil, stylesUtil } from '../../utils/ScreenUtil'
@@ -57,52 +57,74 @@ class PersonalScreen extends React.Component {
         {
           name: '代理首页',
           path: 'AgentIndex',
+          condition: true,
           src: require('../../assets/images/personal/tbl1.png')
         },
         {
           name: '开户中心',
           path: 'OpenCenter',
+          condition: true,
           src: require('../../assets/images/personal/tbl2.png')
         },
         {
           name: '团队报表',
           path: 'TeamReport',
+          condition: true,
           src: require('../../assets/images/personal/tbl3.png')
         },
         {
           name: '会员管理',
           path: 'MemberManage',
+          condition: true,
           src: require('../../assets/images/personal/tbl4.png')
         },
         {
           name: '账变记录',
           path: 'TeamAccountHistory',
+          condition: true,
           src: require('../../assets/images/personal/tbl5.png')
         },
         {
           name: '彩种报表',
           path: 'TeamLotteryReport',
+          condition: true,
           src: require('../../assets/images/personal/tbl6.png')
         },
         {
           name: '游戏记录',
           path: 'TeamBetHistory',
+          condition: true,
           src: require('../../assets/images/personal/tbl7.png')
         },
         // {
         //   name: '追号记录',
         //   path: 'TeamChaseHistory',
+        //   condition: true,
         //   src: require('../../assets/images/personal/tbl10.png')
         // },
         {
           name: '存取款记录',
           path: 'TeamWithdrawHistory',
+          condition: true,
           src: require('../../assets/images/personal/tbl8.png')
         },
         {
           name: '百家乐报表',
           path: 'TeamBaccaratReport',
+          condition: true,
           src: require('../../assets/images/personal/tbl9.png')
+        },
+        {
+          name: '契约工资',
+          path: 'ContractDaywage',
+          condition: props.daywagePower,
+          src: require('../../assets/images/personal/tbl1.png')
+        },
+        {
+          name: '契约分红',
+          path: 'ContractDividend',
+          condition: props.dividendPower,
+          src: require('../../assets/images/personal/tbl2.png')
         }
       ],
       order: [
@@ -161,6 +183,8 @@ class PersonalScreen extends React.Component {
       page: 0
     }
     props.AsetAllBalance()
+    props.AsetMyDaywageRule()
+    props.AsetMyDividendRule()
   }
 
   changeTextFun = (val) => {
@@ -350,7 +374,7 @@ class PersonalScreen extends React.Component {
               <ScrollView style={styles.agent}>
                 <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
                   return (
-                    <View style={styleUtil({alignItems: 'center', width: 90})}>
+                    el.condition && <View style={styleUtil({alignItems: 'center', width: 90})}>
                       <Image source={el.src} style={styleUtil({width: 50, height: 50, marginBottom: 5})}></Image>
                       <Text>{el.name}</Text>
                     </View>
@@ -391,7 +415,7 @@ const styles = StyleSheet.create(stylesUtil({
 
 const mapStateToProps = (state) => {
   let {rebateInfo, loginInfo, balanceInfo, serviceUrl} = state.common
-  let {userBalanceInfoYE, userBalanceInfoFD, freshMsg} = state.member
+  let {userBalanceInfoYE, userBalanceInfoFD, freshMsg, daywagePower, dividendPower} = state.member
   return ({
     rebateInfo,
     loginInfo,
@@ -399,7 +423,9 @@ const mapStateToProps = (state) => {
     userBalanceInfoYE,
     userBalanceInfoFD,
     serviceUrl,
-    freshMsg
+    freshMsg,
+    dividendPower,
+    daywagePower
   })
 }
 
@@ -407,6 +433,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     AsetAllBalance: data => dispatch(AsetAllBalance(data)),
     AsetServiceUrl: data => dispatch(AsetServiceUrl(data)),
+    AsetMyDaywageRule: () => dispatch(AsetMyDaywageRule()),
+    AsetMyDividendRule: () => dispatch(AsetMyDividendRule()),
     AsetFreshMsg: () => dispatch(AsetFreshMsg())
   }
 }

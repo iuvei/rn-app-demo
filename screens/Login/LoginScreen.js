@@ -136,6 +136,8 @@ class LoginComponent extends Component {
                       value={j_username}
                       extra={<Icon name="close" size={20} color="#00bbcc" />}
                       labelNumber={2}
+                      autoCapitalize="none"
+                      keyboardType={Platform.OS === 'ios' ? 'web-search' : 'visible-password'}
                       onChangeText={(j_username) => {
                         this.setState({
                           j_username: j_username
@@ -158,6 +160,8 @@ class LoginComponent extends Component {
                       placeholder="请输入登录密码"
                       value={j_password}
                       labelNumber={2}
+                      autoCapitalize="none"
+                      keyboardType={Platform.OS === 'ios' ? 'web-search' : 'visible-password'}
                       type={seePwd ? "text" : "password"}
                       extra={<Icon name="eye" size={20} color="#00bbcc" />}
                       onChangeText={(j_password) => {
@@ -243,7 +247,7 @@ class LoginComponent extends Component {
                 <Text style={{color: '#00b4cc', flex: 1}}  onPress={this._handleServiceAsync}>
                   联系客服<Icon name="phone" size={20} color="#00b4cc"/>
                 </Text>
-                <Text style={{textAlign: 'right', color: '#00b4cc', flex: 1}} onPress={this._handleDownloadAsync}>下载v{manifest.version}</Text>
+                <Text style={{textAlign: 'right', color: '#00b4cc', flex: 1}}>v{manifest.version}</Text>
               </View>
             </Flex>
           </ImageBackground>

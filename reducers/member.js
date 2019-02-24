@@ -18,9 +18,39 @@ const initialState = {
   gaKey: '',
   subUserInfo: {}, // 下级用户信息
   freshMsg: 0, // 当前未读消息总数
+
+  // 契约工资、分红
+  daywagePower: false, // 有无契约日工资权限
+  dividendPower: false, // 有无契约分红权限
+  myDaywageRule: [], // 本人契约日工资规则
+  myDividendRule: [], // 本人契约分红规则
 }
 
 const member = handleActions({
+  SET_MYDAYWAGE_RULE: (state, {payload = []}) => {
+    return {
+      ... state, 
+      myDaywageRule: payload
+    }
+  },
+  SET_MYDIVIDEND_RULE: (state, {payload = []}) => {
+    return {
+      ... state, 
+      myDividendRule: payload
+    }
+  },
+  SET_DAYWAGE_POWER: (state, {payload}) => {
+    return {
+      ...state, 
+      daywagePower: payload
+    }
+  },
+  SET_DIVIDEND_POWER: (state, {payload}) => {
+    return {
+      ...state, 
+      dividendPower: payload
+    }
+  },
   SET_ACTIVE_ACCOUNT: (state, {payload = {}}) => {
     return {
       ...state,

@@ -7,9 +7,43 @@ import {
 } from '../api/basic'
 import {
   getGaKey,
-  searchUnread
+  searchUnread,
+  getDividendAuthority,
+  getMineDividendRule
 } from '../api/member'
 import { AsyncStorage } from 'react-native'
+
+export const AsetMyDaywageRule = createAction(
+  'SET_MYDAYWAGE_RULE',
+  async () => {
+    let res = await getMineDividendRule({dividendType: 5})
+    return res.code === 0 ? res.data : []
+  }
+)
+
+export const AsetMyDividendRule = createAction(
+  'SET_MYDIVIDEND_RULE',
+  async () => {
+    let res = await getMineDividendRule({dividendType: 1})
+    return res.code === 0 ? res.data : []
+  }
+)
+
+export const AsetDayWagePower = createAction(
+  'SET_DAYWAGE_POWER',
+  async () => {
+    let res = await getDividendAuthority({dividendType: 5})
+    return res.code === 0 ? res.data : false
+  }
+)
+
+export const AsetDividendPower = createAction(
+  'SET_DIVIDEND_POWER',
+  async () => {
+    let res = await getDividendAuthority({dividendType: 1})
+    return res.code === 0 ? res.data : false
+  }
+)
 
 export const AsetUserBankCards = function(userId) {
   return createAction(

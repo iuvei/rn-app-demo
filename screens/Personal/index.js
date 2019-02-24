@@ -18,6 +18,8 @@ import OpenCenter from './Agent/OpenCenter'
 import TeamAccountHistory from './Agent/TeamAccountHistory'
 import TeamBaccaratReport from './Agent/TeamBaccaratReport'
 import TeamBetHistory from './Agent/TeamBetHistory'
+import ContractDaywage from './Agent/ContractDaywage'
+import ContractDividend from './Agent/ContractDividend'
 // import TeamChaseHistory from './Agent/TeamChaseHistory'
 import TeamLotteryReport from './Agent/TeamLotteryReport'
 import TeamReport from './Agent/TeamReport'
@@ -56,6 +58,8 @@ export default {
   TeamLotteryReport,
   TeamReport,
   TeamWithdrawHistory,
+  ContractDaywage,
+  ContractDividend,
   SettingsScreen,
   RebateDetails,
   UpdatePwd,

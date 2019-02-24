@@ -22,7 +22,7 @@ import {
   AgetRecharge,
   setPasswordRule
 } from './../../actions/common'
-import { AsetFreshMsg } from "../../actions/member"
+import { AsetFreshMsg, AsetDayWagePower, AsetDividendPower } from "../../actions/member"
 import { getHotLotter } from './../../api/lottery'
 import { getIconName } from '../../utils/getLotImg'
 import { stylesUtil } from '../../utils/ScreenUtil'
@@ -119,6 +119,8 @@ class HomeScreen extends React.Component {
     this.props.AgetRecharge()
     this.props.setPasswordRule()
     this.props.AsetFreshMsg()
+    this.props.AsetDayWagePower()
+    this.props.AsetDividendPower()
     // this.props.navigation.push('Bet', this.state.LotArray[0])
   }
 
@@ -267,7 +269,9 @@ class HomeScreen extends React.Component {
                       </View>
                       <View style={styles.hotItemCenter}>
                         <Text style={styles.hotItemTitle}>{item.lotterName}</Text>
-                        <Text style={styles.hotItemText}>{item.openIssue}期</Text>
+                        {
+                          item.openIssue && <Text style={styles.hotItemText}>{item.openIssue}期</Text>
+                        }
                       </View>
                       {
                         this.openCodeFun(item.openCode)
@@ -290,11 +294,12 @@ class HomeScreen extends React.Component {
                 <Text style={styles.favoriteHeadText}>我的喜爱</Text>
               </Flex>
             </View>
-            <View><Text style={styles.favoriteHeadTextR} onPress={() => this.setLot()}>{'>'}</Text></View>
+            <View style={styles.favoriteHeadR}><Text style={styles.favoriteHeadTextR} onPress={() => this.setLot()}>{'>'}</Text></View>
           </Flex>
         </View>
 
         <ScrollView
+          style={{backgroundColor: '#ffffff'}}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
@@ -487,10 +492,14 @@ const styles = StyleSheet.create(stylesUtil({
     height: 30,
     lineHeight: 30
   },
+  favoriteHeadR: {
+    width:30
+  },
   favoriteHeadTextR: {
     height: 30,
     lineHeight: 30,
     fontSize: 20,
+    textAlign: 'center',
     color: '#00b4cc'
   },
   favoriteItem: {
@@ -555,6 +564,8 @@ const mapDispatchToProps = (dispatch) => {
     setPasswordRule: () => {
       dispatch(setPasswordRule())
     },
+    AsetDayWagePower: () => dispatch(AsetDayWagePower()),
+    AsetDividendPower: () => dispatch(AsetDividendPower()),
     AsetFreshMsg: () => {
       dispatch(AsetFreshMsg())
     }
