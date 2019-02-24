@@ -33,15 +33,16 @@ import { stylesUtil } from '../../utils/ScreenUtil'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    header:
-      <Header hideLeft={true}
-              rightContent={<TouchableHighlight
-                style={{marginRight: 14, marginTop: 4}}>
-                <View>
-                  <Icon name="share-apple" size="md" color="#fff"/>
-                </View>
-              </TouchableHighlight>}
-      />
+    // header:
+    //   <Header hideLeft={true}
+    //           rightContent={<TouchableHighlight
+    //             style={{marginRight: 14, marginTop: 4}}>
+    //             <View>
+    //               <Icon name="share-apple" size="md" color="#fff"/>
+    //             </View>
+    //           </TouchableHighlight>}
+    //   />
+    header: <Header hideLeft={true}/>
   }
 
   constructor (props) {
