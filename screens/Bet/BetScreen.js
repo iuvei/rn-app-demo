@@ -2,9 +2,9 @@ import React from 'react'
 import {
   View, SafeAreaView,
   StyleSheet, ScrollView, AsyncStorage,
-  KeyboardAvoidingView
+  TouchableHighlight
 } from 'react-native'
-import { Tabs, Drawer } from '@ant-design/react-native'
+import { Tabs, Drawer, Icon, Modal } from '@ant-design/react-native'
 import { connect } from 'react-redux'
 
 import DownTime from './DownTime'
@@ -57,7 +57,25 @@ class BetScreen extends React.Component {
       updateBy: 'dana001'
     }
     return {
-      title: params.lotterName
+      title: params.lotterName,
+      headerRight: <TouchableHighlight onPress={navigation.getParam('headerRightClick')} style={{marginRight: 14, marginTop: 4}}>
+        <View><Icon name="bars" size="md" color="#fff" /></View>
+      </TouchableHighlight>
+        // <Popover
+        //   overlay={
+        //     <Popover.Item value={'description'}>
+        //       <Text style={{color: '#333', fontSize: 14}}>玩法说明</Text>
+        //     </Popover.Item>
+        //   }
+        //   placement="bottom"
+        //   styles={{
+        //     arrow: {
+        //       borderTopColor: 'transparent',
+        //     },
+        //   }}
+        // >
+        //   <View style={{marginRight: 14, height: 50, backgroundColor: 'red'}}><Icon name="bars" size="md" color="#fff" /></View>
+        // </Popover>
     }
   }
 
@@ -91,6 +109,7 @@ class BetScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.props.navigation.setParams({ headerRightClick: this.headerRightClick })
     // 获取当前彩种的赔率
     let {params, params: {lotterCode, realCategory, isOuter}} = this.props.navigation.state
     let {code} = selfRoute.find(lot => lot.mapCode.includes(realCategory))
@@ -112,6 +131,23 @@ class BetScreen extends React.Component {
       userId: this.props.userId
     }).then(data => {
       this.getUsefulPlay(params, data['payload'])
+    })
+  }
+
+  headerRightClick = () => {
+    let {params: {lotterCode, realCategory, isOuter}} = this.props.navigation.state
+    // 获取玩法数据
+    this.props.getGamesPlay({
+      lotterCode,
+      isOuter,
+      userId: this.props.userId
+    }).then(data => {
+      let {code} = selfRoute.find(lot => lot.mapCode.includes(realCategory))
+      let {codeMap} = JSON.parse(JSON.stringify(norLot[code]))
+      let arr = data['payload'].filter(item => { return item.ruleCode === codeMap[this.props.activePlay.code] })
+      Modal.alert('玩法说明', String(arr[0].ruleDesc).replace(/<br\/><br\/>/g, '；'), [
+        { text: 'OK', onPress: () => console.log('ok') },
+      ])
     })
   }
 
@@ -173,9 +209,11 @@ class BetScreen extends React.Component {
   checkedNavBar = (navBar, gamePlay, codeMap) => {
     let newNavbar = []
     let usefulCode = []
+    let tmpobj = {}
     gamePlay.forEach(item => {
       if (item.status === 1) {
         usefulCode.push(item.ruleCode)
+        tmpobj[item.ruleCode] = item
       }
     })
     if (navBar.length && gamePlay.length) {
@@ -190,7 +228,7 @@ class BetScreen extends React.Component {
             // 0禁止(默认),1正常,2可见(不能投注)
             let thisPlay = codeMap[play.code]
             if (usefulCode.includes(thisPlay)) {
-              subplay.push(play)
+              subplay.push({...play, ruleDesc: tmpobj[thisPlay].ruleDesc})
             }
           })
           if (subplay.length) {
@@ -295,11 +333,12 @@ class BetScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   let {userId} = state.common
-  let {navParams, gamesPlayStore} = state.classic
+  let {navParams, gamesPlayStore, activePlay} = state.classic
   return ({
     userId,
     navParams,
-    gamesPlayStore
+    gamesPlayStore,
+    activePlay
   })
 }
 const mapDispatchToProps = (dispatch) => {
