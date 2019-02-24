@@ -7,11 +7,12 @@ import { addDown, addSignup, delSignup } from '../../../api/member'
 import UIListView from '../../../components/UIListView'
 import Base64 from '../../../utils/Base64'
 import dayjs from 'dayjs'
+import { host } from '../../../api.config'
 
 const TableRow = 20
 
 class FlatListItem extends PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props)
   }
 
@@ -24,7 +25,7 @@ class FlatListItem extends PureComponent {
     })
   }
 
-  render() {
+  render () {
     let {item, index, loginInfo} = this.props
     let {balanceHours, createTime, id, isProxy, times, useTimes, validDays, rebate} = item
     validDays = validDays * 1000 * 3600
@@ -34,7 +35,7 @@ class FlatListItem extends PureComponent {
         <Text onPress={() => {
           let {userId} = loginInfo
           let highUser = Base64.btoa(loginInfo.acc?.user?.loginName)
-          let url = 'http://huangjinhaian.qmuitest.com/app/#/regist/' + userId + '/' + highUser + '/' + id
+          let url = host + '/app/#/regist/' + userId + '/' + highUser + '/' + id
           Clipboard.setString(url)
           Toast.info('复制成功！')
         }}>注册码: {id}</Text>
@@ -56,7 +57,7 @@ class OpenCenter extends React.Component {
     title: '开户中心'
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       KeyName: 'OpenCenter',
@@ -77,7 +78,7 @@ class OpenCenter extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     let {systemMaxRebate, userRebateVO, systemMinRebate} = this.props.rebateInfo
     let maxRebate = userRebateVO[0].userRebate < systemMaxRebate ? userRebateVO[0].userRebate : systemMaxRebate
     this.setState({
@@ -86,7 +87,7 @@ class OpenCenter extends React.Component {
     })
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.setState = () => () => {
     }
   }
@@ -220,7 +221,8 @@ class OpenCenter extends React.Component {
             彩票返点
           </InputItem>
         </View>
-        <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'} onPress={this._addDown}>确定</Button>
+        <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'}
+                onPress={this._addDown}>确定</Button>
         <View style={{marginTop: 20}}>
           <Text style={styles.hint}>温馨提示</Text>
           <Text style={styles.hint}>自动注册的会员初始密码为“<Text style={{color: 'orange'}}>a123456</Text>”。</Text>
@@ -285,7 +287,8 @@ class OpenCenter extends React.Component {
             彩票返点
           </InputItem>
         </View>
-        <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'} onPress={this._addLinkup}>生成链接</Button>
+        <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'}
+                onPress={this._addLinkup}>生成链接</Button>
         <View style={{marginTop: 20}}>
           <Text style={styles.hint}>温馨提示</Text>
           <Text style={styles.hint}>生成链接不会立即扣减配额，只有用户使用该链接注册成功的时候，才会扣减配额；</Text>
@@ -340,7 +343,7 @@ class OpenCenter extends React.Component {
     )
   }
 
-  render() {
+  render () {
     let contain = ''
     switch (this.state.selectedIndex) {
       case 0:
@@ -357,7 +360,8 @@ class OpenCenter extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <SegmentedControl values={['普通开户', '链接开户', '链接管理']} tintColor={'#00bbcc'} style={styles.segmented} onChange={this.onChange}/>
+        <SegmentedControl values={['普通开户', '链接开户', '链接管理']} tintColor={'#00bbcc'} style={styles.segmented}
+                          onChange={this.onChange}/>
         {contain}
       </View>
     )
