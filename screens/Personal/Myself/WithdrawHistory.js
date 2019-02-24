@@ -5,8 +5,8 @@ import { Flex, SegmentedControl, Button, Modal } from '@ant-design/react-native'
 import { RechargeType, ReWiTrStatus } from '../../../data/options'
 import QueryDate from '../../../components/QueryDate'
 import QueryPickerOne from '../../../components/QueryPickerOne'
-import { connect } from "react-redux";
-import { formatTime, toFixed4 } from "../../../utils/MathUtils";
+import { connect } from "react-redux"
+import { formatTime, toFixed4 } from "../../../utils/MathUtils"
 
 class FlatListItem extends PureComponent {
   constructor(props) {

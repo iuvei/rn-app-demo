@@ -22,7 +22,7 @@ import {
   AgetRecharge,
   setPasswordRule
 } from './../../actions/common'
-import { AsetFreshMsg } from "../../actions/member"
+import { AsetFreshMsg, AsetDayWagePower, AsetDividendPower } from "../../actions/member"
 import { getHotLotter } from './../../api/lottery'
 import { getIconName } from '../../utils/getLotImg'
 import { stylesUtil } from '../../utils/ScreenUtil'
@@ -119,6 +119,8 @@ class HomeScreen extends React.Component {
     this.props.AgetRecharge()
     this.props.setPasswordRule()
     this.props.AsetFreshMsg()
+    this.props.AsetDayWagePower()
+    this.props.AsetDividendPower()
     // this.props.navigation.push('Bet', this.state.LotArray[0])
   }
 
@@ -562,6 +564,8 @@ const mapDispatchToProps = (dispatch) => {
     setPasswordRule: () => {
       dispatch(setPasswordRule())
     },
+    AsetDayWagePower: () => dispatch(AsetDayWagePower()),
+    AsetDividendPower: () => dispatch(AsetDividendPower()),
     AsetFreshMsg: () => {
       dispatch(AsetFreshMsg())
     }
