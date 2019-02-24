@@ -101,7 +101,7 @@ class ExampleScroll extends Component {
       textAlign: 'center',
       padding: 30,
       color: '#dedede'
-    }}>NO DATA!</Text>
+    }}>暂无数据</Text>
   )
 
   renderSeparatorView = () => {
