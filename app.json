@@ -26,7 +26,7 @@
       }
     },
     "android": {
-      "package": "com.taimei.goldcoast2"
+      "package": "com.goldcoast2.goleteam.debug"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
