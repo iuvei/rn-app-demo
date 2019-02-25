@@ -72,7 +72,7 @@ class ContractDaywage extends React.Component {
       activeTab: 0
     }
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -136,12 +136,12 @@ class ContractDaywage extends React.Component {
         </Flex>
       }
       {
-        (w === 'downuser' && dataItem.status === 3 && Number(dataItem.isSatisfy) === 1) &&
-        <Flex>
-          <Flex.Item style={{paddingHorizontal: 20}}>
-          </Flex.Item>
-          <Flex.Item style={{paddingHorizontal: 20}}><Button size="small" onPress={() => this.distributedContract({dataItem})}>派发</Button></Flex.Item>
-        </Flex>
+        // (w === 'downuser' && dataItem.status === 3 && Number(dataItem.isSatisfy) === 1) &&
+        // <Flex>
+        //   <Flex.Item style={{paddingHorizontal: 20}}>
+        //   </Flex.Item>
+        //   <Flex.Item style={{paddingHorizontal: 20}}><Button size="small" onPress={() => this.distributedContract({dataItem})}>派发</Button></Flex.Item>
+        // </Flex>
       }
     </View>
   }
