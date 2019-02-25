@@ -64,9 +64,10 @@ export default class GamesScreen extends React.Component {
               tabBarUnderlineStyle={{backgroundColor: '#00bbcc'}}
               tabBarBackgroundColor={'#ffffff'}
               tabBarActiveTextColor={'#00bbcc'}
-              tabBarInactiveTextColor={'#666666'}>
+              tabBarInactiveTextColor={'#666666'}
+              onChange={(tab, index) => this.setState({activeTab: index})}>
               <LotteryHall navigation={this.props.navigation}></LotteryHall>
-              <RealPeople navigation={this.props.navigation}></RealPeople>
+              <RealPeople navigation={this.props.navigation} shouldPlay={activeTab === 1}></RealPeople>
               <Slot navigation={this.props.navigation}></Slot>
               <Chess navigation={this.props.navigation}></Chess>
             </Tabs>
@@ -80,7 +81,7 @@ export default class GamesScreen extends React.Component {
               tabBarInactiveTextColor={'#666666'}
               onChange={(tab, index) => this.setState({activeTab: index})}>
               <LotteryHall navigation={this.props.navigation}></LotteryHall>
-              <RealPeople navigation={this.props.navigation}></RealPeople>
+              <RealPeople navigation={this.props.navigation} shouldPlay={activeTab === 1}></RealPeople>
               <Slot navigation={this.props.navigation}></Slot>
               <Chess navigation={this.props.navigation}></Chess>
             </Tabs>
