@@ -1,10 +1,11 @@
 import { Updates } from 'expo'
 import { Alert } from 'react-native'
-import { Toast } from '@ant-design/react-native'
+import { Toast, Portal } from '@ant-design/react-native'
 
-export const fetchUpdateAndReload = async () => {
+export const fetchUpdateAndReload = async (key) => {
   try {
     const response = await Updates.fetchUpdateAsync()
+    if (key) Portal.remove()
     if (response.isNew) {
       Alert.alert(
         '温馨提示',
@@ -43,8 +44,8 @@ export const checkOtaUpdates = async () => {
           {
             text: '确 定',
             onPress: () => {
-              Toast.loading('正在下载最新版本...')
-              fetchUpdateAndReload()
+              let key = Toast.loading('正在下载最新版本...', 0)
+              fetchUpdateAndReload(key)
             },
             style: 'cancel'
           }
