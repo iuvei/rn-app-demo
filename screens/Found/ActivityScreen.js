@@ -135,9 +135,43 @@ class ActivityScreen extends React.Component {
 
   _renderContent = item => {
     let width = Dimensions.get('window').width
+    console.log(item.rewardValue)
+    let rewardValue = item.rewardValue ? JSON.parse(item.rewardValue) : []
     return (
       <View style={{paddingLeft: 10, paddingRight: 10}}>
-        <HTML html={item.local_introduce || '<div>--</div>'} imagesMaxWidth={width} ignoredTags={tags} renderers={renderers} />
+        {
+          item.activityCode !== 'otcPay' && rewardValue && rewardValue instanceof Array ?
+            <View>
+              <ScrollView horizontal={true}>
+                <View>
+                  <View style={{paddingVertical: 5, paddingHorizontal: 10, borderColor: '#ccc', borderWidth: 1}}><Text>{item.table_header[0]}</Text></View>
+                  {
+                    rewardValue.map((v,index) =>
+                      <View key={index} style={{paddingVertical: 5, paddingHorizontal: 10, borderColor: '#ccc', borderWidth: 1}}><Text>{v.minPeriphery} - {v.maxPeriphery }</Text></View>
+                    )
+                  }
+                </View>
+                <View>
+                  <View style={{paddingVertical: 5, paddingHorizontal: 10, borderColor: '#ccc', borderWidth: 1}}><Text>{item.table_header[1]}</Text></View>
+                  {
+                    rewardValue.map((v,index) =>
+                      <View key={index} style={{paddingVertical: 5, paddingHorizontal: 10, borderColor: '#ccc', borderWidth: 1}}>
+                        <Text>
+                          {
+                            item.activityCode === 'sjksyj' && <Text>{v.oneReword} / {v.twoReword} / {v.threeReword}</Text>
+                          }
+                          <Text>{v.reword } 元</Text>
+                        </Text>
+                      </View>
+                    )
+                  }
+                </View>
+              </ScrollView>
+            </View>
+            :
+            <HTML html={item.local_introduce || '<div>--</div>'} imagesMaxWidth={width} ignoredTags={tags} renderers={renderers} />
+
+        }
         <Text>活动说明:</Text>
         <HTML html={item.local_explanation || '<div>--</div>'} imagesMaxWidth={width} ignoredTags={tags} renderers={renderers} />
         <WhiteSpace size="sm" />
