@@ -309,9 +309,11 @@ class HomeScreen extends React.Component {
                 <Text style={styles.favoriteHeadText}>我的喜爱</Text>
               </Flex>
             </View>
-            <TouchableHighlight style={styles.favoriteHeadR} underlayColor={'#ffffff'}>
-              <Text style={styles.favoriteHeadTextR}
-                    onPress={() => this.setLot()}>
+            <TouchableHighlight
+              style={styles.favoriteHeadR}
+              underlayColor={'#ffffff'}
+              onPress={() => this.props.navigation.navigate('CustomizeGames')}>
+              <Text style={styles.favoriteHeadTextR}>
                 {'添 加'}
               </Text>
             </TouchableHighlight>
