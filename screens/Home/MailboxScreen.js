@@ -192,9 +192,9 @@ class MailboxScreen extends React.Component {
             renderItem={this.renderItem}
             beforeUpdateList={({res}, fn) => {
               let dataList = res.data && res.data.pageColumns ? res.data.pageColumns : []
-              this.setState({
-                dataList: dataList
-              })
+              this.setState(prevState => ({
+                dataList: [...prevState.dataList, ...dataList]
+              }))
               let {total} = res.data
               let {pageSize, pageNumber} = params
               let NullData = Math.ceil(total / pageSize) < pageNumber
