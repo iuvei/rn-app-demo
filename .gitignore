@@ -6,3 +6,8 @@ npm-debug.*
 *.p12
 *.key
 *.mobileprovision
+android
+ios
+.buckconfig
+.flowconfig
+.gitattributes

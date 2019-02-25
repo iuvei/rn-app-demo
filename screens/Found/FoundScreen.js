@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, ImageBackground, ScrollView, Animated, Easing }
 import { WhiteSpace, Flex, Toast } from '@ant-design/react-native';
 import Header from './../../components/Header'
 import { getPlatformReward } from './../../api/basic'
+import {connect} from "react-redux"
+import {AsetSoundType} from "../../actions/common"
 
-export default class FoundScreen extends React.Component {
+class FoundScreen extends React.Component {
   static navigationOptions = {
     header: <Header hideLeft={true}/>
   }
@@ -88,6 +90,7 @@ export default class FoundScreen extends React.Component {
   }
 
   _getPlatformReward = () => {
+    this.props.AsetSoundType({type: 'coin'})
     getPlatformReward().then(res => {
       if (res.code === 0) {
         this.setState({
@@ -282,3 +285,15 @@ const styles = StyleSheet.create({
     color: '#8d8b8e'
   }
 })
+
+const mapStateToProps = (state, props) => {
+  return {}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    AsetSoundType: (data) => dispatch(AsetSoundType(data))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FoundScreen)
