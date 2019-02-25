@@ -12,8 +12,7 @@ import CheckBox from 'react-native-check-box'
 
 import { modeInfo } from '../../data/options'
 import { withNavigation } from 'react-navigation'
-import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
-import { isInteger } from 'lodash'
+import { scaleSize, stylesUtil, styleUtil } from '../../utils/ScreenUtil'
 import SliderComponent from './BetPage/SliderComponent'
 import BetBallContainer from './BetPage/BetBallContainer'
 import ModeComponent from './BetPage/ModeComponent'
@@ -295,8 +294,11 @@ class RowBall extends React.Component {
                   }
                 }}
               /> */}
-              <SimpleStepper value={this.state.multiple} valueChanged={value => this.valueChanged(value)}
-                minimumValue={0} maximumValue={9999} initialValue={1} padding={0}
+              <SimpleStepper
+                value={this.state.multiple}
+                valueChanged={value => this.valueChanged(value)}
+                minimumValue={1} maximumValue={9999}
+                initialValue={1} padding={0}
                 tintColor="#00bbcc" imageHeight={28} />
             </View>
             <View style={styles.ModeView}>
@@ -323,7 +325,9 @@ class RowBall extends React.Component {
                       })
                     })
                   }}
-                  style={styles.chaseButton}>追号</Button>
+                  style={{height: scaleSize(28), borderRadius: 4}}>
+                  <Text style={styleUtil({fontSize:12})}>追号</Text>
+                </Button>
               </View>
             }
           </View>
@@ -364,7 +368,7 @@ class RowBall extends React.Component {
                 key={'fastBuy'}
                 type="ghost" size="small"
                 onPress={() => addBuyCard(true)}
-                style={styles.fastBuyText}>
+                style={[styles.fastBuyText,{height:scaleSize(28)}]}>
                 快速投注</Button>
             </View>
           </View>
@@ -415,7 +419,6 @@ const styles = StyleSheet.create(stylesUtil({
   },
 
   chaseView: {width: 80},
-  chaseButton: {height: 28, borderRadius: 4},
   BuyInfoView: {
     flexDirection: 'row', marginTop: 6, borderTopWidth: 1,
     borderColor: '#dfdfdf', padding: 10
@@ -423,5 +426,5 @@ const styles = StyleSheet.create(stylesUtil({
   BuyInfoDefaultText: {color: '#333'},
   BuyInfoActiveText: {color: '#0a7cda'},
   fastBuyView: {width: 80, justifyContent: 'center'},
-  fastBuyText: {height: 28, borderRadius: 4}
+  fastBuyText: {borderRadius: 4}
 }))
