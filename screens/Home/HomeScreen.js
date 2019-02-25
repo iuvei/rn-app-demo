@@ -26,7 +26,7 @@ import {
   AgetRecharge,
   setPasswordRule
 } from './../../actions/common'
-import { AsetFreshMsg, AsetDayWagePower, AsetDividendPower } from '../../actions/member'
+import { AsetFreshMsg, AsetDayWagePower, AsetDividendPower, AsetUserBankCards } from '../../actions/member'
 import { getHotLotter } from './../../api/lottery'
 import { getIconName } from '../../utils/getLotImg'
 import { stylesUtil } from '../../utils/ScreenUtil'
@@ -137,6 +137,8 @@ class HomeScreen extends React.Component {
     this.props.AsetDividendPower()
     this.props.AcheckEnvironment()
     // this.props.navigation.push('Bet', this.state.LotArray[0])
+    console.log(this.props.userId)
+    this.props.AsetUserBankCards(this.props.userId)
   }
 
   componentWillMount() {
@@ -313,7 +315,7 @@ class HomeScreen extends React.Component {
               style={styles.favoriteHeadR}
               underlayColor={'#ffffff'}
               onPress={() => this.props.navigation.navigate('CustomizeGames')}>
-              <Icon name={'right'} color={'#00b4cc'} />
+              <Icon name={'right'} color={'#00b4cc'}/>
             </TouchableHighlight>
           </Flex>
         </View>
@@ -563,10 +565,9 @@ const styles = StyleSheet.create(stylesUtil({
   favoriteHeadText: {
     height: 30,
     lineHeight: 30,
-    fontSize:14
+    fontSize: 14
   },
-  favoriteHeadR: {
-  },
+  favoriteHeadR: {},
   favoriteHeadTextR: {
     height: 30,
     lineHeight: 30,
@@ -609,10 +610,11 @@ const styles = StyleSheet.create(stylesUtil({
 }))
 
 const mapStateToProps = (state) => {
-  let {usualLottery, systemNews} = state.common
+  let {usualLottery, systemNews, userId} = state.common
   return ({
     systemNews,
-    usualLottery
+    usualLottery,
+    userId
   })
 }
 
@@ -641,7 +643,8 @@ const mapDispatchToProps = (dispatch) => {
     AsetFreshMsg: () => {
       dispatch(AsetFreshMsg())
     },
-    AcheckEnvironment: () => dispatch(checkEnvironment())
+    AcheckEnvironment: () => dispatch(checkEnvironment()),
+    AsetUserBankCards: data => dispatch(AsetUserBankCards(data))
   }
 }
 

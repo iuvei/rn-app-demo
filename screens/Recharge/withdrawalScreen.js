@@ -268,7 +268,8 @@ class Withdrawal extends React.Component {
         </View>
       )
     }
-    if (!userSecurityLevel.isBindCard && userSecurityLevel.withdrawBank) {
+    if (userSecurityLevel.withdrawBank && userBankInfo.userBankCards.length === 0
+    && userBankInfo.userBankCards.find(item=>item.status===0) === undefined ) {
       return (
         <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
           <Text style={{color: '#333', textAlign: 'center'}}>暂未绑定银行卡/银行卡审核中，请<Text onPress={() => this.props.navigation.navigate('BankManager')} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
