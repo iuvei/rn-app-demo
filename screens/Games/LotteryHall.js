@@ -158,6 +158,7 @@ class LotteryHall extends React.Component {
       >
         <Accordion
           sections={list}
+          underlayColor="#f0f0f0"
           sectionContainerStyle={{marginTop:10}}
           activeSections={this.state.activeSections}
           renderHeader={this._renderHeader}

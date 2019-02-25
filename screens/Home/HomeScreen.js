@@ -274,7 +274,7 @@ class HomeScreen extends React.Component {
             hotLoList.length > 0 && hotLoList.map((item, index) => {
                 return (
                   <View style={styles.hotItem} key={index}>
-                    <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
+                    <Flex align={'center'} justify={'center'} onPress={() => this.props.navigation.navigate('Bet', item)}>
                       <View>
                         <Image source={getIconName(item.realCategory)} resizeMode={'contain'}
                                style={styles.hotItemImg}/>
@@ -402,11 +402,10 @@ const styles = StyleSheet.create(stylesUtil({
     marginTop: 3
   },
   hotItem: {
-    height: 80,
-    backgroundColor: '#fff',
+    height: 95,
+    backgroundColor: '#ffffff',
     borderWidth: 1,
     borderColor: '#eaeaea',
-    paddingHorizontal: 0,
     borderRadius: 6
   },
   hotItemImg: {
@@ -426,65 +425,13 @@ const styles = StyleSheet.create(stylesUtil({
     color: '#787878',
     paddingBottom: 5
   },
-  hotItemRightTenBall: {
-    maxWidth: 130,
-    marginLeft: 10
-  },
   hotItemRight: {
-    width: 200,
+    width: 190,
     marginLeft: 10,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     padding: 2, flexWrap: 'wrap',
     paddingLeft: 2
-  },
-  hotItemBall: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    marginRight: 3,
-    marginBottom: 3,
-    backgroundColor: '#00b4cc'
-  },
-  hotItemSmallBall: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    marginRight: 3,
-    marginBottom: 3,
-    backgroundColor: '#00b4cc'
-  },
-  hotItemMidBall: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    marginRight: 3,
-    marginBottom: 3,
-    backgroundColor: '#00b4cc'
-  },
-  hotItemLgText: {
-    height: 24,
-    width: 24,
-    lineHeight: 24,
-    fontSize: 14,
-    textAlign: 'center',
-    color: 'white'
-  },
-  hotItemMidText: {
-    height: 20,
-    width: 20,
-    lineHeight: 20,
-    fontSize: 12,
-    textAlign: 'center',
-    color: 'white'
-  },
-  hotItemSmallText: {
-    height: 14,
-    width: 14,
-    lineHeight: 14,
-    fontSize: 10,
-    textAlign: 'center',
-    color: 'white'
   },
   lotBall3: {
     padding: 0,
@@ -504,17 +451,17 @@ const styles = StyleSheet.create(stylesUtil({
   },
   lotBall10: {
     padding: 0,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     marginRight: 4,
     marginBottom: 2
   },
   lotBall20: {
     padding: 0,
-    width: 26,
-    height: 26,
-    borderRadius: 13,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     marginRight: 1,
     marginBottom: 1
   },
