@@ -56,17 +56,17 @@ class RealPeople extends React.Component {
     let {userPlatformInfo, shouldPlay} = this.props
     return (
       <ScrollView style={{paddingLeft: 5, paddingRight: 5}}>
-        <Video
-          source={require('../../assets/videos/jf.mp4')}
-          rate={1.0}
-          useNativeControls={true}
-          volume={1.0}
-          isMuted={isMuted}
-          resizeMode="contain"
-          shouldPlay={shouldPlay}
-          isLooping
-          style={{height: 240}}
-        />
+        {/*<Video*/}
+          {/*source={require('../../assets/videos/jf.mp4')}*/}
+          {/*rate={1.0}*/}
+          {/*useNativeControls={true}*/}
+          {/*volume={1.0}*/}
+          {/*isMuted={isMuted}*/}
+          {/*resizeMode="contain"*/}
+          {/*shouldPlay={shouldPlay}*/}
+          {/*isLooping*/}
+          {/*style={{height: 240}}*/}
+        {/*/>*/}
         <Flex wrap="wrap" justify="space-between">
           {
             userPlatformInfo.map((item, index) => {
