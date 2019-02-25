@@ -307,8 +307,12 @@ class HomeScreen extends React.Component {
                 <Text style={styles.favoriteHeadText}>我的喜爱</Text>
               </Flex>
             </View>
-            <View style={styles.favoriteHeadR}><Text style={styles.favoriteHeadTextR}
-                                                     onPress={() => this.setLot()}>{'>'}</Text></View>
+            <TouchableHighlight style={styles.favoriteHeadR} underlayColor={'#ffffff'}>
+              <Text style={styles.favoriteHeadTextR}
+                    onPress={() => this.setLot()}>
+                {'自定义 >'}
+              </Text>
+            </TouchableHighlight>
           </Flex>
         </View>
 
@@ -559,12 +563,11 @@ const styles = StyleSheet.create(stylesUtil({
     lineHeight: 30
   },
   favoriteHeadR: {
-    width: 30
   },
   favoriteHeadTextR: {
     height: 30,
     lineHeight: 30,
-    fontSize: 20,
+    fontSize: 14,
     textAlign: 'center',
     color: '#00b4cc'
   },
