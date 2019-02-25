@@ -38,7 +38,7 @@ class UpdatePwd extends React.Component {
     props.AsetUserSecureLevel()
     props.AsetUserSecureConfig()
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -161,6 +161,7 @@ class UpdatePwd extends React.Component {
             <InputItem
               type="password"
               value={oldPwd}
+              autoFocus={true}
               onChange={v => this.setState({
                 oldPwd: v
               })}

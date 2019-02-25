@@ -29,7 +29,7 @@ class UpdateNickname extends React.Component {
       nickName: ''
     }
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -82,6 +82,7 @@ class UpdateNickname extends React.Component {
           </InputItem>
           <InputItem
             value={nickName}
+            autoFocus={true}
             onChange={v => this.setState({
               nickName: v
             })}
