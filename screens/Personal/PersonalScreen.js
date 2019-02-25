@@ -354,7 +354,7 @@ class PersonalScreen extends React.Component {
               </Flex.Item>
               {
                 loginInfo.proxy === 1 &&
-                <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 1})}>
+                <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 1})}  style={{borderRadius: 18}}>
                   <View style={styleUtil({backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34})}>
                     <Text style={styleUtil({textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 34})}>代理管理</Text></View>
                   </TouchableHighlight>
