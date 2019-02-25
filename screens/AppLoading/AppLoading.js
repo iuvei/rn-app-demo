@@ -33,20 +33,8 @@ class AppLoadingScreen extends React.Component {
   }
 
   _loadResourcesAsync = async () => {
-    // 先更新
-    checkOtaUpdates()
     return Promise.all([
-      // 这里回先执行二维码然后再去那数据
-      _getImageSetCookie(),
-      getLoginUser().then(res => {
-        // console.log(`当前用户登陆状态:${res.code === 0 ? '在线' : '下线'}`)
-        if (res.code === 0) {
-          this.props.setLoginStatus(res.code === 0)
-          this.props.setLoginInfo(res.data)
-          this.props.setUserRebate(res.data.acc.user.userId)
-          this.props.AsetUserSecureLevel()
-        }
-      }),
+      checkOtaUpdates(),
       // Asset.loadAsync([
       //   require('./assets/images/robot-dev.png'),
       //   require('./assets/images/robot-prod.png')
@@ -72,6 +60,17 @@ class AppLoadingScreen extends React.Component {
         //   // We include SpaceMono because we use it in HomeScreen.js. Feel free
         //   // to remove this if you are not using it in your app
         'space-mono': require('../../assets/fonts/SpaceMono-Regular.ttf')
+      }),
+      // 这里回先执行二维码然后再去那数据
+      await _getImageSetCookie(),
+      getLoginUser().then(res => {
+        // console.log(`当前用户登陆状态:${res.code === 0 ? '在线' : '下线'}`)
+        if (res.code === 0) {
+          this.props.setLoginStatus(res.code === 0)
+          this.props.setLoginInfo(res.data)
+          this.props.setUserRebate(res.data.acc.user.userId)
+          this.props.AsetUserSecureLevel()
+        }
       })
     ])
   }
