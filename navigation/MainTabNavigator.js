@@ -2,14 +2,14 @@ import React from 'react'
 import {Platform, Image} from 'react-native'
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 
-import TabBarIcon from '../components/TabBarIcon'
+// import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/Home/HomeScreen'
 import GameScreen from '../screens/Games/GamesScreen'
 import RechargeScreen from '../screens/Recharge/RechargeScreen'
 import FoundScreen from '../screens/Found/FoundScreen'
 import PersonalScreen from '../screens/Personal/PersonalScreen'
-import SvgIcon from '../components/SvgIcon'
-import Colors from '../constants/Colors'
+// import SvgIcon from '../components/SvgIcon'
+// import Colors from '../constants/Colors'
 
 // 首页
 const HomeStack = createStackNavigator({
