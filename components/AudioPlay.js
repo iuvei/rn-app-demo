@@ -29,6 +29,15 @@ class AudioPlay extends React.PureComponent {
           case 'stopOrder':
             await soundObject.loadAsync(require('../assets/audio/stopOrder.mp3'))
             break
+          case 'beep':
+            await soundObject.loadAsync(require('../assets/audio/beep.mp3'))
+            break
+          case 'ding':
+            await soundObject.loadAsync(require('../assets/audio/ding.mp3'))
+            break
+          case 'coin':
+            await soundObject.loadAsync(require('../assets/audio/coin.mp3'))
+            break
           default:
             await soundObject.loadAsync(require('../assets/audio/message.mp3'))
             break
