@@ -312,7 +312,7 @@ class HomeScreen extends React.Component {
             <TouchableHighlight style={styles.favoriteHeadR} underlayColor={'#ffffff'}>
               <Text style={styles.favoriteHeadTextR}
                     onPress={() => this.setLot()}>
-                {'自定义 >'}
+                {'添 加'}
               </Text>
             </TouchableHighlight>
           </Flex>
