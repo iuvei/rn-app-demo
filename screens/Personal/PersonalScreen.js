@@ -42,7 +42,7 @@ class PersonalScreen extends React.Component {
             <Text onPress={() => params.changeTextFun('Mailbox')} style={styles.navBarRightItem}>信箱</Text>
           </Text>
           {
-            params && params.freshMsg > 0 && <Button type="primary" size="small" style={styles.navBarTip}><Text onPress={() => params.changeTextFun('Mailbox')} style={styles.navBarTipText}>{params.freshMsg > 99 ? 99 : params.freshMsg}</Text></Button>
+            params && params.freshMsg > 0 && <View style={test.navBarTip}><Text onPress={() => params.changeTextFun('Mailbox')} style={test.navBarTipText}>{params.freshMsg > 99 ? '99+': params.freshMsg}</Text></View>
           }
         </View>
       }
@@ -346,17 +346,25 @@ class PersonalScreen extends React.Component {
               })
             }}
             renderTabBar={() => {
-            return <Flex style={styleUtil({marginTop: 25, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', padding: 1, borderRadius: 18})}>
-              <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 0})} style={{borderRadius: 18}}>
-                  <View style={styleUtil({backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34})}>
-                    <Text style={styleUtil({textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 34})}>订单报表</Text></View>
+            return <Flex
+              style={[
+                styleUtil({marginTop: 10, marginBottom: 18, width: 260, padding: 1}),
+                {marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', borderRadius: 18}
+              ]}>
+              <Flex.Item>
+                <TouchableHighlight onPress={() => this.setState({page: 0})} style={{borderRadius: 18}}>
+                  <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 18, height: 38}}>
+                    <Text style={{textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 38}}>订单报表</Text>
+                  </View>
                 </TouchableHighlight>
               </Flex.Item>
               {
                 loginInfo.proxy === 1 &&
-                <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 1})}  style={{borderRadius: 18}}>
-                  <View style={styleUtil({backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34})}>
-                    <Text style={styleUtil({textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 34})}>代理管理</Text></View>
+                <Flex.Item>
+                  <TouchableHighlight onPress={() => this.setState({page: 1})}  style={{borderRadius: 18}}>
+                  <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 18, height: 38}}>
+                    <Text style={{textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 38}}>代理管理</Text>
+                  </View>
                   </TouchableHighlight>
                 </Flex.Item>
               }
@@ -391,23 +399,22 @@ class PersonalScreen extends React.Component {
     )
   }
 }
-
+const test = StyleSheet.create({
+  navBarTip: {
+    position: 'absolute',
+    width: 16,
+    height: 16,
+    backgroundColor: 'red',
+    borderRadius: 8,
+    right: -5,
+    top: -5
+  },
+  navBarTipText: {color: 'white', fontSize: 10, lineHeight: 16,textAlign: 'center'},
+})
 const styles = StyleSheet.create(stylesUtil({
   navBarRight: {fontSize: 16, color: '#fff'},
   navBarRightItem: {paddingHorizontal: 16},
   leftText: {fontSize: 16, color: '#fff'},
-  navBarTip: {
-    position: 'absolute',
-    padding: 0,
-    width: 22,
-    height: 22,
-    borderWidth: 0,
-    backgroundColor: 'red',
-    borderRadius: 11,
-    right: -5,
-    top: -8
-  },
-  navBarTipText: {color: 'white', fontSize: 10, textAlign: 'center'},
   container: {
     flex: 1,
     backgroundColor: '#fff'
