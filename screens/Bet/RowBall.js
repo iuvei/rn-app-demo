@@ -297,7 +297,7 @@ class RowBall extends React.Component {
               <SimpleStepper
                 value={this.state.multiple}
                 valueChanged={value => this.valueChanged(value)}
-                minimumValue={1} maximumValue={9999}
+                minimumValue={0} maximumValue={99999}
                 initialValue={1} padding={0}
                 tintColor="#00bbcc" imageHeight={28} />
             </View>

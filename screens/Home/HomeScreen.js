@@ -402,7 +402,7 @@ const styles = StyleSheet.create(stylesUtil({
     marginTop: 3
   },
   hotItem: {
-    height: 82,
+    height: 84,
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#eaeaea',
