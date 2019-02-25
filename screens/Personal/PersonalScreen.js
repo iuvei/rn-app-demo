@@ -42,7 +42,7 @@ class PersonalScreen extends React.Component {
             <Text onPress={() => params.changeTextFun('Mailbox')} style={styles.navBarRightItem}>信箱</Text>
           </Text>
           {
-            params && params.freshMsg > 0 && <Button type="primary" size="small" style={styles.navBarTip}><Text onPress={() => params.changeTextFun('Mailbox')} style={styles.navBarTipText}>{params.freshMsg > 99 ? 99 : params.freshMsg}</Text></Button>
+            params && params.freshMsg > 0 && <View style={test.navBarTip}><Text onPress={() => params.changeTextFun('Mailbox')} style={test.navBarTipText}>{params.freshMsg > 99 ? '99+': params.freshMsg}</Text></View>
           }
         </View>
       }
@@ -391,23 +391,22 @@ class PersonalScreen extends React.Component {
     )
   }
 }
-
+const test = StyleSheet.create({
+  navBarTip: {
+    position: 'absolute',
+    width: 16,
+    height: 16,
+    backgroundColor: 'red',
+    borderRadius: 8,
+    right: -5,
+    top: -5
+  },
+  navBarTipText: {color: 'white', fontSize: 10, lineHeight: 16,textAlign: 'center'},
+})
 const styles = StyleSheet.create(stylesUtil({
   navBarRight: {fontSize: 16, color: '#fff'},
   navBarRightItem: {paddingHorizontal: 16},
   leftText: {fontSize: 16, color: '#fff'},
-  navBarTip: {
-    position: 'absolute',
-    padding: 0,
-    width: 22,
-    height: 22,
-    borderWidth: 0,
-    backgroundColor: 'red',
-    borderRadius: 11,
-    right: -5,
-    top: -8
-  },
-  navBarTipText: {color: 'white', fontSize: 10, textAlign: 'center'},
   container: {
     flex: 1,
     backgroundColor: '#fff'
