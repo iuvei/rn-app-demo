@@ -101,7 +101,11 @@ class AddCustomizeGamesScreen extends React.Component {
   }
 
   _toSetLot = (v) => {
-    let {realCategory, lotterCode} = v
+    let {realCategory, lotterCode, status} = v
+    if (status === 1) {
+      Toast.fail('该彩种暂未开通，敬请期待')
+      return
+    }
     if (this.state.checkAllGroup.includes(lotterCode)) {
       this.setState((prevState) => {
         let checkAllGroup = pull(prevState.checkAllGroup, lotterCode)

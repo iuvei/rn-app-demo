@@ -1,6 +1,7 @@
 import React from 'react'
 import {ScrollView, View, Text, ImageBackground, Image, StyleSheet, TouchableHighlight} from 'react-native'
 import Accordion from 'react-native-collapsible/Accordion'
+import { Toast } from '@ant-design/react-native';
 import { getHotLotter } from './../../api/lottery'
 import { connect } from "react-redux";
 import { getLoHoIconName } from '../../utils/getLotImg'
@@ -126,7 +127,7 @@ class LotteryHall extends React.Component {
                 <View key={j} style={{width: '25%', alignItems: 'center'}}>
                   <TouchableHighlight
                     underlayColor="#f0f0f0"
-                    onPress={() => this.props.navigation.navigate('Bet', list)}>
+                    onPress={() => this._gotoBet(list)}>
                     <View>
                       <Image
                         source={getLoHoIconName(list)}
@@ -141,6 +142,14 @@ class LotteryHall extends React.Component {
         </View>
       ) : <Text>暂无游 戏</Text>
     )
+  }
+
+  _gotoBet = (list) => {
+    if (list.status === 1) {
+      Toast.fail('该彩种暂未开通，敬请期待')
+    } else {
+      this.props.navigation.navigate('Bet', list)
+    }
   }
 
   _updateSections = activeSections => {
