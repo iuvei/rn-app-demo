@@ -505,11 +505,9 @@ const styles = StyleSheet.create(stylesUtil({
     lineHeight: 30
   },
   favoriteHeadR: {
-    width: 30
+    width: 35
   },
   favoriteHeadTextR: {
-    height: 30,
-    lineHeight: 30,
     fontSize: 20,
     textAlign: 'center',
     color: '#00b4cc'
