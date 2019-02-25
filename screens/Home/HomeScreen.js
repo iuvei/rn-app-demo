@@ -426,7 +426,7 @@ const styles = StyleSheet.create(stylesUtil({
     paddingBottom: 5
   },
   hotItemRight: {
-    width: 190,
+    width: 200,
     marginLeft: 10,
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -459,9 +459,9 @@ const styles = StyleSheet.create(stylesUtil({
   },
   lotBall20: {
     padding: 0,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
     marginRight: 1,
     marginBottom: 1
   },

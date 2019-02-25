@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { View, Text, StyleSheet, Clipboard } from 'react-native'
+import { View, Text, StyleSheet, Clipboard, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import { SegmentedControl, InputItem, Flex, Button, Toast } from '@ant-design/react-native'
 import { Picker } from 'native-base'
@@ -182,149 +182,6 @@ class OpenCenter extends React.Component {
     })
   }
 
-  normalRender = () => {
-    let {maxRebate, minRebate} = this.state
-    return (
-      <View>
-        <View style={styles.normal}>
-          <Flex direction={'row'} style={styles.userType}>
-            <Text style={{fontSize: 16}}>玩家类型</Text>
-            <SegmentedControl selectedIndex={this.state.isProxy} tintColor={'#00bbcc'} values={['玩家', '代理']}
-                              style={{width: 100, marginLeft: 50}} onChange={e => {
-              this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
-            }}/>
-          </Flex>
-          <InputItem
-            clear
-            value={this.state.userName}
-            onChange={userName => {
-              this.setState({
-                userName
-              })
-            }}
-            placeholder="5-10位数字或字母，字母开头"
-          >
-            开户账号
-          </InputItem>
-          <InputItem
-            clear
-            last
-            type={'number'}
-            value={this.state.userRebate}
-            onChange={userRebate => {
-              this.setState({
-                userRebate
-              })
-            }}
-            placeholder={`范围${minRebate}-${maxRebate}`}
-          >
-            彩票返点
-          </InputItem>
-        </View>
-        <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'}
-                onPress={this._addDown}>确定</Button>
-        <View style={{marginTop: 20}}>
-          <Text style={styles.hint}>温馨提示</Text>
-          <Text style={styles.hint}>自动注册的会员初始密码为“<Text style={{color: 'orange'}}>a123456</Text>”。</Text>
-          <Text style={styles.hint}>
-            为提高服务器效率，系统将自动清理注册一个月没有充值，或两个月未登录，并且金额低于<Text style={{color: 'orange'}}>10</Text>元的账户。
-          </Text>
-        </View>
-      </View>
-
-    )
-  }
-
-  linkRender = () => {
-    let {maxRebate, minRebate} = this.state
-    return (
-      <View>
-        <View style={styles.normal}>
-          <Flex direction={'row'} style={styles.userType}>
-            <Text style={{fontSize: 16}}>玩家类型</Text>
-            <SegmentedControl selectedIndex={this.state.isProxy} tintColor={'#00bbcc'} values={['玩家', '代理']}
-                              style={{width: 100, marginLeft: 50}} onChange={e => {
-              this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
-            }}/>
-          </Flex>
-          <Flex direction={'row'} style={styles.userType}>
-            <Text style={{fontSize: 16}}>链接有效期</Text>
-            <Picker selectedValue={this.state.validDays} onValueChange={value => this.setState({validDays: value})}
-                    mode="dropdown" style={{width: 180, height: 30, marginLeft: 15, marginRight: 20}}>
-              <Picker.Item label="1天" value={24}/>
-              <Picker.Item label="3天" value={24 * 3}/>
-              <Picker.Item label="7天" value={24 * 7}/>
-              <Picker.Item label="30天" value={24 * 30}/>
-              <Picker.Item label="永久有效" value={0}/>
-            </Picker>
-          </Flex>
-
-          <InputItem
-            clear
-            type={'number'}
-            value={this.state.availableTimes}
-            onChange={availableTimes => {
-              this.setState({
-                availableTimes: availableTimes > 99999 ? '99999' : availableTimes
-              })
-            }}
-            placeholder="请输入数字"
-          >
-            使用次数
-          </InputItem>
-          <InputItem
-            clear
-            last
-            type={'number'}
-            value={this.state.userRebate}
-            onChange={userRebate => {
-              this.setState({
-                userRebate
-              })
-            }}
-            placeholder={`范围${minRebate}-${maxRebate}`}
-          >
-            彩票返点
-          </InputItem>
-        </View>
-        <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'}
-                onPress={this._addLinkup}>生成链接</Button>
-        <View style={{marginTop: 20}}>
-          <Text style={styles.hint}>温馨提示</Text>
-          <Text style={styles.hint}>生成链接不会立即扣减配额，只有用户使用该链接注册成功的时候，才会扣减配额；</Text>
-          <Text style={styles.hint}>请确保您的配额充足，配额不足将造成用户注册不成功！</Text>
-        </View>
-      </View>
-    )
-  }
-
-  manageRender = () => {
-    let {api, params, KeyName, isShow} = this.state
-    return (
-      <View style={{flex: 1}}>
-        <View style={{marginTop: 5, height: 40}}>
-          <Text style={styles.hint}>温馨提示</Text>
-          <Text style={styles.hint}>点击注册码可快速复制！</Text>
-        </View>
-        {isShow ? null : <UIListView
-          ref={ref => this.OpenCenter = ref}
-          api={api}
-          KeyName={`KeyName-${KeyName}`}
-          params={params}
-          renderItem={this.renderItem}
-          // 返回数据空或者处理后的数据源
-          beforeUpdateList={({res}, fn) => {
-            let dataList = res.data && res.data.root ? res.data.root : []
-            let {records, totalCount} = res.data
-            let NullData = Math.ceil(totalCount / 10) < records
-            // 或在这里增加 其他状态码的处理Alter
-            fn(NullData ? [] : {dataList})
-          }}
-        />}
-      </View>
-    )
-  }
-
   onSearch = async () => {
     await this.setState({isShow: true}, () => {
       this.setState({isShow: false})
@@ -344,25 +201,138 @@ class OpenCenter extends React.Component {
   }
 
   render () {
-    let contain = ''
-    switch (this.state.selectedIndex) {
-      case 0:
-        contain = this.normalRender()
-        break
-      case 1:
-        contain = this.linkRender()
-        break
-      case 2:
-        contain = this.manageRender()
-        break
-      default:
-        contain = this.normalRender()
-    }
+    let {maxRebate, minRebate, api, params, KeyName, isShow, selectedIndex} = this.state
     return (
       <View style={styles.container}>
         <SegmentedControl values={['普通开户', '链接开户', '链接管理']} tintColor={'#00bbcc'} style={styles.segmented}
                           onChange={this.onChange}/>
-        {contain}
+        <View style={selectedIndex === 0 ? {}:{height: 0, overflow: 'hidden'}}>
+          <View style={styles.normal}>
+            <Flex direction={'row'} style={styles.userType}>
+              <Text style={{fontSize: 16}}>玩家类型</Text>
+              <SegmentedControl selectedIndex={this.state.isProxy} tintColor={'#00bbcc'} values={['玩家', '代理']}
+                                style={{width: 100, marginLeft: 50}} onChange={e => {
+                this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
+              }}/>
+            </Flex>
+            <InputItem
+              clear
+              value={this.state.userName}
+              autoFocus={true}
+              autoCapitalize="none"
+              keyboardType={Platform.OS === 'ios' ? 'web-search' : 'visible-password'}
+              onChange={userName => {
+                this.setState({
+                  userName
+                })
+              }}
+              placeholder="5-10位数字或字母，字母开头"
+            >
+              开户账号
+            </InputItem>
+            <InputItem
+              clear
+              last
+              type={'number'}
+              value={this.state.userRebate}
+              onChange={userRebate => {
+                this.setState({
+                  userRebate
+                })
+              }}
+              placeholder={`范围${minRebate}-${maxRebate}`}
+            >
+              彩票返点
+            </InputItem>
+          </View>
+          <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'}
+                  onPress={this._addDown}>确定</Button>
+          <View style={{marginTop: 20}}>
+            <Text style={styles.hint}>温馨提示</Text>
+            <Text style={styles.hint}>自动注册的会员初始密码为“<Text style={{color: 'orange'}}>a123456</Text>”。</Text>
+            <Text style={styles.hint}>
+              为提高服务器效率，系统将自动清理注册一个月没有充值，或两个月未登录，并且金额低于<Text style={{color: 'orange'}}>10</Text>元的账户。
+            </Text>
+          </View>
+        </View>
+        <View style={selectedIndex === 1 ? {}:{height: 0, overflow: 'hidden'}}>
+          <View style={styles.normal}>
+            <Flex direction={'row'} style={styles.userType}>
+              <Text style={{fontSize: 16}}>玩家类型</Text>
+              <SegmentedControl selectedIndex={this.state.isProxy} tintColor={'#00bbcc'} values={['玩家', '代理']}
+                                style={{width: 100, marginLeft: 50}} onChange={e => {
+                this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
+              }}/>
+            </Flex>
+            <Flex direction={'row'} style={styles.userType}>
+              <Text style={{fontSize: 16}}>链接有效期</Text>
+              <Picker selectedValue={this.state.validDays} onValueChange={value => this.setState({validDays: value})}
+                      mode="dropdown" style={{width: 180, height: 30, marginLeft: 15, marginRight: 20}}>
+                <Picker.Item label="1天" value={24}/>
+                <Picker.Item label="3天" value={24 * 3}/>
+                <Picker.Item label="7天" value={24 * 7}/>
+                <Picker.Item label="30天" value={24 * 30}/>
+                <Picker.Item label="永久有效" value={0}/>
+              </Picker>
+            </Flex>
+
+            <InputItem
+              clear
+              type={'number'}
+              value={this.state.availableTimes}
+              onChange={availableTimes => {
+                this.setState({
+                  availableTimes: availableTimes > 99999 ? '99999' : availableTimes
+                })
+              }}
+              placeholder="请输入数字"
+            >
+              使用次数
+            </InputItem>
+            <InputItem
+              clear
+              last
+              type={'number'}
+              value={this.state.userRebate}
+              onChange={userRebate => {
+                this.setState({
+                  userRebate
+                })
+              }}
+              placeholder={`范围${minRebate}-${maxRebate}`}
+            >
+              彩票返点
+            </InputItem>
+          </View>
+          <Button size={'large'} style={{backgroundColor: '#00bbcc', borderWidth: 0}} type={'primary'}
+                  onPress={this._addLinkup}>生成链接</Button>
+          <View style={{marginTop: 20}}>
+            <Text style={styles.hint}>温馨提示</Text>
+            <Text style={styles.hint}>生成链接不会立即扣减配额，只有用户使用该链接注册成功的时候，才会扣减配额；</Text>
+            <Text style={styles.hint}>请确保您的配额充足，配额不足将造成用户注册不成功！</Text>
+          </View>
+        </View>
+        <View  style={selectedIndex === 2 ? {flex: 1}:{height: 0, overflow: 'hidden'}}>
+          <View style={{marginTop: 5, height: 40}}>
+            <Text style={styles.hint}>温馨提示</Text>
+            <Text style={styles.hint}>点击注册码可快速复制！</Text>
+          </View>
+          {isShow ? null : <UIListView
+            ref={ref => this.OpenCenter = ref}
+            api={api}
+            KeyName={`KeyName-${KeyName}`}
+            params={params}
+            renderItem={this.renderItem}
+            // 返回数据空或者处理后的数据源
+            beforeUpdateList={({res}, fn) => {
+              let dataList = res.data && res.data.root ? res.data.root : []
+              let {records, totalCount} = res.data
+              let NullData = Math.ceil(totalCount / 10) < records
+              // 或在这里增加 其他状态码的处理Alter
+              fn(NullData ? [] : {dataList})
+            }}
+          />}
+        </View>
       </View>
     )
   }
