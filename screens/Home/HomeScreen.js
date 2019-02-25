@@ -30,6 +30,7 @@ import { AsetFreshMsg, AsetDayWagePower, AsetDividendPower } from '../../actions
 import { getHotLotter } from './../../api/lottery'
 import { getIconName } from '../../utils/getLotImg'
 import { stylesUtil } from '../../utils/ScreenUtil'
+import { checkEnvironment } from '../../actions/classic'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -134,6 +135,7 @@ class HomeScreen extends React.Component {
     this.props.AsetFreshMsg()
     this.props.AsetDayWagePower()
     this.props.AsetDividendPower()
+    this.props.AcheckEnvironment()
     // this.props.navigation.push('Bet', this.state.LotArray[0])
   }
 
@@ -406,13 +408,13 @@ const styles = StyleSheet.create(stylesUtil({
     marginTop: 3
   },
   hotItem: {
-    height: 84,
+    height: 88,
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#eaeaea',
     paddingHorizontal: 0,
     borderRadius: 6,
-    justifyContent:'center'
+    justifyContent: 'center'
   },
   hotItemImg: {
     width: 70,
@@ -637,7 +639,8 @@ const mapDispatchToProps = (dispatch) => {
     AsetDividendPower: () => dispatch(AsetDividendPower()),
     AsetFreshMsg: () => {
       dispatch(AsetFreshMsg())
-    }
+    },
+    AcheckEnvironment: () => dispatch(checkEnvironment())
   }
 }
 
