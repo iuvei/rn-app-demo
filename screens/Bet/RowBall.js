@@ -17,6 +17,7 @@ import { isInteger } from 'lodash'
 import SliderComponent from './BetPage/SliderComponent'
 import BetBallContainer from './BetPage/BetBallContainer'
 import ModeComponent from './BetPage/ModeComponent'
+import SimpleStepper from '../../components/SimpleStepper/SimpleStepper.js'
 
 class RowBall extends React.Component {
   constructor(props) {
@@ -24,7 +25,8 @@ class RowBall extends React.Component {
     this.state = {
       sliderMode: '0.0',
       checkboxItem1: true,
-      showFullTextArea: false
+      showFullTextArea: false,
+      multiple: 1
     }
     this.time = 1700
   }
@@ -59,6 +61,12 @@ class RowBall extends React.Component {
     this.setState({
       showKeyboard: false
     })
+  }
+
+  valueChanged = (value) => {
+    const nextValue = Number(Number(value).toFixed(0))
+    this.setState({ multiple: nextValue })
+    this.props.setBuyInfo({multiple: nextValue})
   }
 
   componentWillReceiveProps(np) {
@@ -276,7 +284,7 @@ class RowBall extends React.Component {
         <View style={styleUtil({...styles.priceWarp, paddingBottom: this.state.showKeyboard ? 220 :0, paddingTop: 5})}>
           <View style={styles.features}>
             <View style={styles.StepperView}>
-              <Stepper
+              {/* <Stepper
                 min={1}
                 max={999999}
                 style={styles.stepper}
@@ -286,7 +294,10 @@ class RowBall extends React.Component {
                     setBuyInfo({multiple: Number(multiple)})
                   }
                 }}
-              />
+              /> */}
+              <SimpleStepper value={this.state.multiple} valueChanged={value => this.valueChanged(value)}
+                minimumValue={0} maximumValue={9999} initialValue={1} padding={0}
+                tintColor="#00bbcc" imageHeight={28} />
             </View>
             <View style={styles.ModeView}>
               {

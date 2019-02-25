@@ -436,6 +436,11 @@ export default (Comp) => {
       } = this.state
       let {playOrgin, bit, checkbox} = activeViewData
       let {num, multiple, total, model, rebateMode} = buyInfo
+      
+      if (multiple === 0) {
+        Toast.info('请输入大于0的倍数')
+        return
+      }
       let {ruleName, title, singlePrice} = activeGamesPlay
       if (num === 0) {
         Toast.info('您还没有选择号码或所选号码不全')
