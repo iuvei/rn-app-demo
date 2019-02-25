@@ -5,9 +5,10 @@ import {
   pollingPrevOpen,
   queryLastIssueReward
 } from '../api/lottery'
-
+import {Modal} from '@ant-design/react-native'
 import { getLatelyOpen, setOpenIssue } from '../actions/classic'
 import { AsetSoundType } from '../actions/common'
+import {View, Text} from 'react-native'
 
 export default (Comp) => {
   class DownTimeHoc extends Component {
@@ -106,6 +107,9 @@ export default (Comp) => {
       if (this.timedown === 10) {
         this.props.AsetSoundType({type: 'stopOrder'})
       }
+      if (this.timedown < 10 && this.timedown > 0) {
+        this.props.AsetSoundType({type: 'ding'})
+      }
       if (this.timedown >= 0) {
         let second = this.timedown % 60
         let midd = (this.timedown - second) / 60 || 0
@@ -126,7 +130,7 @@ export default (Comp) => {
         })
         if (this.timedown === 0) {
           // 截止提示音
-          this.props.AsetSoundType({type: 'message'})
+          this.props.AsetSoundType({type: 'beep'})
           // MessageTips({
           //   content: `<em style="font-weight:700;font-size:15px">
           //               温馨提示：${this.activeLot.lotterName}
@@ -241,26 +245,13 @@ export default (Comp) => {
           // this.AsetWinTime(new Date().getTime())
           if (!bonus) return
           this.props.AsetSoundType({type: 'income'})
-          // NoticeTips({
-          //   type: 'success',
-          //   title: '中奖通知',
-          //   render: h => {
-          //     return h('div', {
-          //       style: {
-          //         color: '#000',
-          //         fontWeight: 550,
-          //         fontSize: '14px',
-          //         lineHeight: '20px'
-          //       }
-          //     }, [
-          //       h('div', `投注金额：${castAmount}`),
-          //       h('div', `彩种：${lotterName}`),
-          //       h('div', `盈亏：${Number(profitLoss).toFixed(4)}`),
-          //       h('div', `期号：${orderIssue}`),
-          //       h('div', `中奖金额：${bonus || 0}`)
-          //     ])
-          //   }
-          // })
+          Modal.alert('中奖通知', <View>
+            <View><Text>投注金额：{castAmount}</Text></View>
+            <View><Text>彩种：{lotterName}</Text></View>
+            <View><Text>盈亏：{Number(profitLoss).toFixed(4)}</Text></View>
+            <View><Text>期号：{orderIssue}</Text></View>
+            <View><Text>中奖金额：{bonus || 0}</Text></View>
+          </View>)
           // 刷新用户余额
           // this.AgetUserBalance()
         }
