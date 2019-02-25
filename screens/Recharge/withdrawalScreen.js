@@ -43,7 +43,7 @@ class Withdrawal extends React.Component {
       pwd: '', // 资金密码
       pwdType: 0, // 密码类型（0交易密码 1谷歌验证码）
       sonOrderList: [], // 拆单-子订单集合
-      
+
       formDataOtc: { // 数字货币提现
         bankCard: '',
         currencyCode: 'CNY', // 币种(默认填写 CNY)
@@ -81,7 +81,7 @@ class Withdrawal extends React.Component {
       curBankItem: Object.assign({}, curBankItem)
     })
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -205,7 +205,7 @@ class Withdrawal extends React.Component {
       }
     })
   }
-  
+
   _handlePressButtonAsync = async (url) => {
     let result = await WebBrowser.openBrowserAsync(url)
     console.log(result)
@@ -271,7 +271,7 @@ class Withdrawal extends React.Component {
     if (!userSecurityLevel.isBindCard && userSecurityLevel.withdrawBank) {
       return (
         <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
-          <Text style={{color: '#333', textAlign: 'center'}}>暂未绑定银行卡，请<Text onPress={() => this.props.navigation.navigate('BankManager')} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
+          <Text style={{color: '#333', textAlign: 'center'}}>暂未绑定银行卡/银行卡审核中，请<Text onPress={() => this.props.navigation.navigate('BankManager')} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
         </View>
       )
     }
