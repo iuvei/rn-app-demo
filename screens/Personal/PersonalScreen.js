@@ -349,11 +349,11 @@ class PersonalScreen extends React.Component {
             return <Flex
               style={[
                 styleUtil({marginTop: 10, marginBottom: 18, width: 260, padding: 1}),
-                {marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', borderRadius: 18}
+                {marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', borderRadius: 20}
               ]}>
               <Flex.Item>
-                <TouchableHighlight onPress={() => this.setState({page: 0})} style={{borderRadius: 18}}>
-                  <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 18, height: 38}}>
+                <TouchableHighlight onPress={() => this.setState({page: 0})} style={{borderRadius: 19}}>
+                  <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 19, height: 38}}>
                     <Text style={{textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 38}}>订单报表</Text>
                   </View>
                 </TouchableHighlight>
@@ -361,8 +361,8 @@ class PersonalScreen extends React.Component {
               {
                 loginInfo.proxy === 1 &&
                 <Flex.Item>
-                  <TouchableHighlight onPress={() => this.setState({page: 1})}  style={{borderRadius: 18}}>
-                  <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 18, height: 38}}>
+                  <TouchableHighlight onPress={() => this.setState({page: 1})}  style={{borderRadius: 19}}>
+                  <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 19, height: 38}}>
                     <Text style={{textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 38}}>代理管理</Text>
                   </View>
                   </TouchableHighlight>
