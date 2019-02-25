@@ -201,7 +201,7 @@ class TeamBetHistory extends React.Component {
                           params: {...prevState.params, loginName: val}
                         }))
                       }}
-                      placeholder="请输入账号"
+                      placeholder="输入账号"
                     >
                     </InputItem>
                   </View>
