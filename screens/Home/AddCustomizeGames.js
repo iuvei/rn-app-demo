@@ -5,7 +5,7 @@ import {
   ScrollView,
   RefreshControl, StyleSheet, Image
 } from 'react-native';
-import { Accordion, Flex, Toast } from '@ant-design/react-native';
+import { Accordion, Flex, Toast, Portal } from '@ant-design/react-native';
 import Header from '../../components/Header';
 import { connect } from "react-redux";
 import {
@@ -34,6 +34,7 @@ class AddCustomizeGamesScreen extends React.Component {
       refreshing: false,
       activeSections: [0],
       checkAllGroup: [],
+      sysSortLottery: [],
       loNumber: { ssc: 0, syx5: 0, pk10: 0, k3: 0, kl8: 0, xyc: 0, kl10: 0, dpc: 0 },
     };
     this.getIconName = value => {
@@ -76,7 +77,8 @@ class AddCustomizeGamesScreen extends React.Component {
   }
 
   initUsualGames = () => {
-    let { usualLottery } = this.props
+    let key = Toast.loading('数据加载中...', 0)
+    let { usualLottery, sysSortLottery } = this.props
     let loNumber = { ssc: 0, syx5: 0, pk10: 0, k3: 0, kl8: 0, xyc: 0, kl10: 0, dpc: 0 }
     let checkAllGroup = []
     usualLottery.forEach(item => {
@@ -86,6 +88,11 @@ class AddCustomizeGamesScreen extends React.Component {
     this.setState({
       loNumber,
       checkAllGroup
+    }, ()=> {
+      setTimeout(()=>{
+        Portal.remove(key)
+        this.setState({sysSortLottery})
+      },50)
     })
   }
 
@@ -159,8 +166,7 @@ class AddCustomizeGamesScreen extends React.Component {
   };
 
   render() {
-    let { sysSortLottery } = this.props
-    let { checkAllGroup } = this.state
+    let { checkAllGroup, sysSortLottery } = this.state
     return (
       <View style={styles.customContainer}>
         <ScrollView

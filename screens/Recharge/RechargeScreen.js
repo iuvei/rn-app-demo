@@ -77,7 +77,7 @@ class RechargeScreen extends React.Component {
       this.currentIndex++
     }
   }
-  
+
   /**
    * 提交充值
    */
@@ -154,7 +154,7 @@ class RechargeScreen extends React.Component {
   render() {
     let {activeAccount, userSecurityLevel} = this.props
     let { activeTabIndex, minRechargeMoney, isLoading, visibleReal, visibleVirtual} = this.state
-    
+
     if (!userSecurityLevel.isTradePassword && userSecurityLevel.rechargeTradpswd) {
       return (
         <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
@@ -172,7 +172,7 @@ class RechargeScreen extends React.Component {
     if (!userSecurityLevel.isBindCard && userSecurityLevel.rechargeBank) {
       return (
         <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
-          <Text style={{color: '#333', textAlign: 'center'}}>暂未绑定银行卡，请<Text onPress={() => this.props.navigation.navigate('BankManager')} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
+          <Text style={{color: '#333', textAlign: 'center'}}>暂未绑定银行卡/银行卡审核中，请<Text onPress={() => this.props.navigation.navigate('BankManager')} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
         </View>
       )
     }

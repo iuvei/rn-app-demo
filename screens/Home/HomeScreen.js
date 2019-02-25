@@ -313,9 +313,7 @@ class HomeScreen extends React.Component {
               style={styles.favoriteHeadR}
               underlayColor={'#ffffff'}
               onPress={() => this.props.navigation.navigate('CustomizeGames')}>
-              <Text style={styles.favoriteHeadTextR}>
-                {'添 加'}
-              </Text>
+              <Icon name={'right'} color={'#00b4cc'} />
             </TouchableHighlight>
           </Flex>
         </View>
