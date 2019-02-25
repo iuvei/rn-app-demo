@@ -325,7 +325,7 @@ class PersonalScreen extends React.Component {
                   <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}  underlayColor={'#ffffff'}>
                     <View key={index} style={styleUtil({height: 45})}>
                       <Image resizeMode='contain' source={item.src} style={styleUtil({width: 28, height: 26})}></Image>
-                      <Text style={{color: '#000'}}>{item.name}</Text>
+                      <Text style={{color: '#1e1e1e', marginTop:5}}>{item.name}</Text>
                     </View>
                   </TouchableHighlight>
                 )

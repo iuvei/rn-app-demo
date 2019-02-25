@@ -5,7 +5,7 @@ import { Toast, Portal } from '@ant-design/react-native'
 export const fetchUpdateAndReload = async (key) => {
   try {
     const response = await Updates.fetchUpdateAsync()
-    if (key) Portal.remove()
+    if (key) Portal.remove(key)
     if (response.isNew) {
       Alert.alert(
         '温馨提示',

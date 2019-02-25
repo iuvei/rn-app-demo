@@ -564,7 +564,8 @@ const styles = StyleSheet.create(stylesUtil({
   },
   favoriteHeadText: {
     height: 30,
-    lineHeight: 30
+    lineHeight: 30,
+    fontSize:14
   },
   favoriteHeadR: {
   },
