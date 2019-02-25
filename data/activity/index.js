@@ -71,8 +71,8 @@ export const list = {
     local_explanation: ''
   },
   otcPay: {
-  activityCode: 'otcPay',
-  activityName: 'OTC充值送',
-  local_banner: 'activity/otccz.png'
-}
+    activityCode: 'otcPay',
+    activityName: 'OTC充值送',
+    local_banner: 'activity/otccz.png'
+  }
 }
