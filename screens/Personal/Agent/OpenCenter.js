@@ -93,8 +93,10 @@ class OpenCenter extends React.Component {
   }
 
   onChange = e => {
+    let index = e.nativeEvent.selectedSegmentIndex
+    index === 2 && this.onSearch()
     this.setState({
-      selectedIndex: e.nativeEvent.selectedSegmentIndex
+      selectedIndex: index
     })
   }
 

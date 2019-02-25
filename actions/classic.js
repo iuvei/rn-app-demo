@@ -3,6 +3,7 @@ import {
   loadGamesPlay, loadLatelyOpenHistory,
   isTestEnvironment
 } from '../api/lottery'
+import { getDividendAuthority } from '../api/member'
 
 // 回掉回调处理
 export const getLatelyOpen = createAction(

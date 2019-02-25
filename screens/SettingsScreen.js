@@ -21,7 +21,7 @@ import {
 } from '../actions/common'
 import { loginOut } from '../api/basic'
 import { WebBrowser, Constants } from 'expo'
-import { host } from '../api.config'
+import { host, PROD } from '../api.config'
 import AudioPlay from '../components/AudioPlay'
 
 class SettingsScreen extends React.Component {
@@ -51,7 +51,7 @@ class SettingsScreen extends React.Component {
           if (res.code === 0) {
             Toast.success('退出成功')
             this.props.setLoginStatus(false)
-            // this.props.navigation.navigate('AppLoading')
+            this.props.navigation.navigate('AppLoading')
           } else {
             if (res.code === -200012 || res.code === -200010 || res.code === -200011 || res.code === -200014 || res.code === -20000) {
               this.props.setLoginStatus(false)
@@ -69,7 +69,7 @@ class SettingsScreen extends React.Component {
     let result = await WebBrowser.openBrowserAsync(host+'/app/#/download')
     console.log(result)
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -182,9 +182,8 @@ class SettingsScreen extends React.Component {
         <List>
           <List.Item
             thumb={<Icon name="book" color="#333333" size={20}/>}
-            extra={<Text>{'v' + Constants.manifest.version}</Text>}
-          >
-            <Text style={styles.itemTxt}>版本信息</Text>
+            extra={<Text>{'v' + Constants.manifest.version}</Text>}>
+            <Text style={styles.itemTxt}>版本信息 {!PROD?'Base':null} </Text>
           </List.Item>
           <List.Item
             thumb={<Ionicons name="md-download" color="#333333" size={20}/>}

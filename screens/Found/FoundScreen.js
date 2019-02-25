@@ -90,7 +90,6 @@ class FoundScreen extends React.Component {
   }
 
   _getPlatformReward = () => {
-    this.props.AsetSoundType({type: 'coin'})
     getPlatformReward().then(res => {
       if (res.code === 0) {
         this.setState({
@@ -150,6 +149,7 @@ class FoundScreen extends React.Component {
   componentDidMount() {
     // this._getPlatformReward();
     this._animateFun()
+    this.props.AsetSoundType({type: 'coin'})
   }
 
   componentWillUnmount() {

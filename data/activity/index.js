@@ -6,6 +6,7 @@ export const list = {
     local_date: '2018-12-01起',
     local_status: 'HOT',
     local_status_class: 'yellow',
+    table_header: ['会员当日消费', '领取金额标准'],
     local_introduce: '<table border="1" style="min-width: 900px;text-align: center;">' +
     '<tr><td>会员当日消费</td><td>1000</td><td>3000</td><td>8000</td><td>15000</td><td>35000</td><td>100000</td><td>250000</td><td>500000</td><td>800000</td></tr>' +
     '<tr><td>领取金额标准</td><td>5元</td><td>8元</td><td>18元</td><td>88元</td><td>188元</td><td>388元</td><td>588元</td><td>888元</td><td>1588元</td></tr>' +
@@ -27,6 +28,7 @@ export const list = {
     local_date: '2018-12-01起',
     local_status: '已结束',
     local_status_class: 'gray',
+    table_header: ['每日首次充值', '领取金额标准'],
     local_introduce: '1.每日首次充值500元送8元；<br>' +
     '2.每日首次充值1000元送18元；<br>' +
     '3.每日首次充值5000元送28元；<br>' +
@@ -45,6 +47,7 @@ export const list = {
     local_date: '2018-12-01起',
     local_status: '已结束',
     local_status_class: 'gray',
+    table_header: ['首次充值金额', '领取金额标准'],
     local_introduce: '<table border="1" style="min-width: 900px;text-align: center;">' +
     '<tr><td>首次充值金额</td><td>500-999</td><td>1000-4999</td><td>5000-9999</td><td>10000-49999</td><td>50000+</td></tr>' +
     '<tr><td>领取金额标准</td><td>18元</td><td>38元</td><td>58元</td><td>88元</td><td>168元</td></tr>' +
@@ -67,12 +70,14 @@ export const list = {
     local_date: '2018-12-01起',
     local_status: '已结束',
     local_status_class: 'gray',
+    table_header: ['金额范围', '1级/2级/3级'],
     local_introduce: '三级亏损佣金',
     local_explanation: ''
   },
   otcPay: {
     activityCode: 'otcPay',
     activityName: 'OTC充值送',
+    table_header: ['充值金额', '领取金额标准'],
     local_banner: 'activity/otccz.png'
   }
 }

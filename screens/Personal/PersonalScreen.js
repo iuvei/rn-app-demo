@@ -322,7 +322,7 @@ class PersonalScreen extends React.Component {
             {
               list.map((item, index) => {
                 return (
-                  <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}>
+                  <TouchableHighlight key={index} onPress={() => this.changeRoute(item.path)}  underlayColor={'#ffffff'}>
                     <View key={index} style={styleUtil({height: 45})}>
                       <Image resizeMode='contain' source={item.src} style={styleUtil({width: 28, height: 26})}></Image>
                       <Text style={{color: '#000'}}>{item.name}</Text>

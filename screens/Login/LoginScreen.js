@@ -9,7 +9,7 @@ import {
   AsetUserBankCards
 } from './../../actions/member'
 import { WebBrowser } from 'expo'
-import { host } from '../../api.config'
+import { host , PROD } from '../../api.config'
 import { Constants } from 'expo'
 import { ScrollView } from 'react-native-gesture-handler'
 import { styleUtil } from '../../utils/ScreenUtil'
@@ -247,7 +247,7 @@ class LoginComponent extends Component {
                 <Text style={{color: '#00b4cc', flex: 1}}  onPress={this._handleServiceAsync}>
                   联系客服
                 </Text>
-                <Text style={{textAlign: 'right', color: '#00b4cc', flex: 1}}>v{manifest.version}</Text>
+                <Text style={{textAlign: 'right', color: '#00b4cc', flex: 1}}>v{manifest.version}{PROD?null:'.base'}</Text>
               </View>
             </Flex>
           </ImageBackground>

@@ -8,6 +8,8 @@ module.exports = {
   // proxyUrl: 'http://tianxiang.qmuitest.com',
   // proxyUrl: 'http://119.28.86.192:81',
 
+  PROD: false,
+
   // 请求地址前缀
   host: 'http://huangjinhaian.qmuitest.com',
   prependUrl: 'http://huangjinhaian.qmuitest.com',
