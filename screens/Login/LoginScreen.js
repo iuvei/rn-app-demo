@@ -30,7 +30,7 @@ class LoginComponent extends Component {
       j_password: '',
       ua: Platform.OS,
       rememberPwd: false,
-      rememberUser: false,
+      rememberUser: true,
       seePwd: false,
       isLoading: false
     }
