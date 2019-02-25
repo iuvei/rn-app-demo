@@ -346,17 +346,25 @@ class PersonalScreen extends React.Component {
               })
             }}
             renderTabBar={() => {
-            return <Flex style={styleUtil({marginTop: 25, marginBottom: 10, width: 260, marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', padding: 1, borderRadius: 18})}>
-              <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 0})} style={{borderRadius: 18}}>
-                  <View style={styleUtil({backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34})}>
-                    <Text style={styleUtil({textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 34})}>订单报表</Text></View>
+            return <Flex
+              style={[
+                styleUtil({marginTop: 10, marginBottom: 18, width: 260, padding: 1}),
+                {marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', borderRadius: 18}
+              ]}>
+              <Flex.Item>
+                <TouchableHighlight onPress={() => this.setState({page: 0})} style={{borderRadius: 18}}>
+                  <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 18, height: 38}}>
+                    <Text style={{textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 38}}>订单报表</Text>
+                  </View>
                 </TouchableHighlight>
               </Flex.Item>
               {
                 loginInfo.proxy === 1 &&
-                <Flex.Item><TouchableHighlight onPress={() => this.setState({page: 1})}  style={{borderRadius: 18}}>
-                  <View style={styleUtil({backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 17, height: 34})}>
-                    <Text style={styleUtil({textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 34})}>代理管理</Text></View>
+                <Flex.Item>
+                  <TouchableHighlight onPress={() => this.setState({page: 1})}  style={{borderRadius: 18}}>
+                  <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 18, height: 38}}>
+                    <Text style={{textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 38}}>代理管理</Text>
+                  </View>
                   </TouchableHighlight>
                 </Flex.Item>
               }

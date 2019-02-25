@@ -33,7 +33,6 @@ export const fetchUpdateAndReload = async (key) => {
  * @return {boolean} true is there is a new update
  */
 export const checkOtaUpdates = async () => {
-
   try {
     const update = await Updates.checkForUpdateAsync()
     if (update.isAvailable) {
