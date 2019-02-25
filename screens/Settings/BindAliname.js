@@ -31,7 +31,7 @@ class BindAliname extends React.Component {
       isLoading: false
     }
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -84,6 +84,7 @@ class BindAliname extends React.Component {
             <List>
               <InputItem
                 value={alipayName}
+                autoFocus={true}
                 onChange={v => this.setState({
                   alipayName: v
                 })}

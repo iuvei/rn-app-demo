@@ -136,6 +136,7 @@ class LoginComponent extends Component {
                       value={j_username}
                       extra={<Icon name="close" size={20} color="#00bbcc" />}
                       labelNumber={2}
+                      autoFocus={true}
                       autoCapitalize="none"
                       keyboardType={Platform.OS === 'ios' ? 'web-search' : 'visible-password'}
                       onChangeText={(j_username) => {
