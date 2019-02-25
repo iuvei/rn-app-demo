@@ -21,7 +21,7 @@ import {
 } from '../actions/common'
 import { loginOut } from '../api/basic'
 import { WebBrowser, Constants } from 'expo'
-import { host } from '../api.config'
+import { host, DEV } from '../api.config'
 import AudioPlay from '../components/AudioPlay'
 
 class SettingsScreen extends React.Component {
@@ -182,9 +182,8 @@ class SettingsScreen extends React.Component {
         <List>
           <List.Item
             thumb={<Icon name="book" color="#333333" size={20}/>}
-            extra={<Text>{'v' + Constants.manifest.version}</Text>}
-          >
-            <Text style={styles.itemTxt}>版本信息</Text>
+            extra={<Text>{'v' + Constants.manifest.version}</Text>}>
+            <Text style={styles.itemTxt}>版本信息 {DEV?'Base':null} </Text>
           </List.Item>
           <List.Item
             thumb={<Ionicons name="md-download" color="#333333" size={20}/>}

@@ -45,7 +45,7 @@ class HomeScreen extends React.Component {
     header: <Header hideLeft={true}/>
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       refreshing: false,
@@ -123,7 +123,7 @@ class HomeScreen extends React.Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.SetCustomizeLottery()
     this.props.getSystemNews()
     this.props.setActiveUsualLot({custom: 0, data: []})
@@ -137,14 +137,14 @@ class HomeScreen extends React.Component {
     // this.props.navigation.push('Bet', this.state.LotArray[0])
   }
 
-  componentWillMount () {
+  componentWillMount() {
     if (Platform.OS === 'android') {
       BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid)
     }
     this.didBlurSubscription = this.props.navigation.addListener('didFocus', this.updateImmediateData)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (Platform.OS === 'android') {
       BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
     }
@@ -169,7 +169,7 @@ class HomeScreen extends React.Component {
     this._initHotLottery()
   }
 
-  _initHotLottery () {
+  _initHotLottery() {
     getHotLotter().then((res) => {
       if (res.code === 0) {
         this.setState({
@@ -179,12 +179,12 @@ class HomeScreen extends React.Component {
     })
   }
 
-  onHorizontalSelectedIndexChange (index) {
+  onHorizontalSelectedIndexChange(index) {
     // /* tslint:disable: no-console */
     // console.log('horizontal change to', index);
   }
 
-  setLot () {
+  setLot() {
     this.props.navigation.navigate('CustomizeGames')
   }
 
@@ -221,7 +221,7 @@ class HomeScreen extends React.Component {
     </View>
   }
 
-  render () {
+  render() {
     let {usualLottery, systemNews} = this.props
     let {hotLoList} = this.state
     let str = ''
@@ -274,7 +274,7 @@ class HomeScreen extends React.Component {
             hotLoList.length > 0 && hotLoList.map((item, index) => {
                 return (
                   <View style={styles.hotItem} key={index}>
-                    <Flex align={'center'} justify={'center'} onPress={() => this.props.navigation.navigate('Bet', item)}>
+                    <Flex onPress={() => this.props.navigation.navigate('Bet', item)}>
                       <View>
                         <Image source={getIconName(item.realCategory)} resizeMode={'contain'}
                                style={styles.hotItemImg}/>
@@ -402,11 +402,13 @@ const styles = StyleSheet.create(stylesUtil({
     marginTop: 3
   },
   hotItem: {
-    height: 95,
-    backgroundColor: '#ffffff',
+    height: 82,
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#eaeaea',
-    borderRadius: 6
+    paddingHorizontal: 0,
+    borderRadius: 6,
+    justifyContent:'center'
   },
   hotItemImg: {
     width: 70,
@@ -425,6 +427,10 @@ const styles = StyleSheet.create(stylesUtil({
     color: '#787878',
     paddingBottom: 5
   },
+  hotItemRightTenBall: {
+    maxWidth: 130,
+    marginLeft: 10
+  },
   hotItemRight: {
     width: 200,
     marginLeft: 10,
@@ -432,6 +438,54 @@ const styles = StyleSheet.create(stylesUtil({
     justifyContent: 'flex-start',
     padding: 2, flexWrap: 'wrap',
     paddingLeft: 2
+  },
+  hotItemBall: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    marginRight: 3,
+    marginBottom: 3,
+    backgroundColor: '#00b4cc'
+  },
+  hotItemSmallBall: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    marginRight: 3,
+    marginBottom: 3,
+    backgroundColor: '#00b4cc'
+  },
+  hotItemMidBall: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    marginRight: 3,
+    marginBottom: 3,
+    backgroundColor: '#00b4cc'
+  },
+  hotItemLgText: {
+    height: 24,
+    width: 24,
+    lineHeight: 24,
+    fontSize: 14,
+    textAlign: 'center',
+    color: 'white'
+  },
+  hotItemMidText: {
+    height: 20,
+    width: 20,
+    lineHeight: 20,
+    fontSize: 12,
+    textAlign: 'center',
+    color: 'white'
+  },
+  hotItemSmallText: {
+    height: 14,
+    width: 14,
+    lineHeight: 14,
+    fontSize: 10,
+    textAlign: 'center',
+    color: 'white'
   },
   lotBall3: {
     padding: 0,
@@ -451,9 +505,9 @@ const styles = StyleSheet.create(stylesUtil({
   },
   lotBall10: {
     padding: 0,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     marginRight: 4,
     marginBottom: 2
   },
@@ -505,9 +559,11 @@ const styles = StyleSheet.create(stylesUtil({
     lineHeight: 30
   },
   favoriteHeadR: {
-    width: 35
+    width: 30
   },
   favoriteHeadTextR: {
+    height: 30,
+    lineHeight: 30,
     fontSize: 20,
     textAlign: 'center',
     color: '#00b4cc'
