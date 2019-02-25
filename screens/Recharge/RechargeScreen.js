@@ -155,10 +155,24 @@ class RechargeScreen extends React.Component {
     let {activeAccount, userSecurityLevel} = this.props
     let { activeTabIndex, minRechargeMoney, isLoading, visibleReal, visibleVirtual} = this.state
     
-    if (!userSecurityLevel.isTradePassword) {
+    if (!userSecurityLevel.isTradePassword && userSecurityLevel.rechargeTradpswd) {
       return (
         <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
           <Text style={{color: '#333', textAlign: 'center'}}>暂未设置资金密码，请<Text onPress={this.goSetTrade} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
+        </View>
+      )
+    }
+    if (!userSecurityLevel.isBankUserName && userSecurityLevel.rechargeBankName) {
+      return (
+        <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
+          <Text style={{color: '#333', textAlign: 'center'}}>暂未绑定银行卡姓名，请<Text onPress={() => this.props.navigation.navigate('BindBankname')} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
+        </View>
+      )
+    }
+    if (!userSecurityLevel.isBindCard && userSecurityLevel.rechargeBank) {
+      return (
+        <View style={{backgroundColor: '#fff', paddingVertical: 25}}>
+          <Text style={{color: '#333', textAlign: 'center'}}>暂未绑定银行卡，请<Text onPress={() => this.props.navigation.navigate('BankManager')} style={{color: '#f15a23', fontSize: 15}}>前往设置</Text></Text>
         </View>
       )
     }
