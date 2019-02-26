@@ -17,7 +17,8 @@ import {loginOut} from '../../api/basic'
 import {
   AsetUserSecureLevel,
   AsetUserSecureConfig,
-  setLoginStatus
+  setLoginStatus,
+  setPasswordRule
 } from '../../actions/common'
 
 class UpdatePwd extends React.Component {
@@ -115,6 +116,7 @@ class UpdatePwd extends React.Component {
           if (res.code === 0) {
             Toast.success('绑定成功')
             this.props.AsetUserSecureLevel()
+            this.props.setPasswordRule()
             this.props.navigation.navigate('BankManager')
           } else {
             Toast.fail(res.message || '网络异常，请稍后重试')
@@ -213,6 +215,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
     AsetUserSecureConfig: (data) => { dispatch(AsetUserSecureConfig(data)) },
+    setPasswordRule: (data) => { dispatch(setPasswordRule(data)) },
     setLoginStatus: (data) => { dispatch(setLoginStatus(data)) }
   }
 }
