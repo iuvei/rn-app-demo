@@ -134,7 +134,8 @@ class HomeScreen extends React.Component {
         oldPwd: '',
         newPwd: '',
         rePwd: ''
-      }
+      },
+      messgae: '密码有且只能有 数字 字母，密码最小长度 8 位'
     }
   }
 
@@ -163,9 +164,9 @@ class HomeScreen extends React.Component {
 
   componentWillReceiveProps(np) {
     if (np.passwordRule.bandUserPassword) {
-      this.showBindPwd({type: 'login'})
+      this.showBindPwd({type: 'login', messgae: np.passwordRule.passwordParamDto.messgae})
     } else if (np.passwordRule.bandUserPayPassword) {
-      this.showBindPwd({type: 'paypwd'})
+      this.showBindPwd({type: 'paypwd', messgae: np.passwordRule.passwordParamDto.messgae})
     }
   }
 
@@ -179,10 +180,11 @@ class HomeScreen extends React.Component {
   }
 
   // 弹窗绑定登录密码
-  showBindPwd = ({type}) => {
+  showBindPwd = ({type, messgae}) => {
     this.setState({
       pwdvisible: true,
-      pwdType: type
+      pwdType: type,
+      messgae
     })
   }
 
@@ -381,7 +383,7 @@ class HomeScreen extends React.Component {
 
   render() {
     let {usualLottery, systemNews, userSecurityLevel} = this.props
-    let {hotLoList, pwdForm: { oldPwd, newPwd, rePwd }, pwdType, pwdvisible, ispwdLoading} = this.state
+    let {hotLoList, pwdForm: { oldPwd, newPwd, rePwd }, pwdType, pwdvisible, ispwdLoading, messgae} = this.state
     let str = ''
     if (systemNews.length > 0) {
       let reg = /<[^>]+>|[&nbsp;]+/g
@@ -557,6 +559,9 @@ class HomeScreen extends React.Component {
             <View style={{width: '100%', paddingTop: 20}}>
               <Text style={{textAlign: 'center', lineHeight: 26, color: '#333', fontSize: 18}}>{pwdType === 'login' ? '请您修改登录密码' : '请您修改资金密码'}</Text>
               <List style={{width: '100%'}}>
+                <List.Item>
+                  <Text>{messgae}</Text>
+                </List.Item>
                 {
                   (pwdType === 'login' || userSecurityLevel.isTradePassword) &&
                   <InputItem
