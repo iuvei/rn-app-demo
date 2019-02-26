@@ -257,10 +257,7 @@ class Contract extends React.Component {
             })
           }}
         >
-          <View style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
-            <View style={{paddingTop: 10}}>
-              <Button size="small" onPress={() => this.setState({visible: false})}>关闭</Button>
-            </View>
+          <View style={{ paddingTop: 30, paddingHorizontal: 20, paddingBottom: 10 }}>
             <ScrollView style={{height: 255}}>
               <List>
                 <InputItem
@@ -366,16 +363,23 @@ class Contract extends React.Component {
                     }))
                   }}
                   labelNumber={6}
-                  placeholder="分红比例"
+                  placeholder="工资比例"
                 >
-                  分红比例
+                  工资比例
                 </InputItem>
               </List>
             </ScrollView>
           </View>
-          <Button type="primary" style={{width: '70%', marginLeft: 'auto', marginRight: 'auto', marginBottom: 10, height: 40}} onPress={this.addContract}>
-            <Text>{this.state.isEdit ? '修改' : '新增'}</Text>
-          </Button>
+          <Flex>
+            <Flex.Item style={{paddingHorizontal: 30}}>
+              <Button size="small" style={{marginBottom: 10, height: 40}} onPress={() => this.setState({visible: false})}>关闭</Button>
+            </Flex.Item>
+            <Flex.Item style={{paddingHorizontal: 30}}>
+              <Button type="primary" style={{marginBottom: 10, height: 40}} onPress={this.addContract}>
+                <Text>{this.state.isEdit ? '修改' : '新增'}</Text>
+              </Button>
+            </Flex.Item>
+          </Flex>
         </Modal>
       </ScrollView>
     )
