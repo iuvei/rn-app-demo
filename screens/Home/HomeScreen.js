@@ -214,7 +214,8 @@ class HomeScreen extends React.Component {
           case 'login':
             // let pattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
             updateLoginPwd({ oldPwd, newPwd, rePwd }).then(res => {
-              this.props.AsetUserSecureLevel()
+              // this.props.AsetUserSecureLevel()
+              this.props.setPasswordRule()
               if (res.code === 0) {
                 Toast.success(res.message || '修改成功')
                 this.setState(prevState => ({
@@ -251,7 +252,8 @@ class HomeScreen extends React.Component {
             modifyPayPwd({ oldPwd, newPwd, rePwd }).then(res => {
               if (res.code === 0) {
                 Toast.success(res.message || '修改成功')
-                this.props.AsetUserSecureLevel()
+                // this.props.AsetUserSecureLevel()
+                this.props.setPasswordRule()
                 this.setState(prevState => ({
                   ispwdLoading: false,
                   pwdvisible: false,
@@ -292,7 +294,8 @@ class HomeScreen extends React.Component {
                 rePwd: ''
               }
             }))
-            this.props.AsetUserSecureLevel()
+            // this.props.AsetUserSecureLevel()
+            this.props.setPasswordRule()
           } else {
             Toast.fail(res.message || '网络异常，请稍后重试')
             this.setState(prevState => ({
