@@ -69,7 +69,7 @@ class OpenCenter extends React.Component {
       },
       userName: '',
       userRebate: '',
-      isProxy: 0,
+      userType: 0,
       availableTimes: '',
       validDays: 24,
       isShow: false,
@@ -101,7 +101,11 @@ class OpenCenter extends React.Component {
   }
 
   _addDown = () => {
-    let {userName, userRebate, isProxy, maxRebate} = this.state
+    let {userName, userRebate, userType, maxRebate} = this.state
+    let isProxy = 0
+    if (userType === 0) {
+      isProxy = 1
+    }
     let {systemMinRebate} = this.props.rebateInfo
     if (!userName) {
       Toast.info(`请输入账号`)
@@ -142,7 +146,11 @@ class OpenCenter extends React.Component {
 
   _addLinkup = () => {
     let reg = /^\+?[1-9]\d*$/
-    let {userRebate, availableTimes, isProxy, validDays} = this.state
+    let {userRebate, availableTimes, userType, validDays} = this.state
+    let isProxy = 0
+    if (userType === 0) {
+      isProxy = 1
+    }
     let {systemMaxRebate, systemMinRebate, userRebateVO} = this.props.rebateInfo
     let maxRebate = userRebateVO[0].userRebate < systemMaxRebate ? userRebateVO[0].userRebate : systemMaxRebate
     if (!availableTimes) {
@@ -212,9 +220,9 @@ class OpenCenter extends React.Component {
           <View style={styles.normal}>
             <Flex direction={'row'} style={styles.userType}>
               <Text style={{fontSize: 16}}>玩家类型</Text>
-              <SegmentedControl selectedIndex={this.state.isProxy} tintColor={'#00bbcc'} values={['玩家', '代理']}
+              <SegmentedControl selectedIndex={this.state.userType} tintColor={'#00bbcc'} values={['代理', '玩家']}
                                 style={{width: 100, marginLeft: 50}} onChange={e => {
-                this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
+                this.setState({userType: e.nativeEvent.selectedSegmentIndex})
               }}/>
             </Flex>
             <InputItem
@@ -261,9 +269,9 @@ class OpenCenter extends React.Component {
           <View style={styles.normal}>
             <Flex direction={'row'} style={styles.userType}>
               <Text style={{fontSize: 16}}>玩家类型</Text>
-              <SegmentedControl selectedIndex={this.state.isProxy} tintColor={'#00bbcc'} values={['玩家', '代理']}
+              <SegmentedControl selectedIndex={this.state.userType} tintColor={'#00bbcc'} values={['代理', '玩家']}
                                 style={{width: 100, marginLeft: 50}} onChange={e => {
-                this.setState({isProxy: e.nativeEvent.selectedSegmentIndex})
+                this.setState({userType: e.nativeEvent.selectedSegmentIndex})
               }}/>
             </Flex>
             <Flex direction={'row'} style={styles.userType}>
