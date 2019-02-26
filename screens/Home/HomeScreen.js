@@ -162,8 +162,7 @@ class HomeScreen extends React.Component {
   }
 
   componentWillReceiveProps(np) {
-    console.log(np.passwordRule)
-    if (np.passwordRule.bandUserPassword) {
+    if (!np.passwordRule.bandUserPassword) {
       this.showBindPwd({type: 'login'})
     } else if (np.passwordRule.bandUserPayPassword) {
       this.showBindPwd({type: 'paypwd'})
