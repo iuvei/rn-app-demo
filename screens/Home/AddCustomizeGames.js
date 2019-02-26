@@ -224,7 +224,14 @@ class AddCustomizeGamesScreen extends React.Component {
                           }
                         </Flex>
                       </View>}
-                    </View>
+                      {!item.originLot.length && !item.gpLot.length &&
+                      <View
+                        style={{paddingVertical: 20}}
+                      >
+                        <Text style={{color: '#666666', textAlign: 'center'}}>暂无数据！敬请期待~</Text>
+                      </View>
+                      }
+                      </View>
                   </Accordion.Panel>
                 )
               })
