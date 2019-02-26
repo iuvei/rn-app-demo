@@ -21,7 +21,7 @@ class Contract extends React.Component {
       {key: 'activeDayCharge', name: '活跃日充值量'},
       {key: 'activePeople', name: '活跃人数'},
       // {key: 'activeDay', name: '活跃天数'}, // 如果是契约日工资不用显示该字段
-      {key: 'dividendProportion', name: '分红比例'},
+      {key: 'dividendProportion', name: '工资比例'},
       {key: 'dividendType', name: '分红类型', formatter(v) {
         return v < 5 ? '契约分红' : '契约日工资'
       }},

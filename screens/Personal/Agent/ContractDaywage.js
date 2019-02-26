@@ -31,7 +31,7 @@ class ContractDaywage extends React.Component {
         {key: 'activeDayCharge', name: '活跃日充值量'},
         {key: 'activePeople', name: '活跃人数'},
         // {key: 'activeDay', name: '活跃天数'}, // 如果是契约日工资不用显示该字段
-        {key: 'dividendProportion', name: '分红比例'},
+        {key: 'dividendProportion', name: '工资比例'},
         {key: 'dividendType', name: '分红类型', formatter(v) {
           return v < 5 ? '契约分红' : '契约日工资'
         }},
@@ -43,7 +43,7 @@ class ContractDaywage extends React.Component {
       columnDownuser: [
         {key: 'loginName', name: '用户名'},
         {key: 'dividendAmount', name: '分红金额'},
-        {key: 'actualDividendProportion', name: '分红比例'},
+        {key: 'actualDividendProportion', name: '工资比例'},
         {key: 'dividendStartTime', name: '开始时间'},
         {key: 'dividendEndTime', name: '结束时间'},
         {key: 'isSatisfy', name: '是否满足分红', formatter(v) {
@@ -53,7 +53,7 @@ class ContractDaywage extends React.Component {
             return '不满足'
           }
         }},
-        {key: 'dividendProportion', name: '分红比例'},
+        {key: 'dividendProportion', name: '工资比例'},
         {key: 'status', name: '状态', formatter(v) {
           if (v === 3) {
             return '未派发'
