@@ -8,8 +8,9 @@ import {
 } from '@ant-design/react-native'
 import dayjs from 'dayjs'
 import { shortcutsDays } from '../data/options'
+import { momentBj } from '../utils/MathUtils'
 
-const today = dayjs(Date.now()).format('YYYY-MM-DD')
+const today = momentBj(new Date())
 const BUTTONS = [
   '今天',
   '三天',
@@ -65,7 +66,7 @@ export default class QueryDate extends React.Component {
               minDate={new Date(2015, 7, 6)}
               maxDate={new Date(2026, 11, 3)}
               onChange={v => {
-                let tmp = dayjs(v).format('YYYY-MM-DD')
+                let tmp = momentBj(v)
                 this.setState({
                   startTime: tmp
                 })
@@ -92,9 +93,9 @@ export default class QueryDate extends React.Component {
               minDate={new Date(2015, 7, 6)}
               maxDate={new Date(2026, 11, 3)}
               onChange={v => {
-                let tmp = dayjs(v).format('YYYY-MM-DD')
+                let tmp = momentBj(v)
                 this.setState({
-                  endTime: dayjs(v).format('YYYY-MM-DD')
+                  endTime: tmp
                 })
                 this.props.handleDate({endTime: tmp, startTime})
               }}
