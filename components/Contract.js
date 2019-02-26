@@ -1,10 +1,10 @@
 import React from 'react'
-import { ScrollView, View, Text, TouchableHighlight } from 'react-native'
+import { ScrollView, View, Text } from 'react-native' // , TouchableHighlight, KeyboardAvoidingView
 import { InputItem, Flex, Button, Toast, List, Modal } from '@ant-design/react-native'
 import { insertDividendRule, updateDividendRule } from '../api/member'
 import UIListView from './UIListView'
 import { contractStatus } from '../data/options'
-import { isNumber } from 'lodash'
+// import { isNumber } from 'lodash'
 
 class Contract extends React.Component {
   state = {
@@ -208,7 +208,7 @@ class Contract extends React.Component {
       //                   style={{}} onChange={e => {
       //   this.setState({selectedId: e.nativeEvent.selectedSegmentIndex})
       // }}/>
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={{width: '100%', borderBottomWidth: 0.5, borderBottomColor: '#f0f0f0'}}>
           <Button type="primary" style={{height: 36, marginHorizontal: 25, marginVertical: 10}}
             onPress={() => {
@@ -250,7 +250,7 @@ class Contract extends React.Component {
           maskClosable
           closable
           visible={this.state.visible}
-          animationType="slide-up"
+          animationType="slide-down"
           onClose={() => {
             this.setState({
               visible: false
@@ -258,124 +258,126 @@ class Contract extends React.Component {
           }}
         >
           <View style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
-            <View>
+            <View style={{paddingTop: 10}}>
               <Button size="small" onPress={() => this.setState({visible: false})}>关闭</Button>
             </View>
-            <List>
-              <InputItem
-                type="number"
-                value={this.state.formData.totalConsumption + ''}
-                onChange={value => {
-                  this.setState(prevState => ({
-                    formData: {...prevState.formData, totalConsumption: value},
-                  }))
-                }}
-                labelNumber={6}
-                placeholder="总消费量"
-              >
-                总消费量
-              </InputItem>
-              <InputItem
-                type="number"
-                value={this.state.formData.totalCharge + ''}
-                onChange={value => {
-                  this.setState(prevState => ({
-                    formData: {...prevState.formData, totalCharge: value},
-                  }))
-                }}
-                labelNumber={6}
-                placeholder="总充值量"
-              >
-                总充值量
-              </InputItem>
-              <InputItem
-                type="number"
-                value={this.state.formData.totalProfitLoss + ''}
-                onChange={value => {
-                  this.setState(prevState => ({
-                    formData: {...prevState.formData, totalProfitLoss: value},
-                  }))
-                }}
-                labelNumber={6}
-                placeholder="总盈亏"
-              >
-                总盈亏
-              </InputItem>
-              <InputItem
-                type="number"
-                value={this.state.formData.activeDayConsumption + ''}
-                onChange={value => {
-                  this.setState(prevState => ({
-                    formData: {...prevState.formData, activeDayConsumption: value},
-                  }))
-                }}
-                labelNumber={6}
-                placeholder="活跃日消费量"
-              >
-                活跃日消费量
-              </InputItem>
-              <InputItem
-                type="number"
-                value={this.state.formData.activeDayCharge + ''}
-                onChange={value => {
-                  this.setState(prevState => ({
-                    formData: {...prevState.formData, activeDayCharge: value},
-                  }))
-                }}
-                labelNumber={6}
-                placeholder="活跃日充值量"
-              >
-                活跃日充值量
-              </InputItem>
-              <InputItem
-                type="number"
-                value={this.state.formData.activePeople + ''}
-                onChange={value => {
-                  this.setState(prevState => ({
-                    formData: {...prevState.formData, activePeople: value},
-                  }))
-                }}
-                labelNumber={6}
-                placeholder="活跃人数"
-              >
-                活跃人数
-              </InputItem>
-              {
-                dividendType === 1 &&
+            <ScrollView style={{height: 255}}>
+              <List>
                 <InputItem
                   type="number"
-                  value={this.state.formData.activeDay + ''}
+                  value={this.state.formData.totalConsumption + ''}
                   onChange={value => {
                     this.setState(prevState => ({
-                      formData: {...prevState.formData, activeDay: value},
+                      formData: {...prevState.formData, totalConsumption: value},
                     }))
                   }}
                   labelNumber={6}
-                  placeholder="活跃天数"
+                  placeholder="总消费量"
                 >
-                  活跃天数
+                  总消费量
                 </InputItem>
-              }
-              <InputItem
-                type="number"
-                value={this.state.formData.dividendProportion + ''}
-                onChange={value => {
-                  this.setState(prevState => ({
-                    formData: {...prevState.formData, dividendProportion: value},
-                  }))
-                }}
-                labelNumber={6}
-                placeholder="分红比例"
-              >
-                分红比例
-              </InputItem>
-            </List>
+                <InputItem
+                  type="number"
+                  value={this.state.formData.totalCharge + ''}
+                  onChange={value => {
+                    this.setState(prevState => ({
+                      formData: {...prevState.formData, totalCharge: value},
+                    }))
+                  }}
+                  labelNumber={6}
+                  placeholder="总充值量"
+                >
+                  总充值量
+                </InputItem>
+                <InputItem
+                  type="number"
+                  value={this.state.formData.totalProfitLoss + ''}
+                  onChange={value => {
+                    this.setState(prevState => ({
+                      formData: {...prevState.formData, totalProfitLoss: value},
+                    }))
+                  }}
+                  labelNumber={6}
+                  placeholder="总盈亏"
+                >
+                  总盈亏
+                </InputItem>
+                <InputItem
+                  type="number"
+                  value={this.state.formData.activeDayConsumption + ''}
+                  onChange={value => {
+                    this.setState(prevState => ({
+                      formData: {...prevState.formData, activeDayConsumption: value},
+                    }))
+                  }}
+                  labelNumber={6}
+                  placeholder="活跃日消费量"
+                >
+                  活跃日消费量
+                </InputItem>
+                <InputItem
+                  type="number"
+                  value={this.state.formData.activeDayCharge + ''}
+                  onChange={value => {
+                    this.setState(prevState => ({
+                      formData: {...prevState.formData, activeDayCharge: value},
+                    }))
+                  }}
+                  labelNumber={6}
+                  placeholder="活跃日充值量"
+                >
+                  活跃日充值量
+                </InputItem>
+                <InputItem
+                  type="number"
+                  value={this.state.formData.activePeople + ''}
+                  onChange={value => {
+                    this.setState(prevState => ({
+                      formData: {...prevState.formData, activePeople: value},
+                    }))
+                  }}
+                  labelNumber={6}
+                  placeholder="活跃人数"
+                >
+                  活跃人数
+                </InputItem>
+                {
+                  dividendType === 1 &&
+                  <InputItem
+                    type="number"
+                    value={this.state.formData.activeDay + ''}
+                    onChange={value => {
+                      this.setState(prevState => ({
+                        formData: {...prevState.formData, activeDay: value},
+                      }))
+                    }}
+                    labelNumber={6}
+                    placeholder="活跃天数"
+                  >
+                    活跃天数
+                  </InputItem>
+                }
+                <InputItem
+                  type="number"
+                  value={this.state.formData.dividendProportion + ''}
+                  onChange={value => {
+                    this.setState(prevState => ({
+                      formData: {...prevState.formData, dividendProportion: value},
+                    }))
+                  }}
+                  labelNumber={6}
+                  placeholder="分红比例"
+                >
+                  分红比例
+                </InputItem>
+              </List>
+            </ScrollView>
           </View>
           <Button type="primary" style={{width: '70%', marginLeft: 'auto', marginRight: 'auto', marginBottom: 10, height: 40}} onPress={this.addContract}>
             <Text>{this.state.isEdit ? '修改' : '新增'}</Text>
           </Button>
         </Modal>
-      </View>
+      </ScrollView>
     )
   }
 }
