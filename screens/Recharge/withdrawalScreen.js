@@ -378,25 +378,11 @@ class Withdrawal extends React.Component {
               <Text style={styleUtil({color: '#f15a23', fontSize: 14, lineHeight: 30, textAlign: 'center'})}>请您先前往银行卡管理页面添加银行卡！</Text>
             </View>
           }
-          <View style={styleUtil({padding: 12})}>
-            <Text style={styleUtil({color: '#a4a4a4', lineHeight: 24, fontSize: 12})}>提现限制：您今天已提现 <Text
-              style={{color: '#f15a23'}}>{userConsume.alredTimes}</Text> 次；今日已提金额：<Text
-              style={{color: '#f15a23'}}>{userConsume.alredMoney}</Text>
-              元；单笔最小额提现：<Text style={{color: '#f15a23'}}>{userConsume.minMoney}</Text> 元；单笔最大额提现：<Text
-                style={{color: '#f15a23'}}>{userConsume.maxMoney}</Text> 元。
-              系统消费比例限制为：<Text style={{color: '#f15a23'}}>{userConsume.feeRatio}%</Text>。您的彩票所需消费量为：<Text
-                style={{color: '#f15a23'}}>{userConsume.consumeQuota}</Text> 元</Text>
-            <Text style={styleUtil({color: '#a4a4a4', lineHeight: 24, fontSize: 12})}>手续费说明：每日免费提现次数为 <Text
-              style={{color: '#f15a23'}}>{userConsume.freeTimes}</Text> 次，您已经免费提现 <Text
-              style={{color: '#f15a23'}}>{userConsume.alredTimes < userConsume.freeTimes ? userConsume.alredTimes : userConsume.freeTimes}</Text> 次，
-              超出后将按单笔 <Text style={{color: '#f15a23'}}>{userConsume.feeScale} %</Text> 的比例收取手续费，单笔最小手续费 <Text
-                style={{color: '#f15a23'}}>{userConsume.minFee}</Text> 元，单笔最高手续费 <Text
-                style={{color: '#f15a23'}}>{userConsume.maxFee}</Text> 元</Text>
-          </View>
           <List>
             <InputItem
               value={amount}
               type="number"
+              style={{color: '#00bbcc'}}
               onChange={value => {
                 if (!isNaN(Number(value))) {
                   this.setState({
@@ -447,10 +433,25 @@ class Withdrawal extends React.Component {
             <Button type="primary" disabled={sonOrderList.length === 0 || !pwd || !curBankItem.bankCard} loading={isLoading}
                     onPress={submitFunc}>提 现</Button>
           </View>
-          <View style={styleUtil({height: 200, padding: 12, alignItems: 'center'})}>
+          <View style={styleUtil({padding: 12, alignItems: 'center'})}>
             <Text style={styleUtil({fontSize: 12, color: '#a4a4a4'})}>提现时间：北京时间 <Text
               style={{color: '#f15a23'}}>09:00:00</Text> 至 第二天 <Text
               style={{color: '#f15a23'}}>03:00:00</Text> (24小时制) </Text>
+              <View style={styleUtil({padding: 12})}>
+                <Text style={styleUtil({color: '#a4a4a4', lineHeight: 24, fontSize: 12})}>提现限制：您今天已提现 <Text
+                  style={{color: '#f15a23'}}>{userConsume.alredTimes}</Text> 次；今日已提金额：<Text
+                  style={{color: '#f15a23'}}>{userConsume.alredMoney}</Text>
+                  元；单笔最小额提现：<Text style={{color: '#f15a23'}}>{userConsume.minMoney}</Text> 元；单笔最大额提现：<Text
+                    style={{color: '#f15a23'}}>{userConsume.maxMoney}</Text> 元。
+                  系统消费比例限制为：<Text style={{color: '#f15a23'}}>{userConsume.feeRatio}%</Text>。您的彩票所需消费量为：<Text
+                    style={{color: '#f15a23'}}>{userConsume.consumeQuota}</Text> 元</Text>
+                <Text style={styleUtil({color: '#a4a4a4', lineHeight: 24, fontSize: 12})}>手续费说明：每日免费提现次数为 <Text
+                  style={{color: '#f15a23'}}>{userConsume.freeTimes}</Text> 次，您已经免费提现 <Text
+                  style={{color: '#f15a23'}}>{userConsume.alredTimes < userConsume.freeTimes ? userConsume.alredTimes : userConsume.freeTimes}</Text> 次，
+                  超出后将按单笔 <Text style={{color: '#f15a23'}}>{userConsume.feeScale} %</Text> 的比例收取手续费，单笔最小手续费 <Text
+                    style={{color: '#f15a23'}}>{userConsume.minFee}</Text> 元，单笔最高手续费 <Text
+                    style={{color: '#f15a23'}}>{userConsume.maxFee}</Text> 元</Text>
+              </View>
           </View>
           <Modal
             popup
@@ -492,7 +493,7 @@ class Withdrawal extends React.Component {
         </ScrollView>
     }
     return <View style={{ flex: 1 }}>
-      <Tabs tabs={tabs}>
+      <Tabs tabs={tabs} tabBarActiveTextColor="#00bbcc">
         { cnyView }
         { otcView }
       </Tabs>

@@ -49,7 +49,7 @@ export default class RechargeTutorial extends React.PureComponent {
             onClose={this.onClose}
             style={{backgroundColor: 'transparent', width: 0.9 * width}}
           >
-            <Image source={require('../../assets/images/im_info.png')} style={{width: '100%', height: 1.25 * width}}/>
+            <Image source={require('../../assets/images/im_info.png')} style={{width: '100%', height: 1.25 * width, resizeMode: 'contain'}}/>
             <View style={{ backgroundColor: '#fff', borderBottomLeftRadius: 6, borderBottomRightRadius: 6, paddingHorizontal: 20, paddingBottom: 20, marginTop: -50 }}>
               <Flex justify="around">
                 <Flex.Item>
