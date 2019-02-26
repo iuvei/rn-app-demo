@@ -543,35 +543,35 @@ class ChaseScreen extends React.Component {
         </Flex>
         <Flex justify="around" style={styleUtil({paddingVertical: 6})}>
           <Flex.Item alignItems="center">
-            <View><Text style={styleUtil({fontSize: 14, color: '#198ae7'})}>期数：{checkedArr.length}</Text></View>
+            <View><Text style={styleUtil({fontSize: 14, color: '#00bbcc'})}>期数：{checkedArr.length}</Text></View>
           </Flex.Item>
           <Flex.Item alignItems="center">
-            <View><Text style={styleUtil({fontSize: 14, color: '#198ae7'})}>总金额：{total}</Text></View>
+            <View><Text style={styleUtil({fontSize: 14, color: '#00bbcc'})}>总金额：{total}</Text></View>
           </Flex.Item>
         </Flex>
       </List>
     </View>
-    let listContent = <View>
-      <Flex style={styleUtil({height: 40, backgroundColor: '#198ae7'})}>
-        <View style={{width: '9%'}}><Checkbox checked={checkedAll} onChange={event => this.checkAllChange(event)} style={{color: '#fff'}}></Checkbox></View>
-        <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#fff'})}>期号</Text>
-        <Text style={styleUtil({width: '12%', textAlign: 'center', fontSize: 14, color: '#fff'})}>倍数</Text>
-        <Text style={styleUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#fff'})}>金额</Text>
-        <Text style={styleUtil({width: '30%', textAlign: 'center', fontSize: 14, color: '#fff'})}>截止日期</Text>
+    let listContent = <View style={{flex: 1}}>
+      <Flex style={styleUtil({height: 40, backgroundColor: '#fff', borderBottomWidth: 0.5, borderBottomColor: '#f0f0f0'})}>
+        <View style={{width: '9%'}}><Checkbox checked={checkedAll} onChange={event => this.checkAllChange(event)}></Checkbox></View>
+        <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#333'})}>期号</Text>
+        <Text style={styleUtil({width: '12%', textAlign: 'center', fontSize: 14, color: '#333'})}>倍数</Text>
+        <Text style={styleUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#333'})}>金额</Text>
+        <Text style={styleUtil({width: '30%', textAlign: 'center', fontSize: 14, color: '#333'})}>截止日期</Text>
       </Flex>
-      <View style={styleUtil({paddingVertical: 5})}>
+      <ScrollView style={styleUtil({flex: 1})}>
         {
           showChaseList.map((item, index) => {
             return <Flex key={item.currentIssue + '_' + item.showTime + index} style={styleUtil({backgroundColor: '#fff', height: 35})}>
               <View style={{width: '9%'}}><Checkbox checked={item.checked} onChange={event => this.chaseItemChange(event, index)}></Checkbox></View>
-              <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.currentIssue}</Text>
-              <Text style={styleUtil({width: '12%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.multiple}</Text>
-              <Text style={styleUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{Number(item.money).toFixed(4)}</Text>
-              <Text style={styleUtil({width: '30%', textAlign: 'center', fontSize: 14, color: '#198ae7'})}>{item.showTime}</Text>
+              <Text style={styleUtil({width: '27%', textAlign: 'center', fontSize: 14, color: '#333'})}>{item.currentIssue}</Text>
+              <Text style={styleUtil({width: '12%', textAlign: 'center', fontSize: 14, color: '#333'})}>{item.multiple}</Text>
+              <Text style={styleUtil({width: '22%', textAlign: 'center', fontSize: 14, color: '#333'})}>{Number(item.money).toFixed(4)}</Text>
+              <Text style={styleUtil({width: '30%', textAlign: 'center', fontSize: 14, color: '#333'})}>{item.showTime}</Text>
             </Flex>
           })
         }
-      </View>
+      </ScrollView>
     </View>
 
     return (
@@ -586,7 +586,7 @@ class ChaseScreen extends React.Component {
             })
           }}
           tabs={tabs}>
-          <ScrollView style={{ backgroundColor: 'f0f0f0', flex: 1 }}>{topContent}{listContent}</ScrollView>
+          <View style={{ backgroundColor: 'f0f0f0', flex: 1 }}>{topContent}{listContent}</View>
         </Tabs>
         <View style={styleUtil({height: 50, alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center', borderTopWidth: 0.5, borderTopColor: '#00bbcc'})}>
           <Button disabled={showChaseList.length === 0 || checkedArr.length === 0} loading={isLoading} type="ghost" style={styleUtil({width: '50%', height: 40})} onPress={this.submitFunc}>

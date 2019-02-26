@@ -66,7 +66,10 @@ export default class QueryDate extends React.Component {
               minDate={new Date(2015, 7, 6)}
               maxDate={new Date(2026, 11, 3)}
               onChange={v => {
+                // v 是标准时间
+                // console.log('vvv', v, dayjs(v).format('{YYYY} MM-DDTHH:mm:ss SSS [Z] A'))
                 let tmp = momentBj(v)
+                // console.log('tmp', tmp)
                 this.setState({
                   startTime: tmp
                 })
