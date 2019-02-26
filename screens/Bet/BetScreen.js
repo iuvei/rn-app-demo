@@ -84,10 +84,11 @@ class BetScreen extends React.Component {
     this.state = {
       ContentTabs: [
         {title: '开奖', code: 'openBall'},
-        {title: '投注'},
+        {title: '投注', code: 'rowBall'},
         {title: '记录', code: 'betHistory'},
         {title: '趋势', code: 'trend'}
       ],
+      activeTab: 'rowBall',
       ballOpen: ['5', '9', '3', '2', '1'],
       changingValue: 1800,
       afterValue: 0,
@@ -95,7 +96,6 @@ class BetScreen extends React.Component {
       modeItem: {},
       filterNavBar: [],
       open: false,
-
       intoHistory: 0
     }
     this.time = 1700
@@ -152,11 +152,10 @@ class BetScreen extends React.Component {
   }
 
   _onChangeTabs = (tabs) => {
-    if (tabs.code === 'betHistory') {
-      this.setState({
-        intoHistory: new Date().getTime()
-      })
-    }
+    this.setState({
+      activeTab: tabs.code,
+      intoHistory: new Date().getTime()
+    })
   }
   getUsefulPlay = ({lotterCode, realCategory}, resData) => {
     let {code} = selfRoute.find(lot => lot.mapCode.includes(realCategory))
@@ -279,7 +278,7 @@ class BetScreen extends React.Component {
   }
 
   render() {
-    let {ContentTabs, filterNavBar, intoHistory} = this.state
+    let {ContentTabs, filterNavBar, intoHistory, activeTab} = this.state
     let {params} = this.props.navigation.state
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
@@ -306,20 +305,20 @@ class BetScreen extends React.Component {
                   animated={false}>
               <View>
                 <ScrollView>
-                  <LatelyList/>
+                  {activeTab === 'openBall' && <LatelyList/>}
                 </ScrollView>
               </View>
               <View style={{flex: 1}}>
                 <RowBallHocView activeLot={params}/>
               </View>
               <View style={{flex: 1}}>
-                <BetSimpleHistory
+                {activeTab === 'betHistory' && <BetSimpleHistory
                   navParams={this.props.navParams}
-                  intoHistory={intoHistory}/>
+                  intoHistory={intoHistory}/>}
               </View>
               <View style={{flex: 1}}>
                 <ScrollView>
-                  <Trend activeLot={params}/>
+                  {activeTab === 'trend' && <Trend activeLot={params}/>}
                 </ScrollView>
               </View>
             </Tabs>
