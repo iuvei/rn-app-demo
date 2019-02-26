@@ -14,7 +14,8 @@ import {
 } from 'react-native'
 import {
   Carousel, NoticeBar, Button,
-  WhiteSpace, Flex, Toast, Icon
+  WhiteSpace, Flex, Toast, Icon,
+  Modal, InputItem, List
 } from '@ant-design/react-native'
 import { connect } from 'react-redux'
 import Header from './../../components/Header'
@@ -24,13 +25,18 @@ import {
   getSystemNews,
   queryActivity,
   AgetRecharge,
-  setPasswordRule
+  setPasswordRule,
+  AsetUserSecureLevel,
+  AsetUserSecureConfig,
+  setLoginStatus
 } from './../../actions/common'
 import { AsetFreshMsg, AsetDayWagePower, AsetDividendPower, AsetUserBankCards } from '../../actions/member'
 import { getHotLotter } from './../../api/lottery'
 import { getIconName } from '../../utils/getLotImg'
 import { stylesUtil } from '../../utils/ScreenUtil'
 import { checkEnvironment } from '../../actions/classic'
+import {updateLoginPwd, savePayPwd, modifyPayPwd} from '../../api/member'
+import {loginOut} from '../../api/basic'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -120,7 +126,15 @@ class HomeScreen extends React.Component {
         'status': 0,
         'type': 1,
         'updateBy': 'SYSTEM'
-      }]
+      }],
+      ispwdLoading: false,
+      pwdvisible: false,
+      pwdType: '',
+      pwdForm: {
+        oldPwd: '',
+        newPwd: '',
+        rePwd: ''
+      }
     }
   }
 
@@ -139,6 +153,13 @@ class HomeScreen extends React.Component {
     // this.props.navigation.push('Bet', this.state.LotArray[0])
     console.log(this.props.userId)
     this.props.AsetUserBankCards(this.props.userId)
+    if (this.props.passwordRule.bandUserPassword) {
+      console.log('show bind loginpwd, after bind re getrule')
+      this.showBindPwd({type: 'login'})
+    } else if (this.props.passwordRule.bandUserPayPassword) {
+      console.log('show bind tradpwd, after bind re getrule')
+      this.showBindPwd({type: 'paypwd'})
+    }
   }
 
   componentWillMount() {
@@ -148,12 +169,123 @@ class HomeScreen extends React.Component {
     this.didBlurSubscription = this.props.navigation.addListener('didFocus', this.updateImmediateData)
   }
 
+  componentWillReceiveProps(np) {
+    if (np.passwordRule.bandUserPassword && !this.props.passwordRule.passwordParamDto) {
+      console.log('show bind loginpwd, after bind re getrule')
+      this.showBindPwd({type: 'login'})
+    } else if (np.passwordRule.bandUserPayPassword && !this.props.passwordRule.passwordParamDto) {
+      console.log('show bind tradpwd, after bind re getrule')
+      this.showBindPwd({type: 'paypwd'})
+    }
+  }
+
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid)
     }
     this.didBlurSubscription.remove()
     this.setState = () => () => {
+    }
+  }
+
+  // 弹窗绑定登录密码
+  showBindPwd = ({type}) => {
+    this.setState({
+      pwdvisible: true,
+      pwdType: type
+    })
+  }
+
+  /** @description
+   * 绑定密码确认按钮点击
+   */
+  submitFunc = () => {
+    let { pwdForm: { oldPwd, newPwd, rePwd}, pwdType } = this.state
+    let typeStr = pwdType
+    let pattern = new RegExp(this.props.passwordRule.passwordParamDto.validator) // /((?=.*[a-z])(?=.*\d)|(?=[a-z])(?=.*[#@!~%^&*])|(?=.*\d)(?=.*[#@!~%^&*]))[a-z\d#@!~%^&*]{8,16}/i
+    if (!pattern.test(newPwd)) {
+      Toast.info('请输入符合规则的密码')
+      return
+    }
+    if (newPwd !== rePwd) {
+      Toast.info('新密码和确认密码必须相同')
+      return
+    }
+    if (typeStr === 'login' || this.props.userSecurityLevel.isTradePassword) {
+      if (oldPwd === '' || newPwd === '' || rePwd === '') {
+        Toast.info('请输入密码')
+        return
+      }
+      this.setState({
+        ispwdLoading: true
+      }, () => {
+        switch (typeStr) {
+          case 'login':
+            // let pattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
+            updateLoginPwd({ oldPwd, newPwd, rePwd }).then(res => {
+              if (res.code === 0) {
+                Toast.success(res.message || '修改成功')
+                loginOut().then((res) => {
+                  if (res.code === 0) {
+                    this.props.setLoginStatus(false)
+                    // this.props.navigation.navigate('AppLoading')
+                  }
+                })
+              } else {
+                Toast.fail(res.message || '网络异常，请稍后重试')
+              }
+              this.setState(prevState => ({
+                ispwdLoading: false,
+                pwdForm: {
+                  oldPwd: '',
+                  newPwd: '',
+                  rePwd: ''
+                }
+              }))
+            })
+            break
+          case 'paypwd':
+            modifyPayPwd({ oldPwd, newPwd, rePwd }).then(res => {
+              if (res.code === 0) {
+                Toast.success(res.message || '修改成功')
+                this.props.AsetUserSecureLevel()
+              } else {
+                Toast.fail(res.message || '网络异常，请稍后重试')
+              }
+              this.setState(prevState => ({
+                ispwdLoading: false,
+                pwdForm: {
+                  oldPwd: '',
+                  newPwd: '',
+                  rePwd: ''
+                }
+              }))
+            })
+            break
+        }
+      })
+    } else {
+      this.setState({
+        ispwdLoading: true
+      }, () => {
+        savePayPwd({newPwd, rePwd}).then(res => {
+          if (res.code === 0) {
+            Toast.success('绑定成功')
+            this.props.AsetUserSecureLevel()
+            this.props.navigation.navigate('BankManager')
+          } else {
+            Toast.fail(res.message || '网络异常，请稍后重试')
+          }
+          this.setState(prevState => ({
+            ispwdLoading: false,
+            pwdForm: {
+              oldPwd: '',
+              newPwd: '',
+              rePwd: ''
+            }
+          }))
+        })
+      })
     }
   }
 
@@ -226,8 +358,8 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    let {usualLottery, systemNews} = this.props
-    let {hotLoList} = this.state
+    let {usualLottery, systemNews, userSecurityLevel} = this.props
+    let {hotLoList, pwdForm: { oldPwd, newPwd, rePwd }, pwdType, pwdvisible, ispwdLoading} = this.state
     let str = ''
     if (systemNews.length > 0) {
       let reg = /<[^>]+>|[&nbsp;]+/g
@@ -387,6 +519,70 @@ class HomeScreen extends React.Component {
             </ImageBackground>
           </View>
         </Flex>
+        {
+          pwdvisible &&
+          <Modal
+            popup
+            maskClosable
+            closable
+            visible={pwdvisible}
+            onClose={() => {
+              this.setState({
+                pwdvisible: false
+              })
+            }}
+          >
+            <View style={{width: '100%', paddingTop: 20}}>
+              <Text style={{textAlign: 'center', lineHeight: 26, color: '#333', fontSize: 18}}>{pwdType === 'login' ? '请您修改登录密码' : '请您修改资金密码'}</Text>
+              <List style={{width: '100%'}}>
+                {
+                  (pwdType === 'login' || userSecurityLevel.isTradePassword) &&
+                  <InputItem
+                    type="password"
+                    value={oldPwd}
+                    autoFocus={true}
+                    style={{width: 250, color: '#666'}}
+                    onChange={v => this.setState(prevState => ({
+                      pwdForm: {...prevState.pwdForm, oldPwd: v}
+                    }))}
+                    placeholder="请输入当前密码"
+                    labelNumber={5}
+                  >
+                    当前密码
+                  </InputItem>
+                }
+                <InputItem
+                  type="password"
+                  value={newPwd}
+                  onChange={v => this.setState(prevState => ({
+                    pwdForm: {...prevState.pwdForm, newPwd: v}
+                  }))}
+                  style={{width: 250, color: '#666'}}
+                  placeholder="请输入新密码"
+                  labelNumber={5}
+                >
+                  新密码
+                </InputItem>
+                <InputItem
+                  type="password"
+                  value={rePwd}
+                  onChange={v => this.setState(prevState => ({
+                    pwdForm: {...prevState.pwdForm, rePwd: v}
+                  }))}
+                  style={{width: 250, color: '#666'}}
+                  placeholder="请确认新密码"
+                  labelNumber={5}
+                >
+                  确认新密码
+                </InputItem>
+              </List>
+            </View>
+            <Button type="primary" style={{width: '70%', marginLeft: 'auto', marginRight: 'auto', marginBottom: 10, height: 40, marginTop: 20}}
+              loading={ispwdLoading} onPress={() => this.submitFunc()}>
+              <Text>确认</Text>
+            </Button>
+          </Modal>
+        }
       </View>
     )
   }
@@ -610,11 +806,13 @@ const styles = StyleSheet.create(stylesUtil({
 }))
 
 const mapStateToProps = (state) => {
-  let {usualLottery, systemNews, userId} = state.common
+  let {usualLottery, systemNews, userId, passwordRule, userSecurityLevel} = state.common
   return ({
     systemNews,
     usualLottery,
-    userId
+    userId,
+    passwordRule,
+    userSecurityLevel
   })
 }
 
@@ -644,7 +842,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(AsetFreshMsg())
     },
     AcheckEnvironment: () => dispatch(checkEnvironment()),
-    AsetUserBankCards: data => dispatch(AsetUserBankCards(data))
+    AsetUserBankCards: data => dispatch(AsetUserBankCards(data)),
+    AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
+    AsetUserSecureConfig: (data) => { dispatch(AsetUserSecureConfig(data)) },
+    setLoginStatus: (data) => { dispatch(setLoginStatus(data)) }
   }
 }
 
