@@ -151,15 +151,7 @@ class HomeScreen extends React.Component {
     this.props.AsetDividendPower()
     this.props.AcheckEnvironment()
     // this.props.navigation.push('Bet', this.state.LotArray[0])
-    console.log(this.props.userId)
     this.props.AsetUserBankCards(this.props.userId)
-    if (this.props.passwordRule.bandUserPassword) {
-      console.log('show bind loginpwd, after bind re getrule')
-      this.showBindPwd({type: 'login'})
-    } else if (this.props.passwordRule.bandUserPayPassword) {
-      console.log('show bind tradpwd, after bind re getrule')
-      this.showBindPwd({type: 'paypwd'})
-    }
   }
 
   componentWillMount() {
@@ -170,11 +162,9 @@ class HomeScreen extends React.Component {
   }
 
   componentWillReceiveProps(np) {
-    if (np.passwordRule.bandUserPassword && !this.props.passwordRule.passwordParamDto) {
-      console.log('show bind loginpwd, after bind re getrule')
+    if (np.passwordRule.bandUserPassword) {
       this.showBindPwd({type: 'login'})
-    } else if (np.passwordRule.bandUserPayPassword && !this.props.passwordRule.passwordParamDto) {
-      console.log('show bind tradpwd, after bind re getrule')
+    } else if (np.passwordRule.bandUserPayPassword) {
       this.showBindPwd({type: 'paypwd'})
     }
   }
@@ -224,7 +214,7 @@ class HomeScreen extends React.Component {
             // let pattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
             updateLoginPwd({ oldPwd, newPwd, rePwd }).then(res => {
               if (res.code === 0) {
-                Toast.success(res.message || '修改成功')
+                // Toast.success(res.message || '修改成功')
                 loginOut().then((res) => {
                   if (res.code === 0) {
                     this.props.setLoginStatus(false)
