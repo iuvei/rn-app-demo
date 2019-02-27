@@ -334,43 +334,63 @@ class PersonalScreen extends React.Component {
           </Flex>
         </View>
         <View style={{flex: 1}}>
-          <Tabs
-            tabs={[
-              {title: '订单报表', index: 0},
-              {title: '代理管理', index: 1}
-            ]}
-            page={this.state.page}
-            onChange={(t) => {
-              this.setState({
-                page: t.index
-              })
-            }}
-            renderTabBar={() => {
-            return <Flex
-              style={[
-                styleUtil({marginTop: 10, marginBottom: 18, width: 260, padding: 1}),
-                {marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', borderRadius: 20}
-              ]}>
-              <Flex.Item>
-                <TouchableHighlight onPress={() => this.setState({page: 0})} style={{borderRadius: 19}}>
-                  <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 19, height: 38}}>
-                    <Text style={{textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 38}}>订单报表</Text>
-                  </View>
-                </TouchableHighlight>
-              </Flex.Item>
-              {
-                loginInfo.proxy === 1 &&
-                <Flex.Item>
-                  <TouchableHighlight onPress={() => this.setState({page: 1})}  style={{borderRadius: 19}}>
-                  <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 19, height: 38}}>
-                    <Text style={{textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 38}}>代理管理</Text>
-                  </View>
-                  </TouchableHighlight>
-                </Flex.Item>
-              }
-            </Flex>
-          }}>
-              <ScrollView style={styles.agent}>
+          {
+            loginInfo.proxy === 1 ?
+              <Tabs
+                tabs={[
+                  {title: '订单报表', index: 0},
+                  {title: '代理管理', index: 1}
+                ]}
+                page={this.state.page}
+                onChange={(t) => {
+                  this.setState({
+                    page: t.index
+                  })
+                }}
+                renderTabBar={() => {
+                  return <Flex
+                    style={[
+                      styleUtil({marginTop: 10, marginBottom: 18, width: 260, padding: 1}),
+                      {marginLeft: 'auto', marginRight: 'auto', backgroundColor: '#00bbcc', borderRadius: 20}
+                    ]}>
+                    <Flex.Item>
+                      <TouchableHighlight onPress={() => this.setState({page: 0})} style={{borderRadius: 19}}>
+                        <View style={{backgroundColor: this.state.page === 0 ? '#fff' : '#00bbcc', borderRadius: 19, height: 38}}>
+                          <Text style={{textAlign: 'center', color: this.state.page === 0 ? '#00bbcc' : '#fff', lineHeight: 38}}>订单报表</Text>
+                        </View>
+                      </TouchableHighlight>
+                    </Flex.Item>
+                    <Flex.Item>
+                      <TouchableHighlight onPress={() => this.setState({page: 1})}  style={{borderRadius: 19}}>
+                        <View style={{backgroundColor: this.state.page === 1 ? '#fff' : '#00bbcc', borderRadius: 19, height: 38}}>
+                          <Text style={{textAlign: 'center', color: this.state.page === 1 ? '#00bbcc' : '#fff', lineHeight: 38}}>代理管理</Text>
+                        </View>
+                      </TouchableHighlight>
+                    </Flex.Item>
+                  </Flex>
+                }}>
+                <ScrollView style={styles.agent}>
+                  <Grid data={order} columnNum={4} hasLine={false} renderItem={(el, index) => {
+                    return (
+                      <View style={styleUtil({alignItems: 'center', width: 90})}>
+                        <Image source={el.src} style={styleUtil({width: 50, height: 50, marginBottom: 5})}></Image>
+                        <Text style={styleUtil({fontSize: 13})}>{el.name}</Text>
+                      </View>
+                    )
+                  }} onPress={(el) => this.changeRoute(el.path)} />
+                </ScrollView>
+                <ScrollView style={styles.agent}>
+                  <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
+                    return (
+                      el.condition && <View style={styleUtil({alignItems: 'center', width: 90})}>
+                        <Image source={el.src} style={styleUtil({width: 50, height: 50, marginBottom: 5})}></Image>
+                        <Text style={styleUtil({fontSize: 13})}>{el.name}</Text>
+                      </View>
+                    )
+                  }} onPress={(el) => this.changeRoute(el.path)} />
+                </ScrollView>
+              </Tabs> :
+              <ScrollView style={{...styles.agent, borderTopWidth: 1, marginTop: 25, borderColor: '#ddd'}}>
                 <Grid data={order} columnNum={4} hasLine={false} renderItem={(el, index) => {
                   return (
                     <View style={styleUtil({alignItems: 'center', width: 90})}>
@@ -380,20 +400,7 @@ class PersonalScreen extends React.Component {
                   )
                 }} onPress={(el) => this.changeRoute(el.path)} />
               </ScrollView>
-            {
-              loginInfo.proxy === 1 &&
-              <ScrollView style={styles.agent}>
-                <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
-                  return (
-                    el.condition && <View style={styleUtil({alignItems: 'center', width: 90})}>
-                      <Image source={el.src} style={styleUtil({width: 50, height: 50, marginBottom: 5})}></Image>
-                      <Text style={styleUtil({fontSize: 13})}>{el.name}</Text>
-                    </View>
-                  )
-                }} onPress={(el) => this.changeRoute(el.path)} />
-              </ScrollView>
-            }
-          </Tabs>
+          }
         </View>
       </View>
     )
