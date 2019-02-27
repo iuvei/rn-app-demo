@@ -17,7 +17,7 @@ import { isObject } from 'lodash'
 import { minbankCodeMap } from '../../constants/glyphMapHex'
 import SvgIcon from '../../components/SvgIcon'
 import { Icon } from 'expo'
-import { setSpText } from '../../utils/ScreenUtil'
+import { setSpText, stylesUtil } from '../../utils/ScreenUtil'
 
 class AccountsPanel extends React.Component {
   constructor (props) {
@@ -140,8 +140,7 @@ class AccountsPanel extends React.Component {
     console.log(tabs)
     return (
       <View>
-        <View style={{height: 50}}>
-
+        <View style={styles.warp}>
           <Flex>
             <View style={styles.playNav}>
               <View>
@@ -154,10 +153,9 @@ class AccountsPanel extends React.Component {
                         key={index}
                         activeOpacity={0.7}
                         onPress={()=>console.log(value)}
-                        style={styles.Touchable}
-                      >
+                        style={[styles.btnDefault, styles.btnActive]}>
                         <Text
-                          style={[styles.btnDefaultText, true?null:styles.btnActive]}
+                          style={[styles.btnDefaultText, styles.btnActive]} numberOfLines={1}
                           >{title}</Text>
                       </TouchableOpacity>
                     })
@@ -199,35 +197,41 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create(stylesUtil({
   warp: {backgroundColor: '#ffffff', justifyContent: 'center', height: 34, paddingLeft: 2},
-  playNav: {borderBottomWidth: 1, borderColor: '#f0f0f0', paddingBottom: 15},
+  playNav: {
+    marginTop: 2,
+  },
   btnDefault: {
-    height: 26,
-    borderWidth: 1,
+    height: 30,
+    lineHeight: 30,
+    borderBottomColor: '#3beda3',
+    borderBottomWidth: 2,
     paddingLeft: 4,
     paddingRight: 4,
-    borderRadius: 20,
+    // borderRadius: 20,
     marginRight: 5
   },
   btnActive: {
     borderColor: '#00b4cc',
-    color: 'red'
+    color: '#14000c'
   },
-  Touchable:{
-    height:26,
+  Touchable: {
+    height: 26,
     lineHeight: 26
   },
   btnDefaultText: {
-    fontSize: 12,
+    fontSize: 13,
     lineHeight: 26,
     paddingLeft: 4,
     paddingRight: 4,
+    color: '#ededed',
     textAlign: 'center'
   },
   btnActiveText: {
     color: '#00b4cc'
   }
 })
+)
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountsPanel)
