@@ -648,7 +648,7 @@ export default (Comp) => {
       this.setState({
         buyInfo: {
           ...buyInfo,
-          total: (num * multiple).toFixed(3),
+          total: (num * multiple * model).toFixed(3),
           multiple
         },
         isShowAllIn: true

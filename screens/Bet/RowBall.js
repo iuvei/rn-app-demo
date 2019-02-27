@@ -362,7 +362,9 @@ class RowBall extends React.Component {
               </Text>
               <Text style={styles.BuyInfoDefaultText}>
                 <Text>投注金额：</Text>
-                <Text style={{...styles.BuyInfoDefaultText, color: '#ff0000'}}>{total}</Text>
+                <Text style={{...styles.BuyInfoDefaultText, color: '#ff0000'}}>
+                  {total}
+                </Text>
               </Text>
             </View>
             <View style={styles.fastBuyView}>
@@ -393,7 +395,7 @@ class RowBall extends React.Component {
               <Text>当前倍数：<Text style={{color: 'red'}}>{buyInfo.multiple}</Text></Text>
               <Text>投注总数：<Text style={{color: 'red'}}>{buyInfo.num}</Text></Text>
               <Text>当前币种：<Text style={{color: 'red'}}>人民币</Text></Text>
-              <Text>投注总额：<Text style={{color: 'red'}}>{buyInfo.total * buyInfo.model}元</Text></Text>
+              <Text>投注总额：<Text style={{color: 'red'}}>{buyInfo.total}元</Text></Text>
             </View>
           </Modal>
           {/*</KeyboardAvoidingView>*/}
