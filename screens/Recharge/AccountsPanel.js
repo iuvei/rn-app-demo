@@ -19,6 +19,41 @@ import SvgIcon from '../../components/SvgIcon'
 import { Icon } from 'expo'
 import { setSpText, stylesUtil } from '../../utils/ScreenUtil'
 
+class MyTabs extends React.PureComponent {
+
+  render () {
+    let {tabsChange, tabs, curPage} = this.props
+
+    return (
+      <View style={styles.warp}>
+        <Flex>
+          <View style={styles.playNav}>
+            <View>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                {
+                  tabs.map((d, index) => {
+                    return <TouchableOpacity
+                      key={index}
+                      activeOpacity={0.7}
+                      onPress={() => tabsChange(d, index)}
+                      style={[styles.btnDefault, index === curPage ? styles.btnActive : null]}>
+                      <Text
+                        style={[styles.btnDefaultText, index === curPage ? styles.btnActive : null]} numberOfLines={1}
+                        >{d.title}</Text>
+                    </TouchableOpacity>
+                  })
+                }
+              </ScrollView>
+            </View>
+          </View>
+        </Flex>
+      </View>
+    )
+  }
+}
+
 class AccountsPanel extends React.Component {
   constructor (props) {
     super(props)
@@ -140,32 +175,7 @@ class AccountsPanel extends React.Component {
 
     return (
       <View>
-        <View style={styles.warp}>
-          <Flex>
-            <View style={styles.playNav}>
-              <View>
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
-                  {
-                    tabs.map((d, index) => {
-                      return <TouchableOpacity
-                        key={index}
-                        activeOpacity={0.7}
-                        onPress={() => this.tabsChange(d, index)}
-                        style={[styles.btnDefault, index === curPage ? styles.btnActive : null]}>
-                        <Text
-                          style={[styles.btnDefaultText, index === curPage ? styles.btnActive : null]} numberOfLines={1}
-                          >{d.title}</Text>
-                      </TouchableOpacity>
-                    })
-                  }
-                </ScrollView>
-              </View>
-            </View>
-          </Flex>
-
-        </View>
+        <MyTabs tabs={tabs} curPage={curPage} tabsChange={this.tabsChange}/>
         {
           tabs[curPage].arr.length > 0 &&
           <View style={{marginBottom: 5}}>
@@ -221,7 +231,7 @@ const styles = StyleSheet.create(stylesUtil({
     lineHeight: 26
   },
   btnDefaultText: {
-    fontSize: 13,
+    fontSize: 15,
     lineHeight: 50,
     height:50,
     paddingLeft: 8,
