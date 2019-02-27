@@ -16,6 +16,7 @@ import {
   Toast,
   List
 } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { getChaseTime, toBuyLottery } from '../../api/lottery'
 import { toCrypto } from '../../plugin/crypto'
 import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
@@ -59,7 +60,7 @@ class ChaseScreen extends React.Component {
 
   componentDidMount() {
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -80,7 +81,7 @@ class ChaseScreen extends React.Component {
         })
         return Promise.resolve(res)
       } else {
-        Toast.fail(res.message)
+        $Toast.fail(res.message)
       }
     }).catch(res => {
       return Promise.reject(res)
@@ -134,7 +135,7 @@ class ChaseScreen extends React.Component {
       let ceil = Math.ceil(sMultiple * hisl * (1 + minProfit) / fm)
       let thisMutiple = fm === 0 ? sMultiple : ceil
       if (thisMutiple < 0) {
-        Toast.info('您设置的参数无法达到盈利，请重新选择！')
+        $Toast.info('您设置的参数无法达到盈利，请重新选择！')
         return result
       }
       if (thisMutiple === 0) {
@@ -174,7 +175,7 @@ class ChaseScreen extends React.Component {
         }
       })
       if (rulecodearr.length > 2) {
-        Toast.info('利润率追号不支持混投，请确保您的投注都为同一玩法类型！')
+        $Toast.info('利润率追号不支持混投，请确保您的投注都为同一玩法类型！')
         return
       }
       // 计算单倍奖金
@@ -197,7 +198,7 @@ class ChaseScreen extends React.Component {
           let multiple = result[i].multiple
           tmptotal += total * multiple
           if (tmptotal > this.props.userBalanceInfoYE.currentBalance) {
-            Toast.info('当前余额不足以追号指定期数，已为您优化总追号期数')
+            $Toast.info('当前余额不足以追号指定期数，已为您优化总追号期数')
             tmptotal -= total * multiple
             break
           }
@@ -211,7 +212,7 @@ class ChaseScreen extends React.Component {
           })
         }
       } else {
-        Toast.info('没有符合要求的方案，请调整参数重新计算！')
+        $Toast.info('没有符合要求的方案，请调整参数重新计算！')
       }
     }
     if (activeTab === 'tongbei') {
@@ -222,7 +223,7 @@ class ChaseScreen extends React.Component {
         let val = chaseList[i]
         tmptotal += total * startMultiple
         if (tmptotal > this.props.userBalanceInfoYE.currentBalance) {
-          Toast.info('当前余额不足以追号指定期数，已为您优化总追号期数')
+          $Toast.info('当前余额不足以追号指定期数，已为您优化总追号期数')
           tmptotal -= total * startMultiple
           break
         }
@@ -254,7 +255,7 @@ class ChaseScreen extends React.Component {
         }
         tmptotal += total * multiple
         if (tmptotal > this.props.userBalanceInfoYE.currentBalance) {
-          Toast.info('当前余额不足以追号指定期数，已为您优化总追号期数')
+          $Toast.info('当前余额不足以追号指定期数，已为您优化总追号期数')
           tmptotal -= total * multiple
           break
         }
@@ -350,9 +351,9 @@ class ChaseScreen extends React.Component {
           }, 1000)
         })
         if (res.code === 0) {
-          Toast.success('追号成功')
+          $Toast.success('追号成功')
         } else {
-          Toast.fail(res.message || '追号失败')
+          $Toast.fail(res.message || '追号失败')
         }
       }).catch(() => {
         this.setState({
@@ -367,7 +368,7 @@ class ChaseScreen extends React.Component {
             })
           }, 1000)
         })
-        Toast.fail('网络异常，请稍后重试')
+        $Toast.fail('网络异常，请稍后重试')
       })
     })
   }

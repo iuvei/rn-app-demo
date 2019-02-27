@@ -12,6 +12,7 @@ import {
   InputItem,
   Toast
 } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import {updateLoginPwd, savePayPwd, modifyPayPwd} from '../../api/member'
 import {loginOut} from '../../api/basic'
 import {
@@ -52,16 +53,16 @@ class UpdatePwd extends React.Component {
     let typeStr = this.props.navigation.getParam('type', '')
     let pattern = new RegExp(this.props.passwordRule.passwordParamDto.validator) // /((?=.*[a-z])(?=.*\d)|(?=[a-z])(?=.*[#@!~%^&*])|(?=.*\d)(?=.*[#@!~%^&*]))[a-z\d#@!~%^&*]{8,16}/i
     if (!pattern.test(newPwd)) {
-      Toast.info('请输入符合规则的密码')
+      $Toast.info('请输入符合规则的密码')
       return
     }
     if (newPwd !== rePwd) {
-      Toast.info('新密码和确认密码必须相同')
+      $Toast.info('新密码和确认密码必须相同')
       return
     }
     if (typeStr === 'login' || this.props.userSecurityLevel.isTradePassword) {
       if (oldPwd === '' || newPwd === '' || rePwd === '') {
-        Toast.info('请输入密码')
+        $Toast.info('请输入密码')
         return
       }
       this.setState({
@@ -72,7 +73,7 @@ class UpdatePwd extends React.Component {
             // let pattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
             updateLoginPwd({ oldPwd, newPwd, rePwd }).then(res => {
               if (res.code === 0) {
-                Toast.success(res.message || '修改成功')
+                $Toast.success(res.message || '修改成功')
                 loginOut().then((res) => {
                   if (res.code === 0) {
                     this.props.setLoginStatus(false)
@@ -80,7 +81,7 @@ class UpdatePwd extends React.Component {
                   }
                 })
               } else {
-                Toast.fail(res.message || '网络异常，请稍后重试')
+                $Toast.fail(res.message || '网络异常，请稍后重试')
               }
               this.setState({
                 isLoading: false,
@@ -93,10 +94,10 @@ class UpdatePwd extends React.Component {
           case 'paypwd':
             modifyPayPwd({ oldPwd, newPwd, rePwd }).then(res => {
               if (res.code === 0) {
-                Toast.success(res.message || '修改成功')
+                $Toast.success(res.message || '修改成功')
                 this.props.AsetUserSecureLevel()
               } else {
-                Toast.fail(res.message || '网络异常，请稍后重试')
+                $Toast.fail(res.message || '网络异常，请稍后重试')
               }
               this.setState({
                 isLoading: false,
@@ -114,12 +115,12 @@ class UpdatePwd extends React.Component {
       }, () => {
         savePayPwd({newPwd, rePwd}).then(res => {
           if (res.code === 0) {
-            Toast.success('绑定成功')
+            $Toast.success('绑定成功')
             this.props.AsetUserSecureLevel()
             this.props.setPasswordRule()
             this.props.navigation.navigate('BankManager')
           } else {
-            Toast.fail(res.message || '网络异常，请稍后重试')
+            $Toast.fail(res.message || '网络异常，请稍后重试')
           }
           this.setState({
             isLoading: false,

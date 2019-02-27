@@ -12,6 +12,7 @@ import {
   Toast,
   Icon
 } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { bindBankName } from '../../api/member'
 import {
   AsetUserSecureLevel,
@@ -29,7 +30,7 @@ class BindBankname extends React.Component {
       bankName: ''
     }
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -37,7 +38,7 @@ class BindBankname extends React.Component {
   submitFunc = () => {
     let { bankName } = this.state
     if (bankName === '') {
-      Toast.info('请先完善相关信息')
+      $Toast.info('请先完善相关信息')
       return
     }
     this.setState({
@@ -46,9 +47,9 @@ class BindBankname extends React.Component {
       bindBankName({bankName}).then((res) => {
         if (res.code === 0) {
           this.props.AsetUserSecureLevel()
-          Toast.success('绑定银行卡姓名成功')
+          $Toast.success('绑定银行卡姓名成功')
         } else {
-          Toast.fail(res.message || '网络异常，请稍后重试')
+          $Toast.fail(res.message || '网络异常，请稍后重试')
         }
         this.setState({
           bankName: '',

@@ -6,6 +6,7 @@ import {
   View,
 } from 'react-native'
 import { Toast, Flex, TextareaItem, Modal, WhiteSpace } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { chatDetail, replyMessage } from './../../api/member'
 import dayjs from 'dayjs'
 import { connect } from "react-redux";
@@ -26,7 +27,7 @@ class ReplyEmail extends React.Component {
   componentDidMount() {
     this.getMsgDetail()
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -50,7 +51,7 @@ class ReplyEmail extends React.Component {
       return false
     }
     if (!replyContent) {
-      Toast.info('请输入信息内容')
+      $Toast.info('请输入信息内容')
       return false
     }
     let obj = {
@@ -59,7 +60,7 @@ class ReplyEmail extends React.Component {
     }
     replyMessage(obj).then(res => {
       if (res.code === 0) {
-        Toast.success(res.message)
+        $Toast.success(res.message)
         let obj = {
           replyTime: +new Date(),
           replyName: this.props.loginInfo.acc.user.loginName || '--',

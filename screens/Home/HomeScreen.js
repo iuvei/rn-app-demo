@@ -17,6 +17,7 @@ import {
   WhiteSpace, Flex, Toast, Icon,
   Modal, InputItem, List
 } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { connect } from 'react-redux'
 import Header from './../../components/Header'
 import {
@@ -198,16 +199,16 @@ class HomeScreen extends React.Component {
     let typeStr = pwdType
     let pattern = new RegExp(this.props.passwordRule.passwordParamDto.validator) // /((?=.*[a-z])(?=.*\d)|(?=[a-z])(?=.*[#@!~%^&*])|(?=.*\d)(?=.*[#@!~%^&*]))[a-z\d#@!~%^&*]{8,16}/i
     if (!pattern.test(newPwd)) {
-      Toast.info('请输入符合规则的密码')
+      $Toast.info('请输入符合规则的密码')
       return
     }
     if (newPwd !== rePwd) {
-      Toast.info('新密码和确认密码必须相同')
+      $Toast.info('新密码和确认密码必须相同')
       return
     }
     if (typeStr === 'login' || this.props.userSecurityLevel.isTradePassword) {
       if (oldPwd === '' || newPwd === '' || rePwd === '') {
-        Toast.info('请输入密码')
+        $Toast.info('请输入密码')
         return
       }
       this.setState({
@@ -220,7 +221,7 @@ class HomeScreen extends React.Component {
               this.props.AsetUserSecureLevel()
               this.props.setPasswordRule()
               if (res.code === 0) {
-                Toast.success(res.message || '修改成功')
+                $Toast.success(res.message || '修改成功')
                 this.setState(prevState => ({
                   ispwdLoading: false,
                   pwdvisible: false,
@@ -240,7 +241,7 @@ class HomeScreen extends React.Component {
                   })
                 }, 100)
               } else {
-                Toast.fail(res.message || '网络异常，请稍后重试')
+                $Toast.fail(res.message || '网络异常，请稍后重试')
                 this.setState(prevState => ({
                   ispwdLoading: false,
                   pwdForm: {
@@ -255,7 +256,7 @@ class HomeScreen extends React.Component {
           case 'paypwd':
             modifyPayPwd({ oldPwd, newPwd, rePwd }).then(res => {
               if (res.code === 0) {
-                Toast.success(res.message || '修改成功')
+                $Toast.success(res.message || '修改成功')
                 this.props.AsetUserSecureLevel()
                 this.props.setPasswordRule()
                 this.setState(prevState => ({
@@ -269,7 +270,7 @@ class HomeScreen extends React.Component {
                   }
                 }))
               } else {
-                Toast.fail(res.message || '网络异常，请稍后重试')
+                $Toast.fail(res.message || '网络异常，请稍后重试')
                 this.setState(prevState => ({
                   ispwdLoading: false,
                   pwdForm: {
@@ -291,7 +292,7 @@ class HomeScreen extends React.Component {
           if (res.code === 0) {
             this.props.AsetUserSecureLevel()
             this.props.setPasswordRule()
-            Toast.success('绑定成功')
+            $Toast.success('绑定成功')
             this.setState(prevState => ({
               ispwdLoading: false,
               pwdvisible: false,
@@ -305,7 +306,7 @@ class HomeScreen extends React.Component {
             // setTimeout(() => {
             // }, 4000)
           } else {
-            Toast.fail(res.message || '网络异常，请稍后重试')
+            $Toast.fail(res.message || '网络异常，请稍后重试')
             this.setState(prevState => ({
               ispwdLoading: false,
               pwdForm: {
@@ -358,7 +359,7 @@ class HomeScreen extends React.Component {
   _onRefresh = () => {
     this.setState({refreshing: true})
     setTimeout(() => {
-      Toast.success('刷新成功！')
+      $Toast.success('刷新成功！')
       this.setState({refreshing: false})
     }, 1000)
   }

@@ -8,8 +8,7 @@ import UIListView from '../../../components/UIListView'
 import Base64 from '../../../utils/Base64'
 import dayjs from 'dayjs'
 import { host } from '../../../api.config'
-
-const TableRow = 20
+import $Toast from '../../../plugin/$Toast'
 
 class FlatListItem extends PureComponent {
   constructor (props) {
@@ -19,7 +18,7 @@ class FlatListItem extends PureComponent {
   _delSignUp = (id) => {
     delSignup({signUpId: id}).then((res) => {
       if (res.code === 0) {
-        Toast.info(res.message)
+        $Toast.info(res.message)
         this.props.refresh()
       }
     })
@@ -37,7 +36,7 @@ class FlatListItem extends PureComponent {
           let highUser = Base64.btoa(loginInfo.acc?.user?.loginName)
           let url = host + '/app/#/regist/' + userId + '/' + highUser + '/' + id
           Clipboard.setString(url)
-          Toast.info('复制成功！')
+          $Toast.info('复制成功！')
         }}>注册码: {id}</Text>
         <Text>用户类别: {isProxy === 0 ? '玩家' : '代理'}</Text>
         <Text>彩票返点: {rebate}</Text>
@@ -108,23 +107,23 @@ class OpenCenter extends React.Component {
     }
     let {systemMinRebate} = this.props.rebateInfo
     if (!userName) {
-      Toast.info(`请输入账号`)
+      $Toast.info(`请输入账号`)
       return false
     }
     if (!userRebate) {
-      Toast.info(`请输入彩票返点`)
+      $Toast.info(`请输入彩票返点`)
       return false
     }
     if (userName.length > 10 || userName.length < 6) {
-      Toast.info('请输入大小写字母开头，5-10个字符')
+      $Toast.info('请输入大小写字母开头，5-10个字符')
       return false
     }
     if (userRebate > maxRebate) {
-      Toast.info(`返点数不能大于${maxRebate}`)
+      $Toast.info(`返点数不能大于${maxRebate}`)
       return false
     }
     if (userRebate < systemMinRebate) {
-      Toast.info(`返点数不能小于${systemMinRebate}`)
+      $Toast.info(`返点数不能小于${systemMinRebate}`)
       return false
     }
     let obj = {
@@ -136,7 +135,7 @@ class OpenCenter extends React.Component {
       }
     }
     addDown(obj).then(res => {
-      Toast.info(res.message)
+      $Toast.info(res.message)
       this.setState({
         userName: '',
         userRebate: ''
@@ -154,27 +153,27 @@ class OpenCenter extends React.Component {
     let {systemMaxRebate, systemMinRebate, userRebateVO} = this.props.rebateInfo
     let maxRebate = userRebateVO[0].userRebate < systemMaxRebate ? userRebateVO[0].userRebate : systemMaxRebate
     if (!availableTimes) {
-      Toast.info(`请输入使用次数`)
+      $Toast.info(`请输入使用次数`)
       return false
     }
     if (!userRebate) {
-      Toast.info(`请输入彩票返点`)
+      $Toast.info(`请输入彩票返点`)
       return false
     }
     if (!reg.test(availableTimes)) {
-      Toast.info(`使用次数必须是正整数`)
+      $Toast.info(`使用次数必须是正整数`)
       return false
     }
     if (availableTimes > 9999) {
-      Toast.info(`使用次数不能大于9999`)
+      $Toast.info(`使用次数不能大于9999`)
       return false
     }
     if (userRebate > maxRebate) {
-      Toast.info(`返点数不能大于${maxRebate}`)
+      $Toast.info(`返点数不能大于${maxRebate}`)
       return false
     }
     if (userRebate < systemMinRebate) {
-      Toast.info(`返点数不能小于${systemMinRebate}`)
+      $Toast.info(`返点数不能小于${systemMinRebate}`)
       return false
     }
     addSignup({
@@ -183,7 +182,7 @@ class OpenCenter extends React.Component {
       validDays: validDays,
       rebate: userRebate
     }).then(res => {
-      Toast.info(res.message)
+      $Toast.info(res.message)
       this.setState({
         userRebate: '',
         availableTimes: '',
@@ -212,6 +211,7 @@ class OpenCenter extends React.Component {
 
   render () {
     let {maxRebate, minRebate, api, params, KeyName, isShow, selectedIndex} = this.state
+    let type = Platform.OS === 'android' ? 'text' : 'number'
     return (
       <View style={styles.container}>
         <SegmentedControl values={['普通开户', '链接开户', '链接管理']} tintColor={'#00bbcc'} style={styles.segmented}
@@ -243,7 +243,7 @@ class OpenCenter extends React.Component {
             <InputItem
               clear
               last
-              type={'number'}
+              type={type}
               value={this.state.userRebate}
               onChange={userRebate => {
                 this.setState({
@@ -302,7 +302,7 @@ class OpenCenter extends React.Component {
             <InputItem
               clear
               last
-              type={'number'}
+              type={type}
               value={this.state.userRebate}
               onChange={userRebate => {
                 this.setState({

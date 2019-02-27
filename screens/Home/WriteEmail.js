@@ -12,6 +12,7 @@ import {
   Button, InputItem, TextareaItem,
   Modal, Checkbox, List
 } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import {downUser, sendMessage} from './../../api/member'
 const CheckboxItem = Checkbox.CheckboxItem;
 
@@ -100,7 +101,7 @@ export default class WriteEmail extends React.Component {
       }
     })
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -117,7 +118,7 @@ export default class WriteEmail extends React.Component {
     let { topic, content, messageType, down_data } = this.state
     let downUserId = []
     if (!topic || !content) {
-      Toast.fail(!topic ? '主题不能为空': '邮件内容不能为空')
+      $Toast.fail(!topic ? '主题不能为空': '邮件内容不能为空')
       return
     }
     if (messageType === 3) {
@@ -135,10 +136,10 @@ export default class WriteEmail extends React.Component {
     }
     sendMessage(formData).then((res) => {
       if (res.code === 0) {
-        Toast.success(res.message)
+        $Toast.success(res.message)
         this.resetFormateData()
       } else {
-        Toast.info(res.message)
+        $Toast.info(res.message)
       }
     })
   }

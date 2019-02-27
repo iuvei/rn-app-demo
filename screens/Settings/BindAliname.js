@@ -12,6 +12,7 @@ import {
   Toast,
   Icon
 } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { bindAliName } from '../../api/member'
 import {
   AsetUserSecureLevel,
@@ -39,7 +40,7 @@ class BindAliname extends React.Component {
   submitFunc = () => {
     let { alipayName, alipayAccount } = this.state
     if (alipayName === '' || alipayAccount === '') {
-      Toast.info('请先完善相关信息')
+      $Toast.info('请先完善相关信息')
       return
     }
     this.setState({
@@ -47,9 +48,9 @@ class BindAliname extends React.Component {
     }, () => {
       bindAliName({ alipayName, alipayAccount }).then(res => {
         if (res.code === 0) {
-          Toast.success(res.message)
+          $Toast.success(res.message)
         } else {
-          Toast.fail(res.message)
+          $Toast.fail(res.message)
         }
         this.props.AsetUserSecureLevel()
         this.props.AsetUserSecureConfig()

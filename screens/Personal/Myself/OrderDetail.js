@@ -13,6 +13,7 @@ import {
   Modal,
   Toast
 } from '@ant-design/react-native'
+import $Toast from '../../../plugin/$Toast'
 import { orderStatus } from '../../../data/options'
 import { rulesNameMap } from '../../../data/nor-lot/basic-info'
 import { queryOrderDetails, doCancelOrder } from '../../../api/member'
@@ -83,7 +84,7 @@ class OrderDetail extends React.Component {
       }
     })
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -101,7 +102,7 @@ class OrderDetail extends React.Component {
       { text: '确认', onPress: () => {
         doCancelOrder(formData).then((res) => {
           if (res.code === 0) {
-            Toast.success('撤单成功')
+            $Toast.success('撤单成功')
             this.setState(prevState => ({
               detailInfo: {...prevState.detailInfo, status: -2, isRevoked: false}
             }))
@@ -114,7 +115,7 @@ class OrderDetail extends React.Component {
               // this.props.AsetAllBalance()
             }, 50)
           } else {
-            Toast.fail(res.message || '网络异常')
+            $Toast.fail(res.message || '网络异常')
           }
           // this.afterCancelOrder({res, orderItem})
         })

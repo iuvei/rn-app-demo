@@ -7,7 +7,8 @@ import {
   RefreshControl, Dimensions,
 } from 'react-native'
 import Header from './../../components/Header'
-import { Accordion, Flex, Toast } from '@ant-design/react-native';
+import { Accordion, Flex, Toast } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { connect } from "react-redux";
 import { getSystemNews } from "../../actions/common";
 import dayjs from 'dayjs'
@@ -27,7 +28,7 @@ class BroadcastScreen extends React.Component {
       activeSections: []
     }
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -36,7 +37,7 @@ class BroadcastScreen extends React.Component {
     this.setState({refreshing: true});
     this.props.getSystemNews()
     setTimeout(() => {
-      Toast.success('刷新成功！')
+      $Toast.success('刷新成功！')
       this.setState({refreshing: false});
     }, 1000);
   }

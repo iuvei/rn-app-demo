@@ -11,6 +11,7 @@ import {
   Ionicons
 } from '@expo/vector-icons'
 import { List, WhiteSpace, Button, Modal, Toast, Icon } from '@ant-design/react-native'
+import $Toast from '../plugin/$Toast'
 import {
   AsetUserSecureLevel,
   AsetUserSecureConfig,
@@ -49,7 +50,7 @@ class SettingsScreen extends React.Component {
       { text: '下次吧', onPress: () => {
         loginOut().then((res) => {
           if (res.code === 0) {
-            Toast.success('退出成功')
+            $Toast.success('退出成功')
             this.props.setLoginStatus(false)
             this.props.navigation.navigate('AppLoading')
           } else {
@@ -57,7 +58,7 @@ class SettingsScreen extends React.Component {
               this.props.setLoginStatus(false)
               // this.props.navigation.navigate('AppLoading')
             } else {
-              Toast.fail('退出失败')
+              $Toast.fail('退出失败')
             }
           }
         })

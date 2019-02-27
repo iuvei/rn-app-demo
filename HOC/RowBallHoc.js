@@ -6,21 +6,9 @@ import { ruleBuilder, handlerBall } from '../data/nor-lot/basic-info'
 import { filterCurBall } from '../data/nor-lot/basic-info'
 import utilLot from '../filiter/classic'
 import { toBuyLottery } from '../api/lottery'
-import { Toast } from '@ant-design/react-native'
+import $Toast from '../plugin/$Toast'
 import { AsetAllBalance } from '../actions/member'
 import { toCrypto } from '../utils/crypto'
-
-const $TOAST = {
-  info: (message) => {
-    Toast.info(message, 1, undefined, false)
-  },
-  success: (message) => {
-    Toast.success(message, 1, undefined, false)
-  },
-  fail: (message) => {
-    Toast.fail(message, 1, undefined, false)
-  }
-}
 
 export default (Comp) => {
   class RowBallHoc extends Component {
@@ -362,7 +350,7 @@ export default (Comp) => {
               if (b.ball === numItem.ball && b.choose === true) {
                 clearTimeout(this.curBallTime)
                 this.curBallTime = setTimeout(() => {
-                  $TOAST.info('胆码拖码数字不能相同')
+                  $Toast.info('胆码拖码数字不能相同')
                 }, 100)
                 b.choose = false
                 this.setState(prevState => ({
@@ -430,15 +418,15 @@ export default (Comp) => {
       let {activeGamesPlay} = this.state
       let gamesPlayLen = Object.keys(activeGamesPlay).length
       if (!Object.keys(navParams).length || activeGamesPlay.isOuter) {
-        $TOAST.fail('该彩种已关闭')
+        $Toast.fail('该彩种已关闭')
         return false
       }
       if (!gamesPlayLen || activeGamesPlay.status === 2) {
-        $TOAST.fail('该玩法未开启投注')
+        $Toast.fail('该玩法未开启投注')
         return false
       }
       if (activeGamesPlay.status === 0) {
-        $TOAST.info('该玩法已禁用')
+        $Toast.info('该玩法已禁用')
         return false
       }
       // 保存添加到购物车时间
@@ -451,12 +439,12 @@ export default (Comp) => {
       let {num, multiple, total, model, rebateMode} = buyInfo
 
       if (multiple === 0) {
-        $TOAST.info('请输入大于0的倍数')
+        $Toast.info('请输入大于0的倍数')
         return
       }
       let {ruleName, title, singlePrice} = activeGamesPlay
       if (num === 0) {
-        $TOAST.info('您还没有选择号码或所选号码不全')
+        $Toast.info('您还没有选择号码或所选号码不全')
         return false
       }
       // 稍后补充 动画
@@ -536,7 +524,7 @@ export default (Comp) => {
           // NoticeTips({
           //   content:  ！`
           // })
-          $TOAST.info(`注数不能超过${this.state.activeGamesPlay.maxRecord}`)
+          $Toast.info(`注数不能超过${this.state.activeGamesPlay.maxRecord}`)
           return
         }
       }
@@ -615,12 +603,12 @@ export default (Comp) => {
       }
       toBuyLottery(repZip || rep).then(res => {
         if (res.code === 0) {
-          $TOAST.success('购买成功')
+          $Toast.success('购买成功')
           this.clearAllData()
           // 刷新余额
           this.props.AsetAllBalance()
         } else {
-          $TOAST.success(res.message)
+          $Toast.success(res.message)
         }
         this.setState({
           buyCardData: []
@@ -634,27 +622,27 @@ export default (Comp) => {
       let {activeGamesPlay} = this.state
       let gamesPlayLen = Object.keys(activeGamesPlay).length
       if (!Object.keys(navParams).length || activeGamesPlay.isOuter) {
-        $TOAST.fail('该彩种已关闭')
+        $Toast.fail('该彩种已关闭')
         return false
       }
       if (!gamesPlayLen || activeGamesPlay.status === 2) {
-        $TOAST.fail('该玩法未开启投注')
+        $Toast.fail('该玩法未开启投注')
         return false
       }
       if (activeGamesPlay.status === 0) {
-        $TOAST.info('该玩法已禁用')
+        $Toast.info('该玩法已禁用')
         return false
       }
       let {buyInfo} = this.state
       let {num, model} = buyInfo
 
       if (num === 0) {
-        $TOAST.info('您还没有选择号码或所选号码不全')
+        $Toast.info('您还没有选择号码或所选号码不全')
         return false
       }
       let multiple = parseInt(userBalanceInfoYE.currentBalance / (num * model))
       if (multiple <= 0) {
-        $TOAST.info('余额不足，请充值！')
+        $Toast.info('余额不足，请充值！')
         return false
       }
       this.setState({

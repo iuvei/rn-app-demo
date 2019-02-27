@@ -13,6 +13,7 @@ import {
   Toast,
   Icon
 } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { AsetUserSecureLevel } from '../../actions/common'
 import { bindSecurity } from '../../api/member'
 import { questions } from '../../data/options'
@@ -36,7 +37,7 @@ class BindSecurity extends React.Component {
       tradePwd: ''
     }
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -46,7 +47,7 @@ class BindSecurity extends React.Component {
     if (questionOne === '' || questionTwo === '' || questionThree === '' ||
     answerOne === '' || answerTwo === '' || answerThree === '' ||
     tradePwd === '') {
-      Toast.info('请先完善相关信息')
+      $Toast.info('请先完善相关信息')
       return
     }
     this.setState({
@@ -57,10 +58,10 @@ class BindSecurity extends React.Component {
           isLoading: false
         })
         if (res.code === 0) {
-          Toast.success(res.message || '已绑定密保成功')
+          $Toast.success(res.message || '已绑定密保成功')
           this.props.AsetUserSecureLevel()
         } else {
-          Toast.fail(res.message || '网络异常，请稍后重试')
+          $Toast.fail(res.message || '网络异常，请稍后重试')
         }
       })
     })

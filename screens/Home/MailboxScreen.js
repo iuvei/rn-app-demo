@@ -6,6 +6,7 @@ import {
 } from 'react-native'
 import Header from './../../components/Header'
 import { List, SwipeAction, SegmentedControl, Toast, Flex } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { delMessage, oneKeyRead } from './../../api/member'
 import { AsetFreshMsg } from "../../actions/member"
 import UIListView from '../../components/UIListView'
@@ -121,7 +122,7 @@ class MailboxScreen extends React.Component {
     if (!ids.length) return
     oneKeyRead({messageIds: ids}).then((res) => {
       if (res.code === 0) {
-        Toast.success(res.message)
+        $Toast.success(res.message)
         this.MailBox.listView.refresh()
       }
     })
@@ -135,7 +136,7 @@ class MailboxScreen extends React.Component {
     }
     delMessage(formData).then((res) => {
       if (res.code === 0) {
-        Toast.success(res.message)
+        $Toast.success(res.message)
         this.MailBox.listView.refresh()
       }
     })

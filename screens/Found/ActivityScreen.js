@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Toast, Flex, WhiteSpace, Button, Icon } from "@ant-design/react-native";
+import $Toast from '../../plugin/$Toast'
 import _ from 'lodash'
 import HTML from 'react-native-render-html'
 import { IGNORED_TAGS } from 'react-native-render-html/src/HTMLUtils'
@@ -189,7 +190,7 @@ class ActivityScreen extends React.Component {
   _onRefresh = () => {
     this.setState({refreshing: true});
     setTimeout(() => {
-      Toast.success('刷新成功！')
+      $Toast.success('刷新成功！')
       this.setState({refreshing: false});
     }, 1000);
   }

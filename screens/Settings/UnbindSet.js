@@ -13,6 +13,7 @@ import {
   Toast,
   Modal
 } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { AsetUserSecureLevel } from '../../actions/common'
 import { questions } from '../../data/options'
 import { unBindBankName, unBindPayPwd, unBindMiBao, unBindGa, unbindAliName } from '../../api/member'
@@ -56,17 +57,17 @@ class UnbindSet extends React.Component {
     let type = this.props.navigation.getParam('type', '')
 
     if (pwd === '') {
-      Toast.info('请完善数据后重试')
+      $Toast.info('请完善数据后重试')
       return
     }
     if (columns[selectType].valueTxt === 'mbq') {
       if (question === '' || answer === '') {
-        Toast.info('请完善数据后重试')
+        $Toast.info('请完善数据后重试')
         return
       }
     }
     if (type !== 'paypwd' && answer === '' && userName === '' && gaPassword === '' && alipayName === '') {
-      Toast.info('请完善数据后重试')
+      $Toast.info('请完善数据后重试')
       return
     }
     Modal.alert('您确认解绑吗?', '', [
@@ -109,14 +110,14 @@ class UnbindSet extends React.Component {
       } },
     ])
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
 
   callBack = (res) => {
     if (res.code === 0) {
-      Toast.success('解绑成功')
+      $Toast.success('解绑成功')
       this.props.AsetUserSecureLevel()
       this.setState({
         // question: '',
@@ -127,7 +128,7 @@ class UnbindSet extends React.Component {
         alipayName: ''
       })
     } else {
-      Toast.fail(res.message || '网络异常，请稍后重试')
+      $Toast.fail(res.message || '网络异常，请稍后重试')
     }
   }
 

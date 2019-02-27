@@ -11,6 +11,7 @@ import {
   Button,
   Toast
 } from '@ant-design/react-native'
+import $Toast from '../../plugin/$Toast'
 import { modifyNickName } from '../../api/member'
 import { setLoginInfo } from '../../actions/common'
 import {
@@ -40,7 +41,7 @@ class UpdateNickname extends React.Component {
       return
     }
     if (String(nickName).length > 8) {
-      Toast.info('昵称最长为8个字符')
+      $Toast.info('昵称最长为8个字符')
       return
     }
     this.setState({
@@ -48,14 +49,14 @@ class UpdateNickname extends React.Component {
     }, () => {
       modifyNickName({nickName}).then(res => {
         if (res.code === 0) {
-          Toast.success(res.message || '修改昵称成功')
+          $Toast.success(res.message || '修改昵称成功')
           getLoginUser().then(res => {
             if (res.code === 0) {
               this.props.setLoginInfo(res.data)
             }
           })
         } else {
-          Toast.fail(res.message || '网络异常，请稍后重试')
+          $Toast.fail(res.message || '网络异常，请稍后重试')
         }
         this.setState({
           isLoading: false,

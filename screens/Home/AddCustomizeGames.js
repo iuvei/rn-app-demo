@@ -6,6 +6,7 @@ import {
   RefreshControl, StyleSheet, Image
 } from 'react-native';
 import { Accordion, Flex, Toast, Portal } from '@ant-design/react-native';
+import $Toast from '../../plugin/$Toast'
 import Header from '../../components/Header';
 import { connect } from "react-redux";
 import {
@@ -110,7 +111,7 @@ class AddCustomizeGamesScreen extends React.Component {
   _toSetLot = (v) => {
     let {realCategory, lotterCode, status} = v
     if (status === 1) {
-      Toast.fail('该彩种暂未开通，敬请期待')
+      $Toast.fail('该彩种暂未开通，敬请期待')
       return
     }
     if (this.state.checkAllGroup.includes(lotterCode)) {
@@ -122,7 +123,7 @@ class AddCustomizeGamesScreen extends React.Component {
       })
     } else {
       if (this.state.checkAllGroup.length >= 10) {
-        Toast.fail('最多设置10个')
+        $Toast.fail('最多设置10个')
         return
       }
       this.setState((prevState) => {
