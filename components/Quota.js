@@ -39,7 +39,7 @@ export default class Quota extends React.Component {
   _updateQuato = () => {
     let {quotaId, quotaNumber, quotaType} = this.state
     if (!quotaNumber) {
-      Toast.info('请输入配额')
+      Toast.info('请输入配额', 1, undefined, false)
       return false
     }
     let type = quotaType === 0 ? 'add' : 'sub'
@@ -55,14 +55,14 @@ export default class Quota extends React.Component {
     }
     updateQuato(params).then(res => {
       if (res.code === 0) {
-        Toast.info('修改成功！')
+        Toast.info('修改成功！', 1, undefined, false)
         this._getUserQuotaList()
         this.setState({
           quotaNumber: '',
           quotaType: 0
         })
       } else {
-        Toast.info(res.message)
+        Toast.info(res.message, 1, undefined, false)
       }
     })
   }

@@ -145,7 +145,7 @@ class HbPacket extends Component {
         })
         this.getRedPacketList()
       }
-      if(res.code !== 0) Toast.fail(res.message, 0.2)
+      if(res.code !== 0) Toast.fail(res.message, 0.2, undefined, false)
     })
   }
 

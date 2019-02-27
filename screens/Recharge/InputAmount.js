@@ -49,10 +49,10 @@ class InputAmount extends React.PureComponent {
       msg = '请输入正确的充值金额，必须是两位小数，且末尾不能是0!'
     }
     if (!pattern.test(Number(amount))) {
-      Toast.info(msg)
+      Toast.info(msg, 1, undefined, false)
     } else {
       if (amount < minRechargeMoney) {
-        Toast.info(`最小充值 ${minRechargeMoney} 元`)
+        Toast.info(`最小充值 ${minRechargeMoney} 元`, 1, undefined, false)
         return
       }
       this.setState({
@@ -72,9 +72,9 @@ class InputAmount extends React.PureComponent {
             this.props.navigation.navigate('RechargeSuccess', {recinfo: tmprecinfo, qrCodeSrc: qrCodeSrc, bankCode: activeAccount.bankCode})
           } else {
             if (res.message.indexOf('}') !== -1) {
-              Toast.info(JSON.parse(res.message).Message || '充值服务异常')
+              Toast.info(JSON.parse(res.message).Message || '充值服务异常', 1, undefined, false)
             } else {
-              Toast.info(res.message || '充值服务异常')
+              Toast.info(res.message || '充值服务异常', 1, undefined, false)
             }
             this.setState({
               amount: '',

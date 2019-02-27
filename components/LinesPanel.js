@@ -57,11 +57,11 @@ class LinesPanel extends Component {
   checkLine = (lineSwitchParam) => {
     checkLineSwitchParam({lineSwitchParam}).then(res => {
       if(res.code === 0) {
-        Toast.success('设置成功！', 0.3)
+        Toast.success('设置成功！', 0.3, undefined, false)
       } else if(res.code === -1) {
         // NavigationService.navigate('AppLoading')
         this.props.setLoginStatus(false)
-        Toast.info('设置成功！需要重新登录', 0.3)
+        Toast.info('设置成功！需要重新登录', 0.3, undefined, false)
       }
     })
 
