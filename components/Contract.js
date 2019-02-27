@@ -142,9 +142,9 @@ class Contract extends React.Component {
     if (!isEdit) {
       updateDividendRule({dividendType, id, status: 4}).then(res => {
         if (res.code === 0) {
-          Toast.success(res.message || '撤销成功')
+          Toast.success(res.message || '撤销成功', 1, undefined, false)
         } else {
-          Toast.fail(res.message || '撤销失败，请重试')
+          Toast.fail(res.message || '撤销失败，请重试', 1, undefined, false)
         }
         this.onSearch()
       })
@@ -169,9 +169,9 @@ class Contract extends React.Component {
     insertDividendRule({...formData, dividendType, userId, loginName, ownerId: pid}).then(res => {
       if (res.code === 0) {
         this.onSearch()
-        Toast.success(res.message)
+        Toast.success(res.message, 1, undefined, false)
       } else {
-        Toast.fail(res.message || '添加失败，请稍后重试')
+        Toast.fail(res.message || '添加失败，请稍后重试', 1, undefined, false)
       }
       this.setState({
         visible: false

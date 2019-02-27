@@ -55,7 +55,7 @@ class GlobalComp extends React.Component {
     NetInfo.isConnected.fetch().then((isConnected) => {
       this.props.AsetNetInfo(isConnected)
       if(!isConnected) {
-        Toast.fail('无网络服务！', 0.5)
+        Toast.fail('无网络服务！', 0.5, undefined, false)
       }
     });
 
@@ -63,7 +63,7 @@ class GlobalComp extends React.Component {
     NetInfo.isConnected.addEventListener('connectionChange', (isConnected) => {
       this.props.AsetNetInfo(isConnected)
       if(!isConnected) {
-        Toast.fail('无网络服务！', 0.5)
+        Toast.fail('无网络服务！', 0.5, undefined, false)
       }
     })
   }
