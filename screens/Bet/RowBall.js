@@ -4,7 +4,7 @@ import {
   View, Text, StyleSheet, ScrollView, Keyboard, KeyboardAvoidingView
 } from 'react-native'
 import {
-  Stepper,
+  Stepper, Modal,
   Button, TextareaItem
 } from '@ant-design/react-native'
 
@@ -165,17 +165,17 @@ class RowBall extends React.Component {
   render() {
     let {
       tools, activeViewData: {rectangle, moreTitle}, activeViewData,
-      clickBall, toolsCur, setBuyInfo, addBuyCard,
-      balanceInfo, handleText,
-      curMaxMode,
+      clickBall, toolsCur, setBuyInfo, addBuyCard, doAllIn,
+      balanceInfo, handleText, buyInfo, closeAllIn,
+      curMaxMode, isShowAllIn, confirmAllIn,
       isKlcYxyLot, bonusPrize,
-      userBalanceInfoYE,
+      userBalanceInfoYE, openIssue,
       activeGamesPlay: {lotterMinMode}
     } = this.props
 
     let {currentBalance} = balanceInfo.ye || {}
 
-    let {num, multiple, model, rebateMode, total} = this.props.buyInfo
+    let {num, multiple, model, rebateMode, total} = buyInfo
 
     let {showBet, showLayout, showBit, showText} = false
 
@@ -187,8 +187,11 @@ class RowBall extends React.Component {
 
     if (showBet && activeViewData.text) showText = true
 
+    const footerButtons = [
+      { text: '取消', onPress: () => closeAllIn() },
+      { text: '确认', onPress: () => confirmAllIn() },
+    ]
     // 当前渲染格式
-
     return (
       <View style={this.state.showFullTextArea ? {} : {flex: 1}}>
         {
@@ -341,14 +344,14 @@ class RowBall extends React.Component {
             /> : null
           }
           {
-            !isKlcYxyLot ? <Text style={styles.BonusText}>
-              当前奖金：
+            !isKlcYxyLot ? <Text style={styles.BonusText}>注数：
+              <Text style={styles.BuyInfoDefaultText}>{num}</Text>
+              {'\t'}  当前奖金：
               {
-
                 bonusPrize.bonus ? `${bonusPrize.resmin} ~ ${bonusPrize.resmax}`
                   : (bonusPrize.resmin || '00000.0000')
               }
-            </Text> : null
+            </Text> : <Text style={styles.BonusText}>注数：<Text style={styles.BuyInfoDefaultText}>{num}</Text></Text>
           }
           {/*<KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>*/}
           <View style={styles.BuyInfoView}>
@@ -357,13 +360,18 @@ class RowBall extends React.Component {
                 人民币余额：
                 <Text style={{...styles.BuyInfoActiveText, color: '#00bbcc'}}>{userBalanceInfoYE.currentBalance}</Text>
               </Text>
-              <Text style={styles.BuyInfoDefaultText}>注数：
-                <Text style={styles.BuyInfoDefaultText}>{num}</Text>
-                <Text>{'\t'}   投注金额：</Text>
+              <Text style={styles.BuyInfoDefaultText}>
+                <Text>投注金额：</Text>
                 <Text style={{...styles.BuyInfoDefaultText, color: '#ff0000'}}>{total}</Text>
               </Text>
             </View>
             <View style={styles.fastBuyView}>
+              <Button
+                key={'allIn'}
+                type="warning" size="small"
+                onPress={() => doAllIn(true)}
+                style={[styles.fastBuyText,{height:scaleSize(28), marginRight: 4}]}>
+                一键梭哈</Button>
               <Button
                 key={'fastBuy'}
                 type="ghost" size="small"
@@ -372,6 +380,20 @@ class RowBall extends React.Component {
                 快速投注</Button>
             </View>
           </View>
+          <Modal
+            title="投注提示"
+            transparent
+            visible={isShowAllIn}
+            footer={footerButtons}
+          >
+            <Text>你确认加入第<Text style={{color: 'red'}}>{openIssue.currentIssue}</Text> 期？</Text>
+              <Text>是否追号：<Text style={{color: 'red'}}>否</Text></Text>
+              <Text>订单笔数：<Text style={{color: 'red'}}>1</Text></Text>
+              <Text>当前倍数：<Text style={{color: 'red'}}>{buyInfo.multiple}</Text></Text>
+              <Text>投注总数：<Text style={{color: 'red'}}>{buyInfo.num}</Text></Text>
+              <Text>当前币种：<Text style={{color: 'red'}}>人民币</Text></Text>
+              <Text>投注总额：<Text style={{color: 'red'}}>{buyInfo.total}元</Text></Text>
+          </Modal>
           {/*</KeyboardAvoidingView>*/}
         </View>
         </KeyboardAvoidingView>
@@ -425,6 +447,6 @@ const styles = StyleSheet.create(stylesUtil({
   },
   BuyInfoDefaultText: {color: '#333'},
   BuyInfoActiveText: {color: '#0a7cda'},
-  fastBuyView: {width: 80, justifyContent: 'center'},
+  fastBuyView: {width: 140, justifyContent: 'center', flexDirection: 'row'},
   fastBuyText: {borderRadius: 4}
 }))

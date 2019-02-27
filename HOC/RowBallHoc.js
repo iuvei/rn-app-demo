@@ -63,6 +63,7 @@ export default (Comp) => {
         // testMode: 1802
         isKlcYxyLot: false,
 
+        isShowAllIn: false,
         bonusPrize: {}
       }
     }
@@ -436,7 +437,7 @@ export default (Comp) => {
       } = this.state
       let {playOrgin, bit, checkbox} = activeViewData
       let {num, multiple, total, model, rebateMode} = buyInfo
-      
+
       if (multiple === 0) {
         Toast.info('请输入大于0的倍数')
         return
@@ -615,6 +616,70 @@ export default (Comp) => {
       })
     }
 
+    // 一键梭哈
+    doAllIn = () => {
+      let {navParams, navParams: {lotType}, userBalanceInfoYE} = this.props
+      let {activeGamesPlay} = this.state
+      let gamesPlayLen = Object.keys(activeGamesPlay).length
+      if (!Object.keys(navParams).length || activeGamesPlay.isOuter) {
+        Toast.fail('该彩种已关闭')
+        return false
+      }
+      if (!gamesPlayLen || activeGamesPlay.status === 2) {
+        Toast.fail('该玩法未开启投注')
+        return false
+      }
+      if (activeGamesPlay.status === 0) {
+        Toast.info('该玩法已禁用')
+        return false
+      }
+      let {
+        dataSel, activeViewData, buyInfo, bonusPrize
+      } = this.state
+      let {playOrgin, bit, checkbox} = activeViewData
+      let {num, total, model, rebateMode} = buyInfo
+
+      let {ruleName, title, singlePrice} = activeGamesPlay
+      if (num === 0) {
+        Toast.info('您还没有选择号码或所选号码不全')
+        return false
+      }
+      let multiple = parseInt(userBalanceInfoYE.currentBalance / (num * model))
+      if (multiple <= 0) {
+        Toast.info('余额不足，请充值！')
+        return false
+      }
+      this.setState({
+        buyInfo: {
+          ...buyInfo,
+          total: (num * multiple).toFixed(3),
+          multiple
+        },
+        isShowAllIn: true
+      })
+    }
+
+    // 确认一键梭哈
+    confirmAllIn = () => {
+      this.addBuyCard(true)
+      this.setState({
+        isShowAllIn: false
+      })
+    }
+
+    closeAllIn = () => {
+      let {buyInfo} = this.state
+      let {model} = buyInfo
+      let multiple = 1
+      this.setState({
+        isShowAllIn: false,
+        buyInfo: {
+          ...buyInfo,
+          total: (buyInfo.num * multiple * model).toFixed(3),
+          multiple: 1
+        }
+      })
+    }
     // 清除投注区数据
     clearAllData = () => {
       let {layout, textarea} = Object.assign({}, this.state.activeViewData)
@@ -658,6 +723,9 @@ export default (Comp) => {
           toolsCur={this.toolsCur}
           setBuyInfo={this.setBuyInfo}
           addBuyCard={this.addBuyCard}
+          doAllIn={this.doAllIn}
+          confirmAllIn={this.confirmAllIn}
+          closeAllIn={this.closeAllIn}
           handleText={this.handleText}
           setBonusPrize={this.setBonusPrize}
           toHandCheckBox={this.toHandCheckBox}
