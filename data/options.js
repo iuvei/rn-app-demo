@@ -349,7 +349,7 @@ export const ReWiTrStatus = [
   {value: 3, label: '审核中'},
   {value: 4, label: '审核通过'},
   {value: 5, label: '已完成'},
-  {value: 6, name: '提现同意'}
+  {value: 6, label: '提现同意'}
 ]
 
 // 账单类型
