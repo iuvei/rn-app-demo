@@ -51,7 +51,6 @@ class FastPlayNav extends React.Component {
 
   setSubs = (title, {code, name}) => {
     let spCode = ['lo1_2x', 'lo1_rx', 'lo1_lh_', 'lo1_h_', 'lo1_hz_', 'lo2_3x', 'lo2_2x', 'lo2_rx', 'lo5_sx', 'lo8_ex']
-    console.log(code)
     let resCode = spCode.filter(item => code.indexOf(item) > -1)
     let { newCusNav, activeTitle, maxNum } = this.state
     let totalName = !resCode.length ? activeTitle : code.indexOf('lo1_hz_') > -1 ? `${activeTitle}${title}` : title
