@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import {
   setLoginStatus, setUserRebate,
   setLoginInfo, setUserBalance,
+  setPasswordRule,
   AsetUserSecureLevel
 } from '../../actions/common'
 import {
@@ -66,6 +67,7 @@ class AppLoadingScreen extends React.Component {
       getLoginUser().then(res => {
         // console.log(`当前用户登陆状态:${res.code === 0 ? '在线' : '下线'}`)
         if (res.code === 0) {
+          this.props.setPasswordRule()
           this.props.setLoginStatus(res.code === 0)
           this.props.setLoginInfo(res.data)
           this.props.setUserRebate(res.data.acc.user.userId)
@@ -123,6 +125,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setUserBalance: (data) => {
       dispatch(setUserBalance(data))
+    },
+    setPasswordRule: () => {
+      dispatch(setPasswordRule())
     },
     AsetUserSecureLevel: (data) => {
       dispatch(AsetUserSecureLevel(data))

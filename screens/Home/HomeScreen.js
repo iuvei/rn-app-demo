@@ -163,9 +163,12 @@ class HomeScreen extends React.Component {
   }
 
   componentWillReceiveProps(np) {
-    if (np.passwordRule.bandUserPassword) {
+    console.log(np.passwordRule)
+    if (np.passwordRule.bandUserPassword && !this.props.passwordRule.passwordParamDto) {
+      console.log('login pwd')
       this.showBindPwd({type: 'login', messgae: np.passwordRule.passwordParamDto.messgae})
-    } else if (np.passwordRule.bandUserPayPassword) {
+    } else if (np.passwordRule.bandUserPayPassword && !this.props.passwordRule.bandUserPassword) {
+      console.log('pay pwd')
       this.showBindPwd({type: 'paypwd', messgae: np.passwordRule.passwordParamDto.messgae})
     }
   }
@@ -215,13 +218,14 @@ class HomeScreen extends React.Component {
           case 'login':
             // let pattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
             updateLoginPwd({ oldPwd, newPwd, rePwd }).then(res => {
-              // this.props.AsetUserSecureLevel()
+              this.props.AsetUserSecureLevel()
               this.props.setPasswordRule()
               if (res.code === 0) {
                 Toast.success(res.message || '修改成功')
                 this.setState(prevState => ({
                   ispwdLoading: false,
                   pwdvisible: false,
+                  pwdType: '',
                   pwdForm: {
                     oldPwd: '',
                     newPwd: '',
@@ -253,11 +257,12 @@ class HomeScreen extends React.Component {
             modifyPayPwd({ oldPwd, newPwd, rePwd }).then(res => {
               if (res.code === 0) {
                 Toast.success(res.message || '修改成功')
-                // this.props.AsetUserSecureLevel()
+                this.props.AsetUserSecureLevel()
                 this.props.setPasswordRule()
                 this.setState(prevState => ({
                   ispwdLoading: false,
                   pwdvisible: false,
+                  pwdType: '',
                   pwdForm: {
                     oldPwd: '',
                     newPwd: '',
@@ -285,18 +290,19 @@ class HomeScreen extends React.Component {
       }, () => {
         savePayPwd({newPwd, rePwd}).then(res => {
           if (res.code === 0) {
+            this.props.AsetUserSecureLevel()
+            this.props.setPasswordRule()
             Toast.success('绑定成功')
             this.setState(prevState => ({
               ispwdLoading: false,
               pwdvisible: false,
+              pwdType: '',
               pwdForm: {
                 oldPwd: '',
                 newPwd: '',
                 rePwd: ''
               }
             }))
-            // this.props.AsetUserSecureLevel()
-            this.props.setPasswordRule()
           } else {
             Toast.fail(res.message || '网络异常，请稍后重试')
             this.setState(prevState => ({
