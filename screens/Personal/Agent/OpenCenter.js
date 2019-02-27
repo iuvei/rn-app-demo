@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { View, Text, StyleSheet, Clipboard, Platform } from 'react-native'
 import { connect } from 'react-redux'
-import { SegmentedControl, InputItem, Flex, Button, Toast } from '@ant-design/react-native'
+import { SegmentedControl, InputItem, Flex, Button } from '@ant-design/react-native'
 import { Picker } from 'native-base'
 import { addDown, addSignup, delSignup } from '../../../api/member'
 import UIListView from '../../../components/UIListView'
@@ -211,7 +211,7 @@ class OpenCenter extends React.Component {
 
   render () {
     let {maxRebate, minRebate, api, params, KeyName, isShow, selectedIndex} = this.state
-    let type = Platform.OS === 'android' ? 'text' : 'number'
+    // let type = Platform.OS === 'android' ? 'text' : 'number'
     return (
       <View style={styles.container}>
         <SegmentedControl values={['普通开户', '链接开户', '链接管理']} tintColor={'#00bbcc'} style={styles.segmented}
@@ -243,7 +243,7 @@ class OpenCenter extends React.Component {
             <InputItem
               clear
               last
-              type={type}
+              type={'number'}
               value={this.state.userRebate}
               onChange={userRebate => {
                 this.setState({
@@ -302,7 +302,7 @@ class OpenCenter extends React.Component {
             <InputItem
               clear
               last
-              type={type}
+              type={'number'}
               value={this.state.userRebate}
               onChange={userRebate => {
                 this.setState({
