@@ -2,6 +2,7 @@ import day from 'dayjs'
 
 export const TableRow = 15
 
+const offset = (new Date().getTimezoneOffset()) / 60
 // 分红类型
 export const bounceTypes = [
   {value: 0, name: '彩票'}
@@ -79,12 +80,15 @@ export const shortcuts = [
   }
 ]
 
+let milliseconds = (offset + 8) * 60 * 60 * 1000
 export const shortcutsDays = [
   {
     text: '今天',
     value() {
       const endTime = new Date()
       const startTime = new Date()
+      startTime.setTime(startTime.getTime() + milliseconds)
+      endTime.setTime(endTime.getTime() + milliseconds)
       return {startTime, endTime}
     },
     id: 1
@@ -93,8 +97,8 @@ export const shortcutsDays = [
     value() {
       const endTime = new Date()
       const startTime = new Date()
-      startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 2)
-      endTime.setTime(endTime.getTime())
+      startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 2 + milliseconds)
+      endTime.setTime(endTime.getTime() + milliseconds)
       return {startTime, endTime}
     },
     id: 3
@@ -103,8 +107,8 @@ export const shortcutsDays = [
     value() {
       const endTime = new Date()
       const startTime = new Date()
-      startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 6)
-      endTime.setTime(endTime.getTime())
+      startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 6 + milliseconds)
+      endTime.setTime(endTime.getTime() + milliseconds)
       return {startTime, endTime}
     },
     id: 7
