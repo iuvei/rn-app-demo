@@ -223,6 +223,7 @@ const styles = StyleSheet.create(stylesUtil({
   btnDefaultText: {
     fontSize: 13,
     lineHeight: 50,
+    height:50,
     paddingLeft: 4,
     paddingRight: 4,
     color: '#333',
