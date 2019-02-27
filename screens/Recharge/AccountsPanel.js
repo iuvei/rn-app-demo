@@ -94,7 +94,7 @@ class AccountsPanel extends React.Component {
   _renderHeader = (section, index) => {
     return (
       <Flex
-        style={{backgroundColor: '#fff', height: 40, borderBottomColor: '#f0f0f0', borderBottomWidth: 1, paddingHorizontal: 16}}>
+        style={{backgroundColor: '#fff', height: 40, borderBottomColor: '#f0f0f0', borderBottomWidth: 0.5, paddingHorizontal: 16}}>
         <View style={{flex: 1}}><Text style={{lineHeight: 40, color: '#333', width: '50%'}}>{section.title}</Text></View>
         <Text style={{width: 90, textAlign: 'right'}}><Icon.Ionicons style={{textAlign: 'right'}} color={this.state.activeSections[0] === index ? '#666' : '#cacaca'}
           name={this.state.activeSections[0] === index ? "ios-arrow-down" : "ios-arrow-forward"} size={20}></Icon.Ionicons></Text>
