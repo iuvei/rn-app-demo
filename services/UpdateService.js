@@ -9,7 +9,7 @@ export const fetchUpdateAndReload = async (key) => {
     if (response.isNew) {
       Alert.alert(
         '温馨提示',
-        '感谢您的耐心等待，已为您更新最新版本！',
+        '感谢您的耐心等待，已为您更新至最新版本！',
         [
           {
             text: '进入游戏',
@@ -43,7 +43,7 @@ export const checkOtaUpdates = async () => {
           {
             text: '确 定',
             onPress: () => {
-              let key = Toast.loading('正在下载最新版本...', 0)
+              let key = Toast.loading('正在下载最新版本...', 0, null, true)
               fetchUpdateAndReload(key)
             },
             style: 'cancel'

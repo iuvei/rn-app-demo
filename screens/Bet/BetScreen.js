@@ -117,12 +117,12 @@ class BetScreen extends React.Component {
       Object.assign({}, params, {lotType: code})
     )
     // 先渲染本地构造的玩法，getGamesPlay接口比较slow
-    let {navBar} = JSON.parse(JSON.stringify(norLot[code]))
-    let plays = navBar[0].subnav[0].play.map(item => {
-      return {...item, name: `${navBar[0].name}${item.name}`}
-    })
-    this.props.setActivePlay(plays[0])
-    this.props.setCustomPlayNav(plays)
+    // let {navBar} = JSON.parse(JSON.stringify(norLot[code]))
+    // let plays = navBar[0].subnav[0].play.map(item => {
+    //   return {...item, name: `${navBar[0].name}${item.name}`}
+    // })
+    // this.props.setActivePlay(plays[0])
+    // this.props.setCustomPlayNav(plays)
 
     // 获取玩法数据
     this.props.getGamesPlay({
@@ -198,8 +198,16 @@ class BetScreen extends React.Component {
       } else {
         d[code] = data
       }
-      this.props.setActivePlay(data[0])
-      this.props.setCustomPlayNav(data)
+      AsyncStorage.getItem('setLocalActiveCode').then(p => {
+        let { lotterCode } = this.props.navParams
+        let codes = JSON.parse(p) || {}
+        if (codes[lotterCode] && Object.keys(codes[lotterCode]).length) {
+          this.props.setActivePlay(codes[lotterCode])
+        } else {
+          this.props.setActivePlay(data[0])
+        }
+        this.props.setCustomPlayNav(data)
+      })
       AsyncStorage.setItem('setLocalCustomPlays', JSON.stringify(d))
       this.setState({filterNavBar})
     })
@@ -290,7 +298,7 @@ class BetScreen extends React.Component {
             sidebar={<FastPlayNav onClose={() => this.closeDrawer()} filterNavBar={filterNavBar}/>}
             onClose={() => this.closeDrawer()}>
             {/* playNav Container */}
-            <PlayNav openDrawer={this.openDrawer}/>
+            <PlayNav navParams={this.props.navParams} openDrawer={this.openDrawer}/>
 
             {/* down Container */}
             <DownTimeHocView

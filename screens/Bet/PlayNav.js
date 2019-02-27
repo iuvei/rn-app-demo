@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   View, Text,
-  StyleSheet, ScrollView, TouchableOpacity
+  StyleSheet, ScrollView, TouchableOpacity, AsyncStorage
 } from 'react-native'
 import {
   Flex
@@ -60,7 +60,14 @@ class PlayNav extends React.Component {
   }
 
   InitBetView = (item) => {
+    let { lotterCode } = this.props.navParams
     this.props.setActivePlay(item || {code: 'lo1_5x_fs', name: '五星复式'})
+    if (!item && !Object.keys(item).length) return
+    AsyncStorage.getItem('setLocalActiveCode').then(p => {
+      let d = JSON.parse(p) || {}
+      d[lotterCode] = item
+      AsyncStorage.setItem('setLocalActiveCode', JSON.stringify(d))
+    })
   }
 
   // let {navBar, viewData, codeMap} =

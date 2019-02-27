@@ -58,7 +58,7 @@ class FastPlayNav extends React.Component {
     if (!dif.length) {
       if (newCusNav.length < maxNum) {
         this.setState(prevState => ({
-          newCusNav: [...prevState.newCusNav, {code: code, name: `${totalName}${name}`}]
+          newCusNav: [...prevState.newCusNav, {code: code, name: `${totalName === name ? '' : totalName}${name}`}]
         }))
       } else {
         Toast.info(`最多设置${maxNum}个！`)
@@ -74,6 +74,10 @@ class FastPlayNav extends React.Component {
 
   submitCumSubs = () => {
     let { newCusNav } = this.state
+    if (!newCusNav.length) {
+      Toast.info(`至少设置一个！`)
+      return
+    }
     this.props.setCustomPlayNav(newCusNav)
     this.setLocalCustomPlays(newCusNav)
   }
@@ -93,8 +97,11 @@ class FastPlayNav extends React.Component {
   }
 
   resetCumSubs = () => {
-    let { newCusPlayNav } = this.props
-    this.setState({newCusNav: newCusPlayNav})
+    this.setState({
+      newCusNav: [this.props.activePlay]
+    })
+    // let { newCusPlayNav } = this.props
+    // this.setState({newCusNav: newCusPlayNav})
   }
 
   render() {

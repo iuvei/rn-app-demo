@@ -10,6 +10,18 @@ import { Toast } from '@ant-design/react-native'
 import { AsetAllBalance } from '../actions/member'
 import { toCrypto } from '../utils/crypto'
 
+const $TOAST = {
+  info: (message) => {
+    Toast.info(message, 1, undefined, false)
+  },
+  success: (message) => {
+    Toast.success(message, 1, undefined, false)
+  },
+  fail: (message) => {
+    Toast.fail(message, 1, undefined, false)
+  }
+}
+
 export default (Comp) => {
   class RowBallHoc extends Component {
     constructor(props) {
@@ -63,6 +75,7 @@ export default (Comp) => {
         // testMode: 1802
         isKlcYxyLot: false,
 
+        isShowAllIn: false,
         bonusPrize: {}
       }
     }
@@ -349,7 +362,7 @@ export default (Comp) => {
               if (b.ball === numItem.ball && b.choose === true) {
                 clearTimeout(this.curBallTime)
                 this.curBallTime = setTimeout(() => {
-                  Toast.info('胆码拖码数字不能相同')
+                  $TOAST.info('胆码拖码数字不能相同')
                 }, 100)
                 b.choose = false
                 this.setState(prevState => ({
@@ -417,15 +430,15 @@ export default (Comp) => {
       let {activeGamesPlay} = this.state
       let gamesPlayLen = Object.keys(activeGamesPlay).length
       if (!Object.keys(navParams).length || activeGamesPlay.isOuter) {
-        Toast.fail('该彩种已关闭')
+        $TOAST.fail('该彩种已关闭')
         return false
       }
       if (!gamesPlayLen || activeGamesPlay.status === 2) {
-        Toast.fail('该玩法未开启投注')
+        $TOAST.fail('该玩法未开启投注')
         return false
       }
       if (activeGamesPlay.status === 0) {
-        Toast.info('该玩法已禁用')
+        $TOAST.info('该玩法已禁用')
         return false
       }
       // 保存添加到购物车时间
@@ -436,14 +449,14 @@ export default (Comp) => {
       } = this.state
       let {playOrgin, bit, checkbox} = activeViewData
       let {num, multiple, total, model, rebateMode} = buyInfo
-      
+
       if (multiple === 0) {
-        Toast.info('请输入大于0的倍数')
+        $TOAST.info('请输入大于0的倍数')
         return
       }
       let {ruleName, title, singlePrice} = activeGamesPlay
       if (num === 0) {
-        Toast.info('您还没有选择号码或所选号码不全')
+        $TOAST.info('您还没有选择号码或所选号码不全')
         return false
       }
       // 稍后补充 动画
@@ -523,7 +536,7 @@ export default (Comp) => {
           // NoticeTips({
           //   content:  ！`
           // })
-          Toast.info(`注数不能超过${this.state.activeGamesPlay.maxRecord}`)
+          $TOAST.info(`注数不能超过${this.state.activeGamesPlay.maxRecord}`)
           return
         }
       }
@@ -602,12 +615,12 @@ export default (Comp) => {
       }
       toBuyLottery(repZip || rep).then(res => {
         if (res.code === 0) {
-          Toast.success('购买成功')
+          $TOAST.success('购买成功')
           this.clearAllData()
           // 刷新余额
           this.props.AsetAllBalance()
         } else {
-          Toast.success(res.message)
+          $TOAST.success(res.message)
         }
         this.setState({
           buyCardData: []
@@ -615,6 +628,66 @@ export default (Comp) => {
       })
     }
 
+    // 一键梭哈
+    doAllIn = () => {
+      let {navParams, userBalanceInfoYE} = this.props
+      let {activeGamesPlay} = this.state
+      let gamesPlayLen = Object.keys(activeGamesPlay).length
+      if (!Object.keys(navParams).length || activeGamesPlay.isOuter) {
+        $TOAST.fail('该彩种已关闭')
+        return false
+      }
+      if (!gamesPlayLen || activeGamesPlay.status === 2) {
+        $TOAST.fail('该玩法未开启投注')
+        return false
+      }
+      if (activeGamesPlay.status === 0) {
+        $TOAST.info('该玩法已禁用')
+        return false
+      }
+      let {buyInfo} = this.state
+      let {num, model} = buyInfo
+
+      if (num === 0) {
+        $TOAST.info('您还没有选择号码或所选号码不全')
+        return false
+      }
+      let multiple = parseInt(userBalanceInfoYE.currentBalance / (num * model))
+      if (multiple <= 0) {
+        $TOAST.info('余额不足，请充值！')
+        return false
+      }
+      this.setState({
+        buyInfo: {
+          ...buyInfo,
+          total: (num * multiple).toFixed(3),
+          multiple
+        },
+        isShowAllIn: true
+      })
+    }
+
+    // 确认一键梭哈
+    confirmAllIn = () => {
+      this.addBuyCard(true)
+      this.setState({
+        isShowAllIn: false
+      })
+    }
+
+    closeAllIn = () => {
+      let {buyInfo} = this.state
+      let {model} = buyInfo
+      let multiple = 1
+      this.setState({
+        isShowAllIn: false,
+        buyInfo: {
+          ...buyInfo,
+          total: (buyInfo.num * multiple * model).toFixed(3),
+          multiple: 1
+        }
+      })
+    }
     // 清除投注区数据
     clearAllData = () => {
       let {layout, textarea} = Object.assign({}, this.state.activeViewData)
@@ -658,6 +731,9 @@ export default (Comp) => {
           toolsCur={this.toolsCur}
           setBuyInfo={this.setBuyInfo}
           addBuyCard={this.addBuyCard}
+          doAllIn={this.doAllIn}
+          confirmAllIn={this.confirmAllIn}
+          closeAllIn={this.closeAllIn}
           handleText={this.handleText}
           setBonusPrize={this.setBonusPrize}
           toHandCheckBox={this.toHandCheckBox}
