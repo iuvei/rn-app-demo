@@ -148,15 +148,15 @@ class AccountsPanel extends React.Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}>
                   {
-                    tabs.map(({title,value},index) => {
+                    tabs.map((d, index) => {
                       return <TouchableOpacity
                         key={index}
                         activeOpacity={0.7}
-                        onPress={()=>console.log(value)}
-                        style={[styles.btnDefault, styles.btnActive]}>
+                        onPress={() => this.tabsChange(d, index)}
+                        style={[styles.btnDefault, index === curPage ? styles.btnActive : null]}>
                         <Text
-                          style={[styles.btnDefaultText, styles.btnActive]} numberOfLines={1}
-                          >{title}</Text>
+                          style={[styles.btnDefaultText, index === curPage ? styles.btnActive : null]} numberOfLines={1}
+                          >{d.title}</Text>
                       </TouchableOpacity>
                     })
                   }
@@ -205,7 +205,7 @@ const styles = StyleSheet.create(stylesUtil({
   btnDefault: {
     height: 30,
     lineHeight: 30,
-    borderBottomColor: '#3beda3',
+    borderBottomColor: '#f0f0f0',
     borderBottomWidth: 2,
     paddingLeft: 4,
     paddingRight: 4,
@@ -213,8 +213,8 @@ const styles = StyleSheet.create(stylesUtil({
     marginRight: 5
   },
   btnActive: {
-    borderColor: '#00b4cc',
-    color: '#14000c'
+    borderBottomColor: '#00bbcc',
+    color: '#00bbcc'
   },
   Touchable: {
     height: 26,
@@ -225,11 +225,11 @@ const styles = StyleSheet.create(stylesUtil({
     lineHeight: 26,
     paddingLeft: 4,
     paddingRight: 4,
-    color: '#ededed',
+    color: '#333',
     textAlign: 'center'
   },
   btnActiveText: {
-    color: '#00b4cc'
+    color: '#00bbcc'
   }
 })
 )
