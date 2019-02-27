@@ -56,7 +56,7 @@ class RechargeSuccess extends React.Component {
           </View>)
         }
         {
-          submitType === 'url' &&
+          submitType === 'url' && url.length > 0 && // 这里换成浏览器打开
           <View style={{height: height}}>
             <WebView
               source={{uri: url + '?' + params}}

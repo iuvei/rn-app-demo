@@ -5,7 +5,8 @@ import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 // import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/Home/HomeScreen'
 import GameScreen from '../screens/Games/GamesScreen'
-import RechargeScreen from '../screens/Recharge/RechargeScreen'
+// import RechargeScreen from '../screens/Recharge/RechargeScreen'
+import NewRechargeScreen from '../screens/Recharge/NewRechargeScreen'
 import FoundScreen from '../screens/Found/FoundScreen'
 import PersonalScreen from '../screens/Personal/PersonalScreen'
 // import SvgIcon from '../components/SvgIcon'
@@ -47,7 +48,7 @@ GamesStack.navigationOptions = {
 
 // 充值
 const RechargeStack = createStackNavigator({
-  Recharge: RechargeScreen
+  Recharge: NewRechargeScreen
 })
 RechargeStack.navigationOptions = {
   tabBarLabel: '充值',

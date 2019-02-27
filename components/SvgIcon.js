@@ -13,6 +13,8 @@ export default class SvgIcon extends Component {
       color,
       size,
       style,
+      width,
+      height
     } = this.props
     let svgXmlData = svgs[icon]
 
@@ -23,8 +25,8 @@ export default class SvgIcon extends Component {
     }
     return (
       <SvgUri
-        width={size}
-        height={size}
+        width={size || width}
+        height={size || height}
         svgXmlData={svgXmlData}
         fill={color}
         style={style}
