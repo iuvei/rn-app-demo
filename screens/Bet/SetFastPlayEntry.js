@@ -74,6 +74,10 @@ class FastPlayNav extends React.Component {
 
   submitCumSubs = () => {
     let { newCusNav } = this.state
+    if (!newCusNav.length) {
+      Toast.info(`至少设置一个！`)
+      return
+    }
     this.props.setCustomPlayNav(newCusNav)
     this.setLocalCustomPlays(newCusNav)
   }
@@ -93,8 +97,11 @@ class FastPlayNav extends React.Component {
   }
 
   resetCumSubs = () => {
-    let { newCusPlayNav } = this.props
-    this.setState({newCusNav: newCusPlayNav})
+    this.setState({
+      newCusNav: [this.props.activePlay]
+    })
+    // let { newCusPlayNav } = this.props
+    // this.setState({newCusNav: newCusPlayNav})
   }
 
   render() {
