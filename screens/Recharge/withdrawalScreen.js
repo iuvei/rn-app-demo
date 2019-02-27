@@ -11,6 +11,7 @@ import {
   AsetIsAllowWithdraw,
   AsetUserConsume
 } from '../../actions/member'
+import { AsetUserSecureLevel } from '../../actions/common'
 import { commitWithdrawal } from '../../api/member'
 import { styleUtil } from '../../utils/ScreenUtil'
 import { isNaN } from 'lodash'
@@ -59,6 +60,7 @@ class Withdrawal extends React.Component {
     props.AsetUserBankCards(props.loginInfo.acc.user.userId)
     props.AsetIsAllowWithdraw()
     props.AsetUserConsume()
+    props.AsetUserSecureLevel()
   }
 
   componentDidMount() {
@@ -516,6 +518,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
     AsetAllBalance: data => dispatch(AsetAllBalance(data)),
     AsetUserBankCards: data => dispatch(AsetUserBankCards(data)),
     AsetIsAllowWithdraw: data => dispatch(AsetIsAllowWithdraw(data)),

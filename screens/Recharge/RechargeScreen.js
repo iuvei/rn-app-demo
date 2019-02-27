@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, View, Text, Platform, AsyncStorage, ScrollView } from 'react-native'
 import { Button, Tabs, Toast } from '@ant-design/react-native' // , Radio
 import { commitRecharge } from '../../api/member'
-import {setActiveAccount} from '../../actions/common'
+import { AsetUserSecureLevel, setActiveAccount } from '../../actions/common'
 import Header from '../../components/Header'
 import {platformKey, prependUrl} from '../../api.config'
 import { stylesUtil, styleUtil } from '../../utils/ScreenUtil'
@@ -36,7 +36,8 @@ class RechargeScreen extends React.Component {
       rechargeTime: 0,
       visibleReal: 0,
       visibleVirtual: 0
-    };
+    }
+    props.AsetUserSecureLevel()
   }
 
   componentDidMount() {
@@ -237,6 +238,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
     setActiveAccount: (data) => {
       dispatch(setActiveAccount(data))
     }
