@@ -112,6 +112,10 @@ class ActivityScreen extends React.Component {
     }
   }
 
+  componentDidMount () {
+    this.props.queryActivity()
+  }
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
