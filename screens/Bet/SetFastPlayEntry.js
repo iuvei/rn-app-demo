@@ -50,14 +50,16 @@ class FastPlayNav extends React.Component {
   }
 
   setSubs = (title, {code, name}) => {
-    let spCode = ['lo1_2x', 'lo1_rx', 'lo1_lh', 'lo1_h', 'lo1_hz', 'lo2_3x', 'lo2_2x', 'lo2_rx', 'lo5_sx', 'lo8_ex']
+    let spCode = ['lo1_2x', 'lo1_rx', 'lo1_lh_', 'lo1_h_', 'lo1_hz_', 'lo2_3x', 'lo2_2x', 'lo2_rx', 'lo5_sx', 'lo8_ex']
+    console.log(code)
     let resCode = spCode.filter(item => code.indexOf(item) > -1)
     let { newCusNav, activeTitle, maxNum } = this.state
+    let totalName = !resCode.length ? activeTitle : code.indexOf('lo1_hz_') > -1 ? `${activeTitle}${title}` : title
     let dif = newCusNav.filter(item => item.code === code)
     if (!dif.length) {
       if (newCusNav.length < maxNum) {
         this.setState(prevState => ({
-          newCusNav: [...prevState.newCusNav, {code: code, name: `${resCode.length ? title : activeTitle}${name}`}]
+          newCusNav: [...prevState.newCusNav, {code: code, name: `${totalName}${name}`}]
         }))
       } else {
         Toast.info(`最多设置${maxNum}个！`)
