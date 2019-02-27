@@ -207,8 +207,8 @@ const styles = StyleSheet.create(stylesUtil({
     lineHeight: 50,
     borderBottomColor: '#ffffff',
     borderBottomWidth: 2,
-    paddingLeft: 4,
-    paddingRight: 4,
+    // paddingLeft: 4,
+    // paddingRight: 4,
     // borderRadius: 20,
     marginRight: 5
   },
@@ -224,8 +224,8 @@ const styles = StyleSheet.create(stylesUtil({
     fontSize: 13,
     lineHeight: 50,
     height:50,
-    paddingLeft: 4,
-    paddingRight: 4,
+    paddingLeft: 8,
+    paddingRight: 8,
     color: '#333',
     textAlign: 'center'
   },
