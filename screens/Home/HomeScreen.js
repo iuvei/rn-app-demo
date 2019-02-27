@@ -290,7 +290,7 @@ class HomeScreen extends React.Component {
       }, () => {
         savePayPwd({newPwd, rePwd}).then(res => {
           if (res.code === 0) {
-            this.props.AsetUserSecureLevel()
+            // this.props.AsetUserSecureLevel()
             this.props.setPasswordRule()
             Toast.success('绑定成功')
             this.setState(prevState => ({
