@@ -235,7 +235,7 @@ class HomeScreen extends React.Component {
                       // this.props.navigation.navigate('AppLoading')
                     }
                   })
-                }, 1500)
+                }, 100)
               } else {
                 Toast.fail(res.message || '网络异常，请稍后重试')
                 this.setState(prevState => ({
@@ -615,6 +615,50 @@ class HomeScreen extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  let {usualLottery, systemNews, userId, passwordRule, userSecurityLevel} = state.common
+  return ({
+    systemNews,
+    usualLottery,
+    userId,
+    passwordRule,
+    userSecurityLevel
+  })
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    SetCustomizeLottery: () => {
+      dispatch(setCustomizeLottery())
+    },
+    setActiveUsualLot: (data) => {
+      dispatch(setActiveUsualLot(data))
+    },
+    getSystemNews: (data) => {
+      dispatch(getSystemNews(data))
+    },
+    queryActivity: () => {
+      dispatch(queryActivity())
+    },
+    AgetRecharge: () => {
+      dispatch(AgetRecharge())
+    },
+    setPasswordRule: () => {
+      dispatch(setPasswordRule())
+    },
+    AsetDayWagePower: () => dispatch(AsetDayWagePower()),
+    AsetDividendPower: () => dispatch(AsetDividendPower()),
+    AsetFreshMsg: () => {
+      dispatch(AsetFreshMsg())
+    },
+    AcheckEnvironment: () => dispatch(checkEnvironment()),
+    AsetUserBankCards: data => dispatch(AsetUserBankCards(data)),
+    AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
+    AsetUserSecureConfig: (data) => { dispatch(AsetUserSecureConfig(data)) },
+    setLoginStatus: (data) => { dispatch(setLoginStatus(data)) }
+  }
+}
+
 const styles = StyleSheet.create(stylesUtil({
   container: {
     flex: 1,
@@ -831,50 +875,6 @@ const styles = StyleSheet.create(stylesUtil({
     color: '#666666'
   }
 }))
-
-const mapStateToProps = (state) => {
-  let {usualLottery, systemNews, userId, passwordRule, userSecurityLevel} = state.common
-  return ({
-    systemNews,
-    usualLottery,
-    userId,
-    passwordRule,
-    userSecurityLevel
-  })
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    SetCustomizeLottery: () => {
-      dispatch(setCustomizeLottery())
-    },
-    setActiveUsualLot: (data) => {
-      dispatch(setActiveUsualLot(data))
-    },
-    getSystemNews: (data) => {
-      dispatch(getSystemNews(data))
-    },
-    queryActivity: () => {
-      dispatch(queryActivity())
-    },
-    AgetRecharge: () => {
-      dispatch(AgetRecharge())
-    },
-    setPasswordRule: () => {
-      dispatch(setPasswordRule())
-    },
-    AsetDayWagePower: () => dispatch(AsetDayWagePower()),
-    AsetDividendPower: () => dispatch(AsetDividendPower()),
-    AsetFreshMsg: () => {
-      dispatch(AsetFreshMsg())
-    },
-    AcheckEnvironment: () => dispatch(checkEnvironment()),
-    AsetUserBankCards: data => dispatch(AsetUserBankCards(data)),
-    AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
-    AsetUserSecureConfig: (data) => { dispatch(AsetUserSecureConfig(data)) },
-    setLoginStatus: (data) => { dispatch(setLoginStatus(data)) }
-  }
-}
 
 export default connect(
   mapStateToProps,
