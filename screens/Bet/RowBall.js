@@ -449,6 +449,6 @@ const styles = StyleSheet.create(stylesUtil({
   },
   BuyInfoDefaultText: {color: '#333'},
   BuyInfoActiveText: {color: '#0a7cda'},
-  fastBuyView: {width: 140, justifyContent: 'center', flexDirection: 'row'},
+  fastBuyView: {width: 140, justifyContent: 'center', flexDirection: 'row', paddingLeft: 10, paddingRight: 10},
   fastBuyText: {borderRadius: 4}
 }))
