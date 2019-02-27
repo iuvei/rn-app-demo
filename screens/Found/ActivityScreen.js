@@ -140,7 +140,6 @@ class ActivityScreen extends React.Component {
 
   _renderContent = item => {
     let width = Dimensions.get('window').width
-    console.log(item.rewardValue)
     let rewardValue = item.rewardValue ? JSON.parse(item.rewardValue) : []
     return (
       <View style={{paddingLeft: 10, paddingRight: 10}}>
