@@ -368,7 +368,7 @@ class RowBall extends React.Component {
             <View style={styles.fastBuyView}>
               <Button
                 key={'allIn'}
-                type="warning" size="small"
+                type="ghost" size="small"
                 onPress={() => doAllIn(true)}
                 style={[styles.fastBuyText,{height:scaleSize(28), marginRight: 4}]}>
                 一键梭哈</Button>
