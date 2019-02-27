@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { View, Image, StyleSheet, Text, Platform, ImageBackground, Switch, AsyncStorage, KeyboardAvoidingView, Dimensions } from 'react-native'
 import {connect} from 'react-redux'
-import {setLoginStatus, setLoginInfo, AsetUserSecureLevel, AsetServiceUrl, setUserRebate} from '../../actions/common'
+import {setLoginStatus, setLoginInfo, AsetUserSecureLevel, AsetServiceUrl, setUserRebate, setPasswordRule} from '../../actions/common'
 import {signIn, _getImageSetCookie, getLoginUser} from '../../api/basic'
 import { Button, Icon, InputItem, Flex, Toast } from '@ant-design/react-native'
 import {
@@ -81,6 +81,7 @@ class LoginComponent extends Component {
     }, () => {
       signIn({j_username, j_password, ua}).then(res => {
         if (res.code === 0) {
+          this.props.setPasswordRule()
           getLoginUser().then(res2 => {
             if (res2.code === 0) {
               this.props.setLoginStatus(res2.code === 0)
@@ -295,6 +296,9 @@ const mapDispatchToProps = (dispatch) => {
     AsetUserBankCards: data => dispatch(AsetUserBankCards(data)),
     AsetUserSecureLevel: data => dispatch(AsetUserSecureLevel(data)),
     setUserRebate: data => dispatch(setUserRebate(data)),
+    setPasswordRule: () => {
+      dispatch(setPasswordRule())
+    },
     AsetServiceUrl: data => dispatch(AsetServiceUrl(data))
   }
 }

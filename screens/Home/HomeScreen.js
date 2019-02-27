@@ -36,7 +36,7 @@ import { getIconName } from '../../utils/getLotImg'
 import { stylesUtil } from '../../utils/ScreenUtil'
 import { checkEnvironment } from '../../actions/classic'
 import {updateLoginPwd, savePayPwd, modifyPayPwd} from '../../api/member'
-import {loginOut} from '../../api/basic'
+import {loginOut, getPasswordRule} from '../../api/basic'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -137,6 +137,15 @@ class HomeScreen extends React.Component {
       },
       messgae: '密码有且只能有 数字 字母，密码最小长度 8 位'
     }
+    getPasswordRule().then(res => {
+      if (res.code === 0 && res.data) {
+        if (res.data.bandUserPassword) {
+          this.showBindPwd({type: 'login', messgae: res.data.passwordParamDto.messgae})
+        } else if (res.data.bandUserPayPassword) {
+          this.showBindPwd({type: 'paypwd', messgae: res.data.passwordParamDto.messgae})
+        }
+      }
+    })
   }
 
   componentDidMount() {
@@ -162,16 +171,6 @@ class HomeScreen extends React.Component {
     this.didBlurSubscription = this.props.navigation.addListener('didFocus', this.updateImmediateData)
   }
 
-  componentWillReceiveProps(np) {
-    console.log(np.passwordRule)
-    if (np.passwordRule.bandUserPassword && !this.props.passwordRule.passwordParamDto) {
-      console.log('login pwd')
-      this.showBindPwd({type: 'login', messgae: np.passwordRule.passwordParamDto.messgae})
-    } else if (np.passwordRule.bandUserPayPassword && !this.props.passwordRule.bandUserPassword) {
-      console.log('pay pwd')
-      this.showBindPwd({type: 'paypwd', messgae: np.passwordRule.passwordParamDto.messgae})
-    }
-  }
 
   componentWillUnmount() {
     if (Platform.OS === 'android') {
@@ -290,7 +289,7 @@ class HomeScreen extends React.Component {
       }, () => {
         savePayPwd({newPwd, rePwd}).then(res => {
           if (res.code === 0) {
-            // this.props.AsetUserSecureLevel()
+            this.props.AsetUserSecureLevel()
             this.props.setPasswordRule()
             Toast.success('绑定成功')
             this.setState(prevState => ({
@@ -303,6 +302,8 @@ class HomeScreen extends React.Component {
                 rePwd: ''
               }
             }))
+            // setTimeout(() => {
+            // }, 4000)
           } else {
             Toast.fail(res.message || '网络异常，请稍后重试')
             this.setState(prevState => ({
