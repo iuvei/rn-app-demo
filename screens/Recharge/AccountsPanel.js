@@ -137,7 +137,7 @@ class AccountsPanel extends React.Component {
 
   render () {
     let { tabs, activeSections, curPage } = this.state
-    console.log(tabs)
+
     return (
       <View>
         <View style={styles.warp}>
@@ -198,14 +198,14 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const styles = StyleSheet.create(stylesUtil({
-  warp: {backgroundColor: '#ffffff', justifyContent: 'center', height: 34, paddingLeft: 2},
+  warp: {backgroundColor: '#ffffff', justifyContent: 'center', paddingLeft: 2},
   playNav: {
     marginTop: 2,
   },
   btnDefault: {
-    height: 30,
-    lineHeight: 30,
-    borderBottomColor: '#f0f0f0',
+    height: 50,
+    lineHeight: 50,
+    borderBottomColor: '#ffffff',
     borderBottomWidth: 2,
     paddingLeft: 4,
     paddingRight: 4,
@@ -222,7 +222,7 @@ const styles = StyleSheet.create(stylesUtil({
   },
   btnDefaultText: {
     fontSize: 13,
-    lineHeight: 26,
+    lineHeight: 50,
     paddingLeft: 4,
     paddingRight: 4,
     color: '#333',
