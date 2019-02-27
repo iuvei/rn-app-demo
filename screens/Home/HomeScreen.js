@@ -140,9 +140,7 @@ class HomeScreen extends React.Component {
     }
     getPasswordRule().then(res => {
       if (res.code === 0 && res.data) {
-        if (res.data.bandUserPassword) {
-          this.showBindPwd({type: 'login', messgae: res.data.passwordParamDto.messgae})
-        } else if (res.data.bandUserPayPassword) {
+        if (res.data.bandUserPayPassword) {
           this.showBindPwd({type: 'paypwd', messgae: res.data.passwordParamDto.messgae})
         }
       }
@@ -256,6 +254,13 @@ class HomeScreen extends React.Component {
           case 'paypwd':
             modifyPayPwd({ oldPwd, newPwd, rePwd }).then(res => {
               if (res.code === 0) {
+                getPasswordRule().then(res => {
+                  if (res.code === 0 && res.data) {
+                    if (res.data.bandUserPassword) {
+                      this.showBindPwd({type: 'login', messgae: res.data.passwordParamDto.messgae})
+                    }
+                  }
+                })
                 $Toast.success(res.message || '修改成功')
                 this.props.AsetUserSecureLevel()
                 this.props.setPasswordRule()
@@ -290,6 +295,13 @@ class HomeScreen extends React.Component {
       }, () => {
         savePayPwd({newPwd, rePwd}).then(res => {
           if (res.code === 0) {
+            getPasswordRule().then(res => {
+              if (res.code === 0 && res.data) {
+                if (res.data.bandUserPassword) {
+                  this.showBindPwd({type: 'login', messgae: res.data.passwordParamDto.messgae})
+                }
+              }
+            })
             this.props.AsetUserSecureLevel()
             this.props.setPasswordRule()
             $Toast.success('绑定成功')

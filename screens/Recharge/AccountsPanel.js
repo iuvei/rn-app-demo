@@ -107,7 +107,7 @@ class AccountsPanel extends React.Component {
   _renderContent = section => {
     let activeId = this.props.activeAccount.payChannelCode+this.props.activeAccount.bankCode
     return (
-      <View style={{backgroundColor: '#fff', paddingHorizontal: 5, marginTop: 5, marginBottom: 5}}>
+      <View style={{backgroundColor: '#fff', paddingHorizontal: 5, marginTop: 5, marginBottom: 5, paddingVertical: 5}}>
         <Flex justify="around">
           {
             section.accounts.map((account, idx) => {
