@@ -4,7 +4,7 @@ import { setActiveAccount } from '../../actions/common'
 import {
   View,
   Text,
-  Image
+  Image, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage
 } from 'react-native'
 import {
   Tabs,
@@ -12,10 +12,12 @@ import {
   List,
   Flex
 } from '@ant-design/react-native'
+
 import { isObject } from 'lodash'
 import { minbankCodeMap } from '../../constants/glyphMapHex'
 import SvgIcon from '../../components/SvgIcon'
 import { Icon } from 'expo'
+import { setSpText } from '../../utils/ScreenUtil'
 
 class AccountsPanel extends React.Component {
   constructor (props) {
@@ -82,7 +84,7 @@ class AccountsPanel extends React.Component {
       this.props.setActiveAccount(tabs[curPage].arr[activeSections[0]].accounts[0])
     }
   }
-  
+
   _renderSectionTitle = section => {
     return (
       <View style={{height: 0}}>
@@ -135,51 +137,40 @@ class AccountsPanel extends React.Component {
 
   render () {
     let { tabs, activeSections, curPage } = this.state
-
+    console.log(tabs)
     return (
       <View>
         <View style={{height: 50}}>
-          <Tabs tabs={tabs} tabBarActiveTextColor="#00bbcc" initialPage={0} tabBarPosition="top"
-            style={{height: 50}}
-            onChange={this.tabsChange}
-            // renderTabBar={() => {
 
-            // }}
-            >
-            {/* {
-              tabs.map(tabView => {
-                let mapData = []
-                if (recharge[tabView.value]) {
-                  Object.keys(recharge[tabView.value]).forEach(infomap =>{
-                    if (isObject(recharge[tabView.value][infomap])) {
-                      Object.keys(recharge[tabView.value][infomap]).forEach(key => {
-                        mapData.push({
-                          title: key,
-                          accounts: recharge[tabView.value][infomap][key]
-                        })
-                      })
-                    }
-                  })
-                }
-                
-                return <View key={tabView.value}>
-                  <Accordion
-                    duration={50}
-                    activeSections={activeSections}
-                    sections={mapData}
-                    onChange={this.onChange}
-                    renderHeader={this._renderHeader}
-                    renderSectionTitle={this._renderSectionTitle}
-                    renderContent={this._renderContent}
-                  />
-                </View>
-              })
-            } */}
-          </Tabs>
+          <Flex>
+            <View style={styles.playNav}>
+              <View>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  {
+                    tabs.map(({title,value},index) => {
+                      return <TouchableOpacity
+                        key={index}
+                        activeOpacity={0.7}
+                        onPress={()=>console.log(value)}
+                        style={styles.Touchable}
+                      >
+                        <Text
+                          style={[styles.btnDefaultText, true?null:styles.btnActive]}
+                          >{title}</Text>
+                      </TouchableOpacity>
+                    })
+                  }
+                </ScrollView>
+              </View>
+            </View>
+          </Flex>
+
         </View>
         {
           tabs[curPage].arr.length > 0 &&
-          <View style={{marginBottom: 5}}> 
+          <View style={{marginBottom: 5}}>
             <Accordion
               duration={50}
               activeSections={activeSections}
@@ -207,5 +198,36 @@ const mapDispatchToProps = (dispatch) => {
     setActiveAccount: (data) => { dispatch(setActiveAccount(data)) }
   }
 }
+
+const styles = StyleSheet.create({
+  warp: {backgroundColor: '#ffffff', justifyContent: 'center', height: 34, paddingLeft: 2},
+  playNav: {borderBottomWidth: 1, borderColor: '#f0f0f0', paddingBottom: 15},
+  btnDefault: {
+    height: 26,
+    borderWidth: 1,
+    paddingLeft: 4,
+    paddingRight: 4,
+    borderRadius: 20,
+    marginRight: 5
+  },
+  btnActive: {
+    borderColor: '#00b4cc',
+    color: 'red'
+  },
+  Touchable:{
+    height:26,
+    lineHeight: 26
+  },
+  btnDefaultText: {
+    fontSize: 12,
+    lineHeight: 26,
+    paddingLeft: 4,
+    paddingRight: 4,
+    textAlign: 'center'
+  },
+  btnActiveText: {
+    color: '#00b4cc'
+  }
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountsPanel)
