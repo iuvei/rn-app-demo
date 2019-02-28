@@ -140,12 +140,12 @@ class HomeScreen extends React.Component {
     }
     getPasswordRule().then(res => {
       if (res.code === 0 && res.data) {
-        if (res.data.bandUserPassword) {
-          this.showBindPwd({type: 'login', messgae: res.data.passwordParamDto.messgae})
-          return
-        }
         if (res.data.bandUserPayPassword) {
           this.showBindPwd({type: 'paypwd', messgae: res.data.passwordParamDto.messgae})
+          return
+        }
+        if (res.data.bandUserPassword) {
+          this.showBindPwd({type: 'login', messgae: res.data.passwordParamDto.messgae})
         }
       }
     })
