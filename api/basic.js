@@ -258,3 +258,11 @@ export const checkHotUpdate = () => {
     params: {}
   })
 }
+
+// 获取所有app版本信息
+export const getMoblieVersion = () => {
+  return fetch({
+    api: '/user/version/getMoblieVersion',
+    type: 'get'
+  })
+}

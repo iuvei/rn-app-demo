@@ -9,6 +9,13 @@ import { AppState, NetInfo } from 'react-native'
 import { AsetAllBalance } from '../actions/member'
 import NavigationService from '../navigation/NavigationService'
 import { Toast } from "@ant-design/react-native/lib/index";
+import { Modal } from '@ant-design/react-native'
+import { View, Text } from 'react-native'
+import {
+  getMoblieVersion
+} from '../api/basic'
+import { WebBrowser, Constants } from 'expo'
+import { host } from '../api.config'
 
 class GlobalComp extends React.Component {
   constructor(props) {
@@ -17,6 +24,7 @@ class GlobalComp extends React.Component {
       appState: AppState.currentState
     }
     this.loopTimer = null
+    this.getMoblieVersion()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,8 +88,56 @@ class GlobalComp extends React.Component {
     this.setState({appState: nextAppState})
   }
 
+  getMoblieVersion = () => {
+    let curVersion = Constants.manifest.version // config.versionNumber
+    let temp = curVersion.split('.')
+    
+    getMoblieVersion().then(res => {
+      console.log(res)
+      if (res.code === 0) {
+        // let forceUpdate = false
+        let arr = res.data.filter(list => {
+          let item = list.versionNumber.split('.')
+          let flag = item[0] > temp[0] || (item[0] === temp[0] && item[1] > temp[1]) ||
+            (item[0] === temp[0] && item[1] === temp[1] && item[2] > temp[2])
+          return flag
+        })
+        arr.forEach(item => {
+          if (item.isForceUpdate === 1) {
+            // this.showDownload = true
+            this.setState({
+              visible: true
+            })
+          }
+        })
+      }
+    })
+  }
+
+  _handlePressButtonAsync = async () => {
+    let result = await WebBrowser.openBrowserAsync(host+'/app/#/download')
+    console.log(result)
+  }
+
   render() {
-    return (null)
+    const footerButtons = [
+      { text: '前往下载', onPress: () => this._handlePressButtonAsync() },
+    ]
+    return (
+      <View>
+        <Modal
+          title=""
+          transparent
+          maskClosable={false}
+          visible={this.state.visible}
+          closable={false}
+          footer={footerButtons}>
+          <View style={{ paddingVertical: 20 }}>
+            <Text style={{ textAlign: 'center' }}>有新版本发布啦！</Text>
+          </View>
+        </Modal>
+      </View>
+    )
   }
 }
 
