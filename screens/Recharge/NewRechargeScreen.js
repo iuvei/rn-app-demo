@@ -4,6 +4,7 @@ import { AsetUserSecureLevel } from '../../actions/common'
 import AccountsPanel from './AccountsPanel'
 import Header from '../../components/Header'
 import InputAmount from './InputAmount'
+import { withNavigation } from 'react-navigation'
 import {
   Dimensions,
   View,
@@ -85,4 +86,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewRechargeScreen)
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(NewRechargeScreen))
