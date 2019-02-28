@@ -18,7 +18,8 @@ import {
   setLoginStatus,
   setShowFloatBall,
   AsetSoundType,
-  AsetAudioSwitch
+  AsetAudioSwitch,
+  AddBankcardSuccessRoute
 } from '../actions/common'
 import { loginOut } from '../api/basic'
 import { WebBrowser, Constants } from 'expo'
@@ -33,7 +34,6 @@ class SettingsScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      audioChecked: true,
       soundType: {type: ''}
     }
     props.AsetUserSecureLevel()
@@ -71,12 +71,15 @@ class SettingsScreen extends React.Component {
     console.log(result)
   }
 
+  componentDidMount() {
+    this.props.AddBankcardSuccessRoute('')
+  }
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
 
   render() {
-    let { audioChecked } = this.state
 
     return (
       <ScrollView style={{flex: 1}}>
@@ -145,11 +148,8 @@ class SettingsScreen extends React.Component {
             thumb={<Ionicons name="ios-musical-notes" color="#333333" size={20}/>}
             extra={
               <Switch
-                value={audioChecked}
+                value={this.props.audioSwitch}
                 onValueChange={(v) => {
-                  this.setState({
-                    audioChecked: v,
-                  })
                   this.props.AsetAudioSwitch(v)
                   this.props.AsetSoundType({type: ''})
                 }}
@@ -204,9 +204,10 @@ class SettingsScreen extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  let { showFloatBall } = state.common
+  let { showFloatBall, audioSwitch } = state.common
   return ({
-    showFloatBall
+    showFloatBall,
+    audioSwitch
   })
 }
 
@@ -218,6 +219,7 @@ const mapDispatchToProps = (dispatch) => {
     setShowFloatBall: (data) => { dispatch(setShowFloatBall(data)) },
     AsetAudioSwitch: (data) => { dispatch(AsetAudioSwitch(data)) },
     AsetSoundType: (data) => { dispatch(AsetSoundType(data)) },
+    AddBankcardSuccessRoute: (data) => { dispatch(AddBankcardSuccessRoute(data))}
   }
 }
 

@@ -46,7 +46,7 @@ class AddBankcard extends React.Component {
     }
     props.AsetSysBanklist()
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -56,6 +56,8 @@ class AddBankcard extends React.Component {
    */
   submitFunc = () => {
     let { bankAddress, bankWebsite, bankCard, regbankCardNumber, bankBranch, pwd, bankCode, isDefault } = this.state
+    let { addBankcardSuccessRoute } = this.props
+    console.log(addBankcardSuccessRoute)
     if (bankAddress === '' || bankWebsite === '' || bankCard === '' ||
     regbankCardNumber === '' || bankBranch === '' || pwd === '') {
       Toast.info('请先完善银行卡相关信息')
@@ -82,6 +84,7 @@ class AddBankcard extends React.Component {
             regbankCardNumber: ''
           })
           this.props.AsetUserBankCards(this.props.loginInfo.acc.user.userId)
+          addBankcardSuccessRoute ? this.props.navigation.navigate(addBankcardSuccessRoute) : this.props.navigation.goBack()
         } else {
           Toast.fail(res.message || '网络异常，请重试')
         }
@@ -222,15 +225,16 @@ class AddBankcard extends React.Component {
         </ScrollView>
       </KeyboardAvoidingView>
     )
-  }  
+  }
 }
 
 const mapStateToProps = (state, props) => {
-  let {sysBankList, userSecurityLevel, loginInfo} = state.common
+  let {sysBankList, userSecurityLevel, loginInfo, addBankcardSuccessRoute} = state.common
   return {
     loginInfo,
     sysBankList,
-    userSecurityLevel
+    userSecurityLevel,
+    addBankcardSuccessRoute
   }
 }
 

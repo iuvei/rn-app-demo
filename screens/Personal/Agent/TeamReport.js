@@ -15,7 +15,7 @@ class FlatListItem extends PureComponent {
 
   render () {
     let {item, showDetails, onPress, highUser, index} = this.props
-    let {activity, bonus, userName, buyAmount, rebate, profit, userId} = item
+    let {activity, bonus, userName, orderBuy, rebate, profit, userId} = item
     let flag = userName !== '总计' && userName !== highUser && index !== 0
     return (
       <TouchableHighlight style={{padding: 10}} onPress={() => {
@@ -32,7 +32,7 @@ class FlatListItem extends PureComponent {
           <Flex direction={'row'} justify={'space-between'}>
             <Flex direction={'row'} justify={'space-between'}>
               <Text style={styles.title}>消费:</Text>
-              <Text style={styles.value}>{toFixed4(buyAmount)}</Text>
+              <Text style={styles.value}>{toFixed4(orderBuy)}</Text>
             </Flex>
             <Flex direction={'row'} justify={'space-between'}>
               <Text style={styles.title}>中奖:</Text>
@@ -122,7 +122,7 @@ class TeamReport extends React.Component {
         showDetails={this.showDetails}/>
     )
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }
@@ -182,7 +182,7 @@ class TeamReport extends React.Component {
             </View>
             <View style={styles.popColumn}>
               <Text>消费量:</Text>
-              <Text>{toFixed4(details.buyAmount)}</Text>
+              <Text>{toFixed4(details.orderBuy)}</Text>
             </View>
             <View style={styles.popColumn}>
               <Text>中奖:</Text>

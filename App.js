@@ -5,6 +5,7 @@ import {
 
 import { Provider } from 'react-redux'
 import { Provider as Provider2 } from '@ant-design/react-native'
+import { Root } from "native-base"
 import store from './store'
 // import { changeBtnText } from './actions/example'
 import AppNavigator from './navigation/AppNavigator'
@@ -35,20 +36,22 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <Provider2>
-          <GlobalComp/>
-          <LinesPanel/>
-          <AudioPlay/>
-          {/*<HbPacket/>*/}
-          <View style={styles.container}>
-            {Platform.OS === 'ios' && <StatusBar
-              backgroundColor={'blue'}
-              barStyle="light-content"/>}
-            <AppNavigator
-              ref={navigatorRef => {
-                NavigationService.setTopLevelNavigator(navigatorRef)
-              }}
-            />
-          </View>
+          <Root>
+            <GlobalComp/>
+            <LinesPanel/>
+            <AudioPlay/>
+            {/*<HbPacket/>*/}
+            <View style={styles.container}>
+              {Platform.OS === 'ios' && <StatusBar
+                backgroundColor={'blue'}
+                barStyle="light-content"/>}
+              <AppNavigator
+                ref={navigatorRef => {
+                  NavigationService.setTopLevelNavigator(navigatorRef)
+                }}
+              />
+            </View>
+          </Root>
         </Provider2>
       </Provider>
     )

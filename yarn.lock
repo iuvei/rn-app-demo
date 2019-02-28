@@ -5017,25 +5017,12 @@ react-native-branch@2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-2.2.5.tgz#4074dd63b4973e6397d9ce50e97b57c77a518e9d"
 
-react-native-canvas@^0.1.27:
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/react-native-canvas/-/react-native-canvas-0.1.27.tgz#d4da6e0c4c9c2de1886a9d4b7df48bc166025292"
+react-native-canvas@0.1.25:
+  version "0.1.25"
+  resolved "https://registry.yarnpkg.com/react-native-canvas/-/react-native-canvas-0.1.25.tgz#84646e4748180638ca02ab1ca95b172e45117ada"
+  integrity sha512-Wo9+jwWVNQA8jkhQZktinHHeAH2w2SIOb5X4bjpoBX2TP14Nejy2gp75rQijTszu4RIsA8BS3qFJj8jgL54D/g==
   dependencies:
     ctx-polyfill "^1.1.4"
-    react-native-webview "^5.2.0"
-
-react-native-check-box@^2.1.7:
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/react-native-check-box/-/react-native-check-box-2.1.7.tgz#f349d3505a13c15d19949ec4cec40c7adc4f3626"
-  dependencies:
-    prop-types "^15.5.7"
-
-react-native-canvas@^0.1.25:
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/react-native-canvas/-/react-native-canvas-0.1.27.tgz#d4da6e0c4c9c2de1886a9d4b7df48bc166025292"
-  dependencies:
-    ctx-polyfill "^1.1.4"
-    react-native-webview "^5.2.0"
 
 react-native-check-box@^2.1.7:
   version "2.1.7"
@@ -5217,16 +5204,10 @@ react-native-view-shot@2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-2.5.0.tgz#428a997f470d3148d0067c5b46abd988ef1aa4c0"
 
-react-native-webview@^5.2.0, react-native-webview@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-5.2.1.tgz#8a3f2ee14488ad3d058f15c7054fb52fa47195ea"
-  dependencies:
-    escape-string-regexp "^1.0.5"
-    fbjs "^0.8.17"
-
-react-native-webview@^5.2.0:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-5.2.1.tgz#8a3f2ee14488ad3d058f15c7054fb52fa47195ea"
+react-native-webview@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-5.2.0.tgz#909d91ce518681467d0ad11aeac254efe9cc4235"
+  integrity sha512-2jHXIk7+U8k/l6fp/tDVE3ulJEzcF3n1xZUe2xWtbmIm5BTf0qWeLKqhcPWpG+9hBXvFiTiZhL4Jw4qFwOqIYg==
   dependencies:
     escape-string-regexp "^1.0.5"
     fbjs "^0.8.17"

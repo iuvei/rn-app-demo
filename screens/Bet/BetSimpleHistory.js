@@ -3,14 +3,12 @@ import { connect } from 'react-redux'
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 import UIListView from '../../components/UIListView'
 import {
-  Button, Toast, Flex
+  Button, Flex
 } from '@ant-design/react-native'
 import { orderStatus, shortcutsDays } from '../../data/options'
 import { withNavigation } from 'react-navigation'
 import { rulesNameMap } from '../../data/nor-lot/basic-info'
 import { styleUtil } from '../../utils/ScreenUtil';
-
-const TableRow = 20
 
 class FlatListItem extends PureComponent {
   constructor(props) {
