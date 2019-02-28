@@ -158,9 +158,9 @@ class AccountsPanel extends React.PureComponent {
                     borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff',
                     paddingHorizontal: 5
                   }}/> */}
-                  <View style={{borderWidth: 1, borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff'}}>
+                  <View style={{paddingHorizontal: 4, width: 98, height: 30, borderWidth: 1, borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff'}}>
                     <Image source={this.state.bankpngs[String(account.bankCode || account.coinCode).toUpperCase()] || require('../../assets/images/banks/jd.png')}
-                      style={{width: 80, height: 32}}/>
+                      style={{width: 90, height: 30}}/>
                   </View>
               </View>
             </TouchableWithoutFeedback>
