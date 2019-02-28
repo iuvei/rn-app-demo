@@ -1,4 +1,4 @@
-import {fetch} from '../services/HttpService'
+import { fetch } from '../services/HttpService'
 
 const {platformKey, prependUrl} = require('./../api.config')
 
@@ -225,7 +225,6 @@ export const getUserRebateInfo = (data) => {
   })
 }
 
-
 // 查询系统总奖金
 export const getPlatformReward = () => {
   return fetch({
@@ -248,5 +247,14 @@ export const checkLineSwitchParam = (data) => {
     api: '/user/checkLineSwitchParam',
     type: 'post',
     params: data
+  })
+}
+
+// 热更新
+export const checkHotUpdate = () => {
+  return fetch({
+    api: '/system/hotupdate',
+    type: 'get',
+    params: {}
   })
 }
