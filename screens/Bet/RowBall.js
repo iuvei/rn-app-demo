@@ -362,7 +362,9 @@ class RowBall extends React.Component {
               </Text>
               <Text style={styles.BuyInfoDefaultText}>
                 <Text>投注金额：</Text>
-                <Text style={{...styles.BuyInfoDefaultText, color: '#ff0000'}}>{total}</Text>
+                <Text style={{...styles.BuyInfoDefaultText, color: '#ff0000'}}>
+                  {total}
+                </Text>
               </Text>
             </View>
             <View style={styles.fastBuyView}>

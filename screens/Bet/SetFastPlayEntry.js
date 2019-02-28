@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import { setCustomPlayNav } from '../../actions/classic'
 import _ from 'lodash'
+import $Toast from '../../plugin/$Toast'
 
 class FastPlayNav extends React.Component {
   constructor(props) {
