@@ -4,58 +4,17 @@ import { setActiveAccount } from '../../actions/common'
 import {
   View,
   Text, TouchableWithoutFeedback,
-  Image, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage
+  Image, StyleSheet, ScrollView, TouchableOpacity
 } from 'react-native'
 import {
-  Tabs,
   Accordion,
-  List,
   Flex, WingBlank
 } from '@ant-design/react-native'
-
 import { isObject } from 'lodash'
-import { minbankCodeMap } from '../../constants/glyphMapHex'
-import SvgIcon from '../../components/SvgIcon'
+// import { minbankCodeMap } from '../../constants/glyphMapHex'
+// import SvgIcon from '../../components/SvgIcon'
 import { Icon } from 'expo'
 import { setSpText, stylesUtil } from '../../utils/ScreenUtil'
-
-class mySection extends React.PureComponent {
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    let {section} = this.props
-    let activeId = this.props.activeAccount.payChannelCode + this.props.activeAccount.bankCode
-    return <WingBlank style={{marginBottom: 5}}>
-      <Flex wrap="wrap" justify="between">
-        {
-          section.accounts.map((account, idx) => {
-            return <TouchableWithoutFeedback
-              key={idx}
-              onPress={() => this.props.setActiveAccount(account)}>
-              <View key={section.title + account.payChannelCode + idx}
-                    style={{marginTop: 4}}>
-                <SvgIcon
-                  icon={minbankCodeMap[String(account.bankCode || account.coinCode).toUpperCase()]}
-                  // width={90} height={34}
-                  width={80} height={30}
-                  style={{
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    borderWidth: 1,
-                    borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff',
-                    paddingHorizontal: 5
-                  }}/>
-              </View>
-            </TouchableWithoutFeedback>
-          })
-        }
-      </Flex>
-    </WingBlank>
-
-  }
-}
 
 class AccountsPanel extends React.PureComponent {
   constructor(props) {
@@ -63,7 +22,53 @@ class AccountsPanel extends React.PureComponent {
     this.state = {
       tabs: [{title: '', value: '', arr: []}],
       activeSections: [0],
-      curPage: 0
+      curPage: 0,
+      bankpngs: {
+        "ABC": require('../../assets/images/banks/nongyeyinhang.png'),
+        "AILPAY": require('../../assets/images/banks/alipay.png'),
+        "ALIPAY": require('../../assets/images/banks/alipay.png'),
+        "ALIPAY_QR": require('../../assets/images/banks/alipay.png'),
+        "BCB": require('../../assets/images/banks/bcb.png'),
+        "BCCB": require('../../assets/images/banks/beijingyinhang.png'),
+        "BHBC": require('../../assets/images/banks/bohaiyinhang.png'),
+        "BJRCB": require('../../assets/images/banks/beijingnongcunshangyeyinhang.png'),
+        "BOB": require('../../assets/images/banks/beijingyinhang.png'),
+        "BOC": require('../../assets/images/banks/zhongguoyinhang.png'),
+        "BOCOM": require('../../assets/images/banks/jiaotongyinhang.png'),
+        "BOS": require('../../assets/images/banks/shanghaiyinhang.png'),
+        "BTC": require('../../assets/images/banks/btc.png'),
+        "CCB": require('../../assets/images/banks/jiansheyinhang.png'),
+        "CEB": require('../../assets/images/banks/guangdayinhang.png'),
+        "CGB": require('../../assets/images/banks/guangfayinhang.png'),
+        "CIB": require('../../assets/images/banks/xingyeyinhang.png'),
+        "CITIC": require('../../assets/images/banks/zhongxinyinhang.png'),
+        "CMB": require('../../assets/images/banks/zhaoshangyinhang.png'),
+        "CMBC": require('../../assets/images/banks/minshengyinhang.png'),
+        "CZB": require('../../assets/images/banks/zheshangyinhang.png'),
+        "DC": require('../../assets/images/banks/dc.png'),
+        "DNS": require('../../assets/images/banks/dns.png'), // 无图
+        "ETC": require('../../assets/images/banks/etc.png'),
+        "ETH": require('../../assets/images/banks/eth.png'),
+        "GDB": require('../../assets/images/banks/guangfayinhang.png'),
+        "HXB": require('../../assets/images/banks/huaxiayinhang.png'),
+        "ICBC": require('../../assets/images/banks/gongshangyinhang.png'),
+        "JD": require('../../assets/images/banks/jingdongEqia.png'),
+        "JDPAY": require('../../assets/images/banks/jingdongzhifu.png'),
+        "LTC": require('../../assets/images/banks/ltc.png'),
+        "NBCB": require('../../assets/images/banks/ningboyinhang.png'),
+        "NJCB": require('../../assets/images/banks/nanjingyinhang.png'),
+        "PAB": require('../../assets/images/banks/pinganyinhang.png'),
+        "PSBC": require('../../assets/images/banks/youchuyinhang.png'),
+        "SPDB": require('../../assets/images/banks/pufayinhang.png'),
+        "SRCB": require('../../assets/images/banks/shanghainongshangyinhang.png'),
+        "SXCCB": require('../../assets/images/banks/shaoxinyinhang.png'),
+        "UNIONPAY": require('../../assets/images/banks/zhongguoyinlian.png'),
+        "USDX": require('../../assets/images/banks/usdx.png'),
+        "WECHAT": require('../../assets/images/banks/weixinzhifu.png'),
+        "WECHAT_QR": require('../../assets/images/banks/weixinzhifu.png'),
+        "WXPAY": require('../../assets/images/banks/weixinzhifu.png'),
+        "WXPAY_QR": require('../../assets/images/banks/weixinzhifu.png'),
+      }
     }
   }
 
@@ -85,34 +90,6 @@ class AccountsPanel extends React.PureComponent {
     this.setState({
       tabs: tmp_tabs
     })
-    // 人民币渠道集合
-    // let channelRealObj = {}
-    // let realAccounts = []
-    // Object.keys(recharge).forEach((keyTitle) => {
-    //   if (keyTitle !== 'virtual') {
-    //     Object.keys(recharge[keyTitle]).forEach((infomap) => {
-    //       if (isObject(recharge[keyTitle][infomap])) {
-    //         let channelReal = ''
-    //         for (channelReal in recharge[keyTitle][infomap]) {
-    //           if (recharge[keyTitle][infomap].hasOwnProperty(channelReal)) {
-    //             for (let i = 0; i < recharge[keyTitle][infomap][channelReal].length; i++) {
-    //               if (Object.keys(this.props.activeAccount).length === 0 && i === 0) {
-    //                 this.props.setActiveAccount(recharge[keyTitle][infomap][channelReal][i])
-    //               }
-    //               recharge[keyTitle][infomap][channelReal][i]['local_id'] =  channelReal + '_' + i + '_' + new Date().getTime()
-    //               realAccounts.push(recharge[keyTitle][infomap][channelReal][i])
-    //             }
-    //             channelRealObj[channelReal] = recharge[keyTitle][infomap][channelReal]
-    //           }
-    //         }
-    //       }
-    //     })
-    //   }
-    // })
-    // this.setState({
-    //   realAccounts: [].concat(realAccounts),
-    //   channelRealObj: Object.assign({}, channelRealObj),
-    // })
   }
 
   onChange = activeSections => {
@@ -159,12 +136,6 @@ class AccountsPanel extends React.PureComponent {
     this.props.setActiveAccount(d.arr[0].accounts[0])
   }
 
-//  renderContent={(section) =>
-// <mySection activeAccount={this.state.activeAccount}
-// section={section}
-// setActiveAccount={setActiveAccount}/>
-// }
-
   _renderContent = (section) => {
     let activeId = this.props.activeAccount.payChannelCode + this.props.activeAccount.bankCode
     return <WingBlank style={{marginBottom: 5}}>
@@ -176,7 +147,7 @@ class AccountsPanel extends React.PureComponent {
               onPress={() => this.props.setActiveAccount(account)}>
               <View key={section.title + account.payChannelCode + idx}
                     style={{marginTop: 4}}>
-                <SvgIcon
+                {/* <SvgIcon
                   icon={minbankCodeMap[String(account.bankCode || account.coinCode).toUpperCase()]}
                   // width={90} height={34}
                   width={80} height={30}
@@ -186,7 +157,11 @@ class AccountsPanel extends React.PureComponent {
                     borderWidth: 1,
                     borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff',
                     paddingHorizontal: 5
-                  }}/>
+                  }}/> */}
+                  <View style={{borderWidth: 1, borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff'}}>
+                    <Image source={this.state.bankpngs[String(account.bankCode || account.coinCode).toUpperCase()] || require('../../assets/images/banks/jd.png')}
+                      style={{width: 80, height: 32}}/>
+                  </View>
               </View>
             </TouchableWithoutFeedback>
           })
@@ -224,7 +199,6 @@ class AccountsPanel extends React.PureComponent {
               </View>
             </View>
           </Flex>
-
         </View>
         {
           tabs[curPage].arr.length > 0 &&
