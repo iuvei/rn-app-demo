@@ -125,17 +125,20 @@ class GlobalComp extends React.Component {
     ]
     return (
       <View>
-        <Modal
-          title=""
-          transparent
-          maskClosable={false}
-          visible={this.state.visible}
-          closable={false}
-          footer={footerButtons}>
-          <View style={{ paddingVertical: 20 }}>
-            <Text style={{ textAlign: 'center' }}>有新版本发布啦！</Text>
-          </View>
-        </Modal>
+        {
+          this.state.visible &&
+          <Modal
+            title=""
+            transparent
+            maskClosable={false}
+            visible={this.state.visible}
+            closable={false}
+            footer={footerButtons}>
+            <View style={{ paddingVertical: 20 }}>
+              <Text style={{ textAlign: 'center' }}>有新版本发布啦！</Text>
+            </View>
+          </Modal>
+        }
       </View>
     )
   }
