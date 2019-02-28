@@ -63,7 +63,8 @@ class OrderDetail extends React.Component {
             return '0.0000'
           }
         }},
-        {key: 'orderTime', title: '加入时间'},
+        {key: 'orderTime', title: '投注时间'},
+        {key: 'updateTime', title: '更新时间'},
         {key: 'orderIssue', title: '期号'},
         // {key: 'nums', title: '注数', desc: '注'},
         {key: 'castMultiple', title: '倍数', desc: '倍'},

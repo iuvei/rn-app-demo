@@ -184,10 +184,10 @@ export default (Comp) => {
                 openList: []
               }
             })
-            let setTime = this.props.activeLot.lotterCode.indexOf('ffc') > -1 ? 2000 : 10000
+            let setTime = this.props.activeLot.lotterCode.indexOf('ffc') > -1 ? 2000 : 8000
             this.queryPrevTime = setTimeout(() => {
               this._pollingPrevOpen({lotterCode})
-            }, setTime || 10000)
+            }, setTime || 8000)
           } else {
             // this.stopPlayingAnimation()
             res.data.openList = res.data.openCode.split(',')
