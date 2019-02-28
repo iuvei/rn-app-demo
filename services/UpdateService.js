@@ -7,18 +7,19 @@ export const fetchUpdateAndReload = async (key) => {
     const response = await Updates.fetchUpdateAsync()
     if (key) Portal.remove(key)
     if (response.isNew) {
-      Alert.alert(
-        '温馨提示',
-        '感谢您的耐心等待，已为您更新至最新版本！',
-        [
-          {
-            text: '进入游戏',
-            onPress: () => Updates.reloadFromCache(),
-            style: 'cancel'
-          }
-        ],
-        {cancelable: true}
-      )
+      Updates.reloadFromCache()
+      // Alert.alert(
+      //   '温馨提示',
+      //   '感谢您的耐心等待，已为您更新至最新版本！',
+      //   [
+      //     {
+      //       text: '进入游戏',
+      //       onPress: () => Updates.reloadFromCache(),
+      //       style: 'cancel'
+      //     }
+      //   ],
+      //   {cancelable: true}
+      // )
     }
 
   } catch (e) {

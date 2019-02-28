@@ -1,32 +1,32 @@
 import React from 'react'
-import {ScrollView, View, Text, ImageBackground, Image, StyleSheet, Dimensions} from 'react-native'
-import {Button, Flex, Toast} from '@ant-design/react-native'
-import { connect } from "react-redux";
-import { AsetUserPlatfrom } from "../../actions/common"
-import { toLiveGame } from "./../../api/member"
-import {Video} from 'expo'
+import { ScrollView, View, Text, ImageBackground, Image, StyleSheet, Dimensions } from 'react-native'
+import { Button, Flex, Toast } from '@ant-design/react-native'
+import { connect } from 'react-redux'
+import { AsetUserPlatfrom } from '../../actions/common'
+import { toLiveGame } from './../../api/member'
+import { Video } from 'expo'
 
 class RealPeople extends React.Component {
-  constructor (props) {
-    super (props)
+  constructor(props) {
+    super(props)
     this.state = {
       list: {
-        AG:{
+        AG: {
           name: 'AG平台',
           status: true,
           icon: require('../../assets/images/realPeople/ag-ico.png'),
           bgImgL: require('../../assets/images/realPeople/ag.png')
-        },OG:{
+        }, OG: {
           name: 'OG平台',
           status: true,
           icon: require('../../assets/images/realPeople/og-ico.png'),
           bgImgL: require('../../assets/images/realPeople/og.jpg')
-        },PT:{
+        }, PT: {
           name: 'PT平台',
           status: true,
           icon: require('../../assets/images/realPeople/allbet-ico.png'),
           bgImgL: require('../../assets/images/realPeople/allbet.png')
-        },eBET:{
+        }, eBET: {
           name: 'eBET平台',
           status: true,
           icon: require('../../assets/images/realPeople/ebet-ico.png'),
@@ -50,37 +50,39 @@ class RealPeople extends React.Component {
     })
   }
 
-  render () {
+  render() {
     let {list, baccaratPlatform, isMuted} = this.state
-    let w = Dimensions.get('window').width/2
+    let w = Dimensions.get('window').width / 2
     let {userPlatformInfo, shouldPlay} = this.props
     return (
       <ScrollView style={{paddingLeft: 5, paddingRight: 5}}>
         {/*<Video*/}
-          {/*source={require('../../assets/videos/jf.mp4')}*/}
-          {/*rate={1.0}*/}
-          {/*useNativeControls={true}*/}
-          {/*volume={1.0}*/}
-          {/*isMuted={isMuted}*/}
-          {/*resizeMode="contain"*/}
-          {/*shouldPlay={shouldPlay}*/}
-          {/*isLooping*/}
-          {/*style={{height: 240}}*/}
+        {/*source={require('../../assets/videos/jf.mp4')}*/}
+        {/*rate={1.0}*/}
+        {/*useNativeControls={true}*/}
+        {/*volume={1.0}*/}
+        {/*isMuted={isMuted}*/}
+        {/*resizeMode="contain"*/}
+        {/*shouldPlay={shouldPlay}*/}
+        {/*isLooping*/}
+        {/*style={{height: 240}}*/}
         {/*/>*/}
         <Flex wrap="wrap" justify="space-between">
           {
-            userPlatformInfo.map((item, index) => {
+            !userPlatformInfo.length ? userPlatformInfo.map((item, index) => {
               let d = baccaratPlatform.includes(item.partnerName)
               return (
-                d ? <View style={{width: '49%',}} key={index}>
-                  <ImageBackground source={list[item.partnerName].bgImgL} resizeMode= 'contain' style={{width: '100%', height:w/0.7 }}>
+                d ? <View style={{width: '49%'}} key={index}>
+                  <ImageBackground source={list[item.partnerName].bgImgL} resizeMode='contain'
+                                   style={{width: '100%', height: w / 0.7}}>
                     <View style={styles.card}>
                       <View style={styles.footer}>
-                        <Image source={list[item.partnerName].icon} resizeMode= 'contain' style={{width: 60, height: 30}}></Image>
+                        <Image source={list[item.partnerName].icon} resizeMode='contain'
+                               style={{width: 60, height: 30}}></Image>
                         <View style={{width: 100, alignItems: 'center'}}>
                           <Text style={{color: 'white', fontSize: 14}}>{item.partnerDesc}</Text>
                           <Button
-                            onPress={()=> this._toLiveGame(item)}
+                            onPress={() => this._toLiveGame(item)}
                             style={{width: 80, height: 25}}>
                             <Text style={{fontSize: 12}}>{item.partnerStatus === 0 ? '进入游戏' : '请等待'}</Text>
                           </Button>
@@ -90,7 +92,10 @@ class RealPeople extends React.Component {
                   </ImageBackground>
                 </View> : null
               )
-            })
+            }) : <View style={{
+              width:'100%',
+              alignItems: 'center', justifyContent: 'center'
+            }}><Text style={{marginTop: 30, textAlign: 'center', fontSize: 14, color: '#3f3f3f'}}>暂无数据</Text></View>
           }
         </Flex>
       </ScrollView>
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, props) => {
-  let { userPlatformInfo } = state.common
+  let {userPlatformInfo} = state.common
   return {
     userPlatformInfo
   }
@@ -131,7 +136,9 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    AsetUserPlatfrom: (data) => { dispatch(AsetUserPlatfrom(data)) }
+    AsetUserPlatfrom: (data) => {
+      dispatch(AsetUserPlatfrom(data))
+    }
   }
 }
 
