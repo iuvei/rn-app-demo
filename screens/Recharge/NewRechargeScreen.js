@@ -3,16 +3,12 @@ import { connect } from 'react-redux'
 import { AsetUserSecureLevel } from '../../actions/common'
 import AccountsPanel from './AccountsPanel'
 import Header from '../../components/Header'
-import InputAmount from './InputAmount'
 import { withNavigation } from 'react-navigation'
 import {
-  Dimensions,
   View,
   ScrollView,
   Text
 } from 'react-native'
-
-const height = Dimensions.get('window').height
 
 class NewRechargeScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -70,9 +66,6 @@ class NewRechargeScreen extends React.Component {
     return (
       <View style={{flex: 1}}>
         <AccountsPanel/>
-        <ScrollView style={{flex: 1}}>
-          <InputAmount navigation={this.props.navigation}/>
-        </ScrollView>
       </View>
     )
   }

@@ -14,7 +14,9 @@ import { isObject } from 'lodash'
 // import { minbankCodeMap } from '../../constants/glyphMapHex'
 // import SvgIcon from '../../components/SvgIcon'
 import { Icon } from 'expo'
+import InputAmount from './InputAmount'
 import { setSpText, stylesUtil } from '../../utils/ScreenUtil'
+import { withNavigation } from 'react-navigation'
 
 class AccountsPanel extends React.PureComponent {
   constructor(props) {
@@ -202,7 +204,7 @@ class AccountsPanel extends React.PureComponent {
         </View>
         {
           tabs[curPage].arr.length > 0 &&
-          <View style={{marginBottom: 5}}>
+          <ScrollView style={{marginBottom: 5}}>
             <Accordion
               duration={50}
               activeSections={activeSections}
@@ -212,7 +214,8 @@ class AccountsPanel extends React.PureComponent {
               renderSectionTitle={this._renderSectionTitle}
               renderContent={this._renderContent}
             />
-          </View>
+            <InputAmount navigation={this.props.navigation}/>
+          </ScrollView>
         }
       </View>
     )
@@ -271,4 +274,4 @@ const styles = StyleSheet.create(stylesUtil({
   })
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountsPanel)
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(AccountsPanel))

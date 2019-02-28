@@ -93,7 +93,7 @@ class InputAmount extends React.PureComponent {
     let {activeAccount} = this.props
 
     return (
-      <View>
+      <View style={{marginTop: 20}}>
         <List>
           <InputItem
             value={amount}
@@ -144,7 +144,7 @@ class InputAmount extends React.PureComponent {
           <Button type="primary" loading={isLoading} onPress={this.submitFunc} style={{marginTop: 15}}>下一步</Button>
         </View>
         <View>
-          <View style={styleUtil({padding: 12})}>
+          <View style={styleUtil({padding: 12, paddingBottom: 200})}>
             <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单笔最低充值金额为 <Text style={{color: '#f15a23'}}>{activeAccount.coinCode ? 100 : 50}</Text> 元{activeAccount.signleLimit > 0 ? <Text>, 最高 <Text style={{color: '#f15a23'}}>{activeAccount.signleLimit}</Text> 元</Text> : null}</Text>
             {activeAccount.feeRate > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值手续费费率 <Text style={{color: '#f15a23'}}>{ activeAccount.feeRate || 0 }%</Text></Text> : null}
             {activeAccount.dayLimit > 0 ? <Text style={styleUtil({color: '#a4a4a4', lineHeight: 25})}>充值金额：单日最高 <Text style={{color: '#f15a23'}}>{ activeAccount.dayLimit }</Text> 元</Text> : null}
