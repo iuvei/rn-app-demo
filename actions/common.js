@@ -245,3 +245,11 @@ export const AsetNetInfo = (data) => {
     payload: data
   }
 }
+
+export const AddBankcardSuccessRoute = (data) => {
+  return {
+    type: 'SET_BANKCARD_SUCCESS_ROUTE',
+    payload: data
+  }
+}
+

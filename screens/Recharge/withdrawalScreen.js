@@ -11,7 +11,7 @@ import {
   AsetIsAllowWithdraw,
   AsetUserConsume
 } from '../../actions/member'
-import { AsetUserSecureLevel } from '../../actions/common'
+import { AsetUserSecureLevel, AddBankcardSuccessRoute } from '../../actions/common'
 import { commitWithdrawal } from '../../api/member'
 import { styleUtil } from '../../utils/ScreenUtil'
 import { isNaN } from 'lodash'
@@ -64,6 +64,7 @@ class Withdrawal extends React.Component {
   }
 
   componentDidMount() {
+    this.props.AddBankcardSuccessRoute('Withdrawal')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -522,7 +523,8 @@ const mapDispatchToProps = (dispatch) => {
     AsetAllBalance: data => dispatch(AsetAllBalance(data)),
     AsetUserBankCards: data => dispatch(AsetUserBankCards(data)),
     AsetIsAllowWithdraw: data => dispatch(AsetIsAllowWithdraw(data)),
-    AsetUserConsume: data => dispatch(AsetUserConsume(data))
+    AsetUserConsume: data => dispatch(AsetUserConsume(data)),
+    AddBankcardSuccessRoute: data => dispatch(AddBankcardSuccessRoute(data))
   }
 }
 

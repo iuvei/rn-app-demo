@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { AsetUserSecureLevel } from '../../actions/common'
+import { AsetUserSecureLevel, AddBankcardSuccessRoute } from '../../actions/common'
 import AccountsPanel from './AccountsPanel'
 import Header from '../../components/Header'
 import { withNavigation } from 'react-navigation'
@@ -36,7 +36,15 @@ class NewRechargeScreen extends React.Component {
   goSetTrade = () => {
     this.props.navigation.navigate('UpdatePwd', {title: '资金密码', type: 'paypwd'})
   }
-  
+
+  componentDidMount() {
+    this.props.AddBankcardSuccessRoute('Recharge')
+  }
+
+  componentWillUnmount(){
+    this.setState = () => () => {}
+  }
+
   render () {
     let { userSecurityLevel, userBankInfo } = this.props
 
@@ -79,7 +87,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) }
+    AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
+    AddBankcardSuccessRoute: (data) => { dispatch(AddBankcardSuccessRoute(data)) }
   }
 }
 

@@ -62,7 +62,8 @@ const initialState = {
   }, // 保存撤单时间和撤单订单号
   recharge: {}, // 充值渠道对象
   isConnected: true, //是否有网络
-  passwordRule: {}
+  passwordRule: {},
+  addBankcardSuccessRoute: '' // 提现、充值页面》一系列操作》添加银行卡成功之后跳转到相应页面
 }
 
 // 常规处理
@@ -244,6 +245,12 @@ const common = handleActions({
     return {
       ...state,
       passwordRule: payload
+    }
+  },
+  SET_BANKCARD_SUCCESS_ROUTE: (state, {payload}) => {
+    return {
+      ...state,
+      addBankcardSuccessRoute: payload
     }
   }
 }, initialState)

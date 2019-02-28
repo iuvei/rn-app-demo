@@ -18,7 +18,8 @@ import {
   setLoginStatus,
   setShowFloatBall,
   AsetSoundType,
-  AsetAudioSwitch
+  AsetAudioSwitch,
+  AddBankcardSuccessRoute
 } from '../actions/common'
 import { loginOut } from '../api/basic'
 import { WebBrowser, Constants } from 'expo'
@@ -69,6 +70,10 @@ class SettingsScreen extends React.Component {
   _handlePressButtonAsync = async () => {
     let result = await WebBrowser.openBrowserAsync(host+'/app/#/download')
     console.log(result)
+  }
+
+  componentDidMount() {
+    this.props.AddBankcardSuccessRoute('')
   }
 
   componentWillUnmount(){
@@ -218,6 +223,7 @@ const mapDispatchToProps = (dispatch) => {
     setShowFloatBall: (data) => { dispatch(setShowFloatBall(data)) },
     AsetAudioSwitch: (data) => { dispatch(AsetAudioSwitch(data)) },
     AsetSoundType: (data) => { dispatch(AsetSoundType(data)) },
+    AddBankcardSuccessRoute: (data) => { dispatch(AddBankcardSuccessRoute(data))}
   }
 }
 
