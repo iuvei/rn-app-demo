@@ -36,6 +36,10 @@ class NewRechargeScreen extends React.Component {
       activeTab: v
     })
   }
+
+  goSetTrade = () => {
+    this.props.navigation.navigate('UpdatePwd', {title: '资金密码', type: 'paypwd'})
+  }
   
   render () {
     let { userSecurityLevel, userBankInfo } = this.props
