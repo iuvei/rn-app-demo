@@ -30,6 +30,7 @@
     "react-native-check-box": "^2.1.7",
     "react-native-collapsible": "^1.4.0",
     "react-native-render-html": "^3.10.0",
+    "react-native-root-toast": "^3.0.2",
     "react-native-svg-uri": "^1.2.3",
     "react-native-ultimate-listview": "^3.3.0",
     "react-native-video": "^4.3.1",
