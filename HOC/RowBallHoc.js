@@ -603,12 +603,12 @@ export default (Comp) => {
       }
       toBuyLottery(repZip || rep).then(res => {
         if (res.code === 0) {
-          $Toast.success('购买成功')
+          $Toast.info('购买成功')
           this.clearAllData()
           // 刷新余额
           this.props.AsetAllBalance()
         } else {
-          $Toast.success(res.message)
+          $Toast.info(res.message)
         }
         this.setState({
           buyCardData: []
