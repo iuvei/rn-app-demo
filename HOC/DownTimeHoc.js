@@ -9,6 +9,7 @@ import {Modal} from '@ant-design/react-native'
 import { getLatelyOpen, setOpenIssue } from '../actions/classic'
 import { AsetSoundType } from '../actions/common'
 import {View, Text} from 'react-native'
+import { AsetAllBalance } from '../actions/member'
 
 export default (Comp) => {
   class DownTimeHoc extends Component {
@@ -253,7 +254,7 @@ export default (Comp) => {
             <View><Text>中奖金额：{bonus || 0}</Text></View>
           </View>)
           // 刷新用户余额
-          // this.AgetUserBalance()
+          this.props.AsetAllBalance()
         }
       })
     }
@@ -282,7 +283,8 @@ export default (Comp) => {
     return {
       _getLatelyOpen: (params) => dispatch(getLatelyOpen(params)),
       _setOpenIssue: params => dispatch(setOpenIssue(params)),
-      AsetSoundType: (data) => dispatch(AsetSoundType(data))
+      AsetSoundType: (data) => dispatch(AsetSoundType(data)),
+      AsetAllBalance: data => dispatch(AsetAllBalance(data))
     }
   }
 
