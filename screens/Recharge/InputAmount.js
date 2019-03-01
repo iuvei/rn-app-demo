@@ -93,8 +93,6 @@ class InputAmount extends React.PureComponent {
     let {amount, orderAmount, rechargeFee, isLoading} = this.state
     let {activeAccount} = this.props
 
-    console.log('render inputamount')
-
     return (
       <View style={{marginTop: 20}}>
         <List>
