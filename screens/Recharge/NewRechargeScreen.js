@@ -4,6 +4,7 @@ import { AsetUserSecureLevel, AddBankcardSuccessRoute, setActiveAccount } from '
 import AccountsPanel from './AccountsPanel'
 import Header from '../../components/Header'
 import { withNavigation } from 'react-navigation'
+import {Tab, Tabs, ScrollableTab, Spinner} from 'native-base'
 import {
   View,
   ScrollView,
@@ -18,7 +19,7 @@ import {
 import { isObject } from 'lodash'
 import InputAmount from './InputAmount'
 
-class TopTabs extends React.PureComponent {
+class TopTabs extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -33,32 +34,15 @@ class TopTabs extends React.PureComponent {
     return (
       <View style={styles.warp}>
         <Flex>
-          <View style={styles.playNav}>
-            <View>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                {
-                  tabs.map((d, index) => {
-                    return <TouchableOpacity
-                      key={index}
-                      activeOpacity={0.7}
-                      onPress={() => {
-                        this.setState({
-                          curPage: index
-                        })
-                        tabsChange(d, index)
-                      }}
-                      style={[styles.btnDefault, index === curPage ? styles.btnActive : null]}>
-                      <Text
-                        style={[styles.btnDefaultText, index === curPage ? styles.btnActive : null]}
-                      >{d.title}</Text>
-                    </TouchableOpacity>
-                  })
-                }
-              </ScrollView>
-            </View>
-          </View>
+          <Tabs onChangeTab={tabsChange} locked={true} renderTabBar={() => <ScrollableTab/>}>
+            {
+              tabs.map((d, index) => {
+                return <Tab heading={d.title} tabStyle={{backgroundColor: '#fff'}} tabBarUnderlineStyle={{backgroundColor: 'red'}} activeTabStyle={{backgroundColor: '#fff'}}
+                            textStyle={{color: '#000'}} activeTextStyle={{color: '#00bbcc'}} key={index} />
+              }) ||
+              <Tab heading={'empty'}></Tab>
+            }
+          </Tabs>
         </Flex>
       </View>
     )
@@ -112,9 +96,10 @@ class NewRechargeScreen extends React.Component {
     this.setState = () => () => {}
   }
 
-  tabsChange = (d, t) => {
+  tabsChange = ({i}) => {
+    let d = this.state.tabs[i]
     this.setState({
-      curPage: t
+      curPage: i
     })
     this.props.setActiveAccount(d.arr[0].accounts[0])
   }
@@ -173,7 +158,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const styles = StyleSheet.create(stylesUtil({
-    warp: {backgroundColor: '#ffffff', justifyContent: 'center', paddingLeft: 2},
+    warp: {backgroundColor: '#ffffff', justifyContent: 'center'},
     playNav: {
       marginTop: 2
     },
