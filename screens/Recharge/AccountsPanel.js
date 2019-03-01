@@ -88,6 +88,14 @@ class AccountsPanel extends React.PureComponent {
   componentDidMount() {
   }
 
+  componentWillReceiveProps(np) {
+    if (np.curPage !== this.props.curPage) {
+      this.setState({
+        activeSections: [0]
+      })
+    }
+  }
+
   onChange = activeSections => {
     let {tabs, curPage} = this.props
     this.setState({activeSections})
