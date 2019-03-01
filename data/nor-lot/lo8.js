@@ -137,7 +137,7 @@ export const viewData = {
     'ball_bit': 1,
     'ball_key': true
   },
-  'lo8_zx_ds': {},
+  'lo8_zx_ds': {'title': '直选 单式'},
   'lo8_zux_zs': {
     title: '',
     'row': ['zs'],
