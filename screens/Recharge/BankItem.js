@@ -20,7 +20,7 @@ class BankItem extends React.Component {
     let activeId = np.activeAccount.payChannelCode + np.activeAccount.bankCode
     let itemId = this.props.account.payChannelCode + this.props.account.bankCode
     let lastId = this.props.activeAccount.payChannelCode + this.props.activeAccount.bankCode
-    if (activeId === itemId || itemId === lastId) {
+    if (activeId === itemId || itemId === lastId) { //  仅仅是被点击的和上次被点击过的 item 需要重新渲染
       return true
     }
     return false
