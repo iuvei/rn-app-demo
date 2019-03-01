@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import {Audio} from 'expo'
 
 // 播放属性 {type: ''}
 class AudioPlay extends React.PureComponent {
@@ -13,7 +14,7 @@ class AudioPlay extends React.PureComponent {
   }
 
   playAudio = async (soundType) => {
-    const soundObject = new Expo.Audio.Sound()
+    const soundObject = new Audio.Sound()
     if (soundType.type && this.props.audioSwitch) {
       try {
         switch(soundType.type) {

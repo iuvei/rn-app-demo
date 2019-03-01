@@ -197,7 +197,7 @@ class SettingsScreen extends React.Component {
         <View style={{paddingHorizontal: 22, paddingVertical: 32}}>
           <Button type="warning" onPress={this.signOut}>退出登录</Button>
         </View>
-        <AudioPlay soundType={this.state.soundType}/>
+        {/*<AudioPlay soundType={this.state.soundType}/>*/}
       </ScrollView>
     )
   }
