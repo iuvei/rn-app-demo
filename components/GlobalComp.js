@@ -91,7 +91,7 @@ class GlobalComp extends React.Component {
   getMoblieVersion = () => {
     let curVersion = Constants.manifest.version // config.versionNumber
     let temp = curVersion.split('.')
-    
+
     getMoblieVersion().then(res => {
       console.log(res)
       if (res.code === 0) {
@@ -115,7 +115,7 @@ class GlobalComp extends React.Component {
   }
 
   _handlePressButtonAsync = async () => {
-    let result = await WebBrowser.openBrowserAsync(host+'/app/#/download')
+    let result = await WebBrowser.openBrowserAsync(host+'/app/static/download')
     console.log(result)
   }
 

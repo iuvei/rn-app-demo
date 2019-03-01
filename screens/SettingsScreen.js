@@ -67,7 +67,7 @@ class SettingsScreen extends React.Component {
   }
 
   _handlePressButtonAsync = async () => {
-    let result = await WebBrowser.openBrowserAsync(host+'/app/#/download')
+    let result = await WebBrowser.openBrowserAsync(host+'/app/static/download')
     console.log(result)
   }
 
