@@ -380,7 +380,7 @@ class PersonalScreen extends React.Component {
                   }} onPress={(el) => this.changeRoute(el.path)} />
                 </ScrollView>
                 <ScrollView style={styles.agent}>
-                  <Grid data={agent} columnNum={4} hasLine={false} renderItem={(el, index) => {
+                  <Grid data={agent.filter(item => item.condition)} columnNum={4} hasLine={false} renderItem={(el, index) => {
                     return (
                       el.condition && <View style={styleUtil({alignItems: 'center', width: 90})}>
                         <Image source={el.src} style={styleUtil({width: 50, height: 50, marginBottom: 5})}></Image>
