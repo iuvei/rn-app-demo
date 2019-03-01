@@ -50,7 +50,7 @@ class SettingsScreen extends React.Component {
       { text: '下次吧', onPress: () => {
         loginOut().then((res) => {
           if (res.code === 0) {
-            $Toast.success('退出成功')
+            // $Toast.success('退出成功')
             this.props.setLoginStatus(false)
             this.props.navigation.navigate('AppLoading')
           } else {

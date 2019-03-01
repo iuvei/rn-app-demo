@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppLoading, Font, Icon } from 'expo'
+import { AppLoading, Font, Icon, SplashScreen } from 'expo'
 import { connect } from 'react-redux'
 import {
   setLoginStatus, setUserRebate,
@@ -99,7 +99,8 @@ class AppLoadingScreen extends React.Component {
   _handleFinishLoading = () => {
     if (this.props.isLogin) this._loadResourcesAsyncEvent()
     this.props.navigation.navigate(this.props.isLogin ? 'Main' : 'Login')
-    Expo.SplashScreen.hide()
+    // Expo.SplashScreen.hide()
+    SplashScreen.hide()
   }
 }
 
