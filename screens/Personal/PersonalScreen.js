@@ -280,7 +280,7 @@ class PersonalScreen extends React.Component {
                       style={styleUtil({width: 55, height: 55})}></Image>
                 <View style={styleUtil({paddingLeft: 14})}>
                   <Text style={styleUtil({color: '#fff', fontSize: 14})}>{loginInfo.acc.user.loginName}</Text>
-                  <Text style={styleUtil({color: '#fff', fontSize: 14})}>余额： {Number(userBalanceInfoYE.currentBalance).toFixed(4)}元</Text>
+                  <Text style={styleUtil({color: '#fff', fontSize: 14})}>余额： {Number(userBalanceInfoYE.currentBalance || 0).toFixed(4)}元</Text>
                 </View>
               </Flex>
               <View style={styleUtil({alignItems: 'flex-end'})}>
@@ -310,11 +310,11 @@ class PersonalScreen extends React.Component {
             borderBottomColor: '#f3f3f3'
           })}>
             <View style={styleUtil({width: '50%', borderRightWidth: 1, borderRightColor: '#f3f3f3', alignItems: 'center'})}>
-              <Text style={styleUtil({color: '#333', fontSize: 14})}>{Number(userBalanceInfoYE.canWithdrawBalance).toFixed(4)}元</Text>
+              <Text style={styleUtil({color: '#333', fontSize: 14})}>{Number(userBalanceInfoYE.canWithdrawBalance || 0).toFixed(4)}元</Text>
               <Text style={styleUtil({color: '#333', fontSize: 14})}>可提金额</Text>
             </View>
             <View style={styleUtil({width: '50%', alignItems: 'center'})}>
-              <Text style={styleUtil({color: '#333', fontSize: 14})}>{Number(userBalanceInfoFD.currentBalance).toFixed(4)}元</Text>
+              <Text style={styleUtil({color: '#333', fontSize: 14})}>{Number(userBalanceInfoFD.currentBalance || 0).toFixed(4)}元</Text>
               <Text style={styleUtil({color: '#333', fontSize: 14})}>返点金额</Text>
             </View>
           </View>
