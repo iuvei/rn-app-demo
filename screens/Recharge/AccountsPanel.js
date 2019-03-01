@@ -3,89 +3,22 @@ import { connect } from 'react-redux'
 import { setActiveAccount } from '../../actions/common'
 import {
   View,
-  Text, TouchableWithoutFeedback,
-  Image
+  Text
 } from 'react-native'
 import {
   Accordion,
   Flex, WingBlank
 } from '@ant-design/react-native'
 import { Icon } from 'expo'
+import BankItem from './BankItem'
 
-class BankItem extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      bankpngs: {
-        "ABC": require('../../assets/images/banks/nongyeyinhang.png'),
-        "AILPAY": require('../../assets/images/banks/alipay.png'),
-        "ALIPAY": require('../../assets/images/banks/alipay.png'),
-        "ALIPAY_QR": require('../../assets/images/banks/alipay.png'),
-        "BCB": require('../../assets/images/banks/bcb.png'),
-        "BCCB": require('../../assets/images/banks/beijingyinhang.png'),
-        "BHBC": require('../../assets/images/banks/bohaiyinhang.png'),
-        "BJRCB": require('../../assets/images/banks/beijingnongcunshangyeyinhang.png'),
-        "BOB": require('../../assets/images/banks/beijingyinhang.png'),
-        "BOC": require('../../assets/images/banks/zhongguoyinhang.png'),
-        "BOCOM": require('../../assets/images/banks/jiaotongyinhang.png'),
-        "BOS": require('../../assets/images/banks/shanghaiyinhang.png'),
-        "BTC": require('../../assets/images/banks/btc.png'),
-        "CCB": require('../../assets/images/banks/jiansheyinhang.png'),
-        "CEB": require('../../assets/images/banks/guangdayinhang.png'),
-        "CGB": require('../../assets/images/banks/guangfayinhang.png'),
-        "CIB": require('../../assets/images/banks/xingyeyinhang.png'),
-        "CITIC": require('../../assets/images/banks/zhongxinyinhang.png'),
-        "CMB": require('../../assets/images/banks/zhaoshangyinhang.png'),
-        "CMBC": require('../../assets/images/banks/minshengyinhang.png'),
-        "CZB": require('../../assets/images/banks/zheshangyinhang.png'),
-        "DC": require('../../assets/images/banks/dc.png'),
-        "DNS": require('../../assets/images/banks/dns.png'), // 无图
-        "ETC": require('../../assets/images/banks/etc.png'),
-        "ETH": require('../../assets/images/banks/eth.png'),
-        "GDB": require('../../assets/images/banks/guangfayinhang.png'),
-        "HXB": require('../../assets/images/banks/huaxiayinhang.png'),
-        "ICBC": require('../../assets/images/banks/gongshangyinhang.png'),
-        "JD": require('../../assets/images/banks/jingdongEqia.png'),
-        "JDPAY": require('../../assets/images/banks/jingdongzhifu.png'),
-        "LTC": require('../../assets/images/banks/ltc.png'),
-        "NBCB": require('../../assets/images/banks/ningboyinhang.png'),
-        "NJCB": require('../../assets/images/banks/nanjingyinhang.png'),
-        "PAB": require('../../assets/images/banks/pinganyinhang.png'),
-        "PSBC": require('../../assets/images/banks/youchuyinhang.png'),
-        "SPDB": require('../../assets/images/banks/pufayinhang.png'),
-        "SRCB": require('../../assets/images/banks/shanghainongshangyinhang.png'),
-        "SXCCB": require('../../assets/images/banks/shaoxinyinhang.png'),
-        "UNIONPAY": require('../../assets/images/banks/zhongguoyinlian.png'),
-        "USDX": require('../../assets/images/banks/usdx.png'),
-        "WECHAT": require('../../assets/images/banks/weixinzhifu.png'),
-        "WECHAT_QR": require('../../assets/images/banks/weixinzhifu.png'),
-        "WXPAY": require('../../assets/images/banks/weixinzhifu.png'),
-        "WXPAY_QR": require('../../assets/images/banks/weixinzhifu.png'),
-      }
-    }
-  }
-
-  render() {
-    let { account, activeId } = this.props
-
-    return (
-      <View style={{paddingHorizontal: 4, width: 98, height: 30, borderWidth: 1, borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff'}}>
-        <Image source={this.state.bankpngs[String(account.bankCode || account.coinCode).toUpperCase()] || require('../../assets/images/banks/jd.png')}
-          style={{width: 90, height: 30}}/>
-      </View>
-    )
-  }
-}
 
 class AccountsPanel extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      activeSections: [0],
+      activeSections: [0]
     }
-  }
-
-  componentDidMount() {
   }
 
   componentWillReceiveProps(np) {
@@ -138,26 +71,14 @@ class AccountsPanel extends React.PureComponent {
   }
 
   _renderContent = (section, activeSections) => {
-    let activeId = this.props.activeAccount.payChannelCode + this.props.activeAccount.bankCode
-    if (section.index !== activeSections[0]) {
+    if (section.index !== activeSections[0]) {  // 非当前点中的不渲染里面的数据
       return <View key={section.index}></View>
     }
     return <WingBlank style={{marginBottom: 5}}>
       <Flex wrap="wrap" justify="between">
         {
           section.accounts.map((account, idx) => {
-            return <TouchableWithoutFeedback
-              key={idx}
-              onPress={() => this.props.setActiveAccount(account)}>
-              <View key={section.title + account.payChannelCode + idx}
-                    style={{marginTop: 4}}>
-                  {/* <View style={{paddingHorizontal: 4, width: 98, height: 30, borderWidth: 1, borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff'}}>
-                    <Image source={this.state.bankpngs[String(account.bankCode || account.coinCode).toUpperCase()] || require('../../assets/images/banks/jd.png')}
-                      style={{width: 90, height: 30}}/>
-                  </View> */}
-                  <BankItem account={account} activeId={activeId} />
-              </View>
-            </TouchableWithoutFeedback>
+            return <BankItem account={account} key={idx} />
           })
         }
       </Flex>
@@ -189,8 +110,7 @@ class AccountsPanel extends React.PureComponent {
 }
 
 const mapStateToProps = (state, props) => {
-  let {activeAccount} = state.member
-  return {activeAccount}
+  return {}
 }
 
 const mapDispatchToProps = (dispatch) => {
