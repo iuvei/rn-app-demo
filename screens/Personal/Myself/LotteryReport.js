@@ -32,6 +32,7 @@ class FlatListItem extends PureComponent {
       bonus,
       bettingAmount,
       teamRebateAmount,
+      undrawnAmount,
       isSub,
     } = this.props.item
     return (
@@ -73,6 +74,8 @@ class FlatListItem extends PureComponent {
             <Text style={styles.value}>{toFixed4(bettingAmount)}</Text>
           </View>
           <View style={styles.column}>
+            <Text style={styles.title}>未开奖额:</Text>
+            <Text style={styles.value}>{toFixed4(undrawnAmount)}</Text>
           </View>
         </Flex>
       </View>
@@ -117,7 +120,7 @@ export default class LotteryReport extends React.Component {
       this.setState({isShow: false})
     })
   }
-  
+
   componentWillUnmount(){
     this.setState = () => () => {}
   }

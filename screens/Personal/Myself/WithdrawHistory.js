@@ -39,6 +39,9 @@ class FlatListItem extends PureComponent {
           <Flex justify="space-between">
             <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>描述：{item["remark"] || '--'}</Text>
           </Flex>
+          <Flex justify="space-between">
+            <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{type}单号：{type === '充值' ? item["rechargeId"] : item["orderId"]}</Text>
+          </Flex>
         </View>
       </TouchableHighlight>
     )
@@ -220,10 +223,10 @@ class PersonalScreen extends React.Component {
               <Text>操作日期</Text>
               <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{formatTime(item["time"])}</Text>
             </Flex>
-            {/* <Flex justify="space-between">
-              <Text>银行卡</Text>
-              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item["bankCard"] || '--'}</Text>
-            </Flex> */}
+            <Flex justify="space-between">
+              <Text>{changeType}单号</Text>
+              <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{changeType === '充值' ? item["rechargeId"] : item["orderId"]}</Text>
+            </Flex>
             <Flex justify="space-between">
               <Text>描述</Text>
               <Text style={{color: '#666', fontSize: 14, lineHeight: 22}}>{item["remark"] || '--'}</Text>

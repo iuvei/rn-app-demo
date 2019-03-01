@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  Platform, StyleSheet, StatusBar, View, Button
+  Platform, StyleSheet, StatusBar, View, Button, YellowBox
 } from 'react-native'
 
 import { Provider } from 'react-redux'
@@ -16,6 +16,8 @@ import LinesPanel from './components/LinesPanel'
 import AudioPlay from './components/AudioPlay'
 import GlobalComp from './components/GlobalComp'
 
+// 忽略不必要warning
+YellowBox.ignoreWarnings(['Require cycle:'])
 initReactFastClick()
 
 // 开始监听，每次state更新，那么就会打印出当前状态
