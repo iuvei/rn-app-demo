@@ -4,27 +4,18 @@ import { setActiveAccount } from '../../actions/common'
 import {
   View,
   Text, TouchableWithoutFeedback,
-  Image, StyleSheet, ScrollView, TouchableOpacity
+  Image
 } from 'react-native'
 import {
   Accordion,
   Flex, WingBlank
 } from '@ant-design/react-native'
-import { isObject } from 'lodash'
-// import { minbankCodeMap } from '../../constants/glyphMapHex'
-// import SvgIcon from '../../components/SvgIcon'
 import { Icon } from 'expo'
-import InputAmount from './InputAmount'
-import { setSpText, stylesUtil } from '../../utils/ScreenUtil'
-import { withNavigation } from 'react-navigation'
 
-class AccountsPanel extends React.PureComponent {
+class BankItem extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      tabs: [{title: '', value: '', arr: []}],
-      activeSections: [0],
-      curPage: 0,
       bankpngs: {
         "ABC": require('../../assets/images/banks/nongyeyinhang.png'),
         "AILPAY": require('../../assets/images/banks/alipay.png'),
@@ -74,28 +65,31 @@ class AccountsPanel extends React.PureComponent {
     }
   }
 
+  render() {
+    let { account, activeId } = this.props
+
+    return (
+      <View style={{paddingHorizontal: 4, width: 98, height: 30, borderWidth: 1, borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff'}}>
+        <Image source={this.state.bankpngs[String(account.bankCode || account.coinCode).toUpperCase()] || require('../../assets/images/banks/jd.png')}
+          style={{width: 90, height: 30}}/>
+      </View>
+    )
+  }
+}
+
+class AccountsPanel extends React.PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeSections: [0],
+    }
+  }
+
   componentDidMount() {
-    let {recharge} = this.props
-    let tmp_tabs = []
-    Object.keys(recharge).forEach((keyTitle) => {
-      let arr = []
-      Object.keys(recharge[keyTitle]).forEach(infomap => {
-        if (isObject(recharge[keyTitle][infomap])) {
-          Object.keys(recharge[keyTitle][infomap]).forEach(key => {
-            arr.push({title: key, accounts: recharge[keyTitle][infomap][key]})
-          })
-        }
-      })
-      tmp_tabs.push({title: recharge[keyTitle].modelName, value: keyTitle, arr})
-    })
-    this.props.setActiveAccount(tmp_tabs[0].arr[0].accounts[0])
-    this.setState({
-      tabs: tmp_tabs
-    })
   }
 
   onChange = activeSections => {
-    let {tabs, curPage} = this.state
+    let {tabs, curPage} = this.props
     this.setState({activeSections})
     if (activeSections.length > 0 && activeSections[0] >= 0) {
       this.props.setActiveAccount(tabs[curPage].arr[activeSections[0]].accounts[0])
@@ -120,22 +114,19 @@ class AccountsPanel extends React.PureComponent {
           borderBottomWidth: 0.5,
           paddingHorizontal: 16
         }}>
-        <View style={{flex: 1}}><Text
-          style={{lineHeight: 40, color: '#333', width: '50%'}}>{section.title}</Text></View>
-        <Text style={{width: 90, textAlign: 'right'}}><Icon.Ionicons style={{textAlign: 'right'}}
-                                                                     color={this.state.activeSections[0] === index ? '#666' : '#cacaca'}
-                                                                     name={this.state.activeSections[0] === index ? 'ios-arrow-down' : 'ios-arrow-forward'}
-                                                                     size={20}></Icon.Ionicons></Text>
+        <View style={{flex: 1}}>
+          <Text style={{lineHeight: 40, color: '#333', width: '50%'}}>{section.title}</Text>
+        </View>
+        <Text style={{width: 90, textAlign: 'right'}}>
+          <Icon.Ionicons
+            style={{textAlign: 'right'}}
+            color={this.state.activeSections[0] === index ? '#666' : '#cacaca'}
+            name={this.state.activeSections[0] === index ? 'ios-arrow-down' : 'ios-arrow-forward'}
+            size={20}>
+          </Icon.Ionicons>
+        </Text>
       </Flex>
     )
-  }
-
-  tabsChange = (d, t) => {
-    this.setState({
-      activeSections: [0],
-      curPage: t
-    })
-    this.props.setActiveAccount(d.arr[0].accounts[0])
   }
 
   _renderContent = (section) => {
@@ -149,21 +140,11 @@ class AccountsPanel extends React.PureComponent {
               onPress={() => this.props.setActiveAccount(account)}>
               <View key={section.title + account.payChannelCode + idx}
                     style={{marginTop: 4}}>
-                {/* <SvgIcon
-                  icon={minbankCodeMap[String(account.bankCode || account.coinCode).toUpperCase()]}
-                  // width={90} height={34}
-                  width={80} height={30}
-                  style={{
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    borderWidth: 1,
-                    borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff',
-                    paddingHorizontal: 5
-                  }}/> */}
-                  <View style={{paddingHorizontal: 4, width: 98, height: 30, borderWidth: 1, borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff'}}>
+                  {/* <View style={{paddingHorizontal: 4, width: 98, height: 30, borderWidth: 1, borderColor: activeId === (account.payChannelCode + account.bankCode) ? '#ffac1e' : '#fff'}}>
                     <Image source={this.state.bankpngs[String(account.bankCode || account.coinCode).toUpperCase()] || require('../../assets/images/banks/jd.png')}
                       style={{width: 90, height: 30}}/>
-                  </View>
+                  </View> */}
+                  <BankItem account={account} activeId={activeId} />
               </View>
             </TouchableWithoutFeedback>
           })
@@ -173,49 +154,22 @@ class AccountsPanel extends React.PureComponent {
   }
 
   render() {
-    let {tabs, activeSections, curPage} = this.state
+    let { activeSections } = this.state
+    let { tabs, curPage } = this.props
 
     return (
       <View>
-        <View style={styles.warp}>
-          <Flex>
-            <View style={styles.playNav}>
-              <View>
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
-                  {
-                    tabs.map((d, index) => {
-                      return <TouchableOpacity
-                        key={index}
-                        activeOpacity={0.7}
-                        onPress={() => this.tabsChange(d, index)}
-                        style={[styles.btnDefault, index === curPage ? styles.btnActive : null]}>
-                        <Text
-                          style={[styles.btnDefaultText, index === curPage ? styles.btnActive : null]} numberOfLines={1}
-                        >{d.title}</Text>
-                      </TouchableOpacity>
-                    })
-                  }
-                </ScrollView>
-              </View>
-            </View>
-          </Flex>
-        </View>
         {
           tabs[curPage].arr.length > 0 &&
-          <ScrollView style={{marginBottom: 5}}>
-            <Accordion
-              duration={50}
-              activeSections={activeSections}
-              sections={tabs[curPage].arr}
-              onChange={this.onChange}
-              renderHeader={this._renderHeader}
-              renderSectionTitle={this._renderSectionTitle}
-              renderContent={this._renderContent}
-            />
-            <InputAmount navigation={this.props.navigation}/>
-          </ScrollView>
+          <Accordion
+            duration={50}
+            activeSections={activeSections}
+            sections={tabs[curPage].arr}
+            onChange={this.onChange}
+            renderHeader={this._renderHeader}
+            renderSectionTitle={this._renderSectionTitle}
+            renderContent={this._renderContent}
+          />
         }
       </View>
     )
@@ -223,9 +177,8 @@ class AccountsPanel extends React.PureComponent {
 }
 
 const mapStateToProps = (state, props) => {
-  let {recharge} = state.common
   let {activeAccount} = state.member
-  return {recharge, activeAccount}
+  return {activeAccount}
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -236,42 +189,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const styles = StyleSheet.create(stylesUtil({
-    warp: {backgroundColor: '#ffffff', justifyContent: 'center', paddingLeft: 2},
-    playNav: {
-      marginTop: 2
-    },
-    btnDefault: {
-      height: 50,
-      lineHeight: 50,
-      borderBottomColor: '#ffffff',
-      borderBottomWidth: 2,
-      paddingLeft: 4,
-      paddingRight: 4,
-      // borderRadius: 20,
-      marginRight: 5
-    },
-    btnActive: {
-      borderBottomColor: '#00bbcc',
-      color: '#00bbcc'
-    },
-    Touchable: {
-      height: 26,
-      lineHeight: 26
-    },
-    btnDefaultText: {
-      fontSize: 13,
-      lineHeight: 50,
-      height: 50,
-      paddingLeft: 4,
-      paddingRight: 4,
-      color: '#333',
-      textAlign: 'center'
-    },
-    btnActiveText: {
-      color: '#00bbcc'
-    }
-  })
-)
-
-export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(AccountsPanel))
+export default connect(mapStateToProps, mapDispatchToProps)(AccountsPanel)

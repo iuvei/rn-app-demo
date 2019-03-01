@@ -7,6 +7,7 @@ import { styleUtil } from '../../utils/ScreenUtil'
 import RechargeTutorial from './RechargeTutorial'
 import { platformKey, prependUrl } from '../../api.config'
 import { commitRecharge } from '../../api/member'
+
 class InputAmount extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -91,6 +92,8 @@ class InputAmount extends React.PureComponent {
   render() {
     let {amount, orderAmount, rechargeFee, isLoading} = this.state
     let {activeAccount} = this.props
+
+    console.log('render inputamount')
 
     return (
       <View style={{marginTop: 20}}>

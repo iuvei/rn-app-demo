@@ -1,14 +1,69 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { AsetUserSecureLevel, AddBankcardSuccessRoute } from '../../actions/common'
+import { AsetUserSecureLevel, AddBankcardSuccessRoute, setActiveAccount } from '../../actions/common'
 import AccountsPanel from './AccountsPanel'
 import Header from '../../components/Header'
 import { withNavigation } from 'react-navigation'
 import {
   View,
   ScrollView,
-  Text
+  Text,
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native'
+import { setSpText, stylesUtil } from '../../utils/ScreenUtil'
+import {
+  Flex
+} from '@ant-design/react-native'
+import { isObject } from 'lodash'
+import InputAmount from './InputAmount'
+
+class TopTabs extends React.PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      curPage: 0
+    }
+  }
+
+  render() {
+    let { tabs, tabsChange } = this.props
+    let { curPage } = this.state
+
+    return (
+      <View style={styles.warp}>
+        <Flex>
+          <View style={styles.playNav}>
+            <View>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                {
+                  tabs.map((d, index) => {
+                    return <TouchableOpacity
+                      key={index}
+                      activeOpacity={0.7}
+                      onPress={() => {
+                        this.setState({
+                          curPage: index
+                        })
+                        tabsChange(d, index)
+                      }}
+                      style={[styles.btnDefault, index === curPage ? styles.btnActive : null]}>
+                      <Text
+                        style={[styles.btnDefaultText, index === curPage ? styles.btnActive : null]}
+                      >{d.title}</Text>
+                    </TouchableOpacity>
+                  })
+                }
+              </ScrollView>
+            </View>
+          </View>
+        </Flex>
+      </View>
+    )
+  }
+}
 
 class NewRechargeScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -22,15 +77,10 @@ class NewRechargeScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      activeTab: ''
+      tabs: [{title: '', value: '', arr: []}],
+      curPage: 0
     }
     props.AsetUserSecureLevel()
-  }
-
-  tabsChange = (v) =>{
-    this.setState({
-      activeTab: v
-    })
   }
 
   goSetTrade = () => {
@@ -38,15 +88,40 @@ class NewRechargeScreen extends React.Component {
   }
 
   componentDidMount() {
+    let {recharge} = this.props
+    let tmp_tabs = []
+    Object.keys(recharge).forEach((keyTitle) => {
+      let arr = []
+      Object.keys(recharge[keyTitle]).forEach(infomap => {
+        if (isObject(recharge[keyTitle][infomap])) {
+          Object.keys(recharge[keyTitle][infomap]).forEach(key => {
+            arr.push({title: key, accounts: recharge[keyTitle][infomap][key]})
+          })
+        }
+      })
+      tmp_tabs.push({title: recharge[keyTitle].modelName, value: keyTitle, arr})
+    })
+    this.props.setActiveAccount(tmp_tabs[0].arr[0].accounts[0])
+    this.setState({
+      tabs: tmp_tabs
+    })
     this.props.AddBankcardSuccessRoute('Recharge')
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.setState = () => () => {}
+  }
+
+  tabsChange = (d, t) => {
+    this.setState({
+      curPage: t
+    })
+    this.props.setActiveAccount(d.arr[0].accounts[0])
   }
 
   render () {
     let { userSecurityLevel, userBankInfo } = this.props
+    let { tabs, curPage } = this.state
 
     if (!userSecurityLevel.isTradePassword && userSecurityLevel.rechargeTradpswd) {
       return (
@@ -73,7 +148,11 @@ class NewRechargeScreen extends React.Component {
 
     return (
       <View style={{flex: 1}}>
-        <AccountsPanel/>
+        <TopTabs tabs={tabs} tabsChange={this.tabsChange} />
+        <ScrollView style={{marginBottom: 5}}>
+          <AccountsPanel tabs={tabs} curPage={curPage} />
+          <InputAmount navigation={this.props.navigation}/>
+        </ScrollView>
       </View>
     )
   }
@@ -81,15 +160,54 @@ class NewRechargeScreen extends React.Component {
 
 const mapStateToProps = (state, props) => {
   let { userBankInfo } = state.member
-  let { userSecurityLevel } = state.common
-  return { userSecurityLevel, userBankInfo }
+  let { userSecurityLevel, recharge } = state.common
+  return { userSecurityLevel, userBankInfo, recharge }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     AsetUserSecureLevel: (data) => { dispatch(AsetUserSecureLevel(data)) },
-    AddBankcardSuccessRoute: (data) => { dispatch(AddBankcardSuccessRoute(data)) }
+    AddBankcardSuccessRoute: (data) => { dispatch(AddBankcardSuccessRoute(data)) },
+    setActiveAccount: (data) => { dispatch(setActiveAccount(data)) }
   }
 }
+
+const styles = StyleSheet.create(stylesUtil({
+    warp: {backgroundColor: '#ffffff', justifyContent: 'center', paddingLeft: 2},
+    playNav: {
+      marginTop: 2
+    },
+    btnDefault: {
+      height: 50,
+      lineHeight: 50,
+      borderBottomColor: '#ffffff',
+      borderBottomWidth: 2,
+      paddingLeft: 4,
+      paddingRight: 4,
+      // borderRadius: 20,
+      marginRight: 5
+    },
+    btnActive: {
+      borderBottomColor: '#00bbcc',
+      color: '#00bbcc'
+    },
+    Touchable: {
+      height: 26,
+      lineHeight: 26
+    },
+    btnDefaultText: {
+      fontSize: 13,
+      lineHeight: 50,
+      height: 50,
+      paddingLeft: 4,
+      paddingRight: 4,
+      color: '#333',
+      textAlign: 'center'
+    },
+    btnActiveText: {
+      color: '#00bbcc'
+    }
+  })
+)
 
 export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(NewRechargeScreen))
