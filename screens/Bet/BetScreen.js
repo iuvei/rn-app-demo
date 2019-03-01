@@ -40,22 +40,7 @@ const selfRoute = [
 
 class BetScreen extends React.Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
-    const params = navigation.state.params || {
-      countExcept: 0,
-      isOuter: 0,
-      lotterCode: 'cqssc',
-      lotterLabel: 0,
-      lotterName: '重庆时时彩',
-      lotterNumber: 5,
-      lotterTime: '09:50~01:55',
-      maxBonus: 1000000,
-      numberRange: '0,1,2,3,4,5,6,7,8,9',
-      openUrl: 'http://www.baidu.com',
-      realCategory: 'ssc',
-      status: 0,
-      type: 0,
-      updateBy: 'dana001'
-    }
+    const params = navigation.state.params
     return {
       title: params.lotterName,
       headerRight: <TouchableHighlight onPress={navigation.getParam('headerRightClick')} style={{marginRight: 14, marginTop: 4}}>

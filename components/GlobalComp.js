@@ -93,7 +93,7 @@ class GlobalComp extends React.Component {
     let temp = curVersion.split('.')
 
     getMoblieVersion().then(res => {
-      console.log(res)
+      // console.log(res)
       if (res.code === 0) {
         // let forceUpdate = false
         let arr = res.data.filter(list => {
