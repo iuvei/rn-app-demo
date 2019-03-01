@@ -87,9 +87,10 @@ export const shortcutsDays = [
     value() {
       const endTime = new Date()
       const startTime = new Date()
-      startTime.setTime(startTime.getTime() + milliseconds)
-      endTime.setTime(endTime.getTime() + milliseconds)
-      return {startTime, endTime}
+      return {
+        startTime: day(startTime).format('YYYY-MM-DD'),
+        endTime: day(endTime).format('YYYY-MM-DD')
+      }
     },
     id: 1
   }, {
@@ -99,7 +100,10 @@ export const shortcutsDays = [
       const startTime = new Date()
       startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 2 + milliseconds)
       endTime.setTime(endTime.getTime() + milliseconds)
-      return {startTime, endTime}
+      return {
+        startTime: day(startTime).format('YYYY-MM-DD'),
+        endTime: day(endTime).format('YYYY-MM-DD')
+      }
     },
     id: 3
   }, {
@@ -109,7 +113,10 @@ export const shortcutsDays = [
       const startTime = new Date()
       startTime.setTime(startTime.getTime() - 3600 * 1000 * 24 * 6 + milliseconds)
       endTime.setTime(endTime.getTime() + milliseconds)
-      return {startTime, endTime}
+      return {
+        startTime: day(startTime).format('YYYY-MM-DD'),
+        endTime: day(endTime).format('YYYY-MM-DD')
+      }
     },
     id: 7
   }
