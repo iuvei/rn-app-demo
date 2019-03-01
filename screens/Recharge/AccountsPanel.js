@@ -137,8 +137,11 @@ class AccountsPanel extends React.PureComponent {
     )
   }
 
-  _renderContent = (section) => {
+  _renderContent = (section, activeSections) => {
     let activeId = this.props.activeAccount.payChannelCode + this.props.activeAccount.bankCode
+    if (section.index !== activeSections[0]) {
+      return <View key={section.index}></View>
+    }
     return <WingBlank style={{marginBottom: 5}}>
       <Flex wrap="wrap" justify="between">
         {
@@ -170,13 +173,14 @@ class AccountsPanel extends React.PureComponent {
         {
           tabs[curPage].arr.length > 0 &&
           <Accordion
+            ref={ref => this.AccordionComp = ref}
             duration={50}
             activeSections={activeSections}
             sections={tabs[curPage].arr}
             onChange={this.onChange}
             renderHeader={this._renderHeader}
             renderSectionTitle={this._renderSectionTitle}
-            renderContent={this._renderContent}
+            renderContent={(section) => this._renderContent(section, activeSections)}
           />
         }
       </View>

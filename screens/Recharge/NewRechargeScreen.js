@@ -94,8 +94,8 @@ class NewRechargeScreen extends React.Component {
       let arr = []
       Object.keys(recharge[keyTitle]).forEach(infomap => {
         if (isObject(recharge[keyTitle][infomap])) {
-          Object.keys(recharge[keyTitle][infomap]).forEach(key => {
-            arr.push({title: key, accounts: recharge[keyTitle][infomap][key]})
+          Object.keys(recharge[keyTitle][infomap]).forEach((key, index) => {
+            arr.push({title: key, accounts: recharge[keyTitle][infomap][key], index })
           })
         }
       })
