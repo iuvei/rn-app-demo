@@ -34,11 +34,11 @@ class TopTabs extends React.Component {
     return (
       <View style={styles.warp}>
         <Flex>
-          <Tabs onChangeTab={tabsChange} locked={true} renderTabBar={() => <ScrollableTab/>}>
+          <Tabs tabBarUnderlineStyle={{backgroundColor: '#00bbcc',borderColor: '#00bbcc'}} onChangeTab={tabsChange} locked={true} renderTabBar={() => <ScrollableTab/>}>
             {
               tabs.map((d, index) => {
-                return <Tab heading={d.title} tabStyle={{backgroundColor: '#fff'}} tabBarUnderlineStyle={{backgroundColor: 'red'}} activeTabStyle={{backgroundColor: '#fff'}}
-                            textStyle={{color: '#000'}} activeTextStyle={{color: '#00bbcc'}} key={index} />
+                return <Tab heading={d.title} tabStyle={{backgroundColor: '#fff'}}  activeTabStyle={{backgroundColor: '#fff'}}
+                            textStyle={{color: '#000'}} activeTextStyle={{color: '#00bbcc', borderColor: '#00bbcc'}} key={index} />
               }) ||
               <Tab heading={'empty'}></Tab>
             }
