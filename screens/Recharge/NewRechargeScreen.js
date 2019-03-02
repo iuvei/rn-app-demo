@@ -2,17 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { AsetUserSecureLevel, AddBankcardSuccessRoute, setActiveAccount } from '../../actions/common'
 import AccountsPanel from './AccountsPanel'
-import Header from '../../components/Header'
 import { withNavigation } from 'react-navigation'
-import {Tab, Tabs, ScrollableTab, Spinner} from 'native-base'
+import {Tab, Tabs, ScrollableTab} from 'native-base'
 import {
   View,
   ScrollView,
   Text,
   StyleSheet,
-  TouchableOpacity
+  Image
 } from 'react-native'
-import { setSpText, stylesUtil } from '../../utils/ScreenUtil'
+import { stylesUtil } from '../../utils/ScreenUtil'
 import {
   Flex
 } from '@ant-design/react-native'
@@ -22,28 +21,31 @@ import InputAmount from './InputAmount'
 class TopTabs extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      curPage: 0
-    }
   }
 
   render() {
     let { tabs, tabsChange } = this.props
-    let { curPage } = this.state
 
     return (
-      <View style={styles.warp}>
-        <Flex>
-          <Tabs tabBarUnderlineStyle={{backgroundColor: '#00bbcc',borderColor: '#00bbcc'}} onChangeTab={tabsChange} locked={true} renderTabBar={() => <ScrollableTab/>}>
-            {
-              tabs.map((d, index) => {
-                return <Tab heading={d.title} tabStyle={{backgroundColor: '#fff'}}  activeTabStyle={{backgroundColor: '#fff'}}
-                            textStyle={{color: '#000'}} activeTextStyle={{color: '#00bbcc', borderColor: '#00bbcc'}} key={index} />
-              }) ||
-              <Tab heading={'empty'}></Tab>
-            }
-          </Tabs>
-        </Flex>
+      <View>
+        <View style={styles.headerContainer}>
+          <View style={styles.headerCenterContainer}>
+            <Image source={require('../../assets/images/logo.png')} resizeMode={'contain'} style={styles.logo}/>
+          </View>
+        </View>
+        <View style={styles.warp}>
+          <Flex>
+            <Tabs tabBarUnderlineStyle={{backgroundColor: '#00bbcc',borderColor: '#00bbcc'}} onChangeTab={tabsChange} locked={true} renderTabBar={() => <ScrollableTab/>}>
+              {
+                tabs.map((d, index) => {
+                  return <Tab heading={d.title} tabStyle={{backgroundColor: '#fff'}}  activeTabStyle={{backgroundColor: '#fff'}}
+                              textStyle={{color: '#000'}} activeTextStyle={{color: '#00bbcc', borderColor: '#00bbcc'}} key={index} />
+                }) ||
+                <Tab heading={'empty'}></Tab>
+              }
+            </Tabs>
+          </Flex>
+        </View>
       </View>
     )
   }
@@ -52,9 +54,7 @@ class TopTabs extends React.Component {
 class NewRechargeScreen extends React.Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      header: <Header
-        navigation={navigation}
-        hideLeft={true}/>
+      header: null
     }
   }
 
@@ -134,7 +134,7 @@ class NewRechargeScreen extends React.Component {
     return (
       <View style={{flex: 1}}>
         <TopTabs tabs={tabs} tabsChange={this.tabsChange} />
-        <ScrollView style={{marginBottom: 5}}>
+        <ScrollView>
           <AccountsPanel tabs={tabs} curPage={curPage} />
           <InputAmount navigation={this.props.navigation}/>
         </ScrollView>
@@ -191,6 +191,24 @@ const styles = StyleSheet.create(stylesUtil({
     },
     btnActiveText: {
       color: '#00bbcc'
+    },
+    headerContainer: {
+      flexDirection: 'row',
+      backgroundColor: '#00bbcc',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      height: 70,
+      paddingTop: 20
+    },
+    logo: {
+      width: 40
+    },
+    headerCenterContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 36,
+      flex: 4
     }
   })
 )
