@@ -1,6 +1,7 @@
 import { Updates } from 'expo'
 import { Alert } from 'react-native'
 import { Toast, Portal } from '@ant-design/react-native'
+import { PROD } from '../api.config'
 
 export const fetchUpdateAndReload = async (key) => {
   try {
@@ -34,6 +35,7 @@ export const fetchUpdateAndReload = async (key) => {
  * @return {boolean} true is there is a new update
  */
 export const checkOtaUpdates = async () => {
+  if (PROD) {return true}
   try {
     const update = await Updates.checkForUpdateAsync()
     if (update.isAvailable) {
