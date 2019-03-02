@@ -50,7 +50,7 @@ class RechargeSuccess extends React.Component {
                 </Left>
               </CardItem>
               <CardItem cardBody>
-                <Image source={{uri: qrCodeSrc}} style={styleUtil({height: 200, width: null, flex: 1})}/>
+                <Image source={{uri: qrCodeSrc}} style={styleUtil({height: 200, width: '100%', flex: 1, resizeMode: 'contain'})}/>
               </CardItem>
             </Card>
           </View>)

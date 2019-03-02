@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { bankpngs } from '../../constants/Images'
 
-class BankItem extends React.Component {
+class BankItem extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -16,15 +16,15 @@ class BankItem extends React.Component {
     }
   }
 
-  shouldComponentUpdate(np) {
-    let activeId = np.activeAccount.payChannelCode + np.activeAccount.bankCode
-    let itemId = this.props.account.payChannelCode + this.props.account.bankCode
-    let lastId = this.props.activeAccount.payChannelCode + this.props.activeAccount.bankCode
-    if (activeId === itemId || itemId === lastId) { //  仅仅是被点击的和上次被点击过的 item 需要重新渲染
-      return true
-    }
-    return false
-  }
+  // shouldComponentUpdate(np) {
+  //   let activeId = np.activeAccount.payChannelCode + np.activeAccount.bankCode
+  //   let itemId = this.props.account.payChannelCode + this.props.account.bankCode
+  //   let lastId = this.props.activeAccount.payChannelCode + this.props.activeAccount.bankCode
+  //   if (activeId === itemId || itemId === lastId || activeId !== lastId) { //  仅仅是被点击的和上次被点击过的 item 需要重新渲染
+  //     return true
+  //   }
+  //   return false
+  // }
 
   render() {
     let { account, activeAccount } = this.props
