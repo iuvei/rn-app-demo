@@ -125,6 +125,7 @@ class AgentIndex extends React.Component {
 
   render () {
     let {teamInfo, teamStatistics, teamEcharts, timeLength, timeLabel, typeLabel} = this.state
+    let {isConnected} = this.props
     let {teamAgentSum, teamMemberSum, teamOnline, teamSumChildUser, teamSumCurrent} = teamInfo
     let option = {
       title: {
@@ -268,7 +269,12 @@ class AgentIndex extends React.Component {
                 </Picker>
               </View>
             </View>
-            <Echarts option={option} height={300}/>
+            {
+              isConnected ? <Echarts option={option} height={300}/> :
+              <View style={{height: 300}}>
+                <Text style={{fontSize: 30, textAlign: 'center', color: '#ddd'}}>网络错误，请稍后重试!</Text>
+              </View>
+            }
           </ImageBackground>
         </View>
       </View>
@@ -343,9 +349,10 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  let {loginInfo} = state.common
+  let {loginInfo, isConnected} = state.common
   return ({
-    loginInfo
+    loginInfo,
+    isConnected
   })
 }
 
